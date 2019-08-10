@@ -1,0 +1,85 @@
+﻿@*
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
+
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@page
+@model Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store.IndexModel
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["List data"];
+    ViewData["SecondTitle"] = Model.MtdForm.Name;
+}
+
+@section Head  {
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/index/css/mtd-index.css" />
+    <link rel="stylesheet" href="~/lib/xdan/dist/jquery.datetimepicker.min.css" asp-append-version="true" />
+}
+
+@section Breadcrumb {
+    <li><a href="/">@Localizer["Desktop"]</a></li>
+    <li>@ViewBag.Title</li>
+}
+
+<form mtd-data-form id="index-excel-form" method="post" enctype="multipart/form-data" action="/api/action/index/excel/export">
+    @Html.AntiForgeryToken()
+    <input name="InputFormForExport" value="@ViewBag.idForm" type="hidden" />
+</form>
+
+@section Action  {
+
+    <li class="mdc-list-item" role="menuitem" onclick="document.getElementById('index-excel-form').submit()">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">import_export</span>
+        <span class="mdc-list-item__text">@Localizer["Export to Excel"]</span>
+    </li>
+}
+
+@await Component.InvokeAsync("IndexPlace", new { idForm = ViewBag.idForm })
+
+@section Scripts {
+    <script src="~/lib/mtd-ordermaker/index/js/mtd-index.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/lib/moment/dist/js/moment-with-locales.min.js" asp-append-version="true"></script>
+    <script src="~/lib/xdan/dist/jquery.datetimepicker.full.min.js" asp-append-version="true"></script>
+
+    <script>
+        function CallPrint(id) {
+            window.open('./Store/DetailsPrint?id=' + id, '', 'left=0,top=0,width=800,height=600,toolbar=0,scrollbars=1,status=0');
+        }
+
+        const approvalList = document.getElementById('approval-list');
+        if (approvalList) {
+            var toggleButton = new mdc.iconButton.MDCIconButtonToggle(approvalList);
+            toggleButton.unbounded = true;
+        }
+
+            $("input.mtd-data-datepicker").each(function () {
+            $(this).datetimepicker({
+                timepicker: false,
+                mask: @Localizer["'19/39/9999'"],
+                format: @Localizer["'m/d/Y'"],
+                defaultDate: new Date(),
+            });
+        });
+        $.datetimepicker.setLocale(@Localizer["'en'"]);
+        
+
+    </script>
+}

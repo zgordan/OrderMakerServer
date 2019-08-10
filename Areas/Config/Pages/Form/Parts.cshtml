@@ -1,0 +1,112 @@
+﻿@*
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
+
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@page
+@model PartsModel
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Parts editor"];
+    ViewData["SecondTitle"] = Localizer["Form parts management"];
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/config/css/mtd-config-form-parts.css" asp-append-version="true" />
+}
+
+@section Breadcrumb {
+    <li><a href="/config">@Localizer["Configurator"]</a></li>
+    <li><a href="/config/form">@Localizer["Forms"]</a></li>
+    <li><a href="/config/form/edit?id=@Model.MtdForm.Id">@Localizer["Form editor"]</a></li>
+    <li>@ViewBag.Title</li>
+}
+
+@section Action {
+
+    <li mtd-data-href="/config/form/fields?idForm=@Model.MtdForm.Id" class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">view_list</span>
+        <span class="mdc-list-item__text">@Localizer["Edit fields"]</span>
+    </li>
+}
+
+
+<div class="mdc-elevation--z2 mtd-config-form-parts">
+
+    <div id="partsCreator">
+        <a mtd-data-href="/config/form/partcreate?idform=@Model.MtdForm.Id" class="mdc-fab mdc-fab--extended" aria-label="Create">
+            <span class="material-icons mdc-fab__icon">add</span>
+            <span class="mdc-fab__label">@Localizer["Create"]</span>
+        </a>
+    </div>
+
+    <div class="mtd-config-form-parts__title">
+        <div class="mtd-config-form-parts__header">
+            @if (Model.MtdForm.MtdFormHeader != null)
+            {
+                var base64 = Convert.ToBase64String(Model.MtdForm.MtdFormHeader.Image);
+                var imgSrc = String.Format("data:{0};base64,{1}", Model.MtdForm.MtdFormHeader.ImageType, base64);
+                <img src="@imgSrc" />
+            }
+        </div>
+        <div class="mtd-config-form-parts__fname">
+            <span>@Model.MtdForm.Name</span>
+        </div>
+    </div>
+    <hr />
+    <form mtd-data-form method="post" action="/api/config/form/part/sequence">
+        @Html.AntiForgeryToken()
+        <input id="fieldSeqData" name="fieldSeqData" type="hidden" />
+        <input name="fieldPart" type="hidden" value="@Model.CurrentPartId" />
+        <input name="fieldForm" type="hidden" value="@Model.MtdForm.Id" />
+        <input id="configListSeq" mtd-data-clicker type="hidden" />
+    </form>
+
+    <div class="mtd-config-form-parts__list">
+        <ul id="configListParts" class="mdc-list">
+            @foreach (var part in Model.MtdForm.MtdFormPart.OrderBy(x => x.Sequence))
+            {
+                <li mtd-data-href="/config/form/partedit?id=@part.Id" id="@part.Id-licol" class="mdt-config-form-parts__item mdc-list-item" draggable="true" role="button" aria-checked="false"
+                    data-value="@part.Id">
+                    <label class="mdc-list-item__text" for="@part.Id-lc">@part.Name</label>
+                    <div class="mtd-config-form-parts__bdrag">
+                        <i class="material-icons" style="color:gray">drag_handle</i>
+                    </div>
+                    <div class="mtd-config-form-parts__bedit">
+                        <button id="add-to-favorites"
+                                class="mdc-icon-button"
+                                aria-label="Add to favorites"
+                                aria-hidden="true"
+                                aria-pressed="false"
+                                mtd-data-href="/config/form/partedit?id=@part.Id">
+                            <i class="material-icons mdc-icon-button__icon">edit</i>
+                        </button>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script src="~/lib/mtd-ordermaker/config/js/mtd-config-form-parts.js" asp-append-version="true"></script>
+}

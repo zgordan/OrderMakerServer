@@ -1,0 +1,167 @@
+﻿@*
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
+
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+@page
+@model FieldEditModel
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Field editor"];
+    ViewData["SecondTitle"] = Localizer["Editing form field parameters"];
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/config/css/mtd-config-form-part.css" />
+}
+
+@section Breadcrumb {
+    <li><a href="/config">@Localizer["Configurator"]</a></li>
+    <li><a href="/config/form">@Localizer["Forms"]</a></li>
+    <li><a href="/config/form/edit?id=@Model.MtdForm.Id">@Localizer["Form editor"]</a></li>
+    <li><a href="/config/form/fields?idForm=@Model.MtdForm.Id">@Localizer["Fields editor"]</a></li>
+    <li>@ViewBag.Title</li>
+}
+
+@section Action {
+
+    <li mtd-data-href="/config/form/parts?idForm=@Model.MtdForm.Id" class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">line_weight</span>
+        <span class="mdc-list-item__text">@Localizer["Edit parts"]</span>
+    </li>
+    <li mtd-data-delete class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">delete</span>
+        <span class="mdc-list-item__text">@Localizer["Delete field"]</span>
+    </li>
+}
+
+<div class="mdc-elevation--z2 mtd-config-form-part">
+    @if (Model.MtdForm.MtdFormHeader != null)
+    {
+        var base64 = Convert.ToBase64String(Model.MtdForm.MtdFormHeader.Image);
+        var imgSrc = String.Format("data:{0};base64,{1}", Model.MtdForm.MtdFormHeader.ImageType, base64);
+        <img src="@imgSrc" style="max-width: 260px; max-height: 72px;" />
+    }
+    <div style="text-align: right">
+        <span style="font-size: medium; text-transform:uppercase; font-weight: bold;">@Model.MtdForm.Name</span>
+    </div>
+    <hr />
+    <table style="width: 100%">
+        <tr>
+            <td>@Localizer["Field type"]</td>
+            <td><b>@Model.FieldTypeName</b></td>
+        </tr>
+        @if (Model.NameFormSelector != null)
+        {
+            <tr>
+                <td>
+                    @Localizer["List from"]
+                </td>
+                <td>
+                    <b>@Model.NameFormSelector</b>
+                </td>
+            </tr>
+        }
+    </table>
+    <hr />
+    <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/config/form/field/edit">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="MtdForm.Id" name="formId" />
+        <input type="hidden" asp-for="MtdFormPartField.Id" name="fieldId" />
+
+        <div id="fieldType" class="mdc-select" style="width: 100%; margin-top: 8px;">
+            <i class="mdc-select__dropdown-icon"></i>
+            <select class="mdc-select__native-control" asp-for="@Model.MtdFormPartField.MtdFormPart" asp-items="ViewBag.Parts" name="fieldPart"></select>
+            <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Form part"]</label>
+            <div class="mdc-line-ripple"></div>
+        </div>
+
+        <div id="config-form-name" class="mdc-text-field mdc-text-field--outlined" style="width: 100%; margin-top: 16px">
+            <input type="text" id="tf-outlined" mtd-required="config-form-name" class="mdc-text-field__input" asp-for="MtdFormPartField.Name" name="fieldName" required />
+            <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                    <label for="tf-outlined" class="mdc-floating-label">@Localizer["Name"]</label>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+            </div>
+        </div>
+        <div class="mdc-text-field-helper-line">
+            <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true">
+                @Localizer["Required field"]
+            </div>
+        </div>
+        <div id="config-form-description" class="mdc-text-field mdc-text-field--textarea" style="width: 100%; margin-top: 16px;">
+            <textarea id="textarea" mtd-required="config-form-description" class="mdc-text-field__input" rows="3" cols="40" asp-for="MtdFormPartField.Description" name="fieldNote" required></textarea>
+            <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                    <label for="textarea" class="mdc-floating-label">@Localizer["Description"]</label>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+            </div>
+        </div>
+        <div class="mdc-text-field-helper-line">
+            <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true">
+                @Localizer["Required field"]
+            </div>
+        </div>
+
+        <div style="text-align: right; margin-top: 16px;">
+            <button mtd-data-clicker mtd-data-message="@Localizer["Changes saved"]." class="mdc-button mdc-button--raised" type="button">@Localizer["Save"]</button>
+        </div>
+    </form>
+</div>
+
+
+<form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/config/form/field/delete'>
+    @Html.AntiForgeryToken()
+    <input id="config-delete-id" name="fieldId" type="hidden" value="@Model.MtdFormPartField.Id" />
+    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/config/form/fields?idForm=@Model.MtdForm.Id" mtd-data-message="@Localizer["Field"] @Model.MtdFormPartField.Name @Localizer["has been removed"]." type="hidden" />
+</form>
+
+<div id="dialog-field-delete" class="mdc-dialog"
+     role="alertdialog"
+     aria-modal="true"
+     aria-labelledby="my-dialog-title"
+     aria-describedby="my-dialog-content">
+    <div class="mdc-dialog__container">
+        <div class="mdc-dialog__surface">
+            <h2 class="mdc-dialog__title" id="delete-field-title">
+                @Localizer["Delete field"]?
+            </h2>
+            <div class="mdc-dialog__content" id="delete-dialog-content">
+                @Localizer["The field and all data associated with it will be permanently deleted"].
+            </div>
+            <footer class="mdc-dialog__actions">
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                    <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                </button>
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+                    <span class="mdc-button__label" onclick="document.getElementById('deleteClicker').click();">@Localizer["Delete"]</span>
+                </button>
+            </footer>
+        </div>
+    </div>
+    <div class="mdc-dialog__scrim"></div>
+</div>
+
+@section Scripts{
+    <script src="~/lib/mtd-ordermaker/config/js/mtd-config-form-field-edit.js" asp-append-version="true"></script>
+}

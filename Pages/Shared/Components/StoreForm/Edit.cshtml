@@ -1,0 +1,95 @@
+﻿@*
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
+
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@model Models.Store.DataContainer
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@inject Services.UserHandler userHandler
+@{
+    var user = await userHandler.GetUserAsync(User);
+}
+
+<form mtd-data-form method='post' autocomplete='off' enctype='multipart/form-data' action='/api/store/save'>
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="idStore" asp-for="@Model.Owner.Store.Id" />
+    <div class="mtd-store-style-blank mdc-elevation--z2">
+        <div class="mtd-store-edit-bar" style="text-align: right">
+            <div class="mtd-store-edit-control" style="position:absolute">
+                <a mtd-data-clicker mtd-data-location="/workplace/store/details?id=@Model.Owner.Store.Id" class="mdc-fab mdc-fab--extended" aria-label="Save">
+                    <span class="material-icons mdc-fab__icon">save</span>
+                    <span class="mdc-fab__label">@Localizer["Save"]</span>
+                </a>
+            </div>
+            <div>
+                <button mtd-data-href="/workplace/store/details?id=@Model.Owner.Store.Id" class="mdc-button" type="button">
+                    <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                    <i class="material-icons mdc-button__icon" aria-hidden="true">cancel</i>
+                </button>
+            </div>
+        </div>
+
+        <div id="@Model.Owner.Store.Id-modal" class="mtd-store-style-modal"></div>
+
+        <div class="mtd-store-style-badge">
+            @if (Model.Owner.Store.MtdFormNavigation.MtdFormHeader != null)
+            {
+                var base64 = Convert.ToBase64String(Model.Owner.Store.MtdFormNavigation.MtdFormHeader.Image);
+                var imgSrc = String.Format("data:{0};base64,{1}", Model.Owner.Store.MtdFormNavigation.MtdFormHeader.ImageType, base64);
+
+                <img src="@imgSrc" />
+            }
+        </div>
+
+        <div class="mtd-store-style-header">
+            <div class="mtd-store-style-title">
+                @Model.Owner.Store.MtdFormNavigation.Name
+            </div>
+            <div class="mtd-store-style-attribute">
+                <span class="mtd-store-style-number">№ @Model.Owner.Store.Sequence.ToString("D9")</span>
+                <hr />
+                <span class="mtd-store-style-date">@Localizer["Date"] @Model.Owner.Store.Timecr.ToShortDateString()</span>
+            </div>
+        </div>
+
+        @if (Model.Parent != null)
+        {
+            <div class="mtd-store-style-based">
+                <div style="position: absolute; color: gray;font-weight: 500; background-color: white;margin-top: -24px; left:0;  padding: 4px; border-radius: 20%; font-size: smaller">@Localizer["On based"]</div>
+                @Model.Parent.Store.MtdFormNavigation.Name <text>№</text> @Model.Parent.Store.Sequence.ToString("D9") <text>от</text> @Model.Parent.Store.Timecr.ToShortDateString()
+            </div>
+        }
+
+        <div>
+
+            @foreach (var part in Model.Owner.Parts)
+            {
+                if (part.Title)
+                {
+                    <div class="mtd-store-style-part">
+                        @part.Name
+                    </div>
+                }
+
+                @await Component.InvokeAsync("StorePartEditor", new { part = part, model = Model.Owner })
+            }
+        </div>
+    </div>
+</form>
+

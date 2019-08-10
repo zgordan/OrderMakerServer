@@ -1,0 +1,131 @@
+﻿@*
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
+
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@model Models.Index.ColumnsModelView
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+<div id="indexFilterColumn" class="mdc-elevation--z16" style="position: absolute; margin: 8px;  width: 90%; display: none; z-index:1; background-color: white;">
+    <div style="text-transform:uppercase; background-color: navy; color: white; margin-bottom:16px;" class="mdc-elevation--z2">
+        <div style="padding: 16px">
+            @Localizer["List columns"]
+        </div>
+    </div>
+    <div style="padding: 8px;">
+        <div style="display: flex; padding: 8px; border: 1px solid lightgray; position:relative">
+            <span style="position: absolute; background-color: white; top: -12px">@Localizer["Service fields"]</span>
+            <div class="mdc-form-field">
+                <div class="mdc-checkbox">
+                    <input type="checkbox"
+                           class="mdc-checkbox__native-control"
+                           id="show-number" checked="@Model.ShowNumber" />
+                    <div class="mdc-checkbox__background">
+                        <svg class="mdc-checkbox__checkmark"
+                             viewBox="0 0 24 24">
+                            <path class="mdc-checkbox__checkmark-path"
+                                  fill="none"
+                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                        </svg>
+                        <div class="mdc-checkbox__mixedmark"></div>
+                    </div>
+                </div>
+                <label for="show-number">@Localizer["ID Number"]</label>
+            </div>
+            <div class="mdc-form-field">
+                <div class="mdc-checkbox">
+                    <input type="checkbox"
+                           class="mdc-checkbox__native-control"
+                           id="show-date" checked="@Model.ShowDate" />
+                    <div class="mdc-checkbox__background">
+                        <svg class="mdc-checkbox__checkmark"
+                             viewBox="0 0 24 24">
+                            <path class="mdc-checkbox__checkmark-path"
+                                  fill="none"
+                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                        </svg>
+                        <div class="mdc-checkbox__mixedmark"></div>
+                    </div>
+                </div>
+                <label for="show-date">@Localizer["Date of creation"]</label>
+            </div>
+        </div>
+
+    </div>
+    <div style="padding: 8px">
+        <div id="indexSelectPart" class="mdc-select mdc-select--outlined" style="width: 100%; border-bottom: 1px solid gray;">
+            <i class="mdc-select__dropdown-icon"></i>
+            <select class="mdc-select__native-control">
+                <option value="all">--- @Localizer["All Parts"] ---</option>
+                @foreach (var part in Model.MtdFormParts)
+                {
+                    <option value="@part.Id">@part.Name</option>
+                }
+            </select>
+            <label class="mdc-floating-label">@Localizer["Part"]</label>
+            <div class="mdc-line-ripple"></div>
+        </div>
+        <div style="max-height: 350px; overflow-y:auto;">
+            <ul id="indexListColumn" class="mdc-list">
+
+                @{string partId = ""; if (Model.MtdFormParts.FirstOrDefault() != null) { partId = Model.MtdFormParts.FirstOrDefault().Id; }}
+
+                @foreach (var field in Model.MtdFormPartFields)
+                {
+                    bool isChecked = Model.MtdFilterColumns.Where(x => x.MtdFormPartField == field.Id).Any();
+                    <li id="@field.Id-licol" class="mdc-list-item" draggable="true" role="checkbox" aria-checked=@isChecked.ToString().ToLower()
+                        data-value="@field.Id"
+                        data-part="@field.MtdFormPart">
+                        <span class="mdc-list-item__graphic">
+                            <div class="mdc-checkbox">
+                                <input type="checkbox"
+                                       class="mdc-checkbox__native-control"
+                                       id="@field.Id-lc" />
+                                <div class="mdc-checkbox__background">
+                                    <svg class="mdc-checkbox__checkmark"
+                                         viewBox="0 0 24 24">
+                                        <path class="mdc-checkbox__checkmark-path"
+                                              fill="none"
+                                              d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                    </svg>
+                                    <div class="mdc-checkbox__mixedmark"></div>
+                                </div>
+                            </div>
+                        </span>
+                        <label class="mdc-list-item__text" for="@field.Id-lc">@field.Name</label>
+                        <div style="position: absolute; right: 16px; cursor: all-scroll">
+                            <i class="material-icons" style="color:gray">drag_handle</i>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+        <form id="indexFormColumn" method="post" action="/api/index/filter/columns/add" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
+            @Html.AntiForgeryToken()
+            <input type="text" id="indexDataColumnIdForm" name="indexDataColumnIdForm" value="@Model.IdForm" hidden />
+            <input type="text" id="indexDataColumnList" name="indexDataColumnList" value="@Model.IdForm" hidden />
+            <input type="text" id="indexDataColumnNumber" name="indexDataColumnNumber" value="@Model.ShowNumber" hidden />
+            <input type="text" id="indexDataColumnDate" name="indexDataColumnDate" value="@Model.ShowDate" hidden />
+            <div style="text-align:right; padding-top:8px; border-top: 1px solid gray">
+                <button id="indexButtonColCancel" class="mdc-button" type="button">@Localizer["Cancel"]</button>
+                <button id="indexButtonColApply" type="button" class="mdc-button" mtdfilter="@Model.IdForm">@Localizer["Apply"]</button>
+            </div>
+        </form>
+    </div>
+</div>

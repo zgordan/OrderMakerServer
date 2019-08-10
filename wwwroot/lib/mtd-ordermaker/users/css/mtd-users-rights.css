@@ -1,0 +1,83 @@
+.mtd-users-rights-place {
+  background-color: white;
+  position: relative;
+}
+.mtd-users-rights-wrapper {
+  width: 100%;
+  overflow: hidden;
+  overflow-x: auto;
+}
+.mtd-users-rights-place table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.mtd-users-rights-place table td {
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+.mtd-users-rights-place table th {
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+.mtd-users-rights-place table tbody tr:hover {
+  background-color: whitesmoke;
+}
+.mtd-users-rights-place table td:not(:first-child) {
+  text-align: center;
+}
+.mtd-users-rights-bar {
+  display: flex;
+  float: right;
+  position: sticky;
+  position: -webkit-sticky;
+  position: -moz-sticky;
+  position: -ms-sticky;
+  position: -o-sticky;
+  z-index: 2;
+  width: 100%;
+  top: 65px;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  -ms-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  -o-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  -webkit-transition: all 0.25s ease-in-out;
+  -moz-transition: all 0.25s ease-in-out;
+  -ms-transition: all 0.25s ease-in-out;
+  -o-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  background-color: white;
+  background: #ffffff;
+  background: -moz-radial-gradient(center, ellipse cover, #ffffff 0%, #e5e5e5 100%);
+  background: -webkit-radial-gradient(center, ellipse cover, #ffffff 0%, #e5e5e5 100%);
+  background: radial-gradient(ellipse at center, #ffffff 0%, #e5e5e5 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e5e5e5', GradientType=1);
+  height: 48px;
+}
+.mtd-users-rights-control {
+  position: absolute;
+  top: 16px;
+  width: 100%;
+  text-align: center;
+}
+.mtd-users-rights-title {
+  display: flex;
+  padding: 16px;
+  background-image: linear-gradient(to right, white, lightgray);
+}
+.mtd-users-rights-logo {
+  background-color: lightgray;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  text-align: center;
+  align-self: center;
+}
+.mtd-users-rights-name {
+  padding-left: 8px;
+}
+.mtd-users-rights-formname {
+  font-weight: bold;
+}

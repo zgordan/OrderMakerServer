@@ -1,0 +1,64 @@
+﻿@*
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
+
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@model Models.Index.DisplayModelView
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@if (Model.DisplayDatas.Count > 0)
+{
+    <div style="display: flex; border-bottom: 1px solid gray;">
+        <div style="background-color:gainsboro;   width: 100%; padding:  4px; align-items:center; overflow:hidden; overflow-x:auto;">
+            <form mtd-data-form method="post" action="/api/index/filter/remove" autocomplete="off" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <input mtd-data-result type="hidden" name="idField" />
+                <div style="background-color:gainsboro; display: flex; align-items:center; ">
+                    @foreach (var item in Model.DisplayDatas)
+                    {
+                        <div id="@item.Id-display" style="display: flex; font-size: 12px; background-color: gray; color: white; padding: 1px 8px 1px 8px; border-radius: 8px; margin-left:2px; margin-right:2px;">
+                            <input id="@item.Id-inputdisplay" value="" hidden />
+                            <div>
+                                <div style="white-space: nowrap; overflow:hidden; text-overflow:ellipsis">
+                                    @Localizer[@item.Header]
+                                </div>
+                                <div style="white-space: nowrap; overflow:hidden; text-overflow:ellipsis">
+                                    @item.Value
+                                </div>
+                            </div>
+                            <div style="align-self: center">
+                                <a mtd-data-clicker="@item.Id@item.Type" href="#">
+                                    <i class="material-icons mdc-chip__icon mdc-chip__icon--trailing" tabindex="0" role="button">cancel</i>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                    </div>
+            </form>
+        </div>
+
+        <div style="width: 104px; background-color: white;padding: 2px; align-self: center;">
+            <form mtd-data-form method="post" action="/api/index/filter/removeall" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="idFilter" value="@Model.IdFilter" />
+                <button mtd-data-clicker type="button" class="mdc-button">@Localizer["Clear"]</button>
+            </form>
+        </div>
+    </div>
+}

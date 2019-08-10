@@ -1,0 +1,106 @@
+﻿@*
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
+
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@page
+@model IndexModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Forms"];
+    ViewData["SecondTitle"] = Localizer["Templates setting"];
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/config/css/mtd-config-form.css" asp-append-version="true" />
+}
+
+@section Breadcrumb {
+    <li><a href="/config">@Localizer["Configurator"]</a></li>
+    <li>@ViewBag.Title</li>
+}
+
+<div class="mdc-elevation--z1 mtd-config-form-place">
+    <div id="configCreator" class="mtd-config-form-creator">
+        <a mtd-data-href="/config/form/create" class="mdc-fab mdc-fab--extended" aria-label="Create">
+            <span class="material-icons mdc-fab__icon">add</span>
+            <span class="mdc-fab__label">@Localizer["Create"]</span>
+        </a>
+    </div>
+    <div class="mtd-config-form-search">
+        <form id="configFormText" method="get" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
+            <div class="mdc-text-field mdc-text-field--fullwidth mdc-text-field--with-leading-icon">
+                <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">search</i>
+                <input id="configSearchText" name="searchText" value="@Model.SearchText" class="mdc-text-field__input"
+                       type="text"
+                       placeholder="@Localizer["Search for text"]"
+                       aria-label="Search for text"
+                       autocomplete="off">
+            </div>
+        </form>
+    </div>
+
+    <form mtd-data-form method="post" action="/api/config/form/sequence">
+        @Html.AntiForgeryToken()
+        <input id="formSeqData" name="formSeqData" type="hidden" />
+        <input id="configListSeq" mtd-data-clicker type="hidden" />
+    </form>
+
+    <ul id="configListForms" class="mdc-list mdc-list--two-line">
+        @foreach (var form in Model.MtdForm.OrderBy(x => x.Sequence))
+        {
+            <li mtd-data-href="/config/form/edit?id=@form.Id" class="mdt-config-form__item mdc-list-item" draggable="true" data-value="@form.Id" aria-checked="false">
+                @if (form.MtdFormDesk != null)
+                {
+
+                    var base64 = Convert.ToBase64String(form.MtdFormDesk.Image);
+                    var imgSrc = String.Format(" data:{0};base64,{1}", form.MtdFormDesk.ImageType, base64);
+
+                    <span class="mdc-list-item__graphic" aria-hidden="true">
+                        <img src="@imgSrc" width="32" />
+                    </span>
+                }
+                else
+                {
+                    <span class="mdc-list-item__graphic material-icons" aria-hidden="true" style="font-size:32px">folder</span>
+                }
+
+                <span class="mdc-list-item__text">
+                    <span class="mdc-list-item__primary-text">@form.Name</span>
+                    <span class="mdc-list-item__secondary-text">@form.Description</span>
+                </span>
+                <span class="mdc-list-item__meta material-icons" aria-hidden="true" style="cursor: all-scroll">drag_handle</span>
+                <div class="mtd-config-form__bedit">
+                    <button class="mdc-icon-button"
+                            aria-label="edit"
+                            aria-hidden="true"
+                            aria-pressed="false">
+                        <i class="material-icons mdc-icon-button__icon">edit</i>
+                    </button>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
+
+
+@section Scripts {
+    <script src="~/lib/mtd-ordermaker/config/js/mtd-config-form.js" asp-append-version="true"></script>
+}
+

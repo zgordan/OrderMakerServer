@@ -1,0 +1,100 @@
+﻿@*
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
+
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@page
+@model StagesModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Stages list"];
+    ViewData["SecondTitle"] = Localizer["Approval chain management"];
+}
+
+@section Breadcrumb {
+    <li><a href="/config">@Localizer["Configurator"]</a></li>
+    <li><a href="/config/approval">@Localizer["Approvals"]</a></li>
+    <li><a href="/config/approval/edit?id=@Model.MtdApproval.Id">@Localizer["Approval editor"]</a></li>
+    <li>@ViewBag.Title</li>
+}
+
+<div class="mtd-desk">
+    <div id="stagesCreator" class="mtd-desk-creator">
+        <a mtd-data-href="/config/approval/stagecreate?idApproval=@Model.MtdApproval.Id" class="mdc-fab mdc-fab--extended" aria-label="Create">
+            <span class="material-icons mdc-fab__icon">add</span>
+            <span class="mdc-fab__label">@Localizer["Create"]</span>
+        </a>
+    </div>
+
+    <div style="padding: 24px">
+        <div>
+            <span style="font-size:large; font-weight:600">@Model.MtdApproval.Name</span>
+        </div>
+        <div>
+            <span>@Model.MtdApproval.Description</span>
+        </div>
+    </div>
+
+    <ul id="drgList" class="mdc-list mdc-list--two-line">
+        @foreach (var stage in Model.Stages)
+        {
+            <li mtd-data-href="/config/approval/stageEdit?id=@stage.Id" id="@stage.Id-licol" class="mtd-desk-draggable-item mdc-list-item"
+                data-value="@stage.Id" draggable="true" role="button" aria-checked="false">
+                <div style="padding: 8px;">
+                    @{
+                        int endStage = Model.Stages.Max(x => x.Stage);
+                    }
+                    @if (stage.Stage < endStage)
+                    {<i class="material-icons">arrow_downward</i> }
+                    else
+                    { <i class="material-icons">done</i>}
+
+                    @stage.Stage
+                </div>
+                <span class="mdc-list-item__text">
+                    <span class="mdc-list-item__primary-text">@stage.Name</span>
+                    <span class="mdc-list-item__secondary-text">@stage.Description</span>
+                </span>
+
+                <div class="mtd-desk-draggable-bedit">
+                    <button class="mdc-icon-button"
+                            aria-label="edit"
+                            aria-hidden="true"
+                            aria-pressed="false">
+                        <i class="material-icons mdc-icon-button__icon">edit</i>
+                    </button>
+                </div>
+                <div class="mtd-desk-draggable-bdrag">
+                    <i class="material-icons" style="color:gray">drag_handle</i>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
+
+<form mtd-data-form method="post" action="/api/config/approval/stage/sequence">
+    @Html.AntiForgeryToken()
+    <input id="drgData" name="drgData" type="hidden" />
+    <input id="drgSequence" mtd-data-clicker type="hidden" />
+    <input name="IdApproval" type="hidden" value="@Model.MtdApproval.Id" />
+</form>
+
+@section Scripts {
+    <script src="~/lib/mtd-ordermaker/common/js/mtd-draggable.js" asp-append-version="true"></script>
+}

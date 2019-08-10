@@ -1,0 +1,97 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <UserSecretsId>aspnet-Mtd.OrderMaker.Server-37BF32C5-192C-49FD-9796-64BBBCB87F61</UserSecretsId>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <AssemblyVersion>1.0.5.0</AssemblyVersion>
+    <FileVersion>1.0.5.0</FileVersion>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageLicenseUrl>https://www.gnu.org/licenses/</PackageLicenseUrl>
+    <PackageProjectUrl>http://ordermaker.org</PackageProjectUrl>
+    <Copyright>Oleg Bruev</Copyright>
+    <Authors>Oleg Bruev</Authors>
+    <Company />
+    <Product>OrderMaker</Product>
+    <Description>Web application for collaboration and document management.
+OrderMaker provides the ability quickly create a solution to consolidate information in one point on a website and shared access space for remote employees.
+</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <RepositoryUrl>https://github.com/olegbruev/OrderMakerServer</RepositoryUrl>
+    <PackageReleaseNotes>Release 1.0.5</PackageReleaseNotes>
+    <PackageIconUrl>http://ordermaker.org/favicon.ico</PackageIconUrl>
+    <ApplicationIcon>form.ico</ApplicationIcon>
+    <Version>1.0.5</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningLevel>1</WarningLevel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\Identity\Data\Migrations\20190409084256_CustomUserData.cs" />
+    <Compile Remove="Areas\Identity\Data\Migrations\20190409084256_CustomUserData.Designer.cs" />
+    <Compile Remove="Areas\Identity\Data\Migrations\20190409093114_CustomUserData.cs" />
+    <Compile Remove="Areas\Identity\Data\Migrations\20190409093114_CustomUserData.Designer.cs" />
+    <Compile Remove="Areas\Identity\Data\Migrations\20190705131958_AddGroupPolicy.cs" />
+    <Compile Remove="Areas\Identity\Data\Migrations\20190705131958_AddGroupPolicy.Designer.cs" />
+    <Compile Remove="Migrations\20190609054945_AddConfigFiles.cs" />
+    <Compile Remove="Migrations\20190609054945_AddConfigFiles.Designer.cs" />
+    <Compile Remove="Migrations\20190610093653_LogDocument.cs" />
+    <Compile Remove="Migrations\20190610093653_LogDocument.Designer.cs" />
+    <Compile Remove="Migrations\20190614090004_Test.cs" />
+    <Compile Remove="Migrations\20190614090004_Test.Designer.cs" />
+    <Compile Remove="Migrations\20190622124122_ApprovalScheme.cs" />
+    <Compile Remove="Migrations\20190622124122_ApprovalScheme.Designer.cs" />
+    <Compile Remove="Migrations\20190622145657_ApprovalScheme.cs" />
+    <Compile Remove="Migrations\20190622145657_ApprovalScheme.Designer.cs" />
+    <Compile Remove="Migrations\20190624151949_ApproveSchema2.cs" />
+    <Compile Remove="Migrations\20190624151949_ApproveSchema2.Designer.cs" />
+    <Compile Remove="Migrations\20190626073129_AdFilterWaitList.cs" />
+    <Compile Remove="Migrations\20190626073129_AdFilterWaitList.Designer.cs" />
+    <Compile Remove="Migrations\20190705080759_RenameGroup.cs" />
+    <Compile Remove="Migrations\20190705080759_RenameGroup.Designer.cs" />
+    <Compile Remove="Migrations\20190718160617_DeleteLogApproval.cs" />
+    <Compile Remove="Migrations\20190718160617_DeleteLogApproval.Designer.cs" />    
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="DotNetCore.NPOI" Version="1.2.1" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="MySql.Data" Version="8.0.16" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Include="wwwroot\lib\google\iconfont\codepoints" />
+    <None Include="wwwroot\lib\google\iconfont\MaterialIcons-Regular.ijmap" />
+    <None Include="wwwroot\lib\google\iconfont\MaterialIcons-Regular.svg" />
+    <None Include="wwwroot\lib\google\iconfont\MaterialIcons-Regular.woff2" />
+    <None Include="wwwroot\lib\google\iconfont\README.md" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
+    <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+    <None Include="wwwroot\lib\mtd-ordermaker\store\less\mtd-store-edit.less" />    
+    <Content Update="appsettings.json" CopyToPublishDirectory="Never" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\google\sass\" />
+    <Folder Include="wwwroot\lib\mtd-ordermaker\common\css\" />
+    <Folder Include="wwwroot\lib\mtd-ordermaker\desktop\css\" />
+    <Folder Include="wwwroot\lib\mtd-ordermaker\desktop\js\" />
+    <Folder Include="wwwroot\lib\mtd-ordermaker\filechoose\css\" />
+    <Folder Include="wwwroot\lib\mtd-ordermaker\identity\css\" />
+    <Folder Include="wwwroot\lib\mtd-ordermaker\index\css\" />
+    <Folder Include="wwwroot\lib\mtd-ordermaker\main\css\" />
+    <Folder Include="wwwroot\lib\mtd-ordermaker\config\css\" />
+    <Folder Include="wwwroot\lib\mtd-ordermaker\ui\css\" />
+    <Folder Include="wwwroot\lib\mtd-ordermaker\users\css\" />
+  </ItemGroup>
+
+</Project>

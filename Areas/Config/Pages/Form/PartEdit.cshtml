@@ -1,0 +1,114 @@
+﻿@*
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
+
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@page
+@model PartEditModel
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Part editor"];
+    ViewData["SecondTitle"] = Localizer["Editing section parameters"];
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/config/css/mtd-config-form-part.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/filechoose/css/mtd-file-choose.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/common/css/mtd-desk.css" asp-append-version="true" />
+}
+
+@section Breadcrumb {
+    <li><a href="/config">@Localizer["Configurator"]</a></li>
+    <li><a href="/config/form">@Localizer["Forms"]</a></li>
+    <li><a href="/config/form/edit?id=@Model.MtdForm.Id">@Localizer["Form editor"]</a></li>
+    <li><a href="/config/form/parts?idForm=@Model.MtdForm.Id">@Localizer["Parts editor"]</a></li>
+    <li>@ViewBag.Title</li>
+}
+
+@section Action {
+
+    <li mtd-data-href="/config/form/fields?idForm=@Model.MtdForm.Id" class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">view_list</span>
+        <span class="mdc-list-item__text">@Localizer["Edit fields"]</span>
+    </li>
+    <li mtd-data-delete class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">delete</span>
+        <span class="mdc-list-item__text">@Localizer["Delete part"]</span>
+    </li>
+}
+
+<form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/config/form/part/edit">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="MtdForm.Id" name="formId" />
+    <input type="hidden" asp-for="MtdFormPart.Id" name="partId" />
+    <div class="mtd-desk">
+
+        <div class="mtd-desk-savebar">
+            <button mtd-data-clicker mtd-data-message="@Localizer["Changes saved"]." type="button" class="mdc-fab mdc-fab--extended">
+                <span class="material-icons mdc-fab__icon">save</span>
+                <span class="mdc-fab__label">@Localizer["Save"]</span>
+            </button>
+        </div>
+
+        <partial name="./Partials/_PartEditHeader" />
+        <partial name="./Partials/_PartEditNameNote" />
+        <partial name="./Partials/_PartEditImgTitle" />
+        <partial name="./Partials/_PartEditStyleApprove" />
+        <partial name="./Partials/_PartEditIndex" />
+
+    </div>
+</form>
+
+<form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/config/form/part/delete'>
+    @Html.AntiForgeryToken()
+    <input id="config-delete-id" name="partId" type="hidden" value="@Model.MtdFormPart.Id" />
+    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/config/form/parts?idForm=@Model.MtdForm.Id" type="hidden" />
+</form>
+
+<div id="dialog-part-delete" class="mdc-dialog"
+     role="alertdialog"
+     aria-modal="true"
+     aria-labelledby="my-dialog-title"
+     aria-describedby="my-dialog-content">
+    <div class="mdc-dialog__container">
+        <div class="mdc-dialog__surface">
+            <h2 class="mdc-dialog__title" id="delete-part-title">
+                @Localizer["Delete part"]?
+            </h2>
+            <div class="mdc-dialog__content" id="delete-dialog-content">
+                @Localizer["The partition and all data associated with it will be permanently deleted."]
+            </div>
+            <footer class="mdc-dialog__actions">
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                    <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                </button>
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+                    <span class="mdc-button__label" onclick="document.getElementById('deleteClicker').click();">@Localizer["Delete"]</span>
+                </button>
+            </footer>
+        </div>
+    </div>
+    <div class="mdc-dialog__scrim"></div>
+</div>
+
+@section Scripts{
+    <script src="~/lib/mtd-ordermaker/config/js/mtd-config-form-part-edit.js" asp-append-version="true"></script>
+    <script src="~/lib/mtd-ordermaker/filechoose/js/mtd-file-choose.js" asp-append-version="true"></script>
+}

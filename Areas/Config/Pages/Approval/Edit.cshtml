@@ -1,0 +1,143 @@
+﻿@*
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
+
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@page
+@model EditModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Approval editor"];
+    ViewData["SecondTitle"] = Localizer["Editing approval parameters"];
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/config/css/mtd-config-form-edit.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/filechoose/css/mtd-file-choose.css" asp-append-version="true" />
+}
+
+@section Breadcrumb {
+    <li><a href="/config">@Localizer["Configurator"]</a></li>
+    <li><a href="/config/approval">@Localizer["Approvals"]</a></li>
+    <li>@ViewBag.Title</li>
+}
+
+@section Action {
+    <li mtd-data-href="/config/approval/stages?idApproval=@Model.MtdApproval.Id" class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">timeline</span>
+        <span class="mdc-list-item__text">@Localizer["Edit chain"]</span>
+    </li>
+    <hr class="mdc-list-divider">
+    <li mtd-data-delete class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">delete</span>
+        <span class="mdc-list-item__text">@Localizer["Delete approval"]</span>
+    </li>
+}
+
+<form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="">
+    <input type="hidden" asp-for="MtdApproval.Id" />
+
+    <div class="mtd-desk">
+        <div class="mtd-desk-savebar">
+            <button mtd-data-clicker mtd-data-message="@Localizer["Changes saved"]." type="button" class="mdc-fab mdc-fab--extended">
+                <span class="material-icons mdc-fab__icon">save</span>
+                <span class="mdc-fab__label">@Localizer["Save"]</span>
+            </button>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items:center;">
+            <div style="display: flex; width: 90%; max-width: 550px; padding: 8px; border-bottom: 1px solid gray">
+                <div style="flex-grow:1">
+                    @Localizer["Approval chain for form:"]
+                </div>
+                <div>
+                    <strong>@Model.MtdApproval.MtdFormNavigation.Name</strong>
+                </div>
+            </div>
+
+            <div class="mdc-text-field mdc-text-field--outlined" style="width: 100%; max-width: 600px; margin-top: 16px;">
+                <input type="text" class="mdc-text-field__input" asp-for="MtdApproval.Name" required>
+                <div class="mdc-notched-outline">
+                    <div class="mdc-notched-outline__leading"></div>
+                    <div class="mdc-notched-outline__notch">
+                        <label class="mdc-floating-label">@Localizer["Name"]</label>
+                    </div>
+                    <div class="mdc-notched-outline__trailing"></div>
+                </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+                <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true">
+                    @Localizer["Required field"]
+                </div>
+            </div>
+            <div class="mdc-text-field mdc-text-field--textarea" style="width: 100%; max-width: 600px; margin-top: 16px;">
+                <textarea id="textarea" class="mdc-text-field__input" rows="3" cols="40" asp-for="MtdApproval.Description" required></textarea>
+                <div class="mdc-notched-outline">
+                    <div class="mdc-notched-outline__leading"></div>
+                    <div class="mdc-notched-outline__notch">
+                        <label for="textarea" class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Description"]</label>
+                    </div>
+                    <div class="mdc-notched-outline__trailing"></div>
+                </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+                <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true">
+                    @Localizer["Required field"]
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/config/approval/delete'>
+    @Html.AntiForgeryToken()
+    <input id="config-delete-id" name="idApproval" type="hidden" value="@Model.MtdApproval.Id" />
+    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/config/approval" mtd-data-message="@Localizer["The approval "] '@Model.MtdApproval.Name' @Localizer["was deleted"]" type="hidden" />
+</form>
+
+<div id="dialog-delete" class="mdc-dialog"
+     role="alertdialog"
+     aria-modal="true"
+     aria-labelledby="my-dialog-title"
+     aria-describedby="my-dialog-content">
+    <div class="mdc-dialog__container">
+        <div class="mdc-dialog__surface">
+            <h2 class="mdc-dialog__title" id="delete-form-title">
+                @Localizer["Delete approval chain"]?
+            </h2>
+            <div class="mdc-dialog__content" id="delete-dialog-content">
+                @Localizer["The approval and all data associated with it will be permanently deleted."]
+            </div>
+            <footer class="mdc-dialog__actions">
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                    <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                </button>
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+                    <span class="mdc-button__label" onclick="document.getElementById('deleteClicker').click();">@Localizer["Delete"]</span>
+                </button>
+            </footer>
+        </div>
+    </div>
+    <div class="mdc-dialog__scrim"></div>
+</div>
+
+@section Scripts{
+    <script src="~/lib/mtd-ordermaker/config/js/mtd-config-approval.js" asp-append-version="true"></script>
+}

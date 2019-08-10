@@ -1,0 +1,98 @@
+﻿@*
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
+
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@model Models.Store.DataContainer
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@inject Services.UserHandler userHandler
+@{
+    var user = await userHandler.GetUserAsync(User);
+}
+
+<div class="mtd-store-style-print mdc-elevation--z2">
+
+    <div class="mtd-store-style-badge">
+        @if (Model.Owner.Store.MtdFormNavigation.MtdFormHeader != null)
+        {
+            var base64 = Convert.ToBase64String(Model.Owner.Store.MtdFormNavigation.MtdFormHeader.Image);
+            var imgSrc = String.Format("data:{0};base64,{1}", Model.Owner.Store.MtdFormNavigation.MtdFormHeader.ImageType, base64);
+
+            <img src="@imgSrc" />
+        }
+    </div>
+
+    <div class="mtd-store-style-header">
+        <div class="mtd-store-style-title">
+            @Model.Owner.Store.MtdFormNavigation.Name
+        </div>
+        <div class="mtd-store-style-attribute">
+            @if (Model.Owner.Store.MtdFormNavigation.VisibleNumber == 1)
+            {
+                <span class="mtd-store-style-number">№ @Model.Owner.Store.Sequence.ToString("D9")</span>
+                <hr />
+            }
+
+            @if (Model.Owner.Store.MtdFormNavigation.VisibleDate == 1)
+            {
+                <span class="mtd-store-style-date">@Localizer["Date"] @Model.Owner.Store.Timecr.ToShortDateString()</span>
+            }
+        </div>
+    </div>
+
+
+    @if (Model.Parent != null)
+    {
+        @foreach (var part in Model.Parent.Parts.Where(x => x.Child))
+        {
+            @if (part.Title)
+            {
+                <div class="mtd-store-style-part">
+                    @part.Name
+                </div>
+            }
+
+            else
+            { <div class="mtd-store-style-separator"></div>}
+
+            @await Component.InvokeAsync("StorePartViewer", new { part = part, model = Model.Parent })
+        }
+    }
+
+    @foreach (var part in Model.Owner.Parts)
+    {
+
+        if (part.Title)
+        {
+            <div class="mtd-store-style-part">
+                @part.Name
+            </div>
+        }
+        else
+        { <div class="mtd-store-style-separator"></div>}
+
+        @await Component.InvokeAsync("StorePartViewer", new { part = part, model = Model.Owner })
+
+    }
+</div>
+
+
+
+
+
+

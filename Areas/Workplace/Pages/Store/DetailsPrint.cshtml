@@ -1,0 +1,39 @@
+﻿@*
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
+
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@page
+@model Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store.DetailsPrintModel
+@namespace Mtd.OrderMaker.Web.Components.Store
+
+@{
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/store/css/mtd-store-view.css" />
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/ui/css/mtd-ui-material.css" />
+</head>
+<body onload="window.print()">
+    <div style="display: flex; align-items: center; justify-content: center; width: 21cm">
+        @await Component.InvokeAsync("StoreForm", new { store = Model.MtdStore, type = FormType.Print })
+    </div>
+</body>
+</html>

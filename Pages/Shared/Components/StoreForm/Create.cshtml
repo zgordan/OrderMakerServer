@@ -1,0 +1,141 @@
+﻿@*
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
+
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+@model Models.Store.DataSet
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@inject Services.UserHandler userHandler
+
+@{
+    string action = $"/api/store/create";
+    string idStore = Model.Store.Id == null ? Model.Store.MtdForm : Model.Store.Id;
+    var user = await userHandler.GetUserAsync(User);
+}
+
+
+<div class="mtd-store-style-blank mdc-elevation--z2">
+    <div class="mtd-store-edit-bar" style="text-align: right">
+        <div class="mtd-store-edit-control" style="position:absolute">
+            <a id="store-create-button" class="mdc-fab mdc-fab--extended" aria-label="Create">
+                <span class="material-icons mdc-fab__icon">add</span>
+                <span class="mdc-fab__label">@Localizer["Create"]</span>
+            </a>
+        </div>
+        <div>
+            <button mtd-data-href="/workplace/store/index?indexForm=@Model.Store.MtdFormNavigation.Id" class="mdc-button" type="button">
+                <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                <i class="material-icons mdc-button__icon" aria-hidden="true">cancel</i>
+            </button>
+        </div>
+    </div>
+
+    @*<div class="mtd-store-edit-bar">
+        <div class="mtd-store-edit-control">
+            <div class="mtd-ui-material-submit">
+                <button id="store-create-button" type="button">@Localizer["Save"]</button>
+            </div>
+        </div>
+    </div>*@
+
+    <div id="@idStore-modal" class="mtd-store-style-modal"></div>
+
+    <div class="mtd-store-style-badge">
+        @if (Model.Store.MtdFormNavigation.MtdFormHeader != null)
+        {
+            var base64 = Convert.ToBase64String(Model.Store.MtdFormNavigation.MtdFormHeader.Image);
+            var imgSrc = String.Format("data:{0};base64,{1}", Model.Store.MtdFormNavigation.MtdFormHeader.ImageType, base64);
+
+            <img src="@imgSrc" />
+        }
+    </div>
+
+    <div class="mtd-store-style-header">
+        <div class="mtd-store-style-title">
+            @Model.Store.MtdFormNavigation.Name
+        </div>
+        <div class="mtd-store-style-attribute">
+            <span class="mtd-store-style-number" style="opacity:0.3">№ @Model.Store.Sequence.ToString("D9")</span>
+            <hr />
+            <span class="mtd-store-style-date">@Localizer["Date"] @DateTime.Now.ToShortDateString()</span>
+        </div>
+    </div>
+
+    @if (Model.Store.MtdFormNavigation.ParentNavigation != null)
+    {
+
+        string parentNumber = "";
+        string checkDisplay = "none";
+        if (Model.Store.ParentNavigation != null)
+        {
+            parentNumber = Model.Store.ParentNavigation.Sequence.ToString("D9");
+            checkDisplay = "";
+        }
+
+
+        <div style="padding-bottom:18px;">
+            <form id="store-parent-form" method="post" autocomplete="off" action="/api/store/number/id" style="width: 100%">
+                @Html.AntiForgeryToken()
+                <input value="@Model.Store.MtdFormNavigation.Parent" type="hidden" name="idFromParent" />
+                <input id="store-parent-number" value="@parentNumber" type="hidden" name="store-parent-number" />
+            </form>
+
+            <div id="store-parent-progress" role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate mdc-linear-progress--closed">
+                <div class="mdc-linear-progress__buffering-dots"></div>
+                <div class="mdc-linear-progress__buffer"></div>
+                <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+                    <span class="mdc-linear-progress__bar-inner"></span>
+                </div>
+                <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+                    <span class="mdc-linear-progress__bar-inner"></span>
+                </div>
+            </div>
+            <div id="store-base-field" class="mdc-text-field mdc-text-field--with-trailing-icon" style="width: 100%;">
+                <i id="parent-result-warning" class="material-icons mdc-text-field__icon mdc-animation-deceleration-curve-timing-function" style="color: red; display: none">warning</i>
+                <i id="parent-result-check" class="material-icons mdc-text-field__icon mdc-animation-deceleration-curve-timing-function" style="color: green; display: @checkDisplay">check</i>
+                <input type="number" id="store-parent-input" class="mdc-text-field__input" value="@parentNumber" name="store-parent-input" required>
+                <label class="mdc-floating-label" for="storeParenNum">@Localizer["On based form"]</label>
+                <div class="mdc-line-ripple"></div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+                <div class="mdc-text-field-helper-text">@Localizer["Enter the document number"]  "@Model.Store.MtdFormNavigation.ParentNavigation.Name" </div>
+            </div>
+        </div>
+    }
+
+    <form mtd-data-form method='post' autocomplete='off' enctype='multipart/form-data' action='@action'>
+        @Html.AntiForgeryToken()
+        <input id="store-parent-id" value="@Model.Store.Parent" type="hidden" name="store-parent-id" />
+        <input id="store-create-clicker" mtd-data-clicker mtd-data-location="/workplace/store?indexform=@Model.Store.MtdForm" type="hidden" />
+        <input type="hidden" name="idForm" value="@Model.Store.MtdForm" />
+        <div>
+            @foreach (var part in Model.Parts)
+            {
+                if (part.Title)
+                {
+                    <div class="mtd-store-style-part">
+                        @part.Name
+                    </div>
+                }
+                @await Component.InvokeAsync("StorePartEditor", new { part = part, model = Model })
+            }
+        </div>
+    </form>
+</div>
+
+

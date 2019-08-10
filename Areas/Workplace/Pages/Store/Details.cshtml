@@ -1,0 +1,505 @@
+﻿@*
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
+
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@page
+@model Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store.DetailsModel
+@namespace Mtd.OrderMaker.Web.Components.Store
+@using Mtd.OrderMaker.Web.DataHandler.Approval
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Form view"];
+    ViewData["SecondTitle"] = Model.MtdForm.Name;
+    string viewOwner = "Unknown";
+
+    if (Model.StoreOwner != null)
+    {
+        viewOwner = Model.StoreOwner.UserName;
+    }
+    ViewData["Owner"] = viewOwner;
+}
+
+@section Head{
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/store/css/mtd-store-view.css" />
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/ui/css/mtd-ui-material.css" />
+}
+
+@section Breadcrumb {
+    <li><a href="/">@Localizer["Desktop"]</a></li>
+    <li><a asp-area="Workplace" asp-page="/Store/Index" asp-route-indexForm="@Model.MtdForm.Id">@Localizer["List data"]</a></li>
+    <li>@ViewBag.Title</li>
+}
+
+<form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/approval/approve'>
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="id-store" value="@Model.MtdStore.Id" />
+
+    <div id="dialog-accept" class="mdc-dialog"
+         role="alertdialog"
+         aria-modal="true"
+         aria-labelledby="dialog-accept-title"
+         aria-describedby="dialog-accept-content">
+        <div class="mdc-dialog__container">
+            <div class="mdc-dialog__surface">
+                <h2 class="mdc-dialog__title" id="accept-form-title">
+                    @Localizer["Confirmation of approval"]
+                </h2>
+                <div class="mdc-dialog__content" id="accept-dialog-content">
+                    @Localizer["Are you  confirm your approval?"]
+                    @if (Model.BlockParts.Count > 0)
+                    {
+                        <div style="padding: 4px; background-color: whitesmoke">
+                            @Localizer["After approval of the document the Parts below will not be editable:"]
+                            <div style="font-weight:600; margin-top: 4px;">
+                                @{
+                                    int counter = Model.BlockParts.Count;
+                                    foreach (var part in Model.BlockParts)
+                                    {
+                                        counter--;
+                                        <text> @part.Name </text> if (counter > 0) { <text>/</text> }
+                                    }
+                                }
+                            </div>
+                        </div>
+                    }
+
+                </div>
+                <footer class="mdc-dialog__actions">
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                        <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                    </button>
+                    <button type="button" id="clicker-approve" mtd-data-clicker mtd-data-message="@Localizer["Document is approved"]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" style="color:green">
+                        <span class="mdc-button__label">@Localizer["Approve"]</span>
+                    </button>
+                </footer>
+            </div>
+        </div>
+        <div class="mdc-dialog__scrim"></div>
+    </div>
+</form>
+
+@section Action  {
+
+    @if (Model.IsEditor)
+    {
+        <li mtd-data-href="/workplace/store/edit?id=@Model.MtdStore.Id" class="mdc-list-item" role="menuitem">
+            <span class="mdc-list-item__graphic material-icons" aria-hidden="true">edit</span>
+            <span class="mdc-list-item__text">@Localizer["Edit"]</span>
+        </li>
+    }
+
+    <li mtd-data-href="/workplace/store/detailsprint?id=@Model.MtdStore.Id" mtd_data_href-target="_blank" class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">print</span>
+        <span class="mdc-list-item__text">@Localizer["Print"]</span>
+    </li>
+
+    @if (Model.IsInstallerOwner)
+    {
+        <li id="setowner" class="mdc-list-item" role="menuitem">
+            <span class="mdc-list-item__graphic material-icons" aria-hidden="true">assignment_ind</span>
+            <span class="mdc-list-item__text">@Localizer["Set owner"]</span>
+        </li>
+    }
+
+    @if (Model.IsEditor)
+    {
+        <li id="eraser" class="mdc-list-item" role="menuitem">
+            <span class="mdc-list-item__graphic material-icons" aria-hidden="true">delete</span>
+            <span class="mdc-list-item__text">@Localizer["Delete"]</span>
+        </li>
+    }
+
+    @if (Model.IsApprover && Model.IsFirstStage)
+    {
+        <hr />
+        <li class="mdc-list-item" role="menuitem" onclick="document.getElementById('clicker-approve').click()">
+            <span class="mdc-list-item__graphic material-icons" aria-hidden="true">thumb_up</span>
+            <span class="mdc-list-item__text">@Localizer["Start approval"]</span>
+        </li>
+    }
+
+    @if (Model.MtdForm.InverseParentNavigation.Any())
+    {
+        <li role="separator" class="mdc-list-divider"></li>
+    }
+
+
+    @foreach (var child in Model.MtdForm.InverseParentNavigation)
+    {
+        <li mtd-data-href="/workplace/store/create?idForm=@child.Id&idStoreParent=@Model.MtdStore.Id" class="mdc-list-item" role="menuitem">
+            <span class="mdc-list-item__text">@Localizer["Create"]: @child.Name </span>
+        </li>
+    }
+}
+
+<div class="mtd-desk">
+    @if (Model.IsApprover && !Model.IsFirstStage)
+    {
+        <div style=" top: 65px; z-index:2; position: sticky; position: -webkit-sticky; position: -moz-sticky; position: -ms-sticky;  position: -o-sticky;">
+            <div class="mdc-elevation--z4" style="background-color: white; text-align: center; color: red; padding: 8px;">
+                <i class="material-icons" aria-hidden="true" style="vertical-align:middle">assignment_turned_in</i>
+                <span> @Localizer["Approval is required"]</span>
+                <div style="padding-bottom: 4px;">
+                    <button id="accept-button" class="mdc-button mdc-button--raised" style="color: white">
+                        <i class="material-icons mdc-button__icon" aria-hidden="true">thumb_up</i>
+                        <span class="mdc-button__label">@Localizer["Approve"]</span>
+                    </button>
+
+                    <button id="reject-button" class="mdc-button mdc-button--raised">
+                        <i class="material-icons mdc-button__icon" aria-hidden="true">thumb_down</i>
+                        <span class="mdc-button__label">@Localizer["Reject"]</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="mtd-desk-blocks">
+        <div class="mtd-desk-block">
+            <div class="mtd-desk-block-content  mtd-desk-block--border">
+                <div class="mtd-desk-block-title">
+                    <label>
+                        <i class="material-icons" aria-hidden="true">print</i>
+                        @Localizer["Print form view"]
+                    </label>
+                </div>
+                @await Component.InvokeAsync("StoreForm", new { store = Model.MtdStore, type = FormType.Details })
+            </div>
+        </div>
+        <div class="mtd-desk-block">
+            <div class="mtd-desk-block-content mtd-desk-block--border">
+                <div class="mtd-desk-block-title">
+                    <label>
+                        <i class="material-icons" aria-hidden="true">info</i>
+                        @Localizer["Document information"]
+                    </label>
+                </div>
+                <div class="mtd-desk-block-body">
+                    <table>
+                        <tr><td>ID</td><td>@Model.MtdStore.Sequence.ToString("D9")</td></tr>
+                        <tr><td>@Localizer["Owner"]</td><td>@Localizer[$"{ViewBag.Owner}"]</td></tr>
+
+                        @if (Model.IsFormApproval)
+                        {
+                            switch (Model.ApprovalStatus)
+                            {
+                                case ApprovalStatus.Rejected:
+                                    {
+                                        <tr>
+                                            <td>@Localizer["Approval status"]</td>
+                                            <td>
+                                                <span style="color: black; text-transform:uppercase; font-weight: bold; ">
+                                                    <i style="vertical-align:middle" class="material-icons">thumb_down</i>
+                                                    @Localizer["Rejected"]
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        break;
+                                    }
+                                case ApprovalStatus.Approved:
+                                    {
+                                        <tr>
+                                            <td>@Localizer["Approval status"]</td>
+                                            <td>
+                                                <span style="color: green; text-transform:uppercase; font-weight: bold; ">
+                                                    <i style="vertical-align:middle" class="material-icons">thumb_up</i>
+                                                    @Localizer["Approved"]
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        break;
+                                    }
+                                case ApprovalStatus.Waiting:
+                                    {
+                                        <tr>
+                                            <td>@Localizer["Approval status"]</td>
+                                            <td>
+                                                <span style="color: gray; text-transform:uppercase; font-weight: bold; ">
+                                                    <i style="vertical-align:middle" class="material-icons">hourglass_full</i>
+                                                    @Localizer["Waiting"]
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        break;
+                                    }
+                                case ApprovalStatus.Start:
+                                    {
+                                        <tr>
+                                            <td>@Localizer["Approval status"]</td>
+                                            <td>
+                                                <span style="color: gray; text-transform:uppercase; font-weight: bold; ">
+                                                    <i style="vertical-align:middle" class="material-icons">new_releases</i>
+                                                    @Localizer["Not started"]
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        break;
+                                    }
+                                case ApprovalStatus.Iteraction:
+                                    {
+                                        <tr>
+                                            <td>@Localizer["Approval status"]</td>
+                                            <td>
+                                                <span style="color: darkred; text-transform:uppercase; font-weight: bold; ">
+                                                    <i style="vertical-align:middle" class="material-icons">new_releases</i>
+                                                    @Localizer["Returned"]
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        break;
+                                    }
+
+                                case ApprovalStatus.Required:
+                                    {
+                                        <tr>
+                                            <td>@Localizer["Approval status"]</td>
+                                            <td>
+                                                <span style="color: red; text-transform:uppercase; font-weight: bold;">
+                                                    <i style="vertical-align:middle" class="material-icons">assignment_turned_in</i>
+                                                    @Localizer["Approval is required"]
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        break;
+                                    }
+                            }
+                        }
+
+                    </table>
+                </div>
+            </div>
+
+            <div class="mtd-desk-block-content mtd-desk-block--border">
+                <div class="mtd-desk-block-title">
+                    <label>
+                        <i class="material-icons" aria-hidden="true">history</i>
+                        @Localizer["Changes history"]
+                    </label>
+                </div>
+                <div class="mtd-desk-block-body">
+                    <table style="white-space: nowrap">
+                        <tr><td>@Localizer["Created by"]</td><td>@Localizer[$"{Model.ChangesHistory.CreateByUser}"]</td><td>@Localizer[$"{Model.ChangesHistory.CreateByTime}"]</td></tr>
+                        <tr><td>@Localizer["Last edited by"]</td><td>@Localizer[$"{Model.ChangesHistory.LastEditedUser}"]</td><td>@Localizer[$"{Model.ChangesHistory.LastEditedTime}"]</td></tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@if (Model.IsInstallerOwner)
+{
+    <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/setowner'>
+        @Html.AntiForgeryToken()
+        <input id="setowner-id-store" name="setowner-id-store" value="@Model.MtdStore.Id" type="hidden" />
+
+        <div id="dialog-setowner" class="mdc-dialog"
+             role="alertdialog"
+             aria-modal="true"
+             aria-labelledby="my-dialog-title"
+             aria-describedby="my-dialog-content">
+            <div class="mdc-dialog__container">
+                <div class="mdc-dialog__surface">
+                    <h2 class="mdc-dialog__title" id="delete-form-title">
+                        @Localizer["Set owner for document"]
+                    </h2>
+                    <div class="mdc-dialog__content" id="delete-dialog-content">
+                        @Localizer["Select user and click 'Save' button"]
+                        <div class="mdc-select" style="width: 100%; margin-top: 8px;">
+                            <i class="mdc-select__dropdown-icon"></i>
+                            <select class="mdc-select__native-control" asp-items="ViewBag.UsersList" name="setowner-id-user"></select>
+                            <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Users list"]</label>
+                            <div class="mdc-line-ripple"></div>
+                        </div>
+                    </div>
+                    <footer class="mdc-dialog__actions">
+                        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                            <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                        </button>
+                        <button type="button" mtd-data-clicker class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+                            <span class="mdc-button__label">@Localizer["Save"]</span>
+                        </button>
+                    </footer>
+                </div>
+            </div>
+            <div class="mdc-dialog__scrim"></div>
+        </div>
+    </form>
+}
+
+@if (Model.IsApprover)
+{
+    <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/approval/reject'>
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id-store" value="@Model.MtdStore.Id" />
+
+        <div id="dialog-approval" class="mdc-dialog"
+             role="alertdialog"
+             aria-modal="true"
+             aria-labelledby="dialog-approval-title"
+             aria-describedby="dialog-approval-content">
+            <div class="mdc-dialog__container">
+                <div class="mdc-dialog__surface">
+                    <h2 class="mdc-dialog__title" id="approval-form-title">
+                        @Localizer["Choose a route to rejection"]
+                    </h2>
+                    <div class="mdc-dialog__content" id="approval-dialog-content">
+                        <div>
+                            <div class="mdc-form-field">
+                                <div class="mdc-checkbox">
+                                    <input type="checkbox"
+                                           class="mdc-checkbox__native-control"
+                                           id="checkbox-complete" name="checkbox-complete" />
+                                    <div class="mdc-checkbox__background">
+                                        <svg class="mdc-checkbox__checkmark"
+                                             viewBox="0 0 24 24">
+                                            <path class="mdc-checkbox__checkmark-path"
+                                                  fill="none"
+                                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                        </svg>
+                                        <div class="mdc-checkbox__mixedmark"></div>
+                                    </div>
+                                </div>
+                                <label for="checkbox-complete">@Localizer["Complete the approval process"]</label>
+                            </div>
+                        </div>
+                        @Localizer["Select the stage to which the approval process will be returned."]
+                        <div id="stage-selector" class="mdc-select" style="width: 100%; margin-top: 8px;">
+                            <i class="mdc-select__dropdown-icon"></i>
+                            <select id="next-stage" class="mdc-select__native-control" asp-items="ViewBag.Stages" name="next-stage"></select>
+                            <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Stages"]</label>
+                            <div class="mdc-line-ripple"></div>
+                        </div>
+
+                    </div>
+                    <footer class="mdc-dialog__actions">
+                        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                            <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                        </button>
+                        <button type="button" mtd-data-clicker mtd-data-message="@Localizer["Document is rejected"]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" style="color:red">
+                            <span class="mdc-button__label">@Localizer["Reject"]</span>
+                        </button>
+                    </footer>
+                </div>
+            </div>
+            <div class="mdc-dialog__scrim"></div>
+        </div>
+    </form>
+}
+
+<form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/delete'>
+    @Html.AntiForgeryToken()
+    <input id="store-delete-id" name="store-delete-id" type="hidden" value="@Model.MtdStore.Id" />
+    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/workplace/store?indexform=@Model.MtdStore.MtdForm" mtd-data-message="@Localizer["The document was deleted"]." type="hidden" />
+</form>
+
+<div id="dialog-store-delete" class="mdc-dialog"
+     role="alertdialog"
+     aria-modal="true"
+     aria-labelledby="my-dialog-title"
+     aria-describedby="my-dialog-content">
+    <div class="mdc-dialog__container">
+        <div class="mdc-dialog__surface">
+            <h2 class="mdc-dialog__title" id="delete-dialog-title">
+                @Localizer["Delete document"]?
+            </h2>
+            <div class="mdc-dialog__content" id="delete-dialog-content">
+                @Localizer["The document will be permanently deleted"].
+            </div>
+            <footer class="mdc-dialog__actions">
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                    <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                </button>
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+                    <span class="mdc-button__label" onclick="document.getElementById('deleteClicker').click();">@Localizer["Delete"]</span>
+                </button>
+            </footer>
+        </div>
+    </div>
+    <div class="mdc-dialog__scrim"></div>
+</div>
+
+
+@section Scripts{
+    <script>
+        (() => {
+            const dialogSetOwner = document.getElementById('dialog-setowner');
+            if (dialogSetOwner) {
+                const dialog = new mdc.dialog.MDCDialog(dialogSetOwner);
+                document.getElementById('setowner').addEventListener('click', () => {
+                    dialog.open();
+                });
+            }
+
+            const dialogApproval = document.getElementById('dialog-approval');
+            if (dialogApproval) {
+                const d = new mdc.dialog.MDCDialog(dialogApproval);
+                const rb = document.getElementById('reject-button');
+                if (rb) {
+                    rb.addEventListener('click', () => {
+                        d.open();
+                    });
+                }
+            }
+
+            const dialogAccept = document.getElementById('dialog-accept');
+            if (dialogAccept) {
+                const d = new mdc.dialog.MDCDialog(dialogAccept);
+                const rb = document.getElementById('accept-button');
+                if (rb) {
+                    rb.addEventListener('click', () => {
+                        d.open();
+                    });
+                }
+            }
+
+            const checkComplete = document.getElementById("checkbox-complete");
+            if (checkComplete) {
+                checkComplete.addEventListener('change', () => {
+                    const stageSelector = document.getElementById("stage-selector");
+                    if (!checkComplete.checked) {
+                        stageSelector.classList.remove("mdc-select--disabled");
+                    } else {
+                        stageSelector.classList.add("mdc-select--disabled");
+                    }
+                });
+            }
+
+            const eraser = document.getElementById("eraser");
+            if (eraser) {
+                const dialogDelete = new mdc.dialog.MDCDialog(document.getElementById('dialog-store-delete'));
+                eraser.addEventListener('click', () => {
+                    dialogDelete.open();
+                });
+            }
+
+        })();
+    </script>
+}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,50 @@
+﻿.mtd-desk-blocks {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.mtd-desk-block {
+    width: 100%;
+    max-width: 797px;
+    margin: 2px;
+}
+
+.mtd-desk-block-title {
+    padding: 4px;
+    font-weight: bold;
+    color: gray;
+    background-color: lightgray;
+    text-shadow: 1px 1px white;
+}
+
+.mtd-desk-block-content {
+    padding: 4px;
+    margin-bottom: 4px;
+    overflow: hidden;
+    overflow-x: auto;
+    /*white-space:nowrap;*/
+}
+
+.mtd-desk-block-body {
+    overflow: hidden;
+    overflow-x: auto;
+    /*white-space: nowrap;*/
+}
+
+
+.mtd-desk-block-content table tr td:first-child {
+    text-transform: uppercase;
+    color: gray;
+    font-size: 0.8em;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+.mtd-desk-block-content table tr td {
+    padding: 4px;
+}
+
+.mtd-desk-block--border {
+    border: 1px solid lightgray;
+}

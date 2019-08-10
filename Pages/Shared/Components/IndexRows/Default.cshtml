@@ -1,0 +1,155 @@
+﻿@*
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
+
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@model Models.Index.RowsModelView
+@inject Web.Services.UserHandler userHandler;
+
+@using Mtd.OrderMaker.Web.DataHandler.Approval
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    int colSpan = Model.MtdFormPartFields.Count + 2;
+    var user = await userHandler.GetUserAsync(User);
+}
+
+
+<div class="mtd-index-rows" style="display:flex; position:relative">
+    <div class="mdc-elevation--z8" style="margin: 0 auto; left: 50%;">
+        <table>
+            <thead>
+                <tr>
+                    <th @if (!Model.ShowNumber) { <text> hidden</text>}>
+                        <form mtd-data-form method="post" action="/api/index/search/number" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
+                            @Html.AntiForgeryToken()
+                            <input name="formId" asp-for="@Model.IdForm" type="hidden" />
+                            <div class="mdc-text-field mdc-text-field--outlined">
+                                <input mtd-data-input type="text" id="indexSearchNumber" name="searchNumber" class="mdc-text-field__input " autocomplete="off" asp-for="@Model.SearchNumber" />
+                                <div class="mdc-notched-outline">
+                                    <div class="mdc-notched-outline__leading"></div>
+                                    <div class="mdc-notched-outline__notch">
+                                        <label for="indexSearchNumber" class="mdc-floating-label @{if (@Model.SearchNumber.Length > 0) { <text>mdc-floating-label--float-above</text>} }">@Localizer["ID Number"]</label>
+                                    </div>
+                                    <div class="mdc-notched-outline__trailing"></div>
+                                </div>
+                            </div>
+                        </form>
+                    </th>
+                    <th @if (!Model.ShowDate) { <text> hidden</text>}>
+                        @Localizer["Date of creation"]
+                    </th>
+
+                    @if (Model.IsAppromalForm)
+                    {
+                        <th>
+                            <div style="text-align: center">
+                                <i class="material-icons" aria-hidden="true" style="vertical-align:middle">timeline</i>
+                            </div>
+                        </th>
+                    }
+
+
+                    @foreach (var item in Model.MtdFormPartFields)
+                    {
+                        <th>
+                            <span>@item.Name</span>
+                        </th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var store in Model.MtdStores)
+                {
+                <tr mtd-data-href="/workplace/store/details?id=@store.Id">
+
+                    <td @if (!Model.ShowNumber) { <text> hidden</text>}>
+                        <div style="align-self: center">
+                            @store.Sequence.ToString("D9")
+                        </div>
+                    </td>
+                    <td @if (!Model.ShowDate) { <text> hidden</text>}>
+                        <span>@store.Timecr.ToShortDateString()</span>
+                    </td>
+                    @if (Model.IsAppromalForm)
+                    {
+                        <td>
+                            @{
+                                ApprovalStatus status = Model.ApprovalStores.Where(x => x.StoreId == store.Id).Select(x => x.Status).FirstOrDefault();
+                            }
+                            @switch (status)
+                            {
+                                case ApprovalStatus.Approved:
+                                    {
+                                        <i class="material-icons" aria-hidden="true" style="vertical-align:middle; color: green;">thumb_up</i>
+                                        break;
+                                    }
+                                case ApprovalStatus.Iteraction:
+                                    {
+                                        <i class="material-icons" aria-hidden="true" style="vertical-align:middle; color: darkred">new_releases</i>
+                                        break;
+                                    }
+                                case ApprovalStatus.Rejected:
+                                    {
+                                        <i class="material-icons" aria-hidden="true" style="vertical-align:middle">thumb_down</i>
+                                        break;
+                                    }
+                                case ApprovalStatus.Required:
+                                    {
+                                        <i class="material-icons" aria-hidden="true" style="vertical-align:middle; color: red">assignment_turned_in</i>
+                                        break;
+                                    }
+                                case ApprovalStatus.Start:
+                                    {
+                                        <i class="material-icons" aria-hidden="true" style="vertical-align:middle; color: gray">new_releases</i>
+                                        break;
+                                    }
+                                case ApprovalStatus.Waiting:
+                                    {
+                                        <i class="material-icons" aria-hidden="true" style="vertical-align:middle; color: gray">hourglass_full</i>
+                                        break;
+                                    }
+                            }
+
+
+                        </td>
+                    }
+
+
+                    @foreach (var field in Model.MtdFormPartFields)
+                    {
+                        <td>
+                            <div style="max-height: 2.8em; overflow:hidden; padding: 2px; text-overflow: ellipsis">
+                                @await Component.InvokeAsync("IndexCell", new { stack = Model.MtdStoreStack, idStore = store.Id, idField = field.Id, idType = field.MtdSysType })
+                            </div>
+                        </td>
+                    }
+
+                </tr>
+                }
+            </tbody>
+        </table>
+        @if (Model.MtdStores.Count == 0 && Model.WaitList)
+        {
+            <div style="font-weight: bold; text-align: center; color: gray">
+                <p>@Localizer["There are no documents requiring approval."]</p>
+            </div>
+        }
+    </div>
+</div>
+@await Component.InvokeAsync("IndexFooter", new { idForm = Model.IdForm, pageCount = Model.PageCount })

@@ -1,0 +1,133 @@
+﻿@*
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
+
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@page
+@model EditModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Editor"];
+    ViewData["SecondTitle"] = Localizer["Editing group"];
+}
+
+@section Breadcrumb {
+    <li><a href="/identity/users">@Localizer["Users"]</a></li>
+    <li><a href="/identity/users/group">@Localizer["Croups"]</a></li>
+    <li>@ViewBag.Title</li>
+}
+
+@section Action {
+    <li id="action-delete" class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">delete</span>
+        <span class="mdc-list-item__text">@Localizer["Delete group"]</span>
+    </li>
+}
+
+<div class="mtd-desk">
+    <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/groups/edit">
+        @Html.AntiForgeryToken()
+        <input type="hidden" value="@Model.MtdGroup.Id" name="group-id" />
+        <div class="mtd-desk-savebar">
+            <button mtd-data-clicker mtd-data-location="/identity/users/group" type="button" class="mdc-fab mdc-fab--extended">
+                <span class="material-icons mdc-fab__icon">save</span>
+                <span class="mdc-fab__label">@Localizer["Save"]</span>
+            </button>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items:center">
+            <div class="mdc-text-field mdc-text-field--outlined" style="width: 100%; max-width: 600px; margin-top: 16px;">
+                <input type="text" id="tf-outlined" mtd-required="config-form-name" class="mdc-text-field__input" name="group-name" asp-for="MtdGroup.Name" required />
+                <div class="mdc-notched-outline">
+                    <div class="mdc-notched-outline__leading"></div>
+                    <div class="mdc-notched-outline__notch">
+                        <label for="tf-outlined" class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Name"]</label>
+                    </div>
+                    <div class="mdc-notched-outline__trailing"></div>
+                </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+                <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true">
+                    @Localizer["Required field"]
+                </div>
+            </div>
+            <div class="mdc-text-field mdc-text-field--textarea" style="width: 100%; max-width:600px; margin-top: 16px;">
+                <textarea id="textarea" mtd-required="config-form-description" class="mdc-text-field__input" rows="3" cols="40" name="group-note" asp-for="MtdGroup.Description" required></textarea>
+                <div class="mdc-notched-outline">
+                    <div class="mdc-notched-outline__leading"></div>
+                    <div class="mdc-notched-outline__notch">
+                        <label for="textarea" class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Description"]</label>
+                    </div>
+                    <div class="mdc-notched-outline__trailing"></div>
+                </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+                <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true">
+                    @Localizer["Required field"]
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/groups/delete'>
+    @Html.AntiForgeryToken()
+    <input id="config-delete-id" name="group-id" type="hidden" value="@Model.MtdGroup.Id" />
+    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/identity/users/group" mtd-data-message="@Localizer["The group"] '@Model.MtdGroup.Name' @Localizer["was deleted"]" type="hidden" />
+</form>
+
+<div id="dialog-delete" class="mdc-dialog"
+     role="alertdialog"
+     aria-modal="true"
+     aria-labelledby="my-dialog-title"
+     aria-describedby="my-dialog-content">
+    <div class="mdc-dialog__container">
+        <div class="mdc-dialog__surface">
+            <h2 class="mdc-dialog__title" id="delete-form-title">
+                @Localizer["Delete group"]?
+            </h2>
+            <div class="mdc-dialog__content" id="delete-dialog-content">
+                @Localizer["The group and all data associated with it will be permanently deleted."]
+            </div>
+            <footer class="mdc-dialog__actions">
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                    <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                </button>
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+                    <span class="mdc-button__label" onclick="document.getElementById('deleteClicker').click();">@Localizer["Delete"]</span>
+                </button>
+            </footer>
+        </div>
+    </div>
+    <div class="mdc-dialog__scrim"></div>
+</div>
+
+@section  Scripts{ 
+    <script>
+        (() => {
+            const dialog = document.getElementById('dialog-delete');
+            if (dialog) {
+                const d = new mdc.dialog.MDCDialog(dialog);
+                document.getElementById('action-delete').addEventListener('click', () => {
+                    d.open();
+                });
+            }
+        })();
+    </script>
+}

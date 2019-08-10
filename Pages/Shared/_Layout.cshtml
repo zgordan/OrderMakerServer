@@ -1,0 +1,249 @@
+﻿@*
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
+
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@using Microsoft.AspNetCore.Identity
+@using Mtd.OrderMaker.Web.Areas.Identity.Data
+@inject SignInManager<WebAppUser> SignInManager
+@inject UserManager<WebAppUser> UserManager
+@inject Web.Services.ConfigHandler configHandler;
+
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    string userName = "";
+    string userEmail = "";
+    string userCheck = "";
+
+    var user = await UserManager.GetUserAsync(User);
+    if (user != null)
+    {
+        userName = user.Title;
+        userEmail = user.Email;
+        userCheck = user.EmailConfirmed ? "green" : "red";
+    }
+
+    ViewData["ColorBar"] = await configHandler.GetColorBar();
+    ViewData["ColorIcon"] = await configHandler.GetColorIcon();
+
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no">
+
+    <title>@ViewData["Title"] | OrderMaker</title>
+    <link rel="stylesheet" href="~/lib/google/css/material-components-web.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/google/iconfont/material-icons.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/main/css/mtd-main.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/common/css/mtd-desk.css" asp-append-version="true" />
+
+    @RenderSection("Head", required: false)
+</head>
+<body style="height: 100vh;">
+    @*<partial name="_CookieConsentPartial" />*@
+    <aside class="mdc-drawer mdc-drawer--modal">
+        <div class="mdc-drawer__content">
+            <div style="padding-top: 16px; padding-bottom: 16px;">
+                <div style="display:flex; flex-direction: column; align-items: center">
+                    <div>
+                        @{
+                            string pathImgMenu = "/lib/mtd-ordermaker/images/logo-mtd.png";
+                            var imgMenu = await configHandler.GetImageFromConfig(configHandler.CodeImgMenu);
+                            if (imgMenu != string.Empty) { pathImgMenu = imgMenu; }
+                        }
+                        <img src="@pathImgMenu" width="235" />
+                    </div>
+                    <div style="display: flex; flex-direction: column; margin-top: 16px; align-items: center">
+                        <div style="background-color: lightgray;   width: 52px; height: 52px; border-radius: 50%; text-align: center">
+                            <i class="material-icons" style="font-size: 48px; color: white">person</i>
+                        </div>
+                        <div style="color: gray; text-align: center">
+                            <div>
+                                @userName
+                            </div>
+                            <div>
+                                @userEmail
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <nav class="mdc-list">
+                <a id="menu-desk" class="mdc-list-item" href="/" aria-selected="true">
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">dashboard</i>
+                    <span class="mdc-list-item__text">@Localizer["Desktop"]</span>
+                </a>
+                <a id="menu-account" class="mdc-list-item" href="/Identity/Account/Manage" aria-selected="true">
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">person_outline</i>
+                    <span class="mdc-list-item__text">@Localizer["Account"]</span>
+                </a>
+                <a id="menu-config" class="mdc-list-item" href="/Config" aria-selected="true">
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
+                    <span class="mdc-list-item__text">@Localizer["Configurator"]</span>
+                </a>
+                <a id="menu-users" class="mdc-list-item" href="/Identity/Users" aria-selected="true">
+                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">supervisor_account</i>
+                    <span class="mdc-list-item__text">@Localizer["Users"]</span>
+                </a>
+                <hr style="display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0; " />
+            </nav>
+        </div>
+    </aside>
+    <div class="mdc-drawer-scrim"></div>
+    <div class="mdc-drawer-app-content">
+        <header class="mdc-top-app-bar app-bar mdc-elevation--z4 mdc-top-app-bar--fixed" id="app-bar" style="background-color: @ViewBag.ColorBar">
+            <div class="mdc-top-app-bar__row">
+                <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon" style="color: @ViewBag.ColorIcon">menu</a>
+                    }
+                    <span style="padding-left: 8px">
+                        @{
+                            string pathAppBar = "/lib/mtd-ordermaker/images/logo-mtd-white.png";
+                            var imgAppBar = await configHandler.GetImageFromConfig(configHandler.CodeImgAppBar);
+                            if (imgAppBar != string.Empty) { pathAppBar = imgAppBar; }
+                        }
+                        <img src="@pathAppBar" height="32" />
+                    </span>
+                </section>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+                        <div class="toolbar mdc-menu-surface--anchor">
+                            <button id="main-user-button" href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="person" alt="person" style="color: @ViewBag.ColorIcon">person</button>
+                            <div id="main-user-menu" class="mdc-menu-surface" style="margin-top: 50px; margin-right: 8px;">
+                                <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" style="cursor: pointer">
+                                    <li mtd-data-href="/Identity/Account/Manage" class="mdc-list-item" role="menuitem">
+                                        <span class="material-icons mdc-list-item__graphic" aria-hidden="true">perm_identity</span>
+                                        <span class="mdc-list-item__text">@Localizer["Profile"]</span>
+                                    </li>
+                                    <li mtd-data-href="/Identity/Account/Manage/ChangePassword" class="mdc-list-item" role="menuitem">
+                                        <span class="material-icons mdc-list-item__graphic" aria-hidden="true">lock</span>
+                                        <span class="mdc-list-item__text">@Localizer["Password"]</span>
+                                    </li>
+                                    <li role="separator" class="mdc-list-divider"></li>
+                                    <li class="mdc-list-item" role="menuitem" onclick="document.getElementById('form-logout').submit()">
+                                        <form id="form-logout" style="display: none" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post"></form>
+                                        <span class="material-icons mdc-list-item__graphic" aria-hidden="true">exit_to_app</span>
+                                        <span mtd-data-clicker mtd-data-location="/" class="mdc-list-item__text">@Localizer["Logout"]</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+                }
+            </div>
+        </header>
+        <main role="main" class="mtd-main-content" id="main-content">
+            <div id="mainModal" style="display: none;">
+                <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate" style="z-index: 4; top: 64px;  position: absolute; --mdc-theme-primary: red; ">
+                    <div class="mdc-linear-progress__buffering-dots"></div>
+                    <div class="mdc-linear-progress__buffer"></div>
+                    <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+                        <span class="mdc-linear-progress__bar-inner"></span>
+                    </div>
+                    <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+                        <span class="mdc-linear-progress__bar-inner"></span>
+                    </div>
+                </div>
+                <div class="mtd-main-modal"></div>
+            </div>
+            <div class="mdc-top-app-bar--fixed-adjust">
+                <div class="mtd-main-informer">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <div class="mtd-main-informer-content">
+                            <div style="display: flex; align-items: center">
+                                <div class="mtd-main-informer-title" style="flex-grow: 1">
+                                    @ViewData["Title"]
+                                </div>
+                                <div class="mtd-main-informer-action">
+                                    @if (IsSectionDefined("Action"))
+                                    {
+                                        <div class="mdc-menu-surface--anchor">
+                                            <button id="main-action-button" class="mdc-button mdc-button--raised">
+                                                <i class="material-icons mdc-button__icon" aria-hidden="true">apps</i>
+                                                <span class="mdc-button__label">@Localizer["Actions"]</span>
+                                            </button>
+                                            <div id="main-action-menu" class="mdc-menu mdc-menu-surface">
+                                                <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+                                                    @RenderSection("Action")
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+                            <div class="mtd-main-informer-name">
+                                @ViewData["SecondTitle"]
+                            </div>
+                            <ul class="mtd-main-informer-breadcrumb">
+                                @if (IsSectionDefined("Breadcrumb"))
+                                {
+                                    @RenderSection("Breadcrumb")
+                                }
+                            </ul>
+                        </div>
+                    }
+                </div>
+                <div class="mtd-main-body">
+                    @RenderBody()
+                </div>
+                @*<footer>
+                        <div class="mtd-main-footer">
+                            <div style="flex-grow:1">
+                                &copy; @DateTime.Now.Year.ToString() - <a href="http://ordermaker.org">OrderMaker</a> All rights reserved.
+                            </div>
+                            <div style="padding-right: 16px;">
+                                <p style="color:#7b7b7b" class="text-right">@Localizer["web application version"]: @System.Reflection.Assembly.GetEntryAssembly().GetName().Version</p>
+                            </div>
+                        </div>
+                    </footer>*@
+            </div>
+        </main>
+    </div>
+
+    <div id="main-snack" class="mdc-snackbar">
+        <div class="mdc-snackbar__surface">
+            <div class="mdc-snackbar__label"
+                 role="status"
+                 aria-live="polite">
+
+            </div>
+            <div class="mdc-snackbar__actions">
+                <button class="mdc-icon-button mdc-snackbar__dismiss material-icons">close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/google/js/material-components-web.js" asp-append-version="true"></script>
+    <script src="~/lib/mtd-ordermaker/main/js/mtd-main.js" asp-append-version="true"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,133 @@
+﻿@*
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
+
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@page
+@model FieldsModel
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Editor fields"];
+    ViewData["SecondTitle"] = Localizer["Form fields management"];
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/config/css/mtd-config-form-fileds.css" asp-append-version="true" />
+}
+
+@section Breadcrumb {
+    <li><a href="/config">@Localizer["Configurator"]</a></li>
+    <li><a href="/config/form">@Localizer["Forms"]</a></li>
+    <li><a href="/config/form/edit?id=@Model.MtdForm.Id">@Localizer["Form editor"]</a></li>
+    <li>@ViewBag.Title</li>
+}
+
+@section Action {
+
+    <li mtd-data-href="/config/form/parts?idForm=@Model.MtdForm.Id" class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">line_weight</span>
+        <span class="mdc-list-item__text">@Localizer["Edit parts"]</span>
+    </li>
+}
+
+<div class="mdc-elevation--z2 mtd-config-form-fields">
+
+    <div id="fieldsCreator">
+        <a mtd-data-href="/config/form/fieldcreate?idPart=@Model.CurrentPartId" class="mdc-fab mdc-fab--extended" aria-label="Create">
+            <span class="material-icons mdc-fab__icon">add</span>
+            <span class="mdc-fab__label">@Localizer["Create"]</span>
+        </a>
+    </div>
+
+    <div class="mtd-config-form-fields__title">
+        <div class="mtd-config-form-fields__header">
+            @if (Model.MtdForm.MtdFormHeader != null)
+            {
+                var base64 = Convert.ToBase64String(Model.MtdForm.MtdFormHeader.Image);
+                var imgSrc = String.Format("data:{0};base64,{1}", Model.MtdForm.MtdFormHeader.ImageType, base64);
+                <img src="@imgSrc" />
+            }
+        </div>
+        <div class="mtd-config-form-fields__fname">
+            <span>@Model.MtdForm.Name</span>
+        </div>
+    </div>
+
+    <form id="configPartSelector" method="get">
+        <input type="hidden" asp-for="MtdForm.Id" name="idForm" />
+        <input id="configCurrentPart" type="hidden" asp-for="CurrentPartId" name="idPart" />
+    </form>
+
+    <div class="mtd-config-form-fields__parts">
+        <div class="mtd-config-form-fields__plist">
+            <div id="configSelectPart" class="mdc-select mdc-select--outlined" style="width: 100%; border-bottom: 1px solid gray;">
+                <i class="mdc-select__dropdown-icon"></i>
+                <select mtd-data-result class="mdc-select__native-control" asp-for="CurrentPartId">
+                    @foreach (var part in Model.MtdForm.MtdFormPart.OrderBy(x => x.Sequence))
+                    {
+                        <option value="@part.Id">@part.Name</option>
+                    }
+                </select>
+                <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Part"]</label>
+                <div class="mdc-line-ripple"></div>
+            </div>
+        </div>
+    </div>
+
+    <form mtd-data-form method="post" action="/api/config/form/field/sequence">
+        @Html.AntiForgeryToken()
+        <input id="fieldSeqData" name="fieldSeqData" type="hidden" />
+        <input name="fieldPart" type="hidden" value="@Model.CurrentPartId" />
+        <input name="fieldForm" type="hidden" value="@Model.MtdForm.Id" />
+        <input id="configListSeq" mtd-data-clicker type="hidden" />
+    </form>
+
+    <div class="mtd-config-form-fields__list">
+        <ul id="configListFields" class="mdc-list">
+            @foreach (var field in Model.MtdFormPartFields)
+            {
+                <li mtd-data-href="/config/form/fieldedit?id=@field.Id" id="@field.Id-licol" class="mdc-list-item" draggable="true" role="button" aria-checked="false"
+                    data-value="@field.Id"
+                    data-part="@field.MtdFormPart">
+                    <label class="mdc-list-item__text" for="@field.Id-lc">@field.Name</label>
+                    <div class="mtd-config-form-fields__bdrag">
+                        <i class="material-icons" style="color:gray">drag_handle</i>
+                    </div>
+                    <div class="mtd-config-form-fields__bedit">
+                        <button id="add-to-favorites"
+                                class="mdc-icon-button"
+                                aria-label="Add to favorites"
+                                aria-hidden="true"
+                                aria-pressed="false"
+                                mtd-data-href="/config/form/fieldedit?id=@field.Id">
+                            <i class="material-icons mdc-icon-button__icon">edit</i>
+                        </button>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script src="~/lib/mtd-ordermaker/config/js/mtd-config-form-fileds.js" asp-append-version="true"></script>
+}

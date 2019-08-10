@@ -1,0 +1,53 @@
+﻿@*
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
+
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+
+@model Data.MtdStoreStack
+
+@{
+    string dateValue = "";
+    if (Model.MtdStoreStackDate.Register != null)
+    {
+        dateValue = Model.MtdStoreStackDate.Register.ToString("g");
+        if (dateValue.Equals("01.01.0001 0:00"))
+        {
+            dateValue = "";
+        }
+    }
+}
+
+
+@switch (ViewBag.TypeStyle)
+{
+    case "Columns":
+        <div class="mtd-store-edit-col-root">
+            <div class="mtd-ui-material-form">
+                <input class="mtd-data-datetimepicker" type="text" id="@Model.MtdFormPartFieldNavigation.Id" name="@Model.MtdFormPartFieldNavigation.Id" asp-for="MtdStoreStackDate.Register" value="@dateValue" />
+                <label mtd-info="@Model.MtdFormPartFieldNavigation.Description" for="@Model.MtdFormPartFieldNavigation.Id" class="mtd-ui-text-label">@Model.MtdFormPartFieldNavigation.Name</label>
+                <i class="mtd-ui-text-bottom"></i>
+            </div>
+        </div>
+        break;
+    default:
+        <div class="mtd-ui-material-form">
+            <input class="mtd-data-datetimepicker" type="text" id="@Model.MtdFormPartFieldNavigation.Id" name="@Model.MtdFormPartFieldNavigation.Id" asp-for="MtdStoreStackDate.Register" value="@dateValue" />
+            <label mtd-info="@Model.MtdFormPartFieldNavigation.Description" for="@Model.MtdFormPartFieldNavigation.Id" class="mtd-ui-text-label">@Model.MtdFormPartFieldNavigation.Name</label>
+            <i class="mtd-ui-text-bottom"></i>
+        </div>
+        break;
+}
