@@ -18,6 +18,7 @@
 */
 
 
+using Mtd.OrderMaker.Web.Data;
 using System.Collections.Generic;
 
 namespace Mtd.OrderMaker.Web.Data
@@ -31,6 +32,7 @@ namespace Mtd.OrderMaker.Web.Data
             MtdFilter = new HashSet<MtdFilter>();
             MtdFormList = new HashSet<MtdFormList>();
             MtdFormPart = new HashSet<MtdFormPart>();
+            MtdPolicyForms = new HashSet<MtdPolicyForms>();
             MtdStore = new HashSet<MtdStore>();
         }
 
@@ -53,6 +55,7 @@ namespace Mtd.OrderMaker.Web.Data
         public virtual ICollection<MtdFilter> MtdFilter { get; set; }
         public virtual ICollection<MtdFormList> MtdFormList { get; set; }
         public virtual ICollection<MtdFormPart> MtdFormPart { get; set; }
+        public virtual ICollection<MtdPolicyForms> MtdPolicyForms { get; set; }
         public virtual ICollection<MtdStore> MtdStore { get; set; }
     }
 }

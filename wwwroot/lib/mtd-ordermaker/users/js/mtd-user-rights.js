@@ -49,7 +49,6 @@ const handlerCreate = () => {
     const forms = document.querySelectorAll(`[mtd-rights]`);
     forms.forEach((form) => {
         const id = form.getAttribute("mtd-rights");
-        console.log(id);
         const inputCreate = document.getElementById(`${id}-create`);
         inputCreate.addEventListener('change', () => {
             selectPartsAll(id, '-part-create', inputCreate.checked);

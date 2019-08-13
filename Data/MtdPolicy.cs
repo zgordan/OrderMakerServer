@@ -1,4 +1,4 @@
-/*
+﻿/*
     MTD OrderMaker - http://ordermaker.org
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 
@@ -19,17 +19,24 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users
+namespace Mtd.OrderMaker.Web.Data
 {
-    public class IndexModel : PageModel
+    public partial class MtdPolicy
     {
-        public void OnGet()
+        public MtdPolicy()
         {
+            MtdPolicyForms = new HashSet<MtdPolicyForms>();
+            MtdPolicyGroup = new HashSet<MtdPolicyGroup>();
+            MtdPolicyParts = new HashSet<MtdPolicyParts>();
         }
+
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+
+        public virtual ICollection<MtdPolicyForms> MtdPolicyForms { get; set; }
+        public virtual ICollection<MtdPolicyGroup> MtdPolicyGroup { get; set; }
+        public virtual ICollection<MtdPolicyParts> MtdPolicyParts { get; set; }
     }
 }

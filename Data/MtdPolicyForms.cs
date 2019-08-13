@@ -17,22 +17,31 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
+using Mtd.OrderMaker.Web.Data;
 using System;
 using System.Collections.Generic;
 
 namespace Mtd.OrderMaker.Web.Data
 {
-    public partial class MtdGroup
+    public partial class MtdPolicyForms
     {
-        public MtdGroup()
-        {
-            MtdPolicyGroup = new HashSet<MtdPolicyGroup>();
-        }
+        public int Id { get; set; }
+        public string MtdPolicy { get; set; }
+        public string MtdForm { get; set; }
+        public sbyte Create { get; set; }
+        public sbyte EditAll { get; set; }
+        public sbyte EditGroup { get; set; }
+        public sbyte EditOwn { get; set; }
+        public sbyte ViewAll { get; set; }
+        public sbyte ViewGroup { get; set; }
+        public sbyte ViewOwn { get; set; }
+        public sbyte DeleteAll { get; set; }
+        public sbyte DeleteGroup { get; set; }
+        public sbyte DeleteOwn { get; set; }
+        public sbyte ChangeOwner { get; set; }
+        public sbyte Reviewer { get; set; }
 
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-
-        public virtual ICollection<MtdPolicyGroup> MtdPolicyGroup { get; set; }
+        public virtual MtdForm MtdFormNavigation { get; set; }
+        public virtual MtdPolicy MtdPolicyNavigation { get; set; }
     }
 }

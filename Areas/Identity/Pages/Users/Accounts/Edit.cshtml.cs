@@ -20,6 +20,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -29,8 +30,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Web.Areas.Identity.Data;
+using Mtd.OrderMaker.Web.Data;
 
-namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users
+namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users.Accounts
 {
     public partial class EditModel : PageModel
     {
@@ -39,18 +41,21 @@ namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users
         private readonly RoleManager<WebAppRole> _roleManager;
         private readonly IEmailSender _emailSender;
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly OrderMakerContext _context;
 
         public EditModel(
             UserManager<WebAppUser> userManager,
             RoleManager<WebAppRole> roleManager,
             IEmailSender emailSender,
-            IHostingEnvironment hostingEnvironment
+            IHostingEnvironment hostingEnvironment,
+            OrderMakerContext context
             )
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _emailSender = emailSender;
             _hostingEnvironment = hostingEnvironment;
+            _context = context;
         }
         
 
@@ -78,18 +83,19 @@ namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users
             public bool IsConfirm { get; set; }
          
             public string Role { get; set; }
-
+            public string Policy { get; set; }
+            
         }
 
-        public async Task<IActionResult> OnGetAsync(string userId)
+        public async Task<IActionResult> OnGetAsync(string id)
         {
-            if (userId == null)
+            if (id == null)
             {
                 return NotFound();
-
             }
 
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) { return NotFound(); }
             UserName = user.UserName;
             IList<WebAppRole> roles = await _roleManager.Roles.ToListAsync();
             var userRoles = await _userManager.GetRolesAsync(user);
@@ -106,6 +112,11 @@ namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users
             };
 
             ViewData["Roles"] = new SelectList(roles.OrderBy(x=>x.Seq), "Id", "Title", Input.Role);
+
+            IList<Claim> claims = await _userManager.GetClaimsAsync(user);
+            string policyID = claims.Where(x => x.Type  == "policy").Select(x=>x.Value).FirstOrDefault();
+            IList<MtdPolicy> mtdPolicy = await _context.MtdPolicy.OrderBy(x=>x.Name).ToListAsync();
+            ViewData["Policies"] = new SelectList(mtdPolicy, "Id", "Name", policyID);
 
             return Page();
         }

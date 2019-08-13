@@ -1,0 +1,74 @@
+﻿@*
+    MTD OrderMaker - http://ordermaker.org
+    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
+
+    This file is part of MTD OrderMaker.
+    MTD OrderMaker is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see  https://www.gnu.org/licenses/.
+*@
+@page
+@model CreateModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["New policy"];
+    ViewData["SecondTitle"] = Localizer["Creating a new policy"];
+}
+@section Breadcrumb {
+    <li><a href="/identity/users">@Localizer["Users"]</a></li>
+    <li><a href="/identity/users/policy">@Localizer["Policy"]</a></li>
+    <li>@ViewBag.Title</li>
+}
+<div class="mtd-desk">
+    <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/policy/add">
+        @Html.AntiForgeryToken()
+        <div class="mtd-desk-savebar">
+            <button mtd-data-clicker mtd-data-location="/identity/users/policy" mtd-data-message="@Localizer["New policy was created"]." type="button" class="mdc-fab mdc-fab--extended">
+                <span class="material-icons mdc-fab__icon">add</span>
+                <span class="mdc-fab__label">@Localizer["Create"]</span>
+            </button>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items:center">
+            <div class="mdc-text-field mdc-text-field--outlined" style="width: 100%; max-width: 600px; margin-top: 16px;">
+                <input type="text" id="tf-outlined" mtd-required="config-form-name" class="mdc-text-field__input" name="policy-name" asp-for="MtdPolicy.Name" required />
+                <div class="mdc-notched-outline">
+                    <div class="mdc-notched-outline__leading"></div>
+                    <div class="mdc-notched-outline__notch">
+                        <label for="tf-outlined" class="mdc-floating-label">@Localizer["Name"]</label>
+                    </div>
+                    <div class="mdc-notched-outline__trailing"></div>
+                </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+                <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true">
+                    @Localizer["Required field"]
+                </div>
+            </div>
+            <div class="mdc-text-field mdc-text-field--textarea" style="width: 100%; max-width:600px; margin-top: 16px;">
+                <textarea id="textarea" mtd-required="config-form-description" class="mdc-text-field__input" rows="3" cols="40" name="policy-note" asp-for="MtdPolicy.Description" required></textarea>
+                <div class="mdc-notched-outline">
+                    <div class="mdc-notched-outline__leading"></div>
+                    <div class="mdc-notched-outline__notch">
+                        <label for="textarea" class="mdc-floating-label">@Localizer["Description"]</label>
+                    </div>
+                    <div class="mdc-notched-outline__trailing"></div>
+                </div>
+            </div>
+            <div class="mdc-text-field-helper-line">
+                <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true">
+                    @Localizer["Required field"]
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

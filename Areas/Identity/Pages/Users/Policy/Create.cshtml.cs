@@ -23,13 +23,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Mtd.OrderMaker.Web.Data;
 
-namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users
+namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users.Policy
 {
-    public class IndexModel : PageModel
+    public class CreateModel : PageModel
     {
+        private readonly OrderMakerContext _context;
+
+        public CreateModel(OrderMakerContext context)
+        {
+            _context = context;
+        }
+
+        [BindProperty]
+        public MtdPolicy MtdPolicy { get; set; }
+
         public void OnGet()
         {
+            MtdPolicy = new MtdPolicy();
         }
+
+
+
     }
 }

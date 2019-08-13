@@ -114,6 +114,8 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
             string title = Request.Form["Input.Title"];
             string phone = Request.Form["Input.PhoneNumber"];
             string roleId = Request.Form["Input.Role"];
+            string policyId = Request.Form["Input.Policy"];
+
             WebAppRole roleUser = await _roleManager.FindByIdAsync(roleId);
 
             string[] formConfirm = Request.Form["Input.IsConfirm"];
@@ -147,8 +149,14 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
             await _userManager.UpdateAsync(user);
             IList<string> roles = await _userManager.GetRolesAsync(user);
             await _userManager.RemoveFromRolesAsync(user,roles);
-
             await _userManager.AddToRoleAsync(user,roleUser.Name);
+
+            List<Claim> newClaims = new List<Claim>();
+            IEnumerable<Claim> claims = await _userManager.GetClaimsAsync(user);
+            await _userManager.RemoveClaimsAsync(user, claims);
+
+            Claim claim = new Claim("policy", policyId);
+            await _userManager.AddClaimAsync(user, claim);
 
             return Ok();
         }

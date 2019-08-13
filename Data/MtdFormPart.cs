@@ -27,6 +27,7 @@ namespace Mtd.OrderMaker.Web.Data
         public MtdFormPart()
         {
             MtdFormPartField = new HashSet<MtdFormPartField>();
+            MtdPolicyParts = new HashSet<MtdPolicyParts>();
         }
 
         public string Id { get; set; }
@@ -43,5 +44,7 @@ namespace Mtd.OrderMaker.Web.Data
         public virtual MtdSysStyle MtdSysStyleNavigation { get; set; }
         public virtual MtdFormPartHeader MtdFormPartHeader { get; set; }
         public virtual ICollection<MtdFormPartField> MtdFormPartField { get; set; }
+        public virtual ICollection<MtdPolicyParts> MtdPolicyParts { get; set; }
+
     }
 }
