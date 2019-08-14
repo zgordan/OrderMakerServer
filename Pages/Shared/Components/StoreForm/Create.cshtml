@@ -44,38 +44,13 @@
             </button>
         </div>
     </div>
-
     @*<div class="mtd-store-edit-bar">
-        <div class="mtd-store-edit-control">
-            <div class="mtd-ui-material-submit">
-                <button id="store-create-button" type="button">@Localizer["Save"]</button>
+            <div class="mtd-store-edit-control">
+                <div class="mtd-ui-material-submit">
+                    <button id="store-create-button" type="button">@Localizer["Save"]</button>
+                </div>
             </div>
-        </div>
-    </div>*@
-
-    <div id="@idStore-modal" class="mtd-store-style-modal"></div>
-
-    <div class="mtd-store-style-badge">
-        @if (Model.Store.MtdFormNavigation.MtdFormHeader != null)
-        {
-            var base64 = Convert.ToBase64String(Model.Store.MtdFormNavigation.MtdFormHeader.Image);
-            var imgSrc = String.Format("data:{0};base64,{1}", Model.Store.MtdFormNavigation.MtdFormHeader.ImageType, base64);
-
-            <img src="@imgSrc" />
-        }
-    </div>
-
-    <div class="mtd-store-style-header">
-        <div class="mtd-store-style-title">
-            @Model.Store.MtdFormNavigation.Name
-        </div>
-        <div class="mtd-store-style-attribute">
-            <span class="mtd-store-style-number" style="opacity:0.3">№ @Model.Store.Sequence.ToString("D9")</span>
-            <hr />
-            <span class="mtd-store-style-date">@Localizer["Date"] @DateTime.Now.ToShortDateString()</span>
-        </div>
-    </div>
-
+        </div>*@
     @if (Model.Store.MtdFormNavigation.ParentNavigation != null)
     {
 
@@ -94,7 +69,6 @@
                 <input value="@Model.Store.MtdFormNavigation.Parent" type="hidden" name="idFromParent" />
                 <input id="store-parent-number" value="@parentNumber" type="hidden" name="store-parent-number" />
             </form>
-
             <div id="store-parent-progress" role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate mdc-linear-progress--closed">
                 <div class="mdc-linear-progress__buffering-dots"></div>
                 <div class="mdc-linear-progress__buffer"></div>
@@ -118,7 +92,40 @@
         </div>
     }
 
+    <div id="@idStore-modal" class="mtd-store-style-modal"></div>
     <form mtd-data-form method='post' autocomplete='off' enctype='multipart/form-data' action='@action'>
+        <div class="mtd-store-style-badge">
+            @if (Model.Store.MtdFormNavigation.MtdFormHeader != null)
+            {
+                var base64 = Convert.ToBase64String(Model.Store.MtdFormNavigation.MtdFormHeader.Image);
+                var imgSrc = String.Format("data:{0};base64,{1}", Model.Store.MtdFormNavigation.MtdFormHeader.ImageType, base64);
+
+                <img src="@imgSrc" />
+            }
+        </div>
+        <div class="mtd-store-style-header">
+            <div class="mtd-store-style-title">
+                @Model.Store.MtdFormNavigation.Name
+            </div>
+            <div class="mtd-store-style-attribute">
+                <span class="mtd-store-style-number" style="opacity:0.3">№ @Model.Store.Sequence.ToString("D9")</span>
+                <hr />
+                @{
+                    bool setDate = await userHandler.GetFormPolicyAsync(user, Model.Store.MtdForm, Services.RightsType.SetDate);
+                }
+                @if (setDate)
+                {
+
+                    <input type="text" class="mtd-data-datepicker" value="@DateTime.Now.ToShortDateString()" name="date-create" />
+                }
+                else
+                {
+                    <span class="mtd-store-style-date">@Localizer["Date"] @DateTime.Now.ToShortDateString()</span>
+                }
+                @*<span class="mtd-store-style-date">@Localizer["Date"] @DateTime.Now.ToShortDateString()</span>*@
+            </div>
+        </div>
+
         @Html.AntiForgeryToken()
         <input id="store-parent-id" value="@Model.Store.Parent" type="hidden" name="store-parent-id" />
         <input id="store-create-clicker" mtd-data-clicker mtd-data-location="/workplace/store?indexform=@Model.Store.MtdForm" type="hidden" />
@@ -137,5 +144,4 @@
         </div>
     </form>
 </div>
-
 

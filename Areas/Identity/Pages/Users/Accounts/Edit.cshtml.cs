@@ -31,20 +31,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Web.Areas.Identity.Data;
 using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Web.Services;
 
 namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users.Accounts
 {
     public partial class EditModel : PageModel
     {
 
-        private readonly UserManager<WebAppUser> _userManager;
+        private readonly UserHandler _userManager;
         private readonly RoleManager<WebAppRole> _roleManager;
         private readonly IEmailSender _emailSender;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly OrderMakerContext _context;
 
         public EditModel(
-            UserManager<WebAppUser> userManager,
+            UserHandler userManager,
             RoleManager<WebAppRole> roleManager,
             IEmailSender emailSender,
             IHostingEnvironment hostingEnvironment,
@@ -112,11 +113,10 @@ namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users.Accounts
             };
 
             ViewData["Roles"] = new SelectList(roles.OrderBy(x=>x.Seq), "Id", "Title", Input.Role);
-
-            IList<Claim> claims = await _userManager.GetClaimsAsync(user);
-            string policyID = claims.Where(x => x.Type  == "policy").Select(x=>x.Value).FirstOrDefault();
-            IList<MtdPolicy> mtdPolicy = await _context.MtdPolicy.OrderBy(x=>x.Name).ToListAsync();
-            ViewData["Policies"] = new SelectList(mtdPolicy, "Id", "Name", policyID);
+            
+            string policyID = await _userManager.GetPolicyIdAsync(user);
+            IList<MtdPolicy> mtdPolicy = await _userManager.CacheGetOrCreateAsync(); 
+            ViewData["Policies"] = new SelectList(mtdPolicy.OrderBy(x=>x.Name), "Id", "Name", policyID);
 
             return Page();
         }

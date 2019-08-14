@@ -52,7 +52,7 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
         public bool IsEditor { get; set; }
         public bool IsApprover { get; set; }
         public bool IsFirstStage { get; set; }
-        public ApprovalStatus ApprovalStatus { get; set; }        
+        public ApprovalStatus ApprovalStatus { get; set; }
         public List<MtdFormPart> BlockParts { get; set; }
         public bool IsFormApproval { get; set; }
 
@@ -74,7 +74,7 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
             bool isViewer = await _userHandler.IsViewer(user, MtdStore.MtdForm, MtdStore.Id);
 
             IsEditor = await _userHandler.IsEditor(user, MtdStore.MtdForm, MtdStore.Id);
-            IsInstallerOwner = await _userHandler.IsInstallerOwner(user, MtdStore.MtdForm, MtdStore.Id);
+            IsInstallerOwner = await _userHandler.IsInstallerOwner(user, MtdStore.MtdForm);
 
             if (!isViewer)
             {
@@ -87,11 +87,7 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
             MtdLogDocument created = await _context.MtdLogDocument.Where(x => x.MtdStore == MtdStore.Id).OrderBy(x => x.TimeCh).FirstOrDefaultAsync();
 
             StoreOwner = await _context.MtdStoreOwner.Where(x => x.Id == MtdStore.Id).FirstOrDefaultAsync();
-
-            ChangesHistory = new ChangesHistory
-            {
-                CreateByTime = MtdStore.Timecr.ToString()
-            };
+            ChangesHistory = new ChangesHistory();
 
             if (edited != null)
             {
@@ -101,10 +97,8 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
 
             if (created != null)
             {
-                if (MtdStore.Timecr.Date == created.TimeCh.Date)
-                {
-                    ChangesHistory.CreateByUser = created.UserName;
-                }
+                ChangesHistory.CreateByTime = created.TimeCh.ToString();
+                ChangesHistory.CreateByUser = created.UserName;
             }
 
             List<WebAppUser> webAppUsers = await _userHandler.GetUsersInGroupsAsync(user);
@@ -120,16 +114,16 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
             BlockParts = new List<MtdFormPart>();
             if (partIds.Count > 0)
             {
-                BlockParts = await _context.MtdFormPart.Where(x => partIds.Contains(x.Id)).OrderBy(x=>x.Sequence).ToListAsync();
+                BlockParts = await _context.MtdFormPart.Where(x => partIds.Contains(x.Id)).OrderBy(x => x.Sequence).ToListAsync();
             }
             IsFormApproval = await approvalHandler.IsApprovalFormAsync();
-                        
+
             if (IsFormApproval)
             {
                 ApprovalStatus = await approvalHandler.GetStatusAsync(user);
 
             }
-            
+
 
             return Page();
         }

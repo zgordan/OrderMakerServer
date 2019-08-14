@@ -23,7 +23,7 @@
 @{
     ViewData["Title"] = Localizer["Profile"];
     ViewData["SecondTitle"] = Localizer["Editing profile parameters"];
-    ViewData["userId"] = HttpContext.Request.Query["userId"];
+    ViewData["userId"] = HttpContext.Request.Query["id"];
 }
 @section Head {
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/users/css/mtd-users.css" />

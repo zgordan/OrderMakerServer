@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Web.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,10 +37,12 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
     public class PolicyController : ControllerBase
     {
         private readonly OrderMakerContext _context;
+        private readonly UserHandler _userHandler;
 
-        public PolicyController(OrderMakerContext context)
+        public PolicyController(OrderMakerContext context, UserHandler userHandler)
         {
             _context = context;
+            _userHandler = userHandler;
         }
 
         [HttpPost("add")]
@@ -58,6 +61,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
             await _context.MtdPolicy.AddAsync(mtdPolicy);
             await _context.SaveChangesAsync();
 
+            await _userHandler.CacheRefresh();
             return Ok();
         }
 
@@ -118,6 +122,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
 
                 string formSetOwner = Request.Form[$"{form.Id}-set-own"];
                 string formReviewer = Request.Form[$"{form.Id}-reviewer"];
+                string formSetDate = Request.Form[$"{form.Id}-set-date"];
 
                 MtdPolicyForms pf = mtdPolicyForms.Where(x => x.MtdForm == form.Id).FirstOrDefault();
                 if (pf == null)
@@ -128,6 +133,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
                 pf.Create = GetSbyte(formCreate);
                 pf.ChangeOwner = GetSbyte(formSetOwner);
                 pf.Reviewer = GetSbyte(formReviewer);
+                pf.ChangeDate = GetSbyte(formSetDate);
 
                 pf.ViewAll = GetSbyte(formView);
                 pf.ViewGroup = GetSbyte(formViewGroup);
@@ -140,6 +146,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
                 pf.DeleteAll = GetSbyte(formDelete);
                 pf.DeleteGroup = GetSbyte(formDeleteGroup);
                 pf.DeleteOwn = GetSbyte(formDeleteOwn);
+                
 
                 if (pf.Id == null)
                 {
@@ -184,6 +191,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
             _context.MtdPolicy.Update(mtdPolicy);
             await _context.SaveChangesAsync();
 
+            await _userHandler.CacheRefresh();
             return Ok();
         }
 
@@ -233,6 +241,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
                 pf.Create = 1;
                 pf.ChangeOwner = 1;
                 pf.Reviewer = 1;
+                pf.ChangeDate = 1;
 
                 pf.ViewAll = 1;
                 pf.ViewGroup = 0;
@@ -283,6 +292,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
             }
 
             await _context.SaveChangesAsync();
+            await _userHandler.CacheRefresh();
             return Ok();
         }
 
@@ -332,6 +342,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
                 pf.Create = 0;
                 pf.ChangeOwner = 0;
                 pf.Reviewer = 0;
+                pf.ChangeDate = 0;
 
                 pf.ViewAll = 0;
                 pf.ViewGroup = 0;
@@ -382,6 +393,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
             }
 
             await _context.SaveChangesAsync();
+            await _userHandler.CacheRefresh();
             return Ok();
         }
 

@@ -1057,6 +1057,11 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasColumnType("tinyint(4)")
                     .HasDefaultValueSql("'0'");
 
+                entity.Property(e => e.ChangeDate)
+                    .HasColumnName("change_date")
+                    .HasColumnType("tinyint(4)")
+                    .HasDefaultValueSql("'0'");
+
                 entity.HasOne(d => d.MtdFormNavigation)
                     .WithMany(p => p.MtdPolicyForms)
                     .HasForeignKey(d => d.MtdForm)

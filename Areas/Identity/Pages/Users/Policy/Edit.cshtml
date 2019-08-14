@@ -149,7 +149,7 @@
         </div>
         <div class="mtd-users-rights-place">
             <div class="mtd-users-rights-wrapper">
-                <table>
+                <table style="font-size: smaller">
                     <thead>
                         <tr>
                             <th rowspan="2">
@@ -175,6 +175,9 @@
                             </th>
                             <th>
                                 @Localizer["Reviewer"]
+                            </th>
+                            <th>
+                                @Localizer["Set Date"]
                             </th>
                         </tr>
                     </thead>
@@ -437,81 +440,103 @@
                                         </div>
                                     </div>
                                 </td>
+                                <td>
+                                    @{
+                                        bool setDate = Model.MtdPolicy.MtdPolicyForms.Where(x => x.MtdForm == form.Id && x.ChangeDate == 1).Any();
+                                    }
+                                    <div class="mdc-form-field">
+                                        <div class="mdc-checkbox">
+                                            <input type="checkbox"
+                                                   class="mdc-checkbox__native-control"
+                                                   id="@form.Id-set-date" name="@form.Id-set-date" @if (setDate) { <text> checked</text>} />
+                                            <div class="mdc-checkbox__background">
+                                                <svg class="mdc-checkbox__checkmark"
+                                                     viewBox="0 0 24 24">
+                                                    <path class="mdc-checkbox__checkmark-path"
+                                                          fill="none"
+                                                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                                </svg>
+                                                <div class="mdc-checkbox__mixedmark"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
 
                             foreach (var part in form.MtdFormPart.OrderBy(x => x.Sequence))
                             {
-                                <tr mtd-rights-parts="@part.Id" mtd-rights-parent="@form.Id" style="display: none">
-                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;@part.Name</td>
-                                    <td>
-                                        @{
-                                            bool checkPartCreate = Model.MtdPolicy.MtdPolicyParts.Where(x => x.MtdFormPart == part.Id && x.Create == 1).Any();
-                                        }
-                                        <div class="mdc-form-field">
-                                            <div class="mdc-checkbox">
-                                                <input type="checkbox"
-                                                       class="mdc-checkbox__native-control"
-                                                       id="@part.Id-part-create" name="@part.Id-part-create" @if (checkPartCreate) { <text> checked</text>} />
-                                                <div class="mdc-checkbox__background">
-                                                    <svg class="mdc-checkbox__checkmark"
-                                                         viewBox="0 0 24 24">
-                                                        <path class="mdc-checkbox__checkmark-path"
-                                                              fill="none"
-                                                              d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                                    </svg>
-                                                    <div class="mdc-checkbox__mixedmark"></div>
-                                                </div>
+                            <tr mtd-rights-parts="@part.Id" mtd-rights-parent="@form.Id" style="display: none">
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;@part.Name</td>
+                                <td>
+                                    @{
+                                        bool checkPartCreate = Model.MtdPolicy.MtdPolicyParts.Where(x => x.MtdFormPart == part.Id && x.Create == 1).Any();
+                                    }
+                                    <div class="mdc-form-field">
+                                        <div class="mdc-checkbox">
+                                            <input type="checkbox"
+                                                   class="mdc-checkbox__native-control"
+                                                   id="@part.Id-part-create" name="@part.Id-part-create" @if (checkPartCreate) { <text> checked</text>} />
+                                            <div class="mdc-checkbox__background">
+                                                <svg class="mdc-checkbox__checkmark"
+                                                     viewBox="0 0 24 24">
+                                                    <path class="mdc-checkbox__checkmark-path"
+                                                          fill="none"
+                                                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                                </svg>
+                                                <div class="mdc-checkbox__mixedmark"></div>
                                             </div>
                                         </div>
-                                    </td>
-                                    <td>
-                                        @{
-                                            bool checkPartView = Model.MtdPolicy.MtdPolicyParts.Where(x => x.MtdFormPart == part.Id && x.View == 1).Any();
-                                        }
-                                        <div class="mdc-form-field">
-                                            <div class="mdc-checkbox">
-                                                <input type="checkbox"
-                                                       class="mdc-checkbox__native-control"
-                                                       id="@part.Id-part-view" name="@part.Id-part-view" @if (checkPartView) { <text> checked</text>} />
-                                                <div class="mdc-checkbox__background">
-                                                    <svg class="mdc-checkbox__checkmark"
-                                                         viewBox="0 0 24 24">
-                                                        <path class="mdc-checkbox__checkmark-path"
-                                                              fill="none"
-                                                              d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                                    </svg>
-                                                    <div class="mdc-checkbox__mixedmark"></div>
-                                                </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    @{
+                                        bool checkPartView = Model.MtdPolicy.MtdPolicyParts.Where(x => x.MtdFormPart == part.Id && x.View == 1).Any();
+                                    }
+                                    <div class="mdc-form-field">
+                                        <div class="mdc-checkbox">
+                                            <input type="checkbox"
+                                                   class="mdc-checkbox__native-control"
+                                                   id="@part.Id-part-view" name="@part.Id-part-view" @if (checkPartView) { <text> checked</text>} />
+                                            <div class="mdc-checkbox__background">
+                                                <svg class="mdc-checkbox__checkmark"
+                                                     viewBox="0 0 24 24">
+                                                    <path class="mdc-checkbox__checkmark-path"
+                                                          fill="none"
+                                                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                                </svg>
+                                                <div class="mdc-checkbox__mixedmark"></div>
                                             </div>
-                                            <label for="@part.Id-part-view"></label>
                                         </div>
-                                    </td>
-                                    <td>
-                                        @{
-                                            bool checkPartEdit = Model.MtdPolicy.MtdPolicyParts.Where(x => x.MtdFormPart == part.Id && x.Edit == 1).Any();
-                                        }
-                                        <div class="mdc-form-field">
-                                            <div class="mdc-checkbox">
-                                                <input type="checkbox"
-                                                       class="mdc-checkbox__native-control"
-                                                       id="@part.Id-part-edit" name="@part.Id-part-edit" @if (checkPartEdit) { <text> checked</text>} />
-                                                <div class="mdc-checkbox__background">
-                                                    <svg class="mdc-checkbox__checkmark"
-                                                         viewBox="0 0 24 24">
-                                                        <path class="mdc-checkbox__checkmark-path"
-                                                              fill="none"
-                                                              d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                                    </svg>
-                                                    <div class="mdc-checkbox__mixedmark"></div>
-                                                </div>
+                                        <label for="@part.Id-part-view"></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    @{
+                                        bool checkPartEdit = Model.MtdPolicy.MtdPolicyParts.Where(x => x.MtdFormPart == part.Id && x.Edit == 1).Any();
+                                    }
+                                    <div class="mdc-form-field">
+                                        <div class="mdc-checkbox">
+                                            <input type="checkbox"
+                                                   class="mdc-checkbox__native-control"
+                                                   id="@part.Id-part-edit" name="@part.Id-part-edit" @if (checkPartEdit) { <text> checked</text>} />
+                                            <div class="mdc-checkbox__background">
+                                                <svg class="mdc-checkbox__checkmark"
+                                                     viewBox="0 0 24 24">
+                                                    <path class="mdc-checkbox__checkmark-path"
+                                                          fill="none"
+                                                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                                </svg>
+                                                <div class="mdc-checkbox__mixedmark"></div>
                                             </div>
-                                            <label for="@part.Id-part-edit"></label>
                                         </div>
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
+                                        <label for="@part.Id-part-edit"></label>
+                                    </div>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
                             }
                         }
                     </tbody>

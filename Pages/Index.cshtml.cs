@@ -47,7 +47,7 @@ namespace Mtd.OrderMaker.Web.Pages
         {
             WebAppUser user = await _userHandler.GetUserAsync(HttpContext.User);
 
-            List<string> formIds = await _userHandler.GetFormIdsAsync(user, RightsType.View, RightsType.ViewGroup, RightsType.ViewOwn);
+            List<string> formIds = await _userHandler.GetViewFormIdsAsync(user);
             List<MtdForm> forms = await _context.MtdForm.Where(x => formIds.Contains(x.Id)).ToListAsync();
 
             foreach (var form in forms)

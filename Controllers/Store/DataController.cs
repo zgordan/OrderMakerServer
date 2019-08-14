@@ -54,6 +54,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
         public async Task<IActionResult> OnPostSaveAsync()
         {
             string Id = Request.Form["idStore"];
+            string dateCreate = Request.Form["date-create"];
 
             MtdStore mtdStore = await _context.MtdStore.FirstOrDefaultAsync(x => x.Id == Id);
             if (mtdStore == null)
@@ -69,6 +70,17 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                 return Ok(403);
             }
 
+            bool setData = await _userHandler.GetFormPolicyAsync(webAppUser, mtdStore.MtdForm, RightsType.SetDate);
+            if (setData)
+            {
+                bool isOk = DateTime.TryParse(dateCreate, out DateTime dateTime);
+                if (isOk)
+                {                    
+                    mtdStore.Timecr = dateTime.Add(DateTime.Now.TimeOfDay);
+                    _context.MtdStore.Update(mtdStore);
+                }                
+            }
+
             MtdLogDocument mtdLog = new MtdLogDocument
             {
                 MtdStore = mtdStore.Id,
@@ -80,7 +92,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
 
             OutData outData = await CreateDataAsync(Id, webAppUser, TypeAction.Edit);
             List<MtdStoreStack> stackNew = outData.MtdStoreStacks;
-
+            
 
             IList<MtdStoreStack> stackOld = await _context.MtdStoreStack
                 .Include(m => m.MtdStoreStackText)
@@ -154,6 +166,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
         {
             string idForm = Request.Form["idForm"];
             string idFormParent = Request.Form["store-parent-id"];
+            string dateCreate = Request.Form["date-create"];
 
             WebAppUser webAppUser = await _userHandler.GetUserAsync(HttpContext.User);
             bool isCreator = await _userHandler.IsCreator(webAppUser, idForm);
@@ -170,6 +183,15 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
 
             MtdStore mtdStore = new MtdStore { MtdForm = idForm, Sequence = sequence, Parent = idFormParent.Length > 0 ? idFormParent : null };
 
+            bool setData = await _userHandler.GetFormPolicyAsync(webAppUser, mtdStore.MtdForm, RightsType.SetDate);
+            if (setData)
+            {
+                bool isOk = DateTime.TryParse(dateCreate, out DateTime dateTime);
+                if (isOk)
+                {
+                    mtdStore.Timecr = dateTime.Add(DateTime.Now.TimeOfDay);                    
+                }
+            }
 
             await _context.MtdStore.AddAsync(mtdStore);
             await _context.SaveChangesAsync();
@@ -177,7 +199,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             MtdLogDocument mtdLog = new MtdLogDocument
             {
                 MtdStore = mtdStore.Id,
-                TimeCh = mtdStore.Timecr,
+                TimeCh = DateTime.Now,
                 UserId = webAppUser.Id,
                 UserName = webAppUser.Title
             };
@@ -272,7 +294,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                 {
 
                     string idForm = mtdStoreOwner.IdNavigation.MtdForm;
-                    bool IsInstllerOwner = await _userHandler.IsInstallerOwner(webAppUser,idForm,mtdStoreOwner.Id);
+                    bool IsInstllerOwner = await _userHandler.IsInstallerOwner(webAppUser,idForm);
                     if (!IsInstllerOwner)
                     {
                         return Forbid();

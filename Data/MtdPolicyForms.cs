@@ -40,6 +40,7 @@ namespace Mtd.OrderMaker.Web.Data
         public sbyte DeleteOwn { get; set; }
         public sbyte ChangeOwner { get; set; }
         public sbyte Reviewer { get; set; }
+        public sbyte ChangeDate { get; set; }
 
         public virtual MtdForm MtdFormNavigation { get; set; }
         public virtual MtdPolicy MtdPolicyNavigation { get; set; }

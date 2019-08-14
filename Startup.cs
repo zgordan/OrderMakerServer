@@ -77,6 +77,8 @@ namespace Mtd.OrderMaker.Web
 
             services.AddDbContext<OrderMakerContext>(options => options.UseMySql(Configuration.GetConnectionString("DataConnection")));
 
+            services.AddMemoryCache();
+
             services.AddMvc()
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization()
@@ -100,8 +102,9 @@ namespace Mtd.OrderMaker.Web
                         options.Conventions.AuthorizeAreaFolder("Identity", "/Users", "RoleAdmin");
                         options.Conventions.AuthorizeAreaFolder("Config", "/", "RoleAdmin");
                     });
-   
-            services.AddScoped<UserHandler>();
+
+            services.AddSingleton<PolicyCache>();
+            services.AddScoped<UserHandler>();            
             services.AddTransient<ConfigHandler>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IEmailSenderBlank, EmailSenderBlank>();

@@ -64,7 +64,18 @@
             <div class="mtd-store-style-attribute">
                 <span class="mtd-store-style-number">№ @Model.Owner.Store.Sequence.ToString("D9")</span>
                 <hr />
-                <span class="mtd-store-style-date">@Localizer["Date"] @Model.Owner.Store.Timecr.ToShortDateString()</span>
+                @{
+                    bool setDate = await userHandler.GetFormPolicyAsync(user, Model.Owner.Store.MtdForm, Services.RightsType.SetDate);
+                }
+                @if (setDate) { 
+
+                    <input  type="text" class="mtd-data-datepicker" value="@Model.Owner.Store.Timecr.ToShortDateString()" name="date-create" />
+                }
+                else
+                {
+                    <span class="mtd-store-style-date">@Localizer["Date"] @Model.Owner.Store.Timecr.ToShortDateString()</span>
+                }
+
             </div>
         </div>
 

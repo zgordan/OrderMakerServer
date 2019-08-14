@@ -21,6 +21,7 @@ using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Web.Areas.Identity.Data;
 using Mtd.OrderMaker.Web.Data;
 using Mtd.OrderMaker.Web.DataHandler.Approval;
+using Mtd.OrderMaker.Web.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -30,7 +31,8 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
 {
     public partial class FilterHandler
     {
-        public async Task<OutFlow> GetStackFlowAsync(Incomer incomer, TypeQuery typeQuery) {
+        public async Task<OutFlow> GetStackFlowAsync(Incomer incomer, TypeQuery typeQuery)
+        {
 
             OutFlow outFlow = new OutFlow();
 
@@ -53,22 +55,21 @@ namespace Mtd.OrderMaker.Web.DataHandler.Filter
                 foreach (var fs in scripts)
                 {
                     if (fs.Apply == 1)
-                    queryMtdStore = queryMtdStore.FromSql(fs.Script);
+                        queryMtdStore = queryMtdStore.FromSql(fs.Script);
                 }
             }
 
-            IList<Claim> claims = await _userHandler.GetClaimsAsync(_user);
-            bool ownOnly = claims.Where(x =>x.Type == incomer.IdForm &&  x.Value.Contains("view-own")).Any();
+            bool ownOnly = await _userHandler.GetFormPolicyAsync(_user, incomer.IdForm, RightsType.ViewOwn);
             if (ownOnly)
-            {                
+            {
                 IList<string> storeIds = await _context.MtdStoreOwner.Where(x => x.UserId == _user.Id).Select(x => x.Id).ToListAsync();
                 queryMtdStore = queryMtdStore.Where(x => storeIds.Contains(x.Id));
             }
 
-            bool groupView = claims.Where(x =>x.Type == incomer.IdForm && x.Value.Contains("view-group")).Any();
+            bool groupView = await _userHandler.GetFormPolicyAsync(_user, IdForm, RightsType.ViewGroup);
             if (groupView)
             {
-                IList<WebAppUser> appUsers = await  _userHandler.GetUsersInGroupsAsync(_user);
+                IList<WebAppUser> appUsers = await _userHandler.GetUsersInGroupsAsync(_user);
                 List<string> userIds = appUsers.Select(x => x.Id).ToList();
                 IList<string> storeIds = await _context.MtdStoreOwner.Where(x => userIds.Contains(x.UserId)).Select(x => x.Id).ToListAsync();
                 queryMtdStore = queryMtdStore.Where(x => storeIds.Contains(x.Id));
