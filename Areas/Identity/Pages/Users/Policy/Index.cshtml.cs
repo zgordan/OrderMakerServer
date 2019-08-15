@@ -34,7 +34,7 @@ namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users.Policy
             }
 
 
-            MtdPolicies = await query.ToListAsync();
+            MtdPolicies = await query.OrderBy(x=>x.Name).ToListAsync();
             return Page();
         }
     }

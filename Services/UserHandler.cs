@@ -168,7 +168,7 @@ namespace Mtd.OrderMaker.Web.Services
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             string policyId = await GetPolicyIdAsync(user);
             if (policyId == null) return false;
-            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == idForm).FirstOrDefault();
+            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == idForm && x.MtdPolicy == policyId).FirstOrDefault();
             if (policyForms == null) return false;
 
             return policyForms.Create == 1 ? true : false;
@@ -179,7 +179,7 @@ namespace Mtd.OrderMaker.Web.Services
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             string policyId = await GetPolicyIdAsync(user);
             if (policyId == null) return false;
-            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == idForm).FirstOrDefault();
+            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == idForm && x.MtdPolicy == policyId).FirstOrDefault();
             if (policyForms == null) return false;
 
             if (policyForms.ViewAll == 1) { return true; }
@@ -201,7 +201,7 @@ namespace Mtd.OrderMaker.Web.Services
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             string policyId = await GetPolicyIdAsync(user);
             if (policyId == null) return false;
-            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == idForm).FirstOrDefault();
+            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == idForm && x.MtdPolicy == policyId).FirstOrDefault();
             if (policyForms == null) return false;
 
             if (policyForms.EditAll == 1) { return true; }
@@ -222,7 +222,7 @@ namespace Mtd.OrderMaker.Web.Services
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             string policyId = await GetPolicyIdAsync(user);
             if (policyId == null) return false;
-            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == idForm).FirstOrDefault();
+            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == idForm && x.MtdPolicy == policyId).FirstOrDefault();
             if (policyForms == null) return false;
 
             if (policyForms.DeleteAll == 1) { return true; }
@@ -243,7 +243,7 @@ namespace Mtd.OrderMaker.Web.Services
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             string policyId = await GetPolicyIdAsync(user);
             if (policyId == null) return false;
-            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == idForm).FirstOrDefault();
+            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == idForm && x.MtdPolicy == policyId).FirstOrDefault();
             if (policyForms == null) return false;
 
             return policyForms.ChangeOwner == 1 ? true : false;
@@ -255,7 +255,7 @@ namespace Mtd.OrderMaker.Web.Services
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             string policyId = await GetPolicyIdAsync(user);
             if (policyId == null) return false;
-            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == idForm).FirstOrDefault();
+            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == idForm && x.MtdPolicy == policyId).FirstOrDefault();
             if (policyForms == null) return false;
 
             return policyForms.Reviewer == 1 ? true : false;
@@ -266,7 +266,7 @@ namespace Mtd.OrderMaker.Web.Services
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             string policyId = await GetPolicyIdAsync(user);
             if (policyId == null) return false;
-            MtdPolicyParts policyParts = mtdPolicy.SelectMany(x => x.MtdPolicyParts).Where(x => x.MtdFormPart == idPart).FirstOrDefault();
+            MtdPolicyParts policyParts = mtdPolicy.SelectMany(x => x.MtdPolicyParts).Where(x => x.MtdFormPart == idPart && x.MtdPolicy == policyId).FirstOrDefault();
             if (policyParts == null) return false;
 
             return policyParts.Create == 1 ? true : false;
@@ -277,7 +277,7 @@ namespace Mtd.OrderMaker.Web.Services
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             string policyId = await GetPolicyIdAsync(user);
             if (policyId == null) return false;
-            MtdPolicyParts policyParts = mtdPolicy.SelectMany(x => x.MtdPolicyParts).Where(x => x.MtdFormPart == idPart).FirstOrDefault();
+            MtdPolicyParts policyParts = mtdPolicy.SelectMany(x => x.MtdPolicyParts).Where(x => x.MtdFormPart == idPart && x.MtdPolicy == policyId).FirstOrDefault();
             if (policyParts == null) return false;
 
             return policyParts.Edit == 1 ? true : false;
@@ -288,7 +288,7 @@ namespace Mtd.OrderMaker.Web.Services
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             string policyId = await GetPolicyIdAsync(user);
             if (policyId == null) return false;
-            MtdPolicyParts policyParts = mtdPolicy.SelectMany(x => x.MtdPolicyParts).Where(x => x.MtdFormPart == idPart).FirstOrDefault();
+            MtdPolicyParts policyParts = mtdPolicy.SelectMany(x => x.MtdPolicyParts).Where(x => x.MtdFormPart == idPart && x.MtdPolicy == policyId).FirstOrDefault();
             if (policyParts == null) return false;
 
             return policyParts.View == 1 ? true : false;
@@ -352,7 +352,7 @@ namespace Mtd.OrderMaker.Web.Services
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             string policyId = await GetPolicyIdAsync(user);
             if (policyId == null) return false;
-            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == idForm).FirstOrDefault();
+            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == idForm && x.MtdPolicy == policyId).FirstOrDefault();
             if (policyForms == null) return false;
 
             bool result = false;
