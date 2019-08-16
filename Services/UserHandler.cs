@@ -124,6 +124,14 @@ namespace Mtd.OrderMaker.Web.Services
             return formIds;
         }
 
+        public async Task<MtdPolicy> GetPolicyForUser (WebAppUser user)
+        {            
+            string policyId = await GetPolicyIdAsync(user);
+            if (policyId == null);
+            IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
+            if (mtdPolicy == null) return null;
+            return mtdPolicy.Where(x=>x.Id == policyId).FirstOrDefault();            
+        } 
 
         public async Task<bool> IsAdmin(WebAppUser user)
         {

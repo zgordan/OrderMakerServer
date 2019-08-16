@@ -48,12 +48,12 @@ namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users.Accounts
                 Accounts.Add(new WebAppPerson
                 {
                     User = user,
-                    Role = await _roleManager.FindByNameAsync(roles.FirstOrDefault())
+                    Role = await _roleManager.FindByNameAsync(roles.FirstOrDefault()),
+                    MtdPolicy = await _userHandler.GetPolicyForUser(user)
                 });
             }
 
-            Accounts.OrderBy(x => x.User.Title);
-
+                       
             return Page();
         }
     }
@@ -62,5 +62,6 @@ namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users.Accounts
     {
         public WebAppUser User { get; set; }
         public WebAppRole Role { get; set; }
+        public MtdPolicy MtdPolicy { get; set; }
     }
 }

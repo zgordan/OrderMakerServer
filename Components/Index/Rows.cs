@@ -61,7 +61,7 @@ namespace Mtd.OrderMaker.Web.Components.Index
             IList<MtdStore> mtdStore = outFlow.MtdStores;
 
             decimal count = (decimal) outFlow.Count / incomer.PageSize;
-            pageCount = Convert.ToInt32(Math.Round(count, MidpointRounding.AwayFromZero));
+            pageCount = Convert.ToInt32(Math.Ceiling(count));
             pageCount = pageCount == 0 ? 1 : pageCount;
 
             IList<string> storeIds = mtdStore.Select(s => s.Id).ToList();

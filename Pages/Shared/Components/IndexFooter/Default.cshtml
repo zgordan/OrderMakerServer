@@ -62,19 +62,26 @@
         <div style="width: 100%">
             <div style="float: right">
                 <div style="display: flex; align-items:center;">
-                    <div class="mtd-index-footer-back">
-                        <a mtd-data-clicker="1" href="#"><span class="mtd-index-footer-icon mtd-index-footer-icon-step-backward"></span></a>
+                    @if (Model.Page > 1)
+                    {
+                        <div class="mtd-index-footer-back">
+                            <a mtd-data-clicker="1" href="#"><span class="mtd-index-footer-icon mtd-index-footer-icon-step-backward"></span></a>
+                        </div>
+                        <div class="mtd-index-footer-left">
+                            <a mtd-data-clicker="2" href="#"><span class="mtd-index-footer-icon  mtd-index-footer-icon-left"></span></a>
+                        </div>
+                    }
+                        <div class="mtd-index-footer-pages">
+                            @Localizer["Page"] @Model.Page @Localizer["of"] @Model.PageCount
+                        </div>
+                        @if (Model.Page < Model.PageCount)
+                        {
+                            <div class="mtd-index-footer-right">
+                                <a mtd-data-clicker="3" href="#"><span class="mtd-index-footer-icon  mtd-index-footer-icon-right"></span></a>
+                            </div>
+                        }
+
                     </div>
-                    <div class="mtd-index-footer-pages">
-                        @Localizer["Page"] @Model.Page @Localizer["of"] @Model.PageCount
-                    </div>
-                    <div class="mtd-index-footer-left">
-                        <a mtd-data-clicker="2" href="#"><span class="mtd-index-footer-icon  mtd-index-footer-icon-left"></span></a>
-                    </div>
-                    <div class="mtd-index-footer-right">
-                        <a mtd-data-clicker="3" href="#"><span class="mtd-index-footer-icon  mtd-index-footer-icon-right"></span></a>
-                    </div>
-                </div>
             </div>
         </div>
     </form>

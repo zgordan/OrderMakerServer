@@ -131,7 +131,7 @@ const ListenerForPostData = () => {
         inputs.forEach((input) => {
             const location = input.getAttribute('mtd-data-location');
             const message = input.getAttribute('mtd-data-message');
-            input.addEventListener('keydown', (e) => {
+            input.addEventListener('keydown', (e) => {                
                 if (e.keyCode === 13) {
 
                     const check = CheckRequired();

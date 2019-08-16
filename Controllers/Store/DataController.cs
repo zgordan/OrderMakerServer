@@ -78,7 +78,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                 {                    
                     mtdStore.Timecr = dateTime.Add(DateTime.Now.TimeOfDay);
                     _context.MtdStore.Update(mtdStore);
-                }                
+                }               
             }
 
             MtdLogDocument mtdLog = new MtdLogDocument
@@ -190,7 +190,13 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                 if (isOk)
                 {
                     mtdStore.Timecr = dateTime.Add(DateTime.Now.TimeOfDay);                    
+                } else
+                {
+                    mtdStore.Timecr = DateTime.Now;
                 }
+            } else
+            {
+                mtdStore.Timecr = DateTime.Now;
             }
 
             await _context.MtdStore.AddAsync(mtdStore);

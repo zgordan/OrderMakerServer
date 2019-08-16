@@ -16,28 +16,22 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 *@
-
 @page
 @model CreateModel
-
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
-
 @{
     ViewData["Title"] = Localizer["New user"];
     ViewData["SecondTitle"] = Localizer["Creating a new user"];
 }
-
 @section Breadcrumb {
     <li><a href="/Identity/Users">@Localizer["Users"]</a></li>
+    <li><a href="/Identity/Users/Accounts">@Localizer["Accounts"]</a></li>
     <li>@ViewData["Title"]</li>
 }
-
 <div class="mdc-elevation--z8" style="max-width: 450px;margin: 0 auto; left: 50%; padding: 16px 16px 64px 16px; background-color: white">
-
     <div asp-validation-summary="All" class="mtd-main-danger"></div>
     <form id="newuser-form" method="post" autocomplete="off">
-
         <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon" style="width: 100%; margin-top: 16px;">
             <i class="material-icons mdc-text-field__icon">personal</i>
             <input id="login-email" asp-for="Input.UserName" type="text" class="mdc-text-field__input" />
@@ -82,7 +76,6 @@
                 <div class="mdc-notched-outline__trailing"></div>
             </div>
         </div>
-
         <div class="mdc-form-field" style="margin-top: 16px;">
             <div class="mdc-checkbox">
                 <input type="checkbox" asp-for="Input.SendEmail"
@@ -100,10 +93,8 @@
             </div>
             <label for="checkbox-1">@Localizer["Consider Email was confirmed and send a message to the user"].</label>
         </div>
-
         <div style="padding-top: 16px; float: right">
             <button id="update-profile-button" type="submit" class="mdc-button mdc-button--raised">@Localizer["Create"]</button>
         </div>
     </form>
 </div>
-

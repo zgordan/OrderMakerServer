@@ -118,8 +118,8 @@
                     else
                     {
                         <span class="mtd-store-style-date">@Localizer["Date"] @DateTime.Now.ToShortDateString()</span>
-                    }
-                    @*<span class="mtd-store-style-date">@Localizer["Date"] @DateTime.Now.ToShortDateString()</span>*@
+                        <input type="hidden" value="@DateTime.Now.ToShortDateString()" name="date-create" />
+                    }                    
                 }
             </div>
         </div>
