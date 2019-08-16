@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mtd.OrderMaker.Web.Data;
 
 namespace Mtd.OrderMaker.Web.Migrations
 {
     [DbContext(typeof(OrderMakerContext))]
-    partial class OrderMakerContextModelSnapshot : ModelSnapshot
+    [Migration("20190815092004_StoreTimeCr")]
+    partial class StoreTimeCr
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

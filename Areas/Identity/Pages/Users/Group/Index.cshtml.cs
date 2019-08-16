@@ -53,7 +53,7 @@ namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users.Group
             }
 
 
-            MtdGroups = await query.ToListAsync();
+            MtdGroups = await query.OrderBy(x=>x.Name).ToListAsync();
             return Page();
         }
     }

@@ -51,9 +51,11 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
         {
             var policyName = Request.Form["policy-name"];
             var policyNote = Request.Form["policy-note"];
+            var policyId = Request.Form["policy-id"];
 
             MtdPolicy mtdPolicy = new MtdPolicy
             {
+                Id = policyId,
                 Name = policyName,
                 Description = policyNote
             };

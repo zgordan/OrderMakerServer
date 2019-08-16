@@ -17,17 +17,14 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 *@
 @model Models.Store.DataSet
-
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 @inject Services.UserHandler userHandler
-
 @{
     string action = $"/api/store/create";
     string idStore = Model.Store.Id == null ? Model.Store.MtdForm : Model.Store.Id;
     var user = await userHandler.GetUserAsync(User);
 }
-
 
 <div class="mtd-store-style-blank mdc-elevation--z2">
     <div class="mtd-store-edit-bar" style="text-align: right">
@@ -110,19 +107,20 @@
             <div class="mtd-store-style-attribute">
                 <span class="mtd-store-style-number" style="opacity:0.3">№ @Model.Store.Sequence.ToString("D9")</span>
                 <hr />
-                @{
+                @if (Model.Store.MtdFormNavigation.VisibleDate == 1)
+                {
                     bool setDate = await userHandler.GetFormPolicyAsync(user, Model.Store.MtdForm, Services.RightsType.SetDate);
-                }
-                @if (setDate)
-                {
+                    if (setDate)
+                    {
 
-                    <input type="text" class="mtd-data-datepicker" value="@DateTime.Now.ToShortDateString()" name="date-create" />
+                        <input type="text" class="mtd-data-datepicker" value="@DateTime.Now.ToShortDateString()" name="date-create" />
+                    }
+                    else
+                    {
+                        <span class="mtd-store-style-date">@Localizer["Date"] @DateTime.Now.ToShortDateString()</span>
+                    }
+                    @*<span class="mtd-store-style-date">@Localizer["Date"] @DateTime.Now.ToShortDateString()</span>*@
                 }
-                else
-                {
-                    <span class="mtd-store-style-date">@Localizer["Date"] @DateTime.Now.ToShortDateString()</span>
-                }
-                @*<span class="mtd-store-style-date">@Localizer["Date"] @DateTime.Now.ToShortDateString()</span>*@
             </div>
         </div>
 
@@ -144,4 +142,3 @@
         </div>
     </form>
 </div>
-

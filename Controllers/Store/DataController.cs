@@ -144,7 +144,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                     await _context.SaveChangesAsync();
                 }
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
                 if (!MtdStoreExists(Id))
                 {
@@ -152,7 +152,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                 }
                 else
                 {
-                    throw;
+                    throw ex;
                 }
             }
 

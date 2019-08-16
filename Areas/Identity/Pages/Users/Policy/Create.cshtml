@@ -31,9 +31,10 @@
 }
 <div class="mtd-desk">
     <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/policy/add">
-        @Html.AntiForgeryToken()
+        <input type="hidden" value="@Model.MtdPolicy.Id" name="policy-id" />
+        @Html.AntiForgeryToken()        
         <div class="mtd-desk-savebar">
-            <button mtd-data-clicker mtd-data-location="/identity/users/policy" mtd-data-message="@Localizer["New policy was created"]." type="button" class="mdc-fab mdc-fab--extended">
+            <button mtd-data-clicker mtd-data-location="/identity/users/policy/edit?id=@Model.MtdPolicy.Id" mtd-data-message="@Localizer["New policy was created"]." type="button" class="mdc-fab mdc-fab--extended">
                 <span class="material-icons mdc-fab__icon">add</span>
                 <span class="mdc-fab__label">@Localizer["Create"]</span>
             </button>

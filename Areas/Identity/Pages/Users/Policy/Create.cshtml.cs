@@ -41,7 +41,10 @@ namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users.Policy
 
         public void OnGet()
         {
-            MtdPolicy = new MtdPolicy();
+            MtdPolicy = new MtdPolicy()
+            {
+                Id = Guid.NewGuid().ToString()
+            };            
         }
 
 

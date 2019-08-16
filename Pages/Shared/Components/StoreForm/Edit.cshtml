@@ -16,16 +16,13 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 *@
-
 @model Models.Store.DataContainer
-
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 @inject Services.UserHandler userHandler
 @{
     var user = await userHandler.GetUserAsync(User);
 }
-
 <form mtd-data-form method='post' autocomplete='off' enctype='multipart/form-data' action='/api/store/save'>
     @Html.AntiForgeryToken()
     <input type="hidden" name="idStore" asp-for="@Model.Owner.Store.Id" />
@@ -44,9 +41,7 @@
                 </button>
             </div>
         </div>
-
         <div id="@Model.Owner.Store.Id-modal" class="mtd-store-style-modal"></div>
-
         <div class="mtd-store-style-badge">
             @if (Model.Owner.Store.MtdFormNavigation.MtdFormHeader != null)
             {
@@ -56,7 +51,6 @@
                 <img src="@imgSrc" />
             }
         </div>
-
         <div class="mtd-store-style-header">
             <div class="mtd-store-style-title">
                 @Model.Owner.Store.MtdFormNavigation.Name
@@ -64,21 +58,26 @@
             <div class="mtd-store-style-attribute">
                 <span class="mtd-store-style-number">№ @Model.Owner.Store.Sequence.ToString("D9")</span>
                 <hr />
-                @{
-                    bool setDate = await userHandler.GetFormPolicyAsync(user, Model.Owner.Store.MtdForm, Services.RightsType.SetDate);
-                }
-                @if (setDate) { 
 
-                    <input  type="text" class="mtd-data-datepicker" value="@Model.Owner.Store.Timecr.ToShortDateString()" name="date-create" />
-                }
-                else
+                @if (Model.Owner.Store.MtdFormNavigation.VisibleDate == 1)
                 {
-                    <span class="mtd-store-style-date">@Localizer["Date"] @Model.Owner.Store.Timecr.ToShortDateString()</span>
+
+                    bool setDate = await userHandler.GetFormPolicyAsync(user, Model.Owner.Store.MtdForm, Services.RightsType.SetDate);
+
+                    if (setDate)
+                    {
+
+                        <input type="text" class="mtd-data-datepicker" value="@Model.Owner.Store.Timecr.ToShortDateString()" name="date-create" />
+                    }
+                    else
+                    {
+                        <span class="mtd-store-style-date">@Localizer["Date"] @Model.Owner.Store.Timecr.ToShortDateString()</span>
+                    }
                 }
+
 
             </div>
         </div>
-
         @if (Model.Parent != null)
         {
             <div class="mtd-store-style-based">
@@ -86,9 +85,7 @@
                 @Model.Parent.Store.MtdFormNavigation.Name <text>№</text> @Model.Parent.Store.Sequence.ToString("D9") <text>от</text> @Model.Parent.Store.Timecr.ToShortDateString()
             </div>
         }
-
         <div>
-
             @foreach (var part in Model.Owner.Parts)
             {
                 if (part.Title)
@@ -103,4 +100,3 @@
         </div>
     </div>
 </form>
-

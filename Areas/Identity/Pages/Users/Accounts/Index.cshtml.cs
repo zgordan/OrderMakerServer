@@ -52,6 +52,8 @@ namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users.Accounts
                 });
             }
 
+            Accounts.OrderBy(x => x.User.Title);
+
             return Page();
         }
     }
