@@ -49,7 +49,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
         private readonly IStringLocalizer<UsersController> _localizer;
         private readonly IOptions<ConfigSettings> _options;
 
-  
+
         public UsersController(
             UserManager<WebAppUser> userManager,
             RoleManager<WebAppRole> roleManager,
@@ -57,7 +57,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
             IEmailSender emailSender,
             IHostingEnvironment hostingEnvironment,
             OrderMakerContext context,
-            IStringLocalizer<UsersController> localizer, 
+            IStringLocalizer<UsersController> localizer,
             IOptions<ConfigSettings> options
             )
         {
@@ -74,7 +74,8 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
 
         [HttpPost("admin/delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> OnPostAdminDeleteAsync() {
+        public async Task<IActionResult> OnPostAdminDeleteAsync()
+        {
             var userId = Request.Form["user-delete-id"];
             var user = await _userManager.FindByIdAsync(userId);
 
@@ -87,11 +88,13 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
 
         [HttpPost("admin/profile")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> OnPostAdminProfileAsync() {
+        public async Task<IActionResult> OnPostAdminProfileAsync()
+        {
 
             var username = Request.Form["UserName"];
 
-            if (username.Count == 0) {
+            if (username.Count == 0)
+            {
                 return BadRequest();
             }
 
@@ -115,7 +118,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
             if (formConfirm.FirstOrDefault() != null)
             {
                 isConfirm = bool.Parse(formConfirm.FirstOrDefault());
-            }            
+            }
 
             if (user.Email != email)
             {
@@ -140,8 +143,8 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
 
             await _userManager.UpdateAsync(user);
             IList<string> roles = await _userManager.GetRolesAsync(user);
-            await _userManager.RemoveFromRolesAsync(user,roles);
-            await _userManager.AddToRoleAsync(user,roleUser.Name);
+            await _userManager.RemoveFromRolesAsync(user, roles);
+            await _userManager.AddToRoleAsync(user, roleUser.Name);
 
             List<Claim> newClaims = new List<Claim>();
             IEnumerable<Claim> claims = await _userManager.GetClaimsAsync(user);
@@ -149,6 +152,18 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
 
             Claim claim = new Claim("policy", policyId);
             await _userManager.AddClaimAsync(user, claim);
+
+            IList<MtdGroup> groups = await _context.MtdGroup.ToListAsync();
+            foreach (var group in groups)
+            {
+                string value = Request.Form[$"{group.Id}-group"];
+                if (value == "true")
+                {
+                    Claim claimGroup = new Claim("group", group.Id);
+                    await _userManager.AddClaimAsync(user, claimGroup);
+                }
+
+            }
 
             return Ok();
         }

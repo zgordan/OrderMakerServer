@@ -23,10 +23,10 @@
     ViewData["IsConfirm"] = Model.Input.IsConfirm ? "green" : "red";
 }
 <div id="users-profile-form" style="display: block; max-width: 450px; margin:0 auto; left: 50%">
-    <div style="padding-bottom: 64px; padding-top: 8px;">
+    <div>
         <div asp-validation-summary="All" class="mtd-main-danger"></div>
         <input asp-for="UserName" type="hidden" />
-        <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon" style="width: 100%; margin-top: 16px;">
+        <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon" style="width: 100%;">
             <i class="material-icons mdc-text-field__icon">face</i>
             <input id="login-email" asp-for="Input.Title" type="text" class="mdc-text-field__input" />
             <div class="mdc-notched-outline">

@@ -117,3 +117,11 @@ th:not(:first-child) {
     left: -0.3em;
   }
 }
+.mtd-users-wrap {
+  display: flex;
+}
+@media (max-width: 767px) {
+  .mtd-users-wrap {
+    flex-wrap: wrap;
+  }
+}

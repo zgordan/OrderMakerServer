@@ -26,8 +26,7 @@ namespace Mtd.OrderMaker.Web.Data
     {
         public MtdPolicy()
         {
-            MtdPolicyForms = new HashSet<MtdPolicyForms>();
-            MtdPolicyGroup = new HashSet<MtdPolicyGroup>();
+            MtdPolicyForms = new HashSet<MtdPolicyForms>();            
             MtdPolicyParts = new HashSet<MtdPolicyParts>();
         }
 
@@ -35,8 +34,7 @@ namespace Mtd.OrderMaker.Web.Data
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public virtual ICollection<MtdPolicyForms> MtdPolicyForms { get; set; }
-        public virtual ICollection<MtdPolicyGroup> MtdPolicyGroup { get; set; }
+        public virtual ICollection<MtdPolicyForms> MtdPolicyForms { get; set; }        
         public virtual ICollection<MtdPolicyParts> MtdPolicyParts { get; set; }
     }
 }

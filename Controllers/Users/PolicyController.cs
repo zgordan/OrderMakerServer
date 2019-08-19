@@ -79,29 +79,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
             if (mtdPolicy == null) { return NotFound(); }
 
             IList<MtdForm> forms = await _context.MtdForm.Include(x => x.MtdFormPart).ToListAsync();
-            IList<MtdGroup> groups = await _context.MtdGroup.ToListAsync();
-
-            IList<MtdPolicyGroup> mtdPolicyGroups = await _context.MtdPolicyGroup.Where(x => x.MtdPolicy == mtdPolicy.Id).ToListAsync();
-            if (mtdPolicyGroups == null) { mtdPolicyGroups = new List<MtdPolicyGroup>(); }
-
-            foreach (var group in groups)
-            {
-                string value = Request.Form[$"{group.Id}-group"];
-                sbyte member = value == "true" ? (sbyte)1 : (sbyte)0;
-                MtdPolicyGroup pg = mtdPolicyGroups.Where(x => x.MtdGroup == group.Id).FirstOrDefault();
-                if (pg == null)
-                {
-                    pg = new MtdPolicyGroup { MtdPolicy = mtdPolicy.Id, MtdGroup = group.Id };
-                    pg.Member = member;
-                    await _context.MtdPolicyGroup.AddAsync(pg);
-                }
-                else
-                {
-                    pg.Member = member;
-                    _context.MtdPolicyGroup.Update(pg);
-                }
-
-            }
+            IList<MtdGroup> groups = await _context.MtdGroup.ToListAsync();          
 
             IList<MtdPolicyForms> mtdPolicyForms = await _context.MtdPolicyForms.Where(x => x.MtdPolicy == mtdPolicy.Id).ToListAsync();
             if (mtdPolicyForms == null) { mtdPolicyForms = new List<MtdPolicyForms>(); }
@@ -207,28 +185,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
 
             IList<MtdForm> forms = await _context.MtdForm.Include(x => x.MtdFormPart).ToListAsync();
             IList<MtdGroup> groups = await _context.MtdGroup.ToListAsync();
-
-            IList<MtdPolicyGroup> mtdPolicyGroups = await _context.MtdPolicyGroup.Where(x => x.MtdPolicy == mtdPolicy.Id).ToListAsync();
-            if (mtdPolicyGroups == null) { mtdPolicyGroups = new List<MtdPolicyGroup>(); }
-
-            foreach (var group in groups)
-            {
-                MtdPolicyGroup pg = mtdPolicyGroups.Where(x => x.MtdGroup == group.Id).FirstOrDefault();
-                if (pg == null)
-                {
-                    pg = new MtdPolicyGroup { MtdPolicy = mtdPolicy.Id, MtdGroup = group.Id };
-                }
-                pg.Member = 1;
-                if (pg.Id == null)
-                {
-                    await _context.MtdPolicyGroup.AddAsync(pg);
-                }
-                else
-                {
-                    _context.MtdPolicyGroup.Update(pg);
-                }
-            }
-
+           
             IList<MtdPolicyForms> mtdPolicyForms = await _context.MtdPolicyForms.Where(x => x.MtdPolicy == mtdPolicy.Id).ToListAsync();
             if (mtdPolicyForms == null) { mtdPolicyForms = new List<MtdPolicyForms>(); }
 
@@ -308,28 +265,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
 
             IList<MtdForm> forms = await _context.MtdForm.Include(x => x.MtdFormPart).ToListAsync();
             IList<MtdGroup> groups = await _context.MtdGroup.ToListAsync();
-
-            IList<MtdPolicyGroup> mtdPolicyGroups = await _context.MtdPolicyGroup.Where(x => x.MtdPolicy == mtdPolicy.Id).ToListAsync();
-            if (mtdPolicyGroups == null) { mtdPolicyGroups = new List<MtdPolicyGroup>(); }
-
-            foreach (var group in groups)
-            {
-                MtdPolicyGroup pg = mtdPolicyGroups.Where(x => x.MtdGroup == group.Id).FirstOrDefault();
-                if (pg == null)
-                {
-                    pg = new MtdPolicyGroup { MtdPolicy = mtdPolicy.Id, MtdGroup = group.Id };
-                }
-                pg.Member = 0;
-                if (pg.Id == null)
-                {
-                    await _context.MtdPolicyGroup.AddAsync(pg);
-                }
-                else
-                {
-                    _context.MtdPolicyGroup.Update(pg);
-                }
-            }
-
+            
             IList<MtdPolicyForms> mtdPolicyForms = await _context.MtdPolicyForms.Where(x => x.MtdPolicy == mtdPolicy.Id).ToListAsync();
             if (mtdPolicyForms == null) { mtdPolicyForms = new List<MtdPolicyForms>(); }
 
@@ -396,6 +332,20 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
 
             await _context.SaveChangesAsync();
             await _userHandler.CacheRefresh();
+            return Ok();
+        }
+
+        [HttpPost("delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> OnPostPolicyDelete() {
+
+            var policyId = Request.Form["policy-delete-id"];
+            MtdPolicy mtdPolicy = new MtdPolicy { Id = policyId };
+            _context.MtdPolicy.Remove(mtdPolicy);            
+            await _context.SaveChangesAsync();
+
+            await _userHandler.CacheRefresh();
+
             return Ok();
         }
 

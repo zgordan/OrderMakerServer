@@ -122,6 +122,12 @@ namespace Mtd.OrderMaker.Web.Components.Store
                .Where(x => ids.Contains(x.Id))
                .ToListAsync();
 
+            if (type == FormType.Details || type == FormType.Print)
+            {
+                var listIds = stack.Select(x => x.MtdFormPartFieldNavigation.MtdFormPart).GroupBy(x => x).Select(x=>x.Key).ToList();
+                mtdFormParts = mtdFormParts.Where(x => listIds.Contains(x.Id)).ToList();
+            }
+                
 
             DataSet result = new DataSet()
             {
@@ -130,7 +136,7 @@ namespace Mtd.OrderMaker.Web.Components.Store
                 Fields = mtdFormPartFields,
                 Stack = stack,
             };
-
+            
             return result;
 
         }

@@ -178,10 +178,22 @@ namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Account.Manage
             string htmlText = htmlArray.ToString();
 
             htmlText = htmlText.Replace("{link}", $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["Verify Email Address"]}</a>");
-            await _emailSender.SendEmailAsync(email, _localizer["Email Verification"],htmlText);
+            StatusMessage = "На указанный почтовый ящик отправлена ссылка для подтвеждения.";
 
-            StatusMessage = "Verification email sent. Please check your email.";
-            return RedirectToPage();
+            try
+            {
+                await _emailSender.SendEmailAsync(email, _localizer["Email Verification"], htmlText);
+            } catch
+            {
+                StatusMessage = "Ошибка отправки сообшения. Возможно такого адреса не существует";
+            }
+            
+
+            //StatusMessage = "Verification email sent. Please check your email.";
+
+            
+
+            return RedirectToPage("/Index");
         }
     }
 }

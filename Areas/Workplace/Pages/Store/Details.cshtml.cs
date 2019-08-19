@@ -101,8 +101,25 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
                 ChangesHistory.CreateByUser = created.UserName;
             }
 
-            List<WebAppUser> webAppUsers = await _userHandler.GetUsersInGroupsAsync(user);
-            ViewData["UsersList"] = new SelectList(webAppUsers, "Id", "Title");
+
+            if (IsInstallerOwner)
+            {
+
+                List<WebAppUser> webAppUsers = new List<WebAppUser>();
+                bool isViewAll = await _userHandler.GetFormPolicyAsync(user, MtdStore.MtdForm, RightsType.View);
+                if (isViewAll)
+                {
+                    webAppUsers = await _userHandler.Users.ToListAsync();
+                }
+                else
+                {
+                    webAppUsers = await _userHandler.GetUsersInGroupsAsync(user);
+                }
+
+                ViewData["UsersList"] = new SelectList(webAppUsers.OrderBy(x=>x.Title), "Id", "Title");
+            }
+
+
 
             ApprovalHandler approvalHandler = new ApprovalHandler(_context, MtdStore.Id);
             IsApprover = await approvalHandler.IsApproverAsync(user);

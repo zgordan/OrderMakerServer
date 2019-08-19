@@ -48,8 +48,7 @@ namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users.Policy
             if (id == null) { return NotFound(); }
 
             MtdPolicy = await _context.MtdPolicy
-                .Include(i => i.MtdPolicyForms)
-                .Include(i => i.MtdPolicyGroup)
+                .Include(i => i.MtdPolicyForms)                
                 .Include(i => i.MtdPolicyParts)
                 .FirstOrDefaultAsync(x => x.Id == id);
 

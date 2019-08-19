@@ -62,8 +62,9 @@ namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users.Accounts
 
         public string UserName { get; set; }
         //public string Role { get; set; }
-
+        public IList<MtdGroup> MtdGroups { get; set; }
         public InputModel Input { get; set; }
+        public List<string> GroupIds { get; set; }
 
         public class InputModel
         {
@@ -117,6 +118,11 @@ namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users.Accounts
             string policyID = await _userManager.GetPolicyIdAsync(user);
             IList<MtdPolicy> mtdPolicy = await _userManager.CacheGetOrCreateAsync(); 
             ViewData["Policies"] = new SelectList(mtdPolicy.OrderBy(x=>x.Name), "Id", "Name", policyID);
+            MtdGroups = await _context.MtdGroup.OrderBy(x => x.Name).ToListAsync();
+
+            IList<Claim> claims = await _userManager.GetClaimsAsync(user);
+            GroupIds = new List<string>();
+            GroupIds = claims.Where(x => x.Type == "group").Select(x => x.Value).ToList();
 
             return Page();
         }

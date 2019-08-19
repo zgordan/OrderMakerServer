@@ -125,5 +125,11 @@ const handlerEventChecked = () => {
     handlerCreate();
     handlerOpenClose();
     handlerEventChecked();
+
+    const dialog = new mdc.dialog.MDCDialog(document.getElementById('dialog-policy-delete'));
+    document.getElementById('policy-open-dialog').addEventListener('click', () => {
+        dialog.open();
+    });
+    
    
 })();

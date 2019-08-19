@@ -53,8 +53,7 @@ namespace Mtd.OrderMaker.Web.Data
         public virtual DbSet<MtdLogDocument> MtdLogDocument { get; set; }
         public virtual DbSet<MtdLogApproval> MtdLogApproval { get; set; }
         public virtual DbSet<MtdPolicy> MtdPolicy { get; set; }
-        public virtual DbSet<MtdPolicyForms> MtdPolicyForms { get; set; }
-        public virtual DbSet<MtdPolicyGroup> MtdPolicyGroup { get; set; }
+        public virtual DbSet<MtdPolicyForms> MtdPolicyForms { get; set; }        
         public virtual DbSet<MtdPolicyParts> MtdPolicyParts { get; set; }
         public virtual DbSet<MtdStore> MtdStore { get; set; }
         public virtual DbSet<MtdStoreApproval> MtdStoreApproval { get; set; }        
@@ -1072,50 +1071,7 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasForeignKey(d => d.MtdPolicy)
                     .HasConstraintName("fk_policy_forms_policy");
             });
-
-            modelBuilder.Entity<MtdPolicyGroup>(entity =>
-            {
-                entity.ToTable("mtd_policy_group");
-
-                entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.MtdGroup)
-                    .HasName("fk_policy_groups_group_idx");
-
-                entity.HasIndex(e => e.MtdPolicy)
-                    .HasName("fk_policy_group_policy_idx");
-
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.MtdGroup)
-                    .IsRequired()
-                    .HasColumnName("mtd_group")
-                    .HasColumnType("varchar(36)");
-
-                entity.Property(e => e.MtdPolicy)
-                    .IsRequired()
-                    .HasColumnName("mtd_policy")
-                    .HasColumnType("varchar(36)");
-
-                entity.Property(e=>e.Member)
-                    .IsRequired().HasColumnName("member")
-                    .HasColumnType("tinyint(4)")
-                    .HasDefaultValueSql("'0'");
-
-                entity.HasOne(d => d.MtdGroupNavigation)
-                    .WithMany(p => p.MtdPolicyGroup)
-                    .HasForeignKey(d => d.MtdGroup)
-                    .HasConstraintName("fk_policy_groups_group");
-
-                entity.HasOne(d => d.MtdPolicyNavigation)
-                    .WithMany(p => p.MtdPolicyGroup)
-                    .HasForeignKey(d => d.MtdPolicy)
-                    .HasConstraintName("fk_policy_groups_policy");
-            });
+      
 
             modelBuilder.Entity<MtdPolicyParts>(entity =>
             {
