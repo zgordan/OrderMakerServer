@@ -124,7 +124,9 @@ namespace Mtd.OrderMaker.Web.Components.Store
 
             if (type == FormType.Details || type == FormType.Print)
             {
-                var listIds = stack.Select(x => x.MtdFormPartFieldNavigation.MtdFormPart).GroupBy(x => x).Select(x=>x.Key).ToList();
+                var listIds = stack.Where(x => x.MtdFormPartFieldNavigation != null)
+                    .Select(x=>x.MtdFormPartFieldNavigation.MtdFormPart)
+                    .GroupBy(x=>x).Select(x=>x.Key).ToList();
                 mtdFormParts = mtdFormParts.Where(x => listIds.Contains(x.Id)).ToList();
             }
                 
