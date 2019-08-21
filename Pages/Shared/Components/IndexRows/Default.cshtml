@@ -134,7 +134,7 @@
                     @foreach (var field in Model.MtdFormPartFields)
                     {
                         <td>
-                            <div style="max-height: 2.8em; overflow:hidden; padding: 2px; text-overflow: ellipsis">
+                            <div style="padding: 2px;">
                                 @await Component.InvokeAsync("IndexCell", new { stack = Model.MtdStoreStack, idStore = store.Id, idField = field.Id, idType = field.MtdSysType })
                             </div>
                         </td>

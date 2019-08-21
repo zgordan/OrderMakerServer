@@ -119,7 +119,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                         $"<strong>{_localizer["Document"]} - {mtdForm.Name}</strong>",
                         $"{_localizer["User"]} {userCurrent.Title} {_localizer["approved the document at"]} {DateTime.Now}",
                         $"{_localizer["Click on the link to view the document that required to approve."]}",
-                        $"<a href='http://{HttpContext.Request.Host}/workplace/store/details?id={storeId}'>{_localizer["Document link"]}</a>"}
+                        $"<a href='http://{HttpContext.Request.Host}/workplace/store/edit?id={storeId}'>{_localizer["Document link"]}</a>"}
                 };
 
                 await _emailSender.SendEmailBlankAsync(blankEmail);
@@ -138,7 +138,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                         $"<strong>{_localizer["Document"]} - {mtdForm.Name}</strong>",
                         $"{_localizer["User"]} {userCurrent.Title} {_localizer["approved the document at"]} {DateTime.Now}",
                         $"{_localizer["Click on the link to view the document."]}",
-                        $"<a href='http://{HttpContext.Request.Host}/workplace/store/details?id={storeId}'>{_localizer["Document link"]}</a>"}
+                        $"<a href='http://{HttpContext.Request.Host}/workplace/store/edit?id={storeId}'>{_localizer["Document link"]}</a>"}
                 };
                 await _emailSender.SendEmailBlankAsync(blankEmail);
             }
