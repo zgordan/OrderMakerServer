@@ -438,6 +438,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
             }
 
             mtdFilter.WaitList = mtdFilter.WaitList == 0 ? 1 : 0;
+            mtdFilter.Page = 1;
             _context.MtdFilter.Update(mtdFilter);
             await _context.SaveChangesAsync();
 
