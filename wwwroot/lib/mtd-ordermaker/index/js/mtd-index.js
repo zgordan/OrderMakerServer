@@ -182,10 +182,14 @@ const ListenerFilter = () => {
         //const filter = document.getElementById("indexInputFilter");
 
     });
-    buttonFilterAdd.addEventListener('click', () => {
-        indexFormSelector.style.display = "block";
-        IndexShowModal(true, false);
-    });
+
+    if (buttonFilterAdd) {
+        buttonFilterAdd.addEventListener('click', () => {
+            indexFormSelector.style.display = "block";
+            IndexShowModal(true, false);
+        });
+    }
+
 
     const form = document.getElementById("indexFormFilter");
     form.addEventListener('keydown', (e) => {

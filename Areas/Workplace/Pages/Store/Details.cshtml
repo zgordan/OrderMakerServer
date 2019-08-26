@@ -16,15 +16,12 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 *@
-
 @page
 @model Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store.DetailsModel
 @namespace Mtd.OrderMaker.Web.Components.Store
 @using Mtd.OrderMaker.Web.DataHandler.Approval
-
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
-
 @{
     ViewData["Title"] = Localizer["Form view"];
     ViewData["SecondTitle"] = Model.MtdForm.Name;
@@ -36,22 +33,66 @@
     }
     ViewData["Owner"] = viewOwner;
 }
-
 @section Head{
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/store/css/mtd-store-view.css" />
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/ui/css/mtd-ui-material.css" />
 }
-
 @section Breadcrumb {
     <li><a href="/">@Localizer["Desktop"]</a></li>
     <li><a asp-area="Workplace" asp-page="/Store/Index" asp-route-indexForm="@Model.MtdForm.Id">@Localizer["List data"]</a></li>
     <li>@ViewBag.Title</li>
 }
 
+<form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/approval/start'>
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id-store" value="@Model.MtdStore.Id" />
+        <div id="dialog-start" class="mdc-dialog"
+             role="alertdialog"
+             aria-modal="true"
+             aria-labelledby="dialog-accept-title"
+             aria-describedby="dialog-accept-content">
+            <div class="mdc-dialog__container">
+                <div class="mdc-dialog__surface">
+                    <h2 class="mdc-dialog__title" id="start-form-title">
+                        @Localizer["Begin Approval Process"]
+                    </h2>
+                    <div class="mdc-dialog__content" id="accept-dialog-content">
+                        @Localizer["Are you confirm start approval workflow?"]
+                        @if (Model.BlockParts.Count > 0)
+                        {
+                            <div style="padding: 4px; background-color: whitesmoke">
+                                @Localizer["Once the document approval process has begun, the following parts will not access to be editable:"]
+                                <div style="font-weight:600; margin-top: 4px;">
+                                    @{
+                                        int counter = Model.BlockParts.Count;
+                                        foreach (var part in Model.BlockParts)
+                                        {
+                                            counter--;
+                                            <text> @part.Name </text> if (counter > 0)
+                                            { <text>/</text> }
+                                    }
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <footer class="mdc-dialog__actions">
+                        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                            <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                        </button>
+                        <button type="button" id="clicker-start" mtd-data-clicker mtd-data-message="@Localizer["Approval process was started."]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" style="color:green">
+                            <span class="mdc-button__label">@Localizer["Start"]</span>
+                        </button>
+                    </footer>
+                </div>
+            </div>
+            <div class="mdc-dialog__scrim"></div>
+        </div>
+    </form>
+
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/approval/approve'>
     @Html.AntiForgeryToken()
     <input type="hidden" name="id-store" value="@Model.MtdStore.Id" />
-
     <div id="dialog-accept" class="mdc-dialog"
          role="alertdialog"
          aria-modal="true"
@@ -74,13 +115,13 @@
                                     foreach (var part in Model.BlockParts)
                                     {
                                         counter--;
-                                        <text> @part.Name </text> if (counter > 0) { <text>/</text> }
-                                    }
+                                        <text> @part.Name </text> if (counter > 0)
+                                        { <text>/</text> }
+                                }
                                 }
                             </div>
                         </div>
                     }
-
                 </div>
                 <footer class="mdc-dialog__actions">
                     <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
@@ -96,21 +137,19 @@
     </div>
 </form>
 
-@section Action  {
 
-    @if (Model.IsEditor)
+@section Action  {
+    @if (Model.IsEditor & Model.ApprovalStatus != ApprovalStatus.Rejected)
     {
         <li mtd-data-href="/workplace/store/edit?id=@Model.MtdStore.Id" class="mdc-list-item" role="menuitem">
             <span class="mdc-list-item__graphic material-icons" aria-hidden="true">edit</span>
             <span class="mdc-list-item__text">@Localizer["Edit"]</span>
         </li>
     }
-
     <li mtd-data-href="/workplace/store/detailsprint?id=@Model.MtdStore.Id" mtd_data_href-target="_blank" class="mdc-list-item" role="menuitem">
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">print</span>
         <span class="mdc-list-item__text">@Localizer["Print"]</span>
     </li>
-
     @if (Model.IsInstallerOwner)
     {
         <li id="setowner" class="mdc-list-item" role="menuitem">
@@ -118,29 +157,25 @@
             <span class="mdc-list-item__text">@Localizer["Set owner"]</span>
         </li>
     }
-
-    @if (Model.IsEditor)
+    @if (Model.IsEraser)
     {
         <li id="eraser" class="mdc-list-item" role="menuitem">
             <span class="mdc-list-item__graphic material-icons" aria-hidden="true">delete</span>
             <span class="mdc-list-item__text">@Localizer["Delete"]</span>
         </li>
     }
-
-    @if (Model.IsApprover && Model.IsFirstStage)
+    @if (Model.IsReviewer && (Model.ApprovalStatus == ApprovalStatus.Approved || Model.ApprovalStatus == ApprovalStatus.Rejected))
     {
         <hr />
-        <li class="mdc-list-item" role="menuitem" onclick="document.getElementById('clicker-approve').click()">
-            <span class="mdc-list-item__graphic material-icons" aria-hidden="true">thumb_up</span>
-            <span class="mdc-list-item__text">@Localizer["Start approval"]</span>
+        <li id="new-approval" class="mdc-list-item" role="menuitem">
+            <span class="mdc-list-item__graphic material-icons" aria-hidden="true">sync</span>
+            <span class="mdc-list-item__text">@Localizer["Restart Approval"]</span>
         </li>
     }
-
     @if (Model.MtdForm.InverseParentNavigation.Any())
     {
         <li role="separator" class="mdc-list-divider"></li>
     }
-
 
     @foreach (var child in Model.MtdForm.InverseParentNavigation)
     {
@@ -150,7 +185,57 @@
     }
 }
 
+<form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/approval/restart'>
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="id-store" value="@Model.MtdStore.Id" />
+    <input type="hidden" name="id-form" value="@Model.MtdStore.MtdForm" />
+    <div id="dialog-new-approval" class="mdc-dialog"
+         role="alertdialog"
+         aria-modal="true"
+         aria-labelledby="dialog-accept-title"
+         aria-describedby="dialog-accept-content">
+        <div class="mdc-dialog__container">
+            <div class="mdc-dialog__surface">
+                <h2 class="mdc-dialog__title" id="new-form-title">
+                    @Localizer["Restart Approval"]
+                </h2>
+                <div class="mdc-dialog__content" id="new-dialog-content">
+                    @Localizer["Do you confirm the restart of the workflow?"]
+                </div>
+                <footer class="mdc-dialog__actions">
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                        <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                    </button>
+                    <button type="button" id="clicker-new-approve" mtd-data-clicker mtd-data-message="@Localizer["The workflow was restarted."]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" style="color:green">
+                        <span class="mdc-button__label">@Localizer["Apply"]</span>
+                    </button>
+                </footer>
+            </div>
+        </div>
+        <div class="mdc-dialog__scrim"></div>
+    </div>
+</form>
+
+
 <div class="mtd-desk">
+    @if (Model.IsApprover && Model.IsFirstStage)
+    {
+        string collor = "gray";
+        if (Model.ApprovalStatus == ApprovalStatus.Iteraction) { collor = "darkred"; }
+        <div style=" top: 65px; z-index:2; position: sticky; position: -webkit-sticky; position: -moz-sticky; position: -ms-sticky;  position: -o-sticky;">
+            <div class="mdc-elevation--z4" style="background-color: white; text-align: center; color: red; padding: 8px;">
+                <i class="material-icons" aria-hidden="true" style="vertical-align:middle">assignment_turned_in</i>
+                <span> @Localizer["Approval is required"]</span>
+                <div style="padding-bottom: 4px;">
+                    <button  id="button-start-approval" class="mdc-button mdc-button--raised" style="color: white">
+                        <i class="material-icons mdc-button__icon" aria-hidden="true">thumb_up</i>
+                        <span class="mdc-button__label">@Localizer["Start approval"]</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+
     @if (Model.IsApprover && !Model.IsFirstStage)
     {
         <div style=" top: 65px; z-index:2; position: sticky; position: -webkit-sticky; position: -moz-sticky; position: -ms-sticky;  position: -o-sticky;">
@@ -162,7 +247,6 @@
                         <i class="material-icons mdc-button__icon" aria-hidden="true">thumb_up</i>
                         <span class="mdc-button__label">@Localizer["Approve"]</span>
                     </button>
-
                     <button id="reject-button" class="mdc-button mdc-button--raised">
                         <i class="material-icons mdc-button__icon" aria-hidden="true">thumb_down</i>
                         <span class="mdc-button__label">@Localizer["Reject"]</span>
@@ -195,7 +279,6 @@
                     <table>
                         <tr><td>ID</td><td>@Model.MtdStore.Sequence.ToString("D9")</td></tr>
                         <tr><td>@Localizer["Owner"]</td><td>@Localizer[$"{ViewBag.Owner}"]</td></tr>
-
                         @if (Model.IsFormApproval)
                         {
                             switch (Model.ApprovalStatus)
@@ -281,11 +364,9 @@
                                     }
                             }
                         }
-
                     </table>
                 </div>
             </div>
-
             <div class="mtd-desk-block-content mtd-desk-block--border">
                 <div class="mtd-desk-block-title">
                     <label>
@@ -300,17 +381,14 @@
                     </table>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
-
 @if (Model.IsInstallerOwner)
 {
     <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/setowner'>
         @Html.AntiForgeryToken()
         <input id="setowner-id-store" name="setowner-id-store" value="@Model.MtdStore.Id" type="hidden" />
-
         <div id="dialog-setowner" class="mdc-dialog"
              role="alertdialog"
              aria-modal="true"
@@ -344,13 +422,11 @@
         </div>
     </form>
 }
-
 @if (Model.IsApprover)
 {
     <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/approval/reject'>
         @Html.AntiForgeryToken()
         <input type="hidden" name="id-store" value="@Model.MtdStore.Id" />
-
         <div id="dialog-approval" class="mdc-dialog"
              role="alertdialog"
              aria-modal="true"
@@ -388,7 +464,6 @@
                             <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Stages"]</label>
                             <div class="mdc-line-ripple"></div>
                         </div>
-
                     </div>
                     <footer class="mdc-dialog__actions">
                         <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
@@ -404,13 +479,11 @@
         </div>
     </form>
 }
-
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/delete'>
     @Html.AntiForgeryToken()
     <input id="store-delete-id" name="store-delete-id" type="hidden" value="@Model.MtdStore.Id" />
     <input id="deleteClicker" mtd-data-clicker mtd-data-location="/workplace/store?indexform=@Model.MtdStore.MtdForm" mtd-data-message="@Localizer["The document was deleted"]." type="hidden" />
 </form>
-
 <div id="dialog-store-delete" class="mdc-dialog"
      role="alertdialog"
      aria-modal="true"
@@ -436,7 +509,6 @@
     </div>
     <div class="mdc-dialog__scrim"></div>
 </div>
-
 
 @section Scripts{
     <script>
@@ -491,14 +563,25 @@
                 });
             }
 
+            const newApproval = document.getElementById("new-approval");
+            if (newApproval) {
+                const dialogApproval = new mdc.dialog.MDCDialog(document.getElementById("dialog-new-approval"));
+                newApproval.addEventListener('click', () => {
+                    dialogApproval.open();
+                });
+            }
+
+            const startApproval = document.getElementById("button-start-approval");
+            if (startApproval) {
+                const dialogStart = new mdc.dialog.MDCDialog(document.getElementById("dialog-start"));
+                startApproval.addEventListener('click', () => {
+                    dialogStart.open();
+                });
+            }
+
         })();
     </script>
 }
-
-
-
-
-
 
 
 

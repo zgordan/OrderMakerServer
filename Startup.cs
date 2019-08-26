@@ -39,6 +39,7 @@ using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
+using Mtd.OrderMaker.Server;
 
 namespace Mtd.OrderMaker.Web
 {
@@ -93,6 +94,11 @@ namespace Mtd.OrderMaker.Web
 
 
             services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddMvc()
+                .AddDataAnnotationsLocalization(options => {
+                    options.DataAnnotationLocalizerProvider = (type, factory) =>
+                    factory.Create(typeof(SharedResource));
+                });
 
             services.AddMvc()
                     .AddRazorPagesOptions(options =>
@@ -103,6 +109,7 @@ namespace Mtd.OrderMaker.Web
                         options.Conventions.AuthorizeAreaFolder("Config", "/", "RoleAdmin");
                     });
 
+            
             services.AddSingleton<PolicyCache>();
             services.AddScoped<UserHandler>();            
             services.AddTransient<ConfigHandler>();

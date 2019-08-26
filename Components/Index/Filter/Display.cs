@@ -52,6 +52,20 @@ namespace Mtd.OrderMaker.Web.Components.Index.Filter
             MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == idForm);
             if (filter != null)
             {
+
+                if (filter.WaitList == 1)
+                {
+                    DisplayModelView display= new DisplayModelView
+                    {
+                        IdForm = idForm,
+                        IdFilter = filter == null ? -1 : filter.Id,
+                        DisplayDatas = displayDatas
+                    };
+
+                    return View("Default", display);
+
+                }
+
                 List<MtdFilterField> mtdFilterFields = await _context.MtdFilterField
                     .Include(x => x.MtdTermNavigation)
                     .Include(m => m.MtdFormPartFieldNavigation)

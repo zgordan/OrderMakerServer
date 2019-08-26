@@ -31,6 +31,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Localization;
 using Mtd.OrderMaker.Web;
+using Mtd.OrderMaker.Server;
 
 namespace Mtd.OrderMaker.Web.Controllers.Store
 {
@@ -51,6 +52,24 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             _userHandler = userHandler;
             _emailSender = emailSender;
             _localizer = sharedLocalizer;
+        }
+
+        [HttpPost("start")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> OnPostStartAsync()
+        {
+            string storeId = Request.Form["id-store"];
+            WebAppUser webAppUser = await _userHandler.GetUserAsync(HttpContext.User);
+            ApprovalHandler approvalHandler = new ApprovalHandler(_context, storeId);
+            bool isApprover = await approvalHandler.IsApproverAsync(webAppUser);
+            if (!isApprover) { return NotFound(); }
+
+            bool isOk = await approvalHandler.ActionApprove(webAppUser);
+            if (isOk)
+            {
+                await SendEmailStart(approvalHandler);
+            }
+            return Ok();
         }
 
         [HttpPost("approve")]
@@ -96,16 +115,97 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
         }
 
 
-        private async Task<bool> SendEmailApprove(ApprovalHandler approvalHandler)
+        [HttpPost("restart")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> OnPostNewAsync()
         {
-            
+            string storeId = Request.Form["id-store"];
+            string formId = Request.Form["id-form"];
+
+            WebAppUser webAppUser = await _userHandler.GetUserAsync(HttpContext.User);
+            ApprovalHandler approvalHandler = new ApprovalHandler(_context, storeId);
+            bool isReviewer = await _userHandler.IsReviewer(webAppUser, formId);
+
+            if (!isReviewer) { return NotFound(); }
+
+            bool isOk = await approvalHandler.ActionApproveReset(webAppUser);
+            if (isOk)
+            {
+                await SendEmailReStart(approvalHandler);
+            }
+            return Ok();
+        }
+
+
+        private async Task<bool> SendEmailStart(ApprovalHandler approvalHandler)
+        {
+
             string ownerId = await approvalHandler.GetOwnerID();
             WebAppUser userCurrent = await _userHandler.GetUserAsync(HttpContext.User);
-            WebAppUser userOwner = _userHandler.Users.Where(x => x.Id == ownerId).FirstOrDefault();            
+            WebAppUser userOwner = _userHandler.Users.Where(x => x.Id == ownerId).FirstOrDefault();
             string storeId = await approvalHandler.GetStoreID();
             MtdForm mtdForm = await approvalHandler.GetFormAsync();
 
-            MtdApprovalStage stageNext = await approvalHandler.GetNextStageAsync();            
+            MtdApprovalStage stageNext = await approvalHandler.GetNextStageAsync();
+
+            if (await approvalHandler.IsFirstStageAsync())
+            {
+                WebAppUser userNext = _userHandler.Users.Where(x => x.Id == stageNext.UserId).FirstOrDefault();
+                BlankEmail blankEmail = new BlankEmail
+                {
+                    Subject = _localizer["Approval event"],
+                    Email = userNext.Email,
+                    Header = _localizer["Approval required"],
+                    Content = new List<string> {
+                        $"<strong>{_localizer["Document"]} - {mtdForm.Name}</strong>",
+                        $"{_localizer["User"]} {userCurrent.Title} {_localizer["started a new approval at"]} {DateTime.Now}",
+                        $"{_localizer["Click on the link to edit the document that required to approve."]}",
+                        $"<a href='http://{HttpContext.Request.Host}/workplace/store/edit?id={storeId}'>{_localizer["Document link"]}</a>"}
+                };
+
+                await _emailSender.SendEmailBlankAsync(blankEmail);
+            }
+
+            return true;
+        }
+
+        private async Task<bool> SendEmailReStart(ApprovalHandler approvalHandler)
+        {
+
+            string ownerId = await approvalHandler.GetOwnerID();
+            WebAppUser userCurrent = await _userHandler.GetUserAsync(HttpContext.User);
+            WebAppUser userOwner = _userHandler.Users.Where(x => x.Id == ownerId).FirstOrDefault();
+            string storeId = await approvalHandler.GetStoreID();
+            MtdForm mtdForm = await approvalHandler.GetFormAsync();
+
+            MtdApprovalStage stageNext = await approvalHandler.GetNextStageAsync();
+
+            BlankEmail blankEmail = new BlankEmail
+            {
+                Subject = _localizer["Approval event"],
+                Email = userOwner.Email,
+                Header = _localizer["Approval process event"],
+                Content = new List<string> {
+                              $"<strong>{_localizer["Document"]} - {mtdForm.Name}</strong>",
+                              $"{_localizer["User"]} {userCurrent.Title} {_localizer["restarted approval workflow at"]} {DateTime.Now}",
+                              $"{_localizer["Click on the link to edit the document and start new approval."]}",
+                              $"<a href='http://{HttpContext.Request.Host}/workplace/store/edit?id={storeId}'>{_localizer["Document link"]}</a>"}
+            };
+            await _emailSender.SendEmailBlankAsync(blankEmail);
+
+            return true;
+        }
+
+        private async Task<bool> SendEmailApprove(ApprovalHandler approvalHandler)
+        {
+
+            string ownerId = await approvalHandler.GetOwnerID();
+            WebAppUser userCurrent = await _userHandler.GetUserAsync(HttpContext.User);
+            WebAppUser userOwner = _userHandler.Users.Where(x => x.Id == ownerId).FirstOrDefault();
+            string storeId = await approvalHandler.GetStoreID();
+            MtdForm mtdForm = await approvalHandler.GetFormAsync();
+
+            MtdApprovalStage stageNext = await approvalHandler.GetNextStageAsync();
 
             if (stageNext != null)
             {
@@ -118,36 +218,33 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                     Content = new List<string> {
                         $"<strong>{_localizer["Document"]} - {mtdForm.Name}</strong>",
                         $"{_localizer["User"]} {userCurrent.Title} {_localizer["approved the document at"]} {DateTime.Now}",
-                        $"{_localizer["Click on the link to view the document that required to approve."]}",
+                        $"{_localizer["Click on the link to edit the document that required to approve."]}",
                         $"<a href='http://{HttpContext.Request.Host}/workplace/store/edit?id={storeId}'>{_localizer["Document link"]}</a>"}
                 };
 
                 await _emailSender.SendEmailBlankAsync(blankEmail);
             }
-
-          bool IsFirstStage  = await approvalHandler.IsFirstStageAsync();
-            if (!IsFirstStage)
+            else
             {
-
                 BlankEmail blankEmail = new BlankEmail
                 {
                     Subject = _localizer["Approval event"],
                     Email = userOwner.Email,
                     Header = _localizer["Approval process event"],
                     Content = new List<string> {
-                        $"<strong>{_localizer["Document"]} - {mtdForm.Name}</strong>",
-                        $"{_localizer["User"]} {userCurrent.Title} {_localizer["approved the document at"]} {DateTime.Now}",
-                        $"{_localizer["Click on the link to view the document."]}",
-                        $"<a href='http://{HttpContext.Request.Host}/workplace/store/edit?id={storeId}'>{_localizer["Document link"]}</a>"}
+                              $"<strong>{_localizer["Document"]} - {mtdForm.Name}</strong>",
+                              $"{_localizer["User"]} {userCurrent.Title} {_localizer["approved the document at"]} {DateTime.Now}",
+                              $"{_localizer["Approval process is complete. Click on the link to view the document."]}",
+                              $"<a href='http://{HttpContext.Request.Host}/workplace/store/details?id={storeId}'>{_localizer["Document link"]}</a>"}
                 };
                 await _emailSender.SendEmailBlankAsync(blankEmail);
             }
-           
+
             return true;
         }
 
         private async Task<bool> SendEmailReject(ApprovalHandler approvalHandler)
-        {            
+        {
             string ownerId = await approvalHandler.GetOwnerID();
             WebAppUser userCurrent = await _userHandler.GetUserAsync(HttpContext.User);
             WebAppUser userOwner = _userHandler.Users.Where(x => x.Id == ownerId).FirstOrDefault();
@@ -156,38 +253,61 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
 
             MtdApprovalStage stagePrev = await approvalHandler.GetPrevStage();
             MtdApprovalStage stageFirst = await approvalHandler.GetFirstStageAsync();
-            if (stagePrev != null && stagePrev.Id != stageFirst.Id)
+
+            bool cacheReload = false;
+
+            if (stagePrev != null)
             {
-                WebAppUser userNext = _userHandler.Users.Where(x => x.Id == stagePrev.UserId).FirstOrDefault();
+                WebAppUser user = userOwner;
+                if (stagePrev.UserId != "owner")
+                {
+                    user = _userHandler.Users.Where(x => x.Id == stagePrev.UserId).FirstOrDefault();
+                }
+
                 BlankEmail blankEmail = new BlankEmail
                 {
                     Subject = _localizer["Approval event"],
-                    Email = userNext.Email,
+                    Email = user.Email,
                     Header = _localizer["Approval required"],
                     Content = new List<string> {
                         $"<strong>{_localizer["Document"]} - {mtdForm.Name}</strong>",
                         $"{_localizer["User"]} {userCurrent.Title} {_localizer["rejected the document at"]} {DateTime.Now}",
-                        $"{_localizer["Click on the link to view the document that required to approve."]}",
-                        $"<a href='http://{HttpContext.Request.Host}/workplace/store/details?id={storeId}'>{_localizer["Document link"]}</a>"}
+                        $"{_localizer["Click on the link to edit the document that required to approve."]}",
+                        $"<a href='http://{HttpContext.Request.Host}/workplace/store/edit?id={storeId}'>{_localizer["Document link"]}</a>"}
                 };
 
 
-                await _emailSender.SendEmailBlankAsync(blankEmail);
+                approvalHandler.ClearCache();
+                cacheReload = true;
+
+                if (!await approvalHandler.IsComplete())
+                {
+                    await _emailSender.SendEmailBlankAsync(blankEmail);
+                }
+
             }
 
-            BlankEmail blankOwner = new BlankEmail
+            if (!cacheReload)
             {
-                Subject = _localizer["Approval event"],
-                Email = userOwner.Email,
-                Header = _localizer["Approval process event"],
-                Content = new List<string> {
+                approvalHandler.ClearCache();
+            }
+
+            if (await approvalHandler.IsComplete())
+            {
+                BlankEmail blankOwner = new BlankEmail
+                {
+                    Subject = _localizer["Approval event"],
+                    Email = userOwner.Email,
+                    Header = _localizer["Approval process event"],
+                    Content = new List<string> {
                         $"<strong>{_localizer["Document"]} - {mtdForm.Name}</strong>",
                         $"{_localizer["User"]} {userCurrent.Title} {_localizer["rejected the document at"]} {DateTime.Now}",
-                        $"{_localizer["Click on the link to view the document."]}",
+                        $"{_localizer["Approval process is complete. Click on the link to view the document."]}",
                         $"<a href='http://{HttpContext.Request.Host}/workplace/store/details?id={storeId}'>{_localizer["Document link"]}</a>"}
-            };
+                };
 
-            await _emailSender.SendEmailBlankAsync(blankOwner);
+                await _emailSender.SendEmailBlankAsync(blankOwner);
+            }
 
             return true;
         }

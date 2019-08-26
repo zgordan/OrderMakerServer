@@ -64,8 +64,10 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
 
             WebAppUser webAppUser = await _userHandler.GetUserAsync(HttpContext.User);
             bool isEditor = await _userHandler.IsEditor(webAppUser, mtdStore.MtdForm, mtdStore.Id);
+            ApprovalHandler approvalHandler = new ApprovalHandler(_context, mtdStore.Id);
+            ApprovalStatus approvalStatus = await approvalHandler.GetStatusAsync(webAppUser);
 
-            if (!isEditor)
+            if (!isEditor || approvalStatus == ApprovalStatus.Rejected)
             {
                 return Ok(403);
             }
@@ -341,6 +343,18 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             List<string> partsIds = new List<string>();
             bool isReviewer = await _userHandler.IsReviewer(user, store.MtdForm);
             ApprovalHandler approvalHandler = new ApprovalHandler(_context, store.Id);
+
+            bool isApproval = await approvalHandler.IsApprovalFormAsync();
+            if (isApproval)
+            {
+                 bool isExists = await _context.MtdStoreApproval.Where(x => x.Id == store.Id).AnyAsync();
+                if (!isExists)
+                {
+                    var firstStage = await approvalHandler.GetFirstStageAsync();
+                    await _context.MtdStoreApproval.AddAsync(new MtdStoreApproval { Id = store.Id, MtdApproveStage = firstStage.Id, PartsApproved = "&", Complete = 0, Result = 0 });
+                }
+            }
+
             List<string> blockedParts = new List<string>();
             if (!isReviewer)
             {

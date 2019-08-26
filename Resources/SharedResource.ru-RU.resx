@@ -129,8 +129,8 @@
   <data name="approved the document at" xml:space="preserve">
     <value>согласовал документ </value>
   </data>
-  <data name="Click on the link to view the document that required to approve." xml:space="preserve">
-    <value>Нажмите на ссылку, чтобы просмотреть документ, который требуется утвердить.</value>
+  <data name="Click on the link to edit the document that required to approve." xml:space="preserve">
+    <value>Нажмите на ссылку, чтобы отредактировать документ, который требуется утвердить.</value>
   </data>
   <data name="Click on the link to view the document." xml:space="preserve">
     <value>Нажмите на ссылку, чтобы просмотреть документ.</value>
@@ -146,5 +146,17 @@
   </data>
   <data name="User" xml:space="preserve">
     <value>Пользователь</value>
+  </data>
+  <data name="Approval process is complete. Click on the link to view the document." xml:space="preserve">
+    <value>Процесс согласования завершен. Нажмите на ссылку, чтобы просмотреть документ.</value>
+  </data>
+  <data name="Click on the link to edit the document and start new approval." xml:space="preserve">
+    <value>Нажмите на ссылку, чтобы отредактировать документ и начать новый процесс согласования.</value>
+  </data>
+  <data name="restarted approval workflow at" xml:space="preserve">
+    <value>изменил статус согласования </value>
+  </data>
+  <data name="started a new approval at" xml:space="preserve">
+    <value>начал новый процесс согласования</value>
   </data>
 </root>

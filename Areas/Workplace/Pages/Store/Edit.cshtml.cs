@@ -23,7 +23,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Mtd.OrderMaker.Web.Areas.Identity.Data;
 using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Web.DataHandler.Approval;
 using Mtd.OrderMaker.Web.Services;
 
 namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
@@ -64,7 +66,16 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
                 return Forbid();
             }
 
-            MtdForm = await _context.MtdForm.FindAsync(MtdStore.MtdForm);
+            WebAppUser webUser = await _userHandler.GetUserAsync(HttpContext.User);
+            ApprovalHandler approvalHandler = new ApprovalHandler(_context, MtdStore.Id);
+            ApprovalStatus approvalStatus = await approvalHandler.GetStatusAsync(webUser);
+
+            if (approvalStatus == ApprovalStatus.Rejected)
+            {
+                return Forbid();
+            }
+
+            MtdForm = await _context.MtdForm.FindAsync(MtdStore.MtdForm);            
            
             return Page();
         }

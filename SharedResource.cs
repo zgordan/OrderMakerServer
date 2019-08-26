@@ -23,11 +23,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Mtd.OrderMaker.Web
+namespace Mtd.OrderMaker.Server
 {
     public interface ISharedResource
-    {
+    {        
     }
+
     public class SharedResource : ISharedResource
     {
         private readonly IStringLocalizer _localizer;

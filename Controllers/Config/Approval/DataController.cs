@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Web.DataHandler.Approval;
 
 namespace Mtd.OrderMaker.Web.Controllers.Config.Approval
 {
@@ -195,6 +196,17 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Approval
 
             _context.MtdApprovalStage.UpdateRange(stages);
             await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPost("stage/update")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> OnPostStageUpdateAsync()
+        {
+            string approvalId = Request.Form["approval-id"];
+
+            await ApprovalHandler.UpdateStatusForStartAsync(_context, approvalId);
 
             return Ok();
         }

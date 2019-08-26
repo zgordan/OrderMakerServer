@@ -39,27 +39,38 @@
         </div>
     }
 
+    @{ 
+        string disabled = Model.WaitList ? "disabled": "";        
+    }
+
     <div class="mtd-index-header-search">
         <form mtd-data-form method="post" action="/api/index/search/text" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
             @Html.AntiForgeryToken()
             <input asp-for="@Model.IdForm" name="indexForm" value="@Model.IdForm" hidden />
             <div class="mdc-text-field mdc-text-field--fullwidth mdc-text-field--with-leading-icon">
                 <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">search</i>
-                <input mtd-data-input asp-for="@Model.SearchText" id="indexSearchText" name="indexSearchText" class="mdc-text-field__input"
+
+                <input mtd-data-input id="indexSearchText" name="indexSearchText" class="mdc-text-field__input"
+                       value="@Model.SearchText"
                        type="text"
                        placeholder="@Localizer["Search for text"]"
                        aria-label="Search for text"
-                       autocomplete="off">
+                       autocomplete="off" @disabled>
             </div>
         </form>
     </div>
+
     <div class="mtd-index-header-buttons">
-        <div class="mtd-desk-hint-ibutton">
-            <button id="indexButtonFilterAdd" class="mdc-icon-button material-icons mdc-theme--secondary">add_box</button>
-            <div class="mtd-desk-hint-ibutton_info">
-                <span>@Localizer["Add filter"]</span>
+        @if (!Model.WaitList)
+        {
+            <div class="mtd-desk-hint-ibutton">
+                <button id="indexButtonFilterAdd" class="mdc-icon-button material-icons mdc-theme--secondary">add_box</button>
+                <div class="mtd-desk-hint-ibutton_info">
+                    <span>@Localizer["Add filter"]</span>
+                </div>
             </div>
-        </div>
+        }
+
         <div>
             <div class="mtd-desk-hint-ibutton">
                 <button id="indexButtonColumnEdit" class="mdc-icon-button material-icons mdc-theme--secondary">view_list</button>
@@ -67,7 +78,7 @@
                     <span>@Localizer["Column list"]</span>
                 </div>
             </div>
-            
+
         </div>
         <div>
             <form mtd-data-form method="post" action="/api/index/waitlist/set" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>

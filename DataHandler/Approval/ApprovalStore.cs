@@ -13,7 +13,7 @@ namespace Mtd.OrderMaker.Web.DataHandler.Approval
         Waiting,
         Approved,
         Rejected,
-        Required
+        Required,        
 
     }
 

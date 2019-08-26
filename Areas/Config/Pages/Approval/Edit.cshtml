@@ -16,32 +16,31 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 *@
-
 @page
 @model EditModel
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
-
 @{
     ViewData["Title"] = Localizer["Approval editor"];
     ViewData["SecondTitle"] = Localizer["Editing approval parameters"];
 }
-
 @section Head {
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/config/css/mtd-config-form-edit.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/filechoose/css/mtd-file-choose.css" asp-append-version="true" />
 }
-
 @section Breadcrumb {
     <li><a href="/config">@Localizer["Configurator"]</a></li>
     <li><a href="/config/approval">@Localizer["Approvals"]</a></li>
     <li>@ViewBag.Title</li>
 }
-
 @section Action {
     <li mtd-data-href="/config/approval/stages?idApproval=@Model.MtdApproval.Id" class="mdc-list-item" role="menuitem">
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">timeline</span>
         <span class="mdc-list-item__text">@Localizer["Edit chain"]</span>
+    </li>
+    <li class="mdc-list-item" role="menuitem" onclick="document.getElementById('updateClicker').click()">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">sync</span>
+        <span class="mdc-list-item__text">@Localizer["Update first stages"]</span>
     </li>
     <hr class="mdc-list-divider">
     <li mtd-data-delete class="mdc-list-item" role="menuitem">
@@ -49,10 +48,8 @@
         <span class="mdc-list-item__text">@Localizer["Delete approval"]</span>
     </li>
 }
-
 <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="">
     <input type="hidden" asp-for="MtdApproval.Id" />
-
     <div class="mtd-desk">
         <div class="mtd-desk-savebar">
             <button mtd-data-clicker mtd-data-message="@Localizer["Changes saved"]." type="button" class="mdc-fab mdc-fab--extended">
@@ -60,7 +57,6 @@
                 <span class="mdc-fab__label">@Localizer["Save"]</span>
             </button>
         </div>
-
         <div style="display: flex; flex-direction: column; align-items:center;">
             <div style="display: flex; width: 90%; max-width: 550px; padding: 8px; border-bottom: 1px solid gray">
                 <div style="flex-grow:1">
@@ -70,7 +66,6 @@
                     <strong>@Model.MtdApproval.MtdFormNavigation.Name</strong>
                 </div>
             </div>
-
             <div class="mdc-text-field mdc-text-field--outlined" style="width: 100%; max-width: 600px; margin-top: 16px;">
                 <input type="text" class="mdc-text-field__input" asp-for="MtdApproval.Name" required>
                 <div class="mdc-notched-outline">
@@ -105,13 +100,17 @@
     </div>
 </form>
 
+<form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/config/approval/stage/update'>
+    @Html.AntiForgeryToken()
+    <input name="approval-id" type="hidden" value="@Model.MtdApproval.Id" />
+    <input id="updateClicker" mtd-data-clicker mtd-data-message="@Localizer["The approval "] '@Model.MtdApproval.Name' @Localizer["was updated"]" type="hidden" />
+</form>
 
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/config/approval/delete'>
     @Html.AntiForgeryToken()
     <input id="config-delete-id" name="idApproval" type="hidden" value="@Model.MtdApproval.Id" />
     <input id="deleteClicker" mtd-data-clicker mtd-data-location="/config/approval" mtd-data-message="@Localizer["The approval "] '@Model.MtdApproval.Name' @Localizer["was deleted"]" type="hidden" />
 </form>
-
 <div id="dialog-delete" class="mdc-dialog"
      role="alertdialog"
      aria-modal="true"
@@ -137,7 +136,6 @@
     </div>
     <div class="mdc-dialog__scrim"></div>
 </div>
-
 @section Scripts{
     <script src="~/lib/mtd-ordermaker/config/js/mtd-config-approval.js" asp-append-version="true"></script>
 }

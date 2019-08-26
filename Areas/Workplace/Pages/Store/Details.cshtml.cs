@@ -50,7 +50,9 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
         public MtdStoreOwner StoreOwner { get; set; }
         public bool IsInstallerOwner { get; set; }
         public bool IsEditor { get; set; }
+        public bool IsEraser { get; set; }
         public bool IsApprover { get; set; }
+        public bool IsReviewer { get; set; }        
         public bool IsFirstStage { get; set; }
         public ApprovalStatus ApprovalStatus { get; set; }
         public List<MtdFormPart> BlockParts { get; set; }
@@ -73,21 +75,25 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
             var user = await _userHandler.GetUserAsync(HttpContext.User);
             bool isViewer = await _userHandler.IsViewer(user, MtdStore.MtdForm, MtdStore.Id);
 
-            IsEditor = await _userHandler.IsEditor(user, MtdStore.MtdForm, MtdStore.Id);
-            IsInstallerOwner = await _userHandler.IsInstallerOwner(user, MtdStore.MtdForm);
-
+            IsEditor = await _userHandler.IsEditor(user, MtdStore.MtdForm, MtdStore.Id);            
+            
             if (!isViewer)
             {
                 return Forbid();
             }
 
-
+            IsInstallerOwner = await _userHandler.IsInstallerOwner(user, MtdStore.MtdForm);
+            IsEraser = await _userHandler.IsEraser(user, MtdStore.MtdForm, MtdStore.Id);
+            
             MtdForm = await _context.MtdForm.Include(m => m.InverseParentNavigation).FirstOrDefaultAsync(x => x.Id == MtdStore.MtdForm);
             MtdLogDocument edited = await _context.MtdLogDocument.Where(x => x.MtdStore == MtdStore.Id).OrderByDescending(x => x.TimeCh).FirstOrDefaultAsync();
             MtdLogDocument created = await _context.MtdLogDocument.Where(x => x.MtdStore == MtdStore.Id).OrderBy(x => x.TimeCh).FirstOrDefaultAsync();
 
+            IsReviewer = await _userHandler.IsReviewer(user, MtdForm.Id);
+
             StoreOwner = await _context.MtdStoreOwner.Where(x => x.Id == MtdStore.Id).FirstOrDefaultAsync();
             ChangesHistory = new ChangesHistory();
+
 
             if (edited != null)
             {
@@ -123,7 +129,7 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
 
             ApprovalHandler approvalHandler = new ApprovalHandler(_context, MtdStore.Id);
             IsApprover = await approvalHandler.IsApproverAsync(user);
-            IsFirstStage = await approvalHandler.IsFirstStageAsync();
+            IsFirstStage = await approvalHandler.IsFirstStageAsync();            
             IList<MtdApprovalStage> stages = await approvalHandler.GetStagesDownAsync();
             ViewData["Stages"] = new SelectList(stages.OrderByDescending(x => x.Stage), "Id", "Name");
 
@@ -131,7 +137,7 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
             BlockParts = new List<MtdFormPart>();
             if (partIds.Count > 0)
             {
-                BlockParts = await _context.MtdFormPart.Where(x => partIds.Contains(x.Id)).OrderBy(x => x.Sequence).ToListAsync();
+                BlockParts = await _context.MtdFormPart.Where(x => partIds.Contains(x.Id) && x.Title == true).OrderBy(x => x.Sequence).ToListAsync();
             }
             IsFormApproval = await approvalHandler.IsApprovalFormAsync();
 
