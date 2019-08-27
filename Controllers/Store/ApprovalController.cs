@@ -159,8 +159,8 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                     Content = new List<string> {
                         $"<strong>{_localizer["Document"]} - {mtdForm.Name}</strong>",
                         $"{_localizer["User"]} {userCurrent.Title} {_localizer["started a new approval at"]} {DateTime.Now}",
-                        $"{_localizer["Click on the link to edit the document that required to approve."]}",
-                        $"<a href='http://{HttpContext.Request.Host}/workplace/store/edit?id={storeId}'>{_localizer["Document link"]}</a>"}
+                        $"{_localizer["Click on the link to view the document that required to approve."]}",
+                        $"<a href='http://{HttpContext.Request.Host}/workplace/store/details?id={storeId}'>{_localizer["Document link"]}</a>"}
                 };
 
                 await _emailSender.SendEmailBlankAsync(blankEmail);
@@ -188,8 +188,8 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                 Content = new List<string> {
                               $"<strong>{_localizer["Document"]} - {mtdForm.Name}</strong>",
                               $"{_localizer["User"]} {userCurrent.Title} {_localizer["restarted approval workflow at"]} {DateTime.Now}",
-                              $"{_localizer["Click on the link to edit the document and start new approval."]}",
-                              $"<a href='http://{HttpContext.Request.Host}/workplace/store/edit?id={storeId}'>{_localizer["Document link"]}</a>"}
+                              $"{_localizer["Click on the link to view the document and start new approval."]}",
+                              $"<a href='http://{HttpContext.Request.Host}/workplace/store/details?id={storeId}'>{_localizer["Document link"]}</a>"}
             };
             await _emailSender.SendEmailBlankAsync(blankEmail);
 
@@ -218,8 +218,8 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                     Content = new List<string> {
                         $"<strong>{_localizer["Document"]} - {mtdForm.Name}</strong>",
                         $"{_localizer["User"]} {userCurrent.Title} {_localizer["approved the document at"]} {DateTime.Now}",
-                        $"{_localizer["Click on the link to edit the document that required to approve."]}",
-                        $"<a href='http://{HttpContext.Request.Host}/workplace/store/edit?id={storeId}'>{_localizer["Document link"]}</a>"}
+                        $"{_localizer["Click on the link to view the document that required to approve."]}",
+                        $"<a href='http://{HttpContext.Request.Host}/workplace/store/details?id={storeId}'>{_localizer["Document link"]}</a>"}
                 };
 
                 await _emailSender.SendEmailBlankAsync(blankEmail);
@@ -272,8 +272,8 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                     Content = new List<string> {
                         $"<strong>{_localizer["Document"]} - {mtdForm.Name}</strong>",
                         $"{_localizer["User"]} {userCurrent.Title} {_localizer["rejected the document at"]} {DateTime.Now}",
-                        $"{_localizer["Click on the link to edit the document that required to approve."]}",
-                        $"<a href='http://{HttpContext.Request.Host}/workplace/store/edit?id={storeId}'>{_localizer["Document link"]}</a>"}
+                        $"{_localizer["Click on the link to view the document that required to approve."]}",
+                        $"<a href='http://{HttpContext.Request.Host}/workplace/store/details?id={storeId}'>{_localizer["Document link"]}</a>"}
                 };
 
 
