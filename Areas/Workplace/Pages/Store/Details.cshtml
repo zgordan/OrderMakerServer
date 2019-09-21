@@ -139,7 +139,7 @@
 
 
 @section Action  {
-    @if (Model.IsEditor & Model.ApprovalStatus != ApprovalStatus.Rejected)
+    @if (Model.IsEditor & Model.ApprovalStatus != ApprovalStatus.Rejected & Model.ApprovalStatus != ApprovalStatus.Waiting)
     {
         <li mtd-data-href="/workplace/store/edit?id=@Model.MtdStore.Id" class="mdc-list-item" role="menuitem">
             <span class="mdc-list-item__graphic material-icons" aria-hidden="true">edit</span>
@@ -222,7 +222,7 @@
     {
         string collor = "gray";
         if (Model.ApprovalStatus == ApprovalStatus.Iteraction) { collor = "darkred"; }
-        <div style=" top: 65px; z-index:2; position: sticky; position: -webkit-sticky; position: -moz-sticky; position: -ms-sticky;  position: -o-sticky;">
+        <div style=" top: 65px; z-index:2; position: sticky; position: -webkit-sticky;">
             <div class="mdc-elevation--z4" style="background-color: white; text-align: center; color: red; padding: 8px;">
                 <i class="material-icons" aria-hidden="true" style="vertical-align:middle">assignment_turned_in</i>
                 <span> @Localizer["Approval is required"]</span>
@@ -238,7 +238,7 @@
 
     @if (Model.IsApprover && !Model.IsFirstStage)
     {
-        <div style=" top: 65px; z-index:2; position: sticky; position: -webkit-sticky; position: -moz-sticky; position: -ms-sticky;  position: -o-sticky;">
+        <div style=" top: 65px; z-index:2; position: sticky; position: -webkit-sticky;">
             <div class="mdc-elevation--z4" style="background-color: white; text-align: center; color: red; padding: 8px;">
                 <i class="material-icons" aria-hidden="true" style="vertical-align:middle">assignment_turned_in</i>
                 <span> @Localizer["Approval is required"]</span>

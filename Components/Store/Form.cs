@@ -69,7 +69,7 @@ namespace Mtd.OrderMaker.Web.Components.Store
         private async Task<DataSet> CreateDataSetAsync(MtdStore store, FormType type = FormType.Details)
         {
             if (store == null) return null;
-            WebAppUser webAppUser = await _userHandler.GetUserAsync(HttpContext.User);            
+            WebAppUser webAppUser = await _userHandler.GetUserAsync(HttpContext.User);
             List<MtdFormPart> mtdFormParts = new List<MtdFormPart>();
             IList<MtdFormPart> parts = await GetPartsAsync(store.MtdForm);
             bool isReviewer = await _userHandler.IsReviewer(webAppUser, store.MtdForm);
@@ -79,19 +79,20 @@ namespace Mtd.OrderMaker.Web.Components.Store
             {
                 blockedParts = await approvalHandler.GetBlockedPartsIds();
             }
-            
+
             foreach (MtdFormPart formPart in parts)
             {
                 if (type == FormType.Edit)
-                {                    
+                {
                     bool isEditor = await _userHandler.IsEditorPartAsync(webAppUser, formPart.Id);
-                    if (isEditor && !blockedParts.Contains(formPart.Id)) { mtdFormParts.Add(formPart);}
+                    if (isEditor && !blockedParts.Contains(formPart.Id)) { mtdFormParts.Add(formPart); }
 
-                } else
+                }
+                else
                 {
                     bool isViewer = await _userHandler.IsViewerPartAsync(webAppUser, formPart.Id);
                     if (isViewer) { mtdFormParts.Add(formPart); }
-                }                
+                }
             }
 
             IList<MtdFormPartField> mtdFormPartFields = await GetFieldsAsync(mtdFormParts);
@@ -125,11 +126,49 @@ namespace Mtd.OrderMaker.Web.Components.Store
             if (type == FormType.Details || type == FormType.Print)
             {
                 var listIds = stack.Where(x => x.MtdFormPartFieldNavigation != null)
-                    .Select(x=>x.MtdFormPartFieldNavigation.MtdFormPart)
-                    .GroupBy(x=>x).Select(x=>x.Key).ToList();
+                    .Select(x => x.MtdFormPartFieldNavigation.MtdFormPart)
+                    .GroupBy(x => x).Select(x => x.Key).ToList();
                 mtdFormParts = mtdFormParts.Where(x => listIds.Contains(x.Id)).ToList();
+
+                List<MtdFormPart> nullParts = new List<MtdFormPart>();
+                List<MtdFormPartField> nullFields = new List<MtdFormPartField>();
+
+                foreach (MtdFormPart part in mtdFormParts)
+                {
+                    var fields = mtdFormPartFields.Where(x => x.MtdFormPart == part.Id).ToList();
+                    int counter = 0;
+                    foreach (var field in fields)
+                    {
+                        var stackField = stack.Where(x => x.MtdFormPartField == field.Id).FirstOrDefault();
+                        if (stackField == null || (stackField.MtdStoreLink == null
+                             & stackField.MtdStoreStackDate == null
+                             & stackField.MtdStoreStackDecimal == null
+                             & stackField.MtdStoreStackFile == null
+                             & stackField.MtdStoreStackInt == null
+                             & stackField.MtdStoreStackText == null)) { counter++; nullFields.Add(field); }
+                    }
+
+                    if (counter == fields.Count)
+                    {
+                        nullParts.Add(part);                        
+                    }
+
+
+                }
+
+
+                foreach (MtdFormPart nullPart in nullParts)
+                {
+                    mtdFormParts.Remove(nullPart);
+                    foreach (var field in nullFields.Where(x => x.MtdFormPart == nullPart.Id))
+                    {
+                        mtdFormPartFields.Remove(field);
+                    }
+                }
+
+
             }
-                
+
 
             DataSet result = new DataSet()
             {
@@ -138,7 +177,7 @@ namespace Mtd.OrderMaker.Web.Components.Store
                 Fields = mtdFormPartFields,
                 Stack = stack,
             };
-            
+
             return result;
 
         }
@@ -188,10 +227,6 @@ namespace Mtd.OrderMaker.Web.Components.Store
             };
 
             return View(type.ToString(), dataContainer);
-
-
-
-
         }
 
 

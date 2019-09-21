@@ -83,8 +83,8 @@
                 @foreach (var person in Model.Accounts.OrderBy(x=>x.User.Title))
                 {
                 <tr mtd-data-href="/identity/users/accounts/edit?id=@person.User.Id" mtd-data-class="mtd-users-rows-selected" style="cursor: pointer">
-                    <td>
-                        @person.User.Title
+                    <td>                        
+                            @person.User.Title                                              
                     </td>
                     <td>
                         @person.User.UserName

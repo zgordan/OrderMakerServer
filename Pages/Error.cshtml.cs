@@ -83,6 +83,7 @@ namespace Mtd.OrderMaker.Web.Pages
                 htmlText = htmlText.Replace("{Message}", exceptionFeature.Error.Message);
                 htmlText = htmlText.Replace("{Sorce}", exceptionFeature.Error.Source);                
                 htmlText = htmlText.Replace("{UserName}", User.Identity.Name);
+                htmlText = htmlText.Replace("{StackTrace}", exceptionFeature.Error.StackTrace);
 
                 await _emailSender.SendEmailAsync(_emailSupport.EmailSupport, "Server Error", htmlText);                
             }
