@@ -105,9 +105,11 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
                 string formSetDate = Request.Form[$"{form.Id}-set-date"];
 
                 MtdPolicyForms pf = mtdPolicyForms.Where(x => x.MtdForm == form.Id).FirstOrDefault();
+                bool newPf = false;
                 if (pf == null)
                 {
                     pf = new MtdPolicyForms { MtdPolicy = mtdPolicy.Id, MtdForm = form.Id };
+                    newPf = true;
                 }
 
                 pf.Create = GetSbyte(formCreate);
@@ -125,10 +127,9 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
 
                 pf.DeleteAll = GetSbyte(formDelete);
                 pf.DeleteGroup = GetSbyte(formDeleteGroup);
-                pf.DeleteOwn = GetSbyte(formDeleteOwn);
-                
+                pf.DeleteOwn = GetSbyte(formDeleteOwn);              
 
-                if (pf.Id == null)
+                if (newPf)
                 {
                     await _context.MtdPolicyForms.AddAsync(pf);
                 }
@@ -148,16 +149,18 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
                     string partEdit = Request.Form[$"{part.Id}-part-edit"];
 
                     MtdPolicyParts pp = mtdPolicyParts.Where(x => x.MtdFormPart == part.Id).FirstOrDefault();
+                    bool newPP = false;
                     if (pp == null)
                     {
                         pp = new MtdPolicyParts { MtdPolicy = mtdPolicy.Id, MtdFormPart = part.Id };
+                        newPP = true;
                     }
 
                     pp.Create = GetSbyte(partCreate);
                     pp.View = GetSbyte(partView);
                     pp.Edit = GetSbyte(partEdit);
 
-                    if (pp.Id == null) { await _context.MtdPolicyParts.AddAsync(pp); }
+                    if (newPP) { await _context.MtdPolicyParts.AddAsync(pp); }
                     else { _context.MtdPolicyParts.Update(pp); }
 
                 }
@@ -192,9 +195,11 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
             foreach (var form in forms)
             {
                 MtdPolicyForms pf = mtdPolicyForms.Where(x => x.MtdForm == form.Id).FirstOrDefault();
+                bool newPf = false;
                 if (pf == null)
                 {
                     pf = new MtdPolicyForms { MtdPolicy = mtdPolicy.Id, MtdForm = form.Id };
+                    newPf = true;
                 }
 
                 pf.Create = 1;
@@ -214,7 +219,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
                 pf.DeleteGroup = 0;
                 pf.DeleteOwn = 0;
 
-                if (pf.Id == null)
+                if (newPf)
                 {
                     await _context.MtdPolicyForms.AddAsync(pf);
                 }
@@ -234,16 +239,18 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
                     string partEdit = Request.Form[$"{part.Id}-part-edit"];
 
                     MtdPolicyParts pp = mtdPolicyParts.Where(x => x.MtdFormPart == part.Id).FirstOrDefault();
+                    bool newPP = false;
                     if (pp == null)
                     {
                         pp = new MtdPolicyParts { MtdPolicy = mtdPolicy.Id, MtdFormPart = part.Id };
+                        newPP = true;
                     }
 
                     pp.Create = 1;
                     pp.View = 1;
                     pp.Edit = 1;
 
-                    if (pp.Id == null) { await _context.MtdPolicyParts.AddAsync(pp); }
+                    if (newPP) { await _context.MtdPolicyParts.AddAsync(pp); }
                     else { _context.MtdPolicyParts.Update(pp); }
 
                 }
@@ -272,9 +279,11 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
             foreach (var form in forms)
             {
                 MtdPolicyForms pf = mtdPolicyForms.Where(x => x.MtdForm == form.Id).FirstOrDefault();
+                bool newPf = false;
                 if (pf == null)
                 {
                     pf = new MtdPolicyForms { MtdPolicy = mtdPolicy.Id, MtdForm = form.Id };
+                    newPf = true;
                 }
 
                 pf.Create = 0;
@@ -294,7 +303,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
                 pf.DeleteGroup = 0;
                 pf.DeleteOwn = 0;
 
-                if (pf.Id == null)
+                if (newPf)
                 {
                     await _context.MtdPolicyForms.AddAsync(pf);
                 }
@@ -314,16 +323,18 @@ namespace Mtd.OrderMaker.Web.Controllers.Users
                     string partEdit = Request.Form[$"{part.Id}-part-edit"];
 
                     MtdPolicyParts pp = mtdPolicyParts.Where(x => x.MtdFormPart == part.Id).FirstOrDefault();
+                    bool newPP = false;
                     if (pp == null)
                     {
                         pp = new MtdPolicyParts { MtdPolicy = mtdPolicy.Id, MtdFormPart = part.Id };
+                        newPP = true;
                     }
 
                     pp.Create = 0;
                     pp.View = 0;
                     pp.Edit = 0;
 
-                    if (pp.Id == null) { await _context.MtdPolicyParts.AddAsync(pp); }
+                    if (newPP) { await _context.MtdPolicyParts.AddAsync(pp); }
                     else { _context.MtdPolicyParts.Update(pp); }
 
                 }

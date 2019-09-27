@@ -220,8 +220,7 @@
 <div class="mtd-desk">
     @if (Model.IsApprover && Model.IsFirstStage)
     {
-        string collor = "gray";
-        if (Model.ApprovalStatus == ApprovalStatus.Iteraction) { collor = "darkred"; }
+   
         <div style=" top: 65px; z-index:2; position: sticky; position: -webkit-sticky;">
             <div class="mdc-elevation--z4" style="background-color: white; text-align: center; color: red; padding: 8px;">
                 <i class="material-icons" aria-hidden="true" style="vertical-align:middle">assignment_turned_in</i>

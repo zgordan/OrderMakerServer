@@ -76,7 +76,7 @@ namespace Mtd.OrderMaker.Web.Services
         {
             IList<MtdPolicy> mtdPolicies = await _context.MtdPolicy
                  .Include(x => x.MtdPolicyForms)                 
-                 .Include(x => x.MtdPolicyParts)
+                 .Include(x => x.MtdPolicyParts)                 
                  .ToListAsync();
 
             _cache.Cache.Set(PolicyKey, mtdPolicies);
@@ -300,7 +300,8 @@ namespace Mtd.OrderMaker.Web.Services
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             string policyId = await GetPolicyIdAsync(user);
             if (policyId == null) return result;
-            result = mtdPolicy.SelectMany(x => x.MtdPolicyParts).Where(x => x.MtdPolicy == policyId && x.View == 1).Select(x => x.MtdFormPart).ToList();
+            IList<string> partIds = await _context.MtdFormPart.Where(x => x.MtdForm == idForm).Select(x=>x.Id).ToListAsync();
+            result = mtdPolicy.Where(x=>x.Id == policyId).SelectMany(x => x.MtdPolicyParts).Where(x => partIds.Contains(x.MtdFormPart) && x.View == 1).Select(x => x.MtdFormPart).ToList();                 
             return result;
         }
 
