@@ -45,6 +45,7 @@ namespace Mtd.OrderMaker.Web.Areas.Config.Pages.Approval
         public MtdApproval MtdApproval { get; set; }
         public MtdApprovalStage MtdApprovalStage { get; set; }
         public IList<MtdFormPart> MtdFormParts { get; set; }
+        public IList<MtdApprovalResolution> Resolutions { get; set; }
         public async Task<IActionResult> OnGetAsync(int id)
         {
 
@@ -60,6 +61,8 @@ namespace Mtd.OrderMaker.Web.Areas.Config.Pages.Approval
             MtdFormParts = await _context.MtdFormPart.Where(x => x.MtdForm == MtdApproval.MtdForm).OrderBy(x => x.Sequence).ToListAsync();
             IList<WebAppUser> webAppUsers = await _userHandler.Users.ToListAsync();
             ViewData["Users"] = new SelectList(webAppUsers, "Id", "Title");
+
+            Resolutions = await _context.MtdApprovalResolution.OrderBy(x => x.Sequence).ToListAsync();
             return Page();
         }
     }

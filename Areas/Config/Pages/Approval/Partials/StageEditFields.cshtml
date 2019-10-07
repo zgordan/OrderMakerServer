@@ -1,0 +1,62 @@
+﻿@model Data.MtdApprovalStage
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+<div style="display: flex; flex-direction: column; align-items:center;">
+    <div class="mdc-text-field mdc-text-field--outlined" style="width: 100%;  margin-top: 16px;">
+        <input type="text" id="tf-outlined" mtd-required="config-form-name" class="mdc-text-field__input" name="fieldName" asp-for="@Model.Name" required />
+        <div class="mdc-notched-outline">
+            <div class="mdc-notched-outline__leading"></div>
+            <div class="mdc-notched-outline__notch">
+                <label for="tf-outlined" class="mdc-floating-label">@Localizer["Name"]</label>
+            </div>
+            <div class="mdc-notched-outline__trailing"></div>
+        </div>
+    </div>
+    <div class="mdc-text-field-helper-line">
+        <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true">
+            @Localizer["Required field"]
+        </div>
+    </div>
+    <div class="mdc-text-field mdc-text-field--textarea" style="width: 100%;  margin-top: 16px;">
+        <textarea id="textarea" mtd-required="config-form-description" class="mdc-text-field__input" rows="3" cols="40" name="fieldNote" asp-for="@Model.Description" required></textarea>
+        <div class="mdc-notched-outline">
+            <div class="mdc-notched-outline__leading"></div>
+            <div class="mdc-notched-outline__notch">
+                <label for="textarea" class="mdc-floating-label">@Localizer["Description"]</label>
+            </div>
+            <div class="mdc-notched-outline__trailing"></div>
+        </div>
+    </div>
+    <div class="mdc-text-field-helper-line">
+        <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true">
+            @Localizer["Required field"]
+        </div>
+    </div>
+</div>
+
+<div style="display: flex">
+    <div style="max-width: 70px">
+        <div class="mdc-text-field mdc-text-field--outlined">
+            <input type="number" id="tf-outlined" mtd-required="config-form-name" class="mdc-text-field__input" name="fieldStage" asp-for="@Model.Stage" required />
+            <div class="mdc-notched-outline">
+                <div class="mdc-notched-outline__leading"></div>
+                <div class="mdc-notched-outline__notch">
+                    <label for="tf-outlined" class="mdc-floating-label">@Localizer["Stage"]</label>
+                </div>
+                <div class="mdc-notched-outline__trailing"></div>
+            </div>
+        </div>
+    </div>
+    <div style="flex-grow: 1">
+        <div class="mdc-select">
+            <i class="mdc-select__dropdown-icon"></i>
+            <select class="mdc-select__native-control" asp-for="@Model.UserId" name="fieldUser" asp-items="@ViewBag.Users">
+                <option value="owner">@Localizer["Owner"]</option>
+            </select>
+            <label for="basedSelect" class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Approver"]</label>
+            <div class="mdc-line-ripple"></div>
+        </div>
+    </div>
+</div>

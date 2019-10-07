@@ -25,6 +25,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Primitives;
 using Mtd.OrderMaker.Web.Data;
 using Mtd.OrderMaker.Web.DataHandler.Approval;
 
@@ -113,6 +114,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Approval
             string fieldName = Request.Form["fieldName"];
             string fieldNote = Request.Form["fieldNote"];
             string fieldUser = Request.Form["fieldUser"];
+
             int.TryParse(Request.Form["fieldStage"], out int fieldStage);
             string blockParts = string.Empty;
 
@@ -121,8 +123,8 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Approval
                 return NotFound();
             }
 
-            
-            MtdApprovalStage mtdApprovalStage = await _context.MtdApprovalStage.Include(x=>x.MtdApprovalNavigation).Where(x=>x.Id==id).FirstOrDefaultAsync();
+
+            MtdApprovalStage mtdApprovalStage = await _context.MtdApprovalStage.Include(x => x.MtdApprovalNavigation).Where(x => x.Id == id).FirstOrDefaultAsync();
 
             if (mtdApprovalStage == null) { return NotFound(); }
             IList<string> partIds = await _context.MtdFormPart.Where(x => x.MtdForm == mtdApprovalStage.MtdApprovalNavigation.MtdForm).Select(x => x.Id).ToListAsync();
@@ -143,6 +145,9 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Approval
             mtdApprovalStage.Stage = fieldStage;
 
             _context.MtdApprovalStage.Update(mtdApprovalStage);
+
+            await ResolutionUpdate(id);
+
             await _context.SaveChangesAsync();
 
             return Ok();
@@ -191,7 +196,6 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Approval
                         counter++;
                     }
                 }
-
             }
 
             _context.MtdApprovalStage.UpdateRange(stages);
@@ -211,5 +215,64 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Approval
             return Ok();
         }
 
+
+        private async Task ResolutionUpdate(int stageId)
+        {
+            List<MtdApprovalResolution> listUpdate = new List<MtdApprovalResolution>();
+            List<MtdApprovalResolution> listAdd = new List<MtdApprovalResolution>();
+            List<MtdApprovalResolution> listRemove = new List<MtdApprovalResolution>();
+
+            List<StringValues> resolutionIds = Request.Form.Where(x => x.Key.Contains("resolution-id")).Select(x => x.Value).ToList();
+            IList<MtdApprovalResolution> oldData = await _context.MtdApprovalResolution.AsNoTracking().Where(x=>x.MtdApprovalStageId == stageId).ToListAsync();
+            List<MtdApprovalResolution> newData = new List<MtdApprovalResolution>();
+            foreach (string resolutionId in resolutionIds)
+            {
+                string intString = Request.Form[$"{resolutionId}-resolution-number"];
+                bool isOk = int.TryParse(intString, out int number);
+
+                newData.Add(new MtdApprovalResolution
+                {
+                    Id = resolutionId,
+                    Name = Request.Form[$"{resolutionId}-resolution-name"],
+                    Note = Request.Form[$"{resolutionId}-resolution-note"],
+                    Sequence = isOk ? number : 0,
+                    Color = Request.Form[$"{resolutionId}-resolution-color"],
+                    MtdApprovalStageId = stageId,
+                });
+            }
+
+
+            foreach (var resolution in newData)
+            {
+                bool exists = oldData.Where(x => x.Id == resolution.Id).Any();
+                if (exists) { listUpdate.Add(resolution); } else { listAdd.Add(resolution); }
+            }
+
+            listRemove = oldData.Where(x => !newData.Select(s => s.Id).Contains(x.Id)).ToList();
+            
+            if (listUpdate.Count > 0)
+            {
+                try
+                {
+                    _context.MtdApprovalResolution.UpdateRange(listUpdate);
+                } catch (Exception e)
+                {
+                    throw e.InnerException;
+                }
+                
+            }
+            
+            if (listAdd.Count > 0)
+            {
+                await _context.MtdApprovalResolution.AddRangeAsync(listAdd);
+            }
+
+            if (listRemove.Count > 0)
+            {
+                _context.MtdApprovalResolution.RemoveRange(listRemove);
+            }
+            
+            
+        }
     }
 }
