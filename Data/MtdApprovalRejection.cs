@@ -22,19 +22,23 @@ using System.Collections.Generic;
 
 namespace Mtd.OrderMaker.Web.Data
 {
-    public partial class MtdStoreApproval
+    public partial class MtdApprovalRejection
     {
-        public string Id { get; set; }
-        public int MtdApproveStage { get; set; }
-        public string PartsApproved { get; set; }
-        public sbyte Complete { get; set; }
-        public int Result { get; set; }
-        public string Resolution { get; set; }
-        public string Rejection { get; set; }
+        public MtdApprovalRejection()
+        {
+            MtdLogApproval = new HashSet<MtdLogApproval>();
+            MtdStoreApproval = new HashSet<MtdStoreApproval>();
+        }
 
-        public virtual MtdStore IdNavigation { get; set; }
-        public virtual MtdApprovalStage MtdApproveStageNavigation { get; set; }
-        public virtual MtdApprovalResolution ResolutionNavigation { get; set; }
-        public virtual MtdApprovalRejection RejectionNavigation { get; set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Note { get; set; }
+        public int Sequence { get; set; }
+        public string Color { get; set; }
+        public int MtdApprovalStageId { get; set; }
+
+        public virtual MtdApprovalStage MtdApprovalStage { get; set; }
+        public virtual ICollection<MtdLogApproval> MtdLogApproval { get; set; }
+        public virtual ICollection<MtdStoreApproval> MtdStoreApproval { get; set; }
     }
 }

@@ -55,7 +55,7 @@
                         @Localizer["Date of creation"]
                     </th>
 
-                    @if (Model.IsAppromalForm)
+                    @if (Model.MtdApproval != null)
                     {
                         <th>
                             <div style="text-align: center">
@@ -76,71 +76,111 @@
             <tbody>
                 @foreach (var store in Model.MtdStores)
                 {
-                <tr mtd-data-href="/workplace/store/details?id=@store.Id">
+                    <tr mtd-data-href="/workplace/store/details?id=@store.Id">
 
-                    <td @if (!Model.ShowNumber) { <text> hidden</text>}>
-                        <div style="align-self: center">
-                            @store.Sequence.ToString("D9")
-                        </div>
-                    </td>
-                    <td @if (!Model.ShowDate) { <text> hidden</text>}>
-                        <span>@store.Timecr.ToShortDateString()</span>
-                    </td>
-                    @if (Model.IsAppromalForm)
-                    {
-                        <td>
-                            @{
-                                ApprovalStatus status = Model.ApprovalStores.Where(x => x.StoreId == store.Id).Select(x => x.Status).FirstOrDefault();
-                            }
-                            @switch (status)
-                            {
-                                case ApprovalStatus.Approved:
-                                    {
-                                        <i class="material-icons" aria-hidden="true" style="vertical-align:middle; color: green;">thumb_up</i>
-                                        break;
-                                    }
-                                case ApprovalStatus.Iteraction:
-                                    {
-                                        <i class="material-icons" aria-hidden="true" style="vertical-align:middle; color: darkred">new_releases</i>
-                                        break;
-                                    }
-                                case ApprovalStatus.Rejected:
-                                    {
-                                        <i class="material-icons" aria-hidden="true" style="vertical-align:middle">thumb_down</i>
-                                        break;
-                                    }
-                                case ApprovalStatus.Required:
-                                    {
-                                        <i class="material-icons" aria-hidden="true" style="vertical-align:middle; color: red">assignment_turned_in</i>
-                                        break;
-                                    }
-                                case ApprovalStatus.Start:
-                                    {
-                                        <i class="material-icons" aria-hidden="true" style="vertical-align:middle; color: gray">new_releases</i>
-                                        break;
-                                    }
-                                case ApprovalStatus.Waiting:
-                                    {
-                                        <i class="material-icons" aria-hidden="true" style="vertical-align:middle; color: gray">hourglass_full</i>
-                                        break;
-                                    }
-                            }
-
-
-                        </td>
-                    }
-
-
-                    @foreach (var field in Model.MtdFormPartFields)
-                    {
-                        <td>
-                            <div style="padding: 2px;">
-                                @await Component.InvokeAsync("IndexCell", new { stack = Model.MtdStoreStack, idStore = store.Id, idField = field.Id, idType = field.MtdSysType })
+                        <td @if (!Model.ShowNumber) { <text> hidden</text>}>
+                            <div style="align-self: center">
+                                @store.Sequence.ToString("D9")
                             </div>
                         </td>
-                    }
+                        <td @if (!Model.ShowDate) { <text> hidden</text>}>
+                            <span>@store.Timecr.ToShortDateString()</span>
+                        </td>
+                        @if (Model.MtdApproval != null)
+                        {
+                            <td>
+                                <div style="display:flex; align-content:center;">
+                                    @{
+                                        ApprovalStatus status = Model.ApprovalStores.Where(x => x.StoreId == store.Id).Select(x => x.Status).FirstOrDefault();
+                                    }
+                                    @switch (status)
+                                    {
+                                        case ApprovalStatus.Approved:
+                                            {
+                                                if (Model.MtdApproval.ImgApproved == null)
+                                                {
+                                                    <i class="material-icons" aria-hidden="true" style="vertical-align:middle; color: green;">thumb_up</i>
+                                                }
+                                                else
+                                                {
+                                                    @await Component.InvokeAsync("MTDImgViewer", new { maxHeight = 32, maxWidth = 32, imgArray = Model.MtdApproval.ImgApproved })
+                                                }
 
-                </tr>
+                                                break;
+                                            }
+                                        case ApprovalStatus.Iteraction:
+                                            {
+                                                if (Model.MtdApproval.ImgIteraction == null)
+                                                {
+                                                    <i class="material-icons" aria-hidden="true" style="vertical-align:middle; color: darkred">new_releases</i>
+                                                }
+                                                else
+                                                {
+                                                    @await Component.InvokeAsync("MTDImgViewer", new { maxHeight = 32, maxWidth = 32, imgArray = Model.MtdApproval.ImgIteraction })
+                                                }
+
+                                                break;
+                                            }
+                                        case ApprovalStatus.Rejected:
+                                            {
+                                                if (Model.MtdApproval.ImgRejected == null)
+                                                {
+                                                    <i class="material-icons" aria-hidden="true" style="vertical-align:middle">thumb_down</i>
+                                                }
+                                                else
+                                                {
+                                                    @await Component.InvokeAsync("MTDImgViewer", new { maxHeight = 32, maxWidth = 32, imgArray = Model.MtdApproval.ImgRejected })
+                                                }
+                                                break;
+                                            }
+                                        case ApprovalStatus.Required:
+                                            {
+                                                if (Model.MtdApproval.ImgRequired == null)
+                                                {
+                                                    <i class="material-icons" aria-hidden="true" style="vertical-align:middle; color: red">assignment_turned_in</i>
+                                                }
+                                                else
+                                                {
+                                                    @await Component.InvokeAsync("MTDImgViewer", new { maxHeight = 32, maxWidth = 32, imgArray = Model.MtdApproval.ImgRequired })
+                                                }
+
+                                                break;
+                                            }
+                                        case ApprovalStatus.Start:
+                                            {
+                                                if (Model.MtdApproval.ImgStart == null)
+                                                {
+                                                    <i class="material-icons" aria-hidden="true" style="vertical-align:middle; color: gray">new_releases</i>
+                                                }
+                                                else
+                                                {
+                                                    @await Component.InvokeAsync("MTDImgViewer", new { maxHeight = 32, maxWidth = 32, imgArray = Model.MtdApproval.ImgStart })
+                                                }
+
+                                                break;
+                                            }
+                                        case ApprovalStatus.Waiting:
+                                            {
+                                                <i class="material-icons" aria-hidden="true" style="vertical-align:middle; color: gray">hourglass_full</i>
+                                                break;
+                                            }
+                                    }
+
+                                </div>
+                            </td>
+                        }
+
+
+                        @foreach (var field in Model.MtdFormPartFields)
+                        {
+                            <td>
+                                <div style="padding: 2px;">
+                                    @await Component.InvokeAsync("IndexCell", new { stack = Model.MtdStoreStack, idStore = store.Id, idField = field.Id, idType = field.MtdSysType })
+                                </div>
+                            </td>
+                        }
+
+                    </tr>
                 }
             </tbody>
         </table>

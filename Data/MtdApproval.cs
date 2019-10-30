@@ -34,6 +34,13 @@ namespace Mtd.OrderMaker.Web.Data
         public string Description { get; set; }
         public string MtdForm { get; set; }
 
+        public byte[] ImgStart { get; set; }
+        public byte[] ImgIteraction { get; set; }
+        public byte[] ImgWaiting{ get; set; }
+        public byte[] ImgApproved { get; set; }
+        public byte[] ImgRejected { get; set; }
+        public byte[] ImgRequired { get; set; }  
+
         public virtual MtdForm MtdFormNavigation { get; set; }
         public virtual ICollection<MtdApprovalStage> MtdApprovalStage { get; set; }        
     }

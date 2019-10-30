@@ -32,8 +32,7 @@ namespace Mtd.OrderMaker.Web.DataHandler.Approval
         private readonly OrderMakerContext _context;
         private readonly string idStore;
         private MtdStore storeCache;
-        private MtdApproval approvalCache;
-
+        private MtdApproval approvalCache;        
 
         public static async Task<bool> UpdateStatusForStartAsync(OrderMakerContext context, string approvalID)
         {
@@ -80,11 +79,11 @@ namespace Mtd.OrderMaker.Web.DataHandler.Approval
             List<ApprovalStore> result = new List<ApprovalStore>();
 
             IList<MtdStoreApproval> mtdStoreApprovals = await context.MtdStoreApproval
-                .Include(x => x.MdApproveStageNavigation)
+                .Include(x => x.MtdApproveStageNavigation)
                 .Where(x => storeIds.Contains(x.Id))
                 .ToListAsync();
 
-            List<string> approvalIds = mtdStoreApprovals.Select(x => x.MdApproveStageNavigation.MtdApproval).ToList();
+            List<string> approvalIds = mtdStoreApprovals.Select(x => x.MtdApproveStageNavigation.MtdApproval).ToList();
             IList<MtdApprovalStage> stages = await context.MtdApprovalStage
                 .Where(x => approvalIds.Contains(x.MtdApproval))
                 .OrderBy(x => x.Stage).ToListAsync();
@@ -104,14 +103,14 @@ namespace Mtd.OrderMaker.Web.DataHandler.Approval
                 {
                     bool isComplete = sa.Complete == 1 ? true : false;
                     int approved = sa.Result;
-                    string approvalId = sa.MdApproveStageNavigation.MtdApproval;
+                    string approvalId = sa.MtdApproveStageNavigation.MtdApproval;
                     int currentId = sa.MtdApproveStage;
 
                     int firstId = stages.Where(x => x.MtdApproval == approvalId)
                         .OrderBy(x => x.Stage).Select(x => x.Id).FirstOrDefault();
 
                     bool isFirst = currentId == firstId ? true : false;
-                    bool isApprover = sa.MdApproveStageNavigation.UserId == appUser.Id ? true : false;
+                    bool isApprover = sa.MtdApproveStageNavigation.UserId == appUser.Id ? true : false;
                     approvalStore.Status = DefineStatus(isComplete, approved, isFirst, isApprover);
                 }
 
@@ -140,7 +139,7 @@ namespace Mtd.OrderMaker.Web.DataHandler.Approval
             return storeCache;
         }
 
-        private async Task<MtdApproval> GetApproval()
+        public async Task<MtdApproval> GetApproval()
         {
             if (approvalCache != null) return approvalCache;
             MtdStore mtdStore = await GetStoreAsync();

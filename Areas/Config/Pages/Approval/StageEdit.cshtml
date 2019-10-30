@@ -95,6 +95,37 @@
                     </ul>
                 </div>
             </div>
+            <div class="mdc-elevation--z1" style="padding: 8px; margin:8px; min-width: 280px">
+                <div>
+                    @Localizer["Rejections"]
+                    <hr />
+                </div>
+                <div>
+                    <button id="button-dialog-add-rejection" type="button" class="mdc-button mdc-button--dense" onclick="clickRejectionAdd()">
+                        <i class="material-icons mdc-button__icon">library_add</i>
+                        @Localizer["Add"]
+                    </button>
+                    <ul id="ul-rejection" class="mdc-list mdc-list--two-line">
+                        @foreach (var rejection in Model.Rejections)
+                        {
+                            <li id="@rejection.Id-rejection-li" class="mdc-list-item" tabindex="0" onclick="clickRejectionEdit(event)">
+                                <span class="mdc-list-item__text" style="padding: 4px;">
+                                    <span id="@rejection.Id-span-name-rejection" style="color: @rejection.Color" class="mdc-list-item__primary-text">@rejection.Name</span>
+                                    <span id="@rejection.Id-span-note-rejection" style="color: @rejection.Color" class="mdc-list-item__secondary-text">@rejection.Note</span>
+                                </span>
+                                <span class="mdc-list-item__meta material-icons" aria-hidden="true">
+                                    <button id="@rejection.Id-delete-button-rejection" type="button" class="mdc-icon-button material-icons" onclick="clickDeleteDialogRejection(event)">delete</button>
+                                </span>
+                                <input id="@rejection.Id-rejection" name="@rejection.Id-rejection-id" value="@rejection.Id" style="display:none" />
+                                <input id="@rejection.Id-rejection-name" name="@rejection.Id-rejection-name" value="@rejection.Name" style="display:none" />
+                                <input id="@rejection.Id-rejection-note" name="@rejection.Id-rejection-note" value="@rejection.Note" style="display:none" />
+                                <input id="@rejection.Id-rejection-number" name="@rejection.Id-rejection-number" value="@rejection.Sequence" style="display:none" />
+                                <input id="@rejection.Id-rejection-color" name="@rejection.Id-rejection-color" value="@rejection.Color" style="display:none" />
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
         </div>
         <div class="mdc-elevation--z1">
             <div style="padding: 8px; margin:8px">
@@ -108,52 +139,12 @@
 
 @await Html.PartialAsync("~/Areas/Config/Pages/Approval/Partials/StageEditDialogDelete.cshtml", Model)
 @await Html.PartialAsync("~/Areas/Config/Pages/Approval/Partials/ResolutionDialog.cshtml", Model)
+@await Html.PartialAsync("~/Areas/Config/Pages/Approval/Partials/RejectionDialog.cshtml", Model)
+
+
 
 @section Scripts{
     <script src="~/lib/mtd-ordermaker/config/js/mtd-config-approval.js" asp-append-version="true"></script>
-    <script src="~/lib/mtd-ordermaker/resolution/js/resolution.js" asp-append-version="true"></script>
+    <script src="~/lib/mtd-ordermaker/config/js/mtd-config-resolution.js" asp-append-version="true"></script>
+    <script src="~/lib/mtd-ordermaker/config/js/mtd-config-rejection.js" asp-append-version="true"></script>
 }
-
-<ul id="ul-resolution-fake" style="display:none">
-    <li id="ID-resolution-li" class="mdc-list-item" tabindex="0" onclick="clickResolutionEdit(event)">
-        <span class="mdc-list-item__text" style="padding: 4px;">
-            <span id="ID-span-name" style="color: BLACK" class="mdc-list-item__primary-text">NAME</span>
-            <span id="ID-span-note" style="color: BLACK" class="mdc-list-item__secondary-text">NOTE</span>
-        </span>
-        <span class="mdc-list-item__meta material-icons" aria-hidden="true">
-            <button id="ID-delete-button" type="button" class="mdc-icon-button material-icons" onclick="clickDeleteDialog(event)">delete</button>
-        </span>
-        <input id="ID-resolution" name="ID-resolution-id" value="ID" style="display:none" />
-        <input id="ID-resolution-name" name="ID-resolution-name" value="NAME" style="display:none" />
-        <input id="ID-resolution-note" name="ID-resolution-note" value="NOTE" style="display:none" />
-        <input id="ID-resolution-number" name="ID-resolution-number" value="NUMBER" style="display:none" />
-        <input id="ID-resolution-color" name="ID-resolution-color" value="BLACK" style="display:none" />
-    </li>
-</ul>
-
-<div id="dialog-resolution-delete" class="mdc-dialog"
-     role="alertdialog"
-     aria-modal="true"
-     aria-labelledby="my-dialog-title"
-     aria-describedby="my-dialog-content">
-    <div class="mdc-dialog__container">
-        <div class="mdc-dialog__surface">
-            <h2 class="mdc-dialog__title">
-                @Localizer["Deleting resolution"]
-            </h2>
-            <div class="mdc-dialog__content">
-                @Localizer["Delete resolution from list?"]
-                <input id="dialog-resolution-delete-guid" type="hidden" />
-            </div>
-            <footer class="mdc-dialog__actions">
-                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
-                    <span class="mdc-button__label">@Localizer["No"]</span>
-                </button>
-                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" onclick="deleteResolution()">
-                    <span class="mdc-button__label">@Localizer["Yes"]</span>
-                </button>
-            </footer>
-        </div>
-    </div>
-    <div class="mdc-dialog__scrim"></div>
-</div>

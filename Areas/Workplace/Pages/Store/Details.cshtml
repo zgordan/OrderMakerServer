@@ -39,7 +39,7 @@
 }
 @section Breadcrumb {
     <li><a href="/">@Localizer["Desktop"]</a></li>
-    <li><a asp-area="Workplace" asp-page="/Store/Index" asp-route-indexForm="@Model.MtdForm.Id">@Localizer["List data"]</a></li>
+    <li><a style="cursor:pointer" mtd-data-href="/workplace/store/index?indexForm=@Model.MtdForm.Id">@Localizer["List data"]</a></li>
     <li>@ViewBag.Title</li>
 }
 
@@ -90,52 +90,8 @@
         </div>
     </form>
 
-<form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/approval/approve'>
-    @Html.AntiForgeryToken()
-    <input type="hidden" name="id-store" value="@Model.MtdStore.Id" />
-    <div id="dialog-accept" class="mdc-dialog"
-         role="alertdialog"
-         aria-modal="true"
-         aria-labelledby="dialog-accept-title"
-         aria-describedby="dialog-accept-content">
-        <div class="mdc-dialog__container">
-            <div class="mdc-dialog__surface">
-                <h2 class="mdc-dialog__title" id="accept-form-title">
-                    @Localizer["Confirmation of approval"]
-                </h2>
-                <div class="mdc-dialog__content" id="accept-dialog-content">
-                    @Localizer["Are you  confirm your approval?"]
-                    @if (Model.BlockParts.Count > 0)
-                    {
-                        <div style="padding: 4px; background-color: whitesmoke">
-                            @Localizer["After approval of the document the Parts below will not be editable:"]
-                            <div style="font-weight:600; margin-top: 4px;">
-                                @{
-                                    int counter = Model.BlockParts.Count;
-                                    foreach (var part in Model.BlockParts)
-                                    {
-                                        counter--;
-                                        <text> @part.Name </text> if (counter > 0)
-                                        { <text>/</text> }
-                                }
-                                }
-                            </div>
-                        </div>
-                    }
-                </div>
-                <footer class="mdc-dialog__actions">
-                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
-                        <span class="mdc-button__label">@Localizer["Cancel"]</span>
-                    </button>
-                    <button type="button" id="clicker-approve" mtd-data-clicker mtd-data-message="@Localizer["Document is approved"]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" style="color:green">
-                        <span class="mdc-button__label">@Localizer["Approve"]</span>
-                    </button>
-                </footer>
-            </div>
-        </div>
-        <div class="mdc-dialog__scrim"></div>
-    </div>
-</form>
+
+@await Html.PartialAsync("~/Areas/Workplace/PAges/Store/Partials/DialogApprovalConfirm.cshtml")
 
 
 @section Action  {

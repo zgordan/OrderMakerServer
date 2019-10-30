@@ -6,6 +6,7 @@
     width: 100%;
     border: 2px solid #dce4ec;
     z-index: 1;
+    height: 48px;
 }
 
     .mtd-img-selector .mtd-img-select {

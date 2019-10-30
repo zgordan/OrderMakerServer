@@ -147,7 +147,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Approval
             _context.MtdApprovalStage.Update(mtdApprovalStage);
 
             await ResolutionUpdate(id);
-
+            await RejectionUpdate(id);
             await _context.SaveChangesAsync();
 
             return Ok();
@@ -273,6 +273,66 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Approval
             }
             
             
+        }
+
+        private async Task RejectionUpdate(int stageId)
+        {
+            List<MtdApprovalRejection> listUpdate = new List<MtdApprovalRejection>();
+            List<MtdApprovalRejection> listAdd = new List<MtdApprovalRejection>();
+            List<MtdApprovalRejection> listRemove = new List<MtdApprovalRejection>();
+
+            List<StringValues> rejectionIds = Request.Form.Where(x => x.Key.Contains("rejection-id")).Select(x => x.Value).ToList();
+            IList<MtdApprovalRejection> oldData = await _context.MtdApprovalRejection.AsNoTracking().Where(x => x.MtdApprovalStageId == stageId).ToListAsync();
+            List<MtdApprovalRejection> newData = new List<MtdApprovalRejection>();
+            foreach (string rejectionId in rejectionIds)
+            {
+                string intString = Request.Form[$"{rejectionId}-rejection-number"];
+                bool isOk = int.TryParse(intString, out int number);
+
+                newData.Add(new MtdApprovalRejection
+                {
+                    Id = rejectionId,
+                    Name = Request.Form[$"{rejectionId}-rejection-name"],
+                    Note = Request.Form[$"{rejectionId}-rejection-note"],
+                    Sequence = isOk ? number : 0,
+                    Color = Request.Form[$"{rejectionId}-rejection-color"],
+                    MtdApprovalStageId = stageId,
+                });
+            }
+
+
+            foreach (var rejection in newData)
+            {
+                bool exists = oldData.Where(x => x.Id == rejection.Id).Any();
+                if (exists) { listUpdate.Add(rejection); } else { listAdd.Add(rejection); }
+            }
+
+            listRemove = oldData.Where(x => !newData.Select(s => s.Id).Contains(x.Id)).ToList();
+
+            if (listUpdate.Count > 0)
+            {
+                try
+                {
+                    _context.MtdApprovalRejection.UpdateRange(listUpdate);
+                }
+                catch (Exception e)
+                {
+                    throw e.InnerException;
+                }
+
+            }
+
+            if (listAdd.Count > 0)
+            {
+                await _context.MtdApprovalRejection.AddRangeAsync(listAdd);
+            }
+
+            if (listRemove.Count > 0)
+            {
+                _context.MtdApprovalRejection.RemoveRange(listRemove);
+            }
+
+
         }
     }
 }

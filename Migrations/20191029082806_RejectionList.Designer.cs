@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mtd.OrderMaker.Web.Data;
 
 namespace Mtd.OrderMaker.Web.Migrations
 {
     [DbContext(typeof(OrderMakerContext))]
-    partial class OrderMakerContextModelSnapshot : ModelSnapshot
+    [Migration("20191029082806_RejectionList")]
+    partial class RejectionList
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,30 +30,6 @@ namespace Mtd.OrderMaker.Web.Migrations
                         .IsRequired()
                         .HasColumnName("description")
                         .HasColumnType("varchar(512)");
-
-                    b.Property<byte[]>("ImgApproved")
-                        .HasColumnName("img_approved")
-                        .HasColumnType("mediumblob");
-
-                    b.Property<byte[]>("ImgIteraction")
-                        .HasColumnName("img_iteraction")
-                        .HasColumnType("mediumblob");
-
-                    b.Property<byte[]>("ImgRejected")
-                        .HasColumnName("img_rejected")
-                        .HasColumnType("mediumblob");
-
-                    b.Property<byte[]>("ImgRequired")
-                        .HasColumnName("img_required")
-                        .HasColumnType("mediumblob");
-
-                    b.Property<byte[]>("ImgStart")
-                        .HasColumnName("img_start")
-                        .HasColumnType("mediumblob");
-
-                    b.Property<byte[]>("ImgWaiting")
-                        .HasColumnName("img_waiting")
-                        .HasColumnType("mediumblob");
 
                     b.Property<string>("MtdForm")
                         .IsRequired()

@@ -48,6 +48,7 @@
         <span class="mdc-list-item__text">@Localizer["Delete approval"]</span>
     </li>
 }
+
 <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="">
     <input type="hidden" asp-for="MtdApproval.Id" />
     <div class="mtd-desk">
@@ -96,7 +97,36 @@
                     @Localizer["Required field"]
                 </div>
             </div>
+            
+            <div style="display: flex; flex-wrap:wrap; max-width: 600px;">
+                <div>
+                    <label>Start</label>
+                    @await Component.InvokeAsync("MTDImgSelector", new { id = "img-start", imgArray = Model.MtdApproval.ImgStart })
+                </div>
+                <div style="padding: 2px;">
+                    <label>Iteraction</label>
+                    @await Component.InvokeAsync("MTDImgSelector", new { id = "img-iteraction", imgArray = Model.MtdApproval.ImgIteraction })
+                </div>
+                <div>
+                    <label>Required</label>
+                    @await Component.InvokeAsync("MTDImgSelector", new { id = "img-required", imgArray = Model.MtdApproval.ImgRequired })
+                </div>
+                <div>
+                    <label>Waiting</label>
+                    @await Component.InvokeAsync("MTDImgSelector", new { id = "img-waiting", imgArray = Model.MtdApproval.ImgWaiting })
+                </div>
+                <div>
+                    <label>Approved</label>
+                    @await Component.InvokeAsync("MTDImgSelector", new { id = "img-approved", imgArray = Model.MtdApproval.ImgApproved })
+                </div>
+                <div>
+                    <label>Rejected</label>
+                    @await Component.InvokeAsync("MTDImgSelector", new { id = "img-rejected", imgArray = Model.MtdApproval.ImgRejected })
+                </div>
+            </div>                       
         </div>
+
+        
     </div>
 </form>
 

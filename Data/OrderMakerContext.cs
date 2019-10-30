@@ -36,6 +36,7 @@ namespace Mtd.OrderMaker.Web.Data
 
         public virtual DbSet<MtdApproval> MtdApproval { get; set; }
         public virtual DbSet<MtdApprovalResolution> MtdApprovalResolution { get; set; }
+        public virtual DbSet<MtdApprovalRejection> MtdApprovalRejection { get; set; }
         public virtual DbSet<MtdApprovalStage> MtdApprovalStage { get; set; }
         public virtual DbSet<MtdCategoryForm> MtdCategoryForm { get; set; }
         public virtual DbSet<MtdConfigFile> MtdConfigFiles { get; set; }
@@ -105,6 +106,30 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasColumnName("name")
                     .HasColumnType("varchar(120)");
 
+                entity.Property(e => e.ImgStart)                
+                    .HasColumnName("img_start")
+                    .HasColumnType("mediumblob");
+
+                entity.Property(e => e.ImgIteraction)           
+                    .HasColumnName("img_iteraction")
+                    .HasColumnType("mediumblob");
+
+                entity.Property(e => e.ImgWaiting)             
+                    .HasColumnName("img_waiting")
+                    .HasColumnType("mediumblob");
+
+                entity.Property(e => e.ImgApproved)                
+                    .HasColumnName("img_approved")
+                    .HasColumnType("mediumblob");
+
+                entity.Property(e => e.ImgRejected)
+                    .HasColumnName("img_rejected")
+                    .HasColumnType("mediumblob");
+
+                entity.Property(e => e.ImgRequired)
+                    .HasColumnName("img_required")
+                    .HasColumnType("mediumblob");
+
                 entity.HasOne(d => d.MtdFormNavigation)
                     .WithMany(p => p.MtdApproval)
                     .HasForeignKey(d => d.MtdForm)
@@ -158,6 +183,55 @@ namespace Mtd.OrderMaker.Web.Data
                     .WithMany(p => p.MtdApprovalResolution)
                     .HasForeignKey(d => d.MtdApprovalStageId)
                     .HasConstraintName("fk_resolution_stage");
+            });
+
+            modelBuilder.Entity<MtdApprovalRejection>(entity =>
+            {
+                entity.ToTable("mtd_approval_rejection");
+
+                entity.HasIndex(e => e.Id)
+                    .HasName("id_UNIQUE")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.MtdApprovalStageId)
+                    .HasName("fk_rejection_stage_idx");
+
+                entity.HasIndex(e => e.Sequence)
+                    .HasName("ix_sequence");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.Color)
+                    .IsRequired()
+                    .HasColumnName("color")
+                    .HasColumnType("varchar(45)")
+                    .HasDefaultValueSql("'green'");
+
+                entity.Property(e => e.MtdApprovalStageId)
+                    .HasColumnName("mtd_approval_stage_id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
+                    .HasColumnType("varchar(255)");
+
+                entity.Property(e => e.Note)
+                    .IsRequired()
+                    .HasColumnName("note")
+                    .HasColumnType("varchar(512)");
+
+                entity.Property(e => e.Sequence)
+                    .HasColumnName("sequence")
+                    .HasColumnType("int(11)")
+                    .HasDefaultValueSql("'0'");
+
+                entity.HasOne(d => d.MtdApprovalStage)
+                    .WithMany(p => p.MtdApprovalRejection)
+                    .HasForeignKey(d => d.MtdApprovalStageId)
+                    .HasConstraintName("fk_rejection_stage");
             });
 
             modelBuilder.Entity<MtdApprovalStage>(entity =>
@@ -906,6 +980,9 @@ namespace Mtd.OrderMaker.Web.Data
                 entity.HasIndex(e => e.Resolution)
                     .HasName("fk_log_resolution_idx");
 
+                entity.HasIndex(e => e.Rejection)
+                    .HasName("fk_log_rejection_idx");
+
                 entity.HasIndex(e => e.Stage)
                     .HasName("fk_log_approval_stage_idx");
 
@@ -920,6 +997,10 @@ namespace Mtd.OrderMaker.Web.Data
 
                 entity.Property(e => e.Resolution)
                     .HasColumnName("resolution")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.Rejection)
+                    .HasColumnName("rejection")
                     .HasColumnType("varchar(36)");
 
                 entity.Property(e => e.Result)
@@ -949,6 +1030,12 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasForeignKey(d => d.Resolution)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("fk_log_resolution");
+
+                entity.HasOne(d => d.RejectionNavigation)
+                    .WithMany(p => p.MtdLogApproval)
+                    .HasForeignKey(d => d.Rejection)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("fk_log_rejection");
 
                 entity.HasOne(d => d.StageNavigation)
                     .WithMany(p => p.MtdLogApproval)
@@ -1261,6 +1348,9 @@ namespace Mtd.OrderMaker.Web.Data
 
                 entity.HasIndex(e => e.Resolution)
                     .HasName("fk_store_stage_resolution_idx");
+                
+                entity.HasIndex(e => e.Rejection)
+                    .HasName("fk_store_stage_rejection_idx");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -1284,6 +1374,10 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasColumnName("resolution")
                     .HasColumnType("varchar(36)");
 
+                entity.Property(e => e.Rejection)
+                    .HasColumnName("rejection")
+                    .HasColumnType("varchar(36)");
+
                 entity.Property(e => e.Result)
                     .HasColumnName("result")
                     .HasColumnType("int(11)")
@@ -1294,7 +1388,7 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasForeignKey<MtdStoreApproval>(d => d.Id)
                     .HasConstraintName("fk_store_approve");
 
-                entity.HasOne(d => d.MdApproveStageNavigation)
+                entity.HasOne(d => d.MtdApproveStageNavigation)
                     .WithMany(p => p.MtdStoreApproval)
                     .HasForeignKey(d => d.MtdApproveStage)
                     .HasConstraintName("fk_store_approve_stage");
@@ -1304,6 +1398,12 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasForeignKey(d => d.Resolution)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("fk_store_stage_resolution");
+    
+                entity.HasOne(d => d.RejectionNavigation)
+                    .WithMany(p => p.MtdStoreApproval)
+                    .HasForeignKey(d => d.Rejection)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("fk_store_stage_rejection");
             });
 
             modelBuilder.Entity<MtdStoreLink>(entity =>

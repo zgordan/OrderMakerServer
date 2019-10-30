@@ -27,6 +27,7 @@ namespace Mtd.OrderMaker.Web.Data
         public MtdApprovalStage()
         {
             MtdApprovalResolution = new HashSet<MtdApprovalResolution>();
+            MtdApprovalRejection = new HashSet<MtdApprovalRejection>();
             MtdLogApproval = new HashSet<MtdLogApproval>();
             MtdStoreApproval = new HashSet<MtdStoreApproval>();
         }
@@ -41,6 +42,7 @@ namespace Mtd.OrderMaker.Web.Data
 
         public virtual MtdApproval MtdApprovalNavigation { get; set; }
         public virtual ICollection<MtdApprovalResolution> MtdApprovalResolution { get; set; }
+        public virtual ICollection<MtdApprovalRejection> MtdApprovalRejection { get; set; }
         public virtual ICollection<MtdLogApproval> MtdLogApproval { get; set; }
         public virtual ICollection<MtdStoreApproval> MtdStoreApproval { get; set; }
     }

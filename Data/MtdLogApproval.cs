@@ -12,9 +12,11 @@ namespace Mtd.OrderMaker.Web.Data
         public int Result { get; set; }
         public DateTime Timecr { get; set; }
         public string Resolution { get; set; }
+        public string Rejection { get; set; }
 
         public virtual MtdStore MtdStoreNavigation { get; set; }
         public virtual MtdApprovalResolution ResolutionNavigation { get; set; }
+        public virtual MtdApprovalRejection RejectionNavigation { get; set; }
         public virtual MtdApprovalStage StageNavigation { get; set; }
     }
 }

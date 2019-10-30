@@ -75,8 +75,8 @@ namespace Mtd.OrderMaker.Web.Components.Index
 
             IList<MtdStoreApproval> mtdStoreApprovals = await _context.MtdStoreApproval.Where(x => storeIds.Contains(x.Id)).ToListAsync();           
             List<ApprovalStore> approvalStores = await ApprovalHandler.GetStoreStatusAsync(_context, storeIds, user);
-
-            bool isApprovalForm = await ApprovalHandler.IsApprovalFormAsync(_context, idForm);
+            
+            MtdApproval mtdApproval = await _context.MtdApproval.Where(x => x.MtdForm == idForm).FirstOrDefaultAsync();
 
             RowsModelView rowsModel = new RowsModelView
             {
@@ -90,8 +90,8 @@ namespace Mtd.OrderMaker.Web.Components.Index
                 ShowDate = await handlerFilter.IsShowDate(),
                 ShowNumber = await handlerFilter.IsShowNumber(),
                 ApprovalStores = approvalStores,
-                IsAppromalForm = isApprovalForm
-
+                MtdApproval = mtdApproval
+                                         
             };
 
             return View("Default", rowsModel);

@@ -35,6 +35,6 @@ namespace Mtd.OrderMaker.Web.Models.Index
         public bool ShowNumber { get; set; }
         public bool ShowDate { get; set; }
         public List<ApprovalStore> ApprovalStores { get; set; }
-        public bool IsAppromalForm { get; set; }
+        public MtdApproval MtdApproval { get; set; }
     }
 }
