@@ -34,7 +34,7 @@
     ViewData["Owner"] = viewOwner;
 }
 @section Head{
-    <link rel="stylesheet" href="~/lib/mtd-ordermaker/store/css/mtd-store-view.css" />
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/store/css/mtd-store-view.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/ui/css/mtd-ui-material.css" />
 }
 @section Breadcrumb {
@@ -44,51 +44,51 @@
 }
 
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/approval/start'>
-        @Html.AntiForgeryToken()
-        <input type="hidden" name="id-store" value="@Model.MtdStore.Id" />
-        <div id="dialog-start" class="mdc-dialog"
-             role="alertdialog"
-             aria-modal="true"
-             aria-labelledby="dialog-accept-title"
-             aria-describedby="dialog-accept-content">
-            <div class="mdc-dialog__container">
-                <div class="mdc-dialog__surface">
-                    <h2 class="mdc-dialog__title" id="start-form-title">
-                        @Localizer["Begin Approval Process"]
-                    </h2>
-                    <div class="mdc-dialog__content" id="accept-dialog-content">
-                        @Localizer["Are you confirm start approval workflow?"]
-                        @if (Model.BlockParts.Count > 0)
-                        {
-                            <div style="padding: 4px; background-color: whitesmoke">
-                                @Localizer["Once the document approval process has begun, the following parts will not access to be editable:"]
-                                <div style="font-weight:600; margin-top: 4px;">
-                                    @{
-                                        int counter = Model.BlockParts.Count;
-                                        foreach (var part in Model.BlockParts)
-                                        {
-                                            counter--;
-                                            <text> @part.Name </text> if (counter > 0)
-                                            { <text>/</text> }
-                                    }
-                                    }
-                                </div>
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="id-store" value="@Model.MtdStore.Id" />
+    <div id="dialog-start" class="mdc-dialog"
+         role="alertdialog"
+         aria-modal="true"
+         aria-labelledby="dialog-accept-title"
+         aria-describedby="dialog-accept-content">
+        <div class="mdc-dialog__container">
+            <div class="mdc-dialog__surface">
+                <h2 class="mdc-dialog__title" id="start-form-title">
+                    @Localizer["Begin Approval Process"]
+                </h2>
+                <div class="mdc-dialog__content" id="accept-dialog-content">
+                    @Localizer["Are you confirm start approval workflow?"]
+                    @if (Model.BlockParts.Count > 0)
+                    {
+                        <div style="padding: 4px; background-color: whitesmoke">
+                            @Localizer["Once the document approval process has begun, the following parts will not access to be editable:"]
+                            <div style="font-weight:600; margin-top: 4px;">
+                                @{
+                                    int counter = Model.BlockParts.Count;
+                                    foreach (var part in Model.BlockParts)
+                                    {
+                                        counter--;
+                                        <text> @part.Name </text> if (counter > 0)
+                                        { <text>/</text> }
+                                }
+                                }
                             </div>
-                        }
-                    </div>
-                    <footer class="mdc-dialog__actions">
-                        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
-                            <span class="mdc-button__label">@Localizer["Cancel"]</span>
-                        </button>
-                        <button type="button" id="clicker-start" mtd-data-clicker mtd-data-message="@Localizer["Approval process was started."]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" style="color:green">
-                            <span class="mdc-button__label">@Localizer["Start"]</span>
-                        </button>
-                    </footer>
+                        </div>
+                    }
                 </div>
+                <footer class="mdc-dialog__actions">
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                        <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                    </button>
+                    <button type="button" id="clicker-start" mtd-data-clicker mtd-data-message="@Localizer["Approval process was started."]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" style="color:green">
+                        <span class="mdc-button__label">@Localizer["Start"]</span>
+                    </button>
+                </footer>
             </div>
-            <div class="mdc-dialog__scrim"></div>
         </div>
-    </form>
+        <div class="mdc-dialog__scrim"></div>
+    </div>
+</form>
 
 
 @await Html.PartialAsync("~/Areas/Workplace/PAges/Store/Partials/DialogApprovalConfirm.cshtml")
@@ -176,13 +176,13 @@
 <div class="mtd-desk">
     @if (Model.IsApprover && Model.IsFirstStage)
     {
-   
+
         <div style=" top: 65px; z-index:2; position: sticky; position: -webkit-sticky;">
             <div class="mdc-elevation--z4" style="background-color: white; text-align: center; color: red; padding: 8px;">
                 <i class="material-icons" aria-hidden="true" style="vertical-align:middle">assignment_turned_in</i>
                 <span> @Localizer["Approval is required"]</span>
                 <div style="padding-bottom: 4px;">
-                    <button  id="button-start-approval" class="mdc-button mdc-button--raised" style="color: white">
+                    <button id="button-start-approval" class="mdc-button mdc-button--raised" style="color: white">
                         <i class="material-icons mdc-button__icon" aria-hidden="true">thumb_up</i>
                         <span class="mdc-button__label">@Localizer["Start approval"]</span>
                     </button>
@@ -214,128 +214,32 @@
         <div class="mtd-desk-block">
             <div class="mtd-desk-block-content  mtd-desk-block--border">
                 <div class="mtd-desk-block-title">
-                    <label>
+                    <div class="mtd-desk-block-title-icon">
                         <i class="material-icons" aria-hidden="true">print</i>
+                    </div>
+                    <div class="mtd-desk-block-title-label">
                         @Localizer["Print form view"]
-                    </label>
+                    </div>
+                    <div class="mtd-desk-block-title-button">
+                        <button onclick="clickBlockToogle(this)"
+                                class="mdc-icon-button"
+                                aria-label="Add to favorites"
+                                aria-hidden="true"
+                                aria-pressed="false"
+                                data="block-view">
+                            <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on" style="color: gray">toggle_off</i>
+                            <i class="material-icons mdc-icon-button__icon">toggle_on</i>
+                        </button>
+                    </div>
                 </div>
                 @await Component.InvokeAsync("StoreForm", new { store = Model.MtdStore, type = FormType.Details })
             </div>
         </div>
         <div class="mtd-desk-block">
-            <div class="mtd-desk-block-content mtd-desk-block--border">
-                <div class="mtd-desk-block-title">
-                    <label>
-                        <i class="material-icons" aria-hidden="true">info</i>
-                        @Localizer["Document information"]
-                    </label>
-                </div>
-                <div class="mtd-desk-block-body">
-                    <table>
-                        <tr><td>ID</td><td>@Model.MtdStore.Sequence.ToString("D9")</td></tr>
-                        <tr><td>@Localizer["Owner"]</td><td>@Localizer[$"{ViewBag.Owner}"]</td></tr>
-                        @if (Model.IsFormApproval)
-                        {
-                            switch (Model.ApprovalStatus)
-                            {
-                                case ApprovalStatus.Rejected:
-                                    {
-                                        <tr>
-                                            <td>@Localizer["Approval status"]</td>
-                                            <td>
-                                                <span style="color: black; text-transform:uppercase; font-weight: bold; ">
-                                                    <i style="vertical-align:middle" class="material-icons">thumb_down</i>
-                                                    @Localizer["Rejected"]
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        break;
-                                    }
-                                case ApprovalStatus.Approved:
-                                    {
-                                        <tr>
-                                            <td>@Localizer["Approval status"]</td>
-                                            <td>
-                                                <span style="color: green; text-transform:uppercase; font-weight: bold; ">
-                                                    <i style="vertical-align:middle" class="material-icons">thumb_up</i>
-                                                    @Localizer["Approved"]
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        break;
-                                    }
-                                case ApprovalStatus.Waiting:
-                                    {
-                                        <tr>
-                                            <td>@Localizer["Approval status"]</td>
-                                            <td>
-                                                <span style="color: gray; text-transform:uppercase; font-weight: bold; ">
-                                                    <i style="vertical-align:middle" class="material-icons">hourglass_full</i>
-                                                    @Localizer["Waiting"]
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        break;
-                                    }
-                                case ApprovalStatus.Start:
-                                    {
-                                        <tr>
-                                            <td>@Localizer["Approval status"]</td>
-                                            <td>
-                                                <span style="color: gray; text-transform:uppercase; font-weight: bold; ">
-                                                    <i style="vertical-align:middle" class="material-icons">new_releases</i>
-                                                    @Localizer["Not started"]
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        break;
-                                    }
-                                case ApprovalStatus.Iteraction:
-                                    {
-                                        <tr>
-                                            <td>@Localizer["Approval status"]</td>
-                                            <td>
-                                                <span style="color: darkred; text-transform:uppercase; font-weight: bold; ">
-                                                    <i style="vertical-align:middle" class="material-icons">new_releases</i>
-                                                    @Localizer["Returned"]
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        break;
-                                    }
 
-                                case ApprovalStatus.Required:
-                                    {
-                                        <tr>
-                                            <td>@Localizer["Approval status"]</td>
-                                            <td>
-                                                <span style="color: red; text-transform:uppercase; font-weight: bold;">
-                                                    <i style="vertical-align:middle" class="material-icons">assignment_turned_in</i>
-                                                    @Localizer["Approval is required"]
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        break;
-                                    }
-                            }
-                        }
-                    </table>
-                </div>
-            </div>
-            <div class="mtd-desk-block-content mtd-desk-block--border">
-                <div class="mtd-desk-block-title">
-                    <label>
-                        <i class="material-icons" aria-hidden="true">history</i>
-                        @Localizer["Changes history"]
-                    </label>
-                </div>
-                <div class="mtd-desk-block-body">
-                    <table style="white-space: nowrap">
-                        <tr><td>@Localizer["Created by"]</td><td>@Localizer[$"{Model.ChangesHistory.CreateByUser}"]</td><td>@Localizer[$"{Model.ChangesHistory.CreateByTime}"]</td></tr>
-                        <tr><td>@Localizer["Last edited by"]</td><td>@Localizer[$"{Model.ChangesHistory.LastEditedUser}"]</td><td>@Localizer[$"{Model.ChangesHistory.LastEditedTime}"]</td></tr>
-                    </table>
-                </div>
-            </div>
+            @await Html.PartialAsync("./Partials/DetailsInfo")
+            @await Html.PartialAsync("./Partials/DetailsHistory")
+
         </div>
     </div>
 </div>
@@ -392,6 +296,7 @@
                     <h2 class="mdc-dialog__title" id="approval-form-title">
                         @Localizer["Choose a route to rejection"]
                     </h2>
+
                     <div class="mdc-dialog__content" id="approval-dialog-content">
                         <div>
                             <div class="mdc-form-field">
@@ -419,7 +324,23 @@
                             <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Stages"]</label>
                             <div class="mdc-line-ripple"></div>
                         </div>
+
+                        @if (Model.ListRejections != null && Model.ListRejections.Count > 0)
+                        {
+
+                            <div style="padding-top: 18px;">
+                                @Localizer["Select the resolution:"]
+                            </div>
+                            <div class="mdc-select" style="width: 100%; margin-top: 8px;">
+                                <i class="mdc-select__dropdown-icon"></i>
+                                <select class="mdc-select__native-control" asp-items="ViewBag.ListRejection" name="id-rejection"></select>
+                                <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Resolution"]</label>
+                                <div class="mdc-line-ripple"></div>
+                            </div>
+                        }
+
                     </div>
+
                     <footer class="mdc-dialog__actions">
                         <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
                             <span class="mdc-button__label">@Localizer["Cancel"]</span>
@@ -466,6 +387,7 @@
 </div>
 
 @section Scripts{
+    <script src="~/lib/mtd-ordermaker/store/js/mtd-store-view.js" asp-append-version="true"></script>
     <script>
         (() => {
             const dialogSetOwner = document.getElementById('dialog-setowner');

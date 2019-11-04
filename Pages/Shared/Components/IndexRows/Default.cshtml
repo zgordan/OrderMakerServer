@@ -103,7 +103,13 @@
                                                 }
                                                 else
                                                 {
-                                                    @await Component.InvokeAsync("MTDImgViewer", new { maxHeight = 32, maxWidth = 32, imgArray = Model.MtdApproval.ImgApproved })
+                                                    @await Component.InvokeAsync("MTDImgViewer", new
+                                                    {
+                                                        maxHeight = 24,
+                                                        maxWidth = 24,
+                                                        imgArray = Model.MtdApproval.ImgApproved,
+                                                        imgType = Model.MtdApproval.ImgApprovedType
+                                                    })
                                                 }
 
                                                 break;
@@ -116,7 +122,13 @@
                                                 }
                                                 else
                                                 {
-                                                    @await Component.InvokeAsync("MTDImgViewer", new { maxHeight = 32, maxWidth = 32, imgArray = Model.MtdApproval.ImgIteraction })
+                                                    @await Component.InvokeAsync("MTDImgViewer", new
+                                                    {
+                                                        maxHeight = 24,
+                                                        maxWidth = 24,
+                                                        imgArray = Model.MtdApproval.ImgIteraction,
+                                                        imgType = Model.MtdApproval.ImgIteractionType
+                                                    })
                                                 }
 
                                                 break;
@@ -129,7 +141,13 @@
                                                 }
                                                 else
                                                 {
-                                                    @await Component.InvokeAsync("MTDImgViewer", new { maxHeight = 32, maxWidth = 32, imgArray = Model.MtdApproval.ImgRejected })
+                                                    @await Component.InvokeAsync("MTDImgViewer", new
+                                                    {
+                                                   maxHeight = 24,
+                                                        maxWidth = 24,
+                                                        imgArray = Model.MtdApproval.ImgRejected,
+                                                        imgType = Model.MtdApproval.ImgRejectedType
+                                                    })
                                                 }
                                                 break;
                                             }
@@ -141,7 +159,13 @@
                                                 }
                                                 else
                                                 {
-                                                    @await Component.InvokeAsync("MTDImgViewer", new { maxHeight = 32, maxWidth = 32, imgArray = Model.MtdApproval.ImgRequired })
+                                                    @await Component.InvokeAsync("MTDImgViewer", new
+                                                    {
+                                                        maxHeight = 24,
+                                                        maxWidth = 24,
+                                                        imgArray = Model.MtdApproval.ImgRequired,
+                                                        imgType = Model.MtdApproval.ImgRequiredType
+                                                    })
                                                 }
 
                                                 break;
@@ -154,14 +178,35 @@
                                                 }
                                                 else
                                                 {
-                                                    @await Component.InvokeAsync("MTDImgViewer", new { maxHeight = 32, maxWidth = 32, imgArray = Model.MtdApproval.ImgStart })
+                                                    @await Component.InvokeAsync("MTDImgViewer", new
+                                                    {
+                                                       maxHeight = 24,
+                                                        maxWidth = 24,
+                                                        imgArray = Model.MtdApproval.ImgStart,
+                                                        imgType = Model.MtdApproval.ImgStartType
+                                                    })
                                                 }
 
                                                 break;
                                             }
                                         case ApprovalStatus.Waiting:
                                             {
-                                                <i class="material-icons" aria-hidden="true" style="vertical-align:middle; color: gray">hourglass_full</i>
+                                                if (Model.MtdApproval.ImgWaiting == null)
+                                                {
+                                                    <i class="material-icons" aria-hidden="true" style="vertical-align:middle; color: gray">hourglass_full</i>
+                                                }
+                                                else
+                                                {
+                                                    @await Component.InvokeAsync("MTDImgViewer", new
+                                                        {
+                                                           maxHeight = 24,
+                                                            maxWidth = 24,
+                                                            imgArray = Model.MtdApproval.ImgWaiting,
+                                                            imgType = Model.MtdApproval.ImgWaitingType
+                                                        })
+                                                }
+
+
                                                 break;
                                             }
                                     }

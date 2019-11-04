@@ -33,25 +33,73 @@ namespace Mtd.OrderMaker.Web.Migrations
                         .HasColumnName("img_approved")
                         .HasColumnType("mediumblob");
 
+                    b.Property<string>("ImgApprovedText")
+                        .HasColumnName("img_approved_text")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ImgApprovedType")
+                        .HasColumnName("img_approved_type")
+                        .HasColumnType("varchar(48)");
+
                     b.Property<byte[]>("ImgIteraction")
                         .HasColumnName("img_iteraction")
                         .HasColumnType("mediumblob");
+
+                    b.Property<string>("ImgIteractionText")
+                        .HasColumnName("img_iteraction_text")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ImgIteractionType")
+                        .HasColumnName("img_iteraction_type")
+                        .HasColumnType("varchar(48)");
 
                     b.Property<byte[]>("ImgRejected")
                         .HasColumnName("img_rejected")
                         .HasColumnType("mediumblob");
 
+                    b.Property<string>("ImgRejectedText")
+                        .HasColumnName("img_rejected_text")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ImgRejectedType")
+                        .HasColumnName("img_rejected_type")
+                        .HasColumnType("varchar(48)");
+
                     b.Property<byte[]>("ImgRequired")
                         .HasColumnName("img_required")
                         .HasColumnType("mediumblob");
+
+                    b.Property<string>("ImgRequiredText")
+                        .HasColumnName("img_required_text")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ImgRequiredType")
+                        .HasColumnName("img_required_type")
+                        .HasColumnType("varchar(48)");
 
                     b.Property<byte[]>("ImgStart")
                         .HasColumnName("img_start")
                         .HasColumnType("mediumblob");
 
+                    b.Property<string>("ImgStartText")
+                        .HasColumnName("img_start_text")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ImgStartType")
+                        .HasColumnName("img_start_type")
+                        .HasColumnType("varchar(48)");
+
                     b.Property<byte[]>("ImgWaiting")
                         .HasColumnName("img_waiting")
                         .HasColumnType("mediumblob");
+
+                    b.Property<string>("ImgWaitingText")
+                        .HasColumnName("img_waiting_text")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ImgWaitingType")
+                        .HasColumnName("img_waiting_type")
+                        .HasColumnType("varchar(48)");
 
                     b.Property<string>("MtdForm")
                         .IsRequired()
@@ -88,6 +136,14 @@ namespace Mtd.OrderMaker.Web.Migrations
                         .HasColumnName("color")
                         .HasColumnType("varchar(45)")
                         .HasDefaultValueSql("'green'");
+
+                    b.Property<byte[]>("ImgData")
+                        .HasColumnName("img_data")
+                        .HasColumnType("mediumblob");
+
+                    b.Property<string>("ImgType")
+                        .HasColumnName("img_type")
+                        .HasColumnType("varchar(45)");
 
                     b.Property<int>("MtdApprovalStageId")
                         .HasColumnName("mtd_approval_stage_id")
@@ -137,6 +193,14 @@ namespace Mtd.OrderMaker.Web.Migrations
                         .HasColumnName("color")
                         .HasColumnType("varchar(45)")
                         .HasDefaultValueSql("'green'");
+
+                    b.Property<byte[]>("ImgData")
+                        .HasColumnName("img_data")
+                        .HasColumnType("mediumblob");
+
+                    b.Property<string>("ImgType")
+                        .HasColumnName("img_type")
+                        .HasColumnType("varchar(45)");
 
                     b.Property<int>("MtdApprovalStageId")
                         .HasColumnName("mtd_approval_stage_id")
@@ -881,18 +945,26 @@ namespace Mtd.OrderMaker.Web.Migrations
                         .HasColumnName("id")
                         .HasColumnType("int(11)");
 
+                    b.Property<string>("Color")
+                        .HasColumnName("color")
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<byte[]>("ImgData")
+                        .HasColumnName("img_data")
+                        .HasColumnType("mediumblob");
+
+                    b.Property<string>("ImgType")
+                        .HasColumnName("img_type")
+                        .HasColumnType("varchar(50)");
+
                     b.Property<string>("MtdStore")
                         .IsRequired()
                         .HasColumnName("mtd_store")
                         .HasColumnType("varchar(36)");
 
-                    b.Property<string>("Rejection")
-                        .HasColumnName("rejection")
-                        .HasColumnType("varchar(36)");
-
-                    b.Property<string>("Resolution")
-                        .HasColumnName("resolution")
-                        .HasColumnType("varchar(36)");
+                    b.Property<string>("Note")
+                        .HasColumnName("note")
+                        .HasColumnType("varchar(512)");
 
                     b.Property<int>("Result")
                         .HasColumnName("result")
@@ -919,12 +991,6 @@ namespace Mtd.OrderMaker.Web.Migrations
 
                     b.HasIndex("MtdStore")
                         .HasName("fk_log_approval_store_idx");
-
-                    b.HasIndex("Rejection")
-                        .HasName("fk_log_rejection_idx");
-
-                    b.HasIndex("Resolution")
-                        .HasName("fk_log_resolution_idx");
 
                     b.HasIndex("Stage")
                         .HasName("fk_log_approval_stage_idx");
@@ -1240,14 +1306,6 @@ namespace Mtd.OrderMaker.Web.Migrations
                         .HasColumnName("parts_approved")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Rejection")
-                        .HasColumnName("rejection")
-                        .HasColumnType("varchar(36)");
-
-                    b.Property<string>("Resolution")
-                        .HasColumnName("resolution")
-                        .HasColumnType("varchar(36)");
-
                     b.Property<int>("Result")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("result")
@@ -1265,12 +1323,6 @@ namespace Mtd.OrderMaker.Web.Migrations
 
                     b.HasIndex("MtdApproveStage")
                         .HasName("fk_store_approve_stage_idx");
-
-                    b.HasIndex("Rejection")
-                        .HasName("fk_store_stage_rejection_idx");
-
-                    b.HasIndex("Resolution")
-                        .HasName("fk_store_stage_resolution_idx");
 
                     b.ToTable("mtd_store_approval");
                 });
@@ -1777,18 +1829,6 @@ namespace Mtd.OrderMaker.Web.Migrations
                         .HasConstraintName("fk_log_approval_store")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdApprovalRejection", "RejectionNavigation")
-                        .WithMany("MtdLogApproval")
-                        .HasForeignKey("Rejection")
-                        .HasConstraintName("fk_log_rejection")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdApprovalResolution", "ResolutionNavigation")
-                        .WithMany("MtdLogApproval")
-                        .HasForeignKey("Resolution")
-                        .HasConstraintName("fk_log_resolution")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Mtd.OrderMaker.Web.Data.MtdApprovalStage", "StageNavigation")
                         .WithMany("MtdLogApproval")
                         .HasForeignKey("Stage")
@@ -1862,18 +1902,6 @@ namespace Mtd.OrderMaker.Web.Migrations
                         .WithMany("MtdStoreApproval")
                         .HasForeignKey("MtdApproveStage")
                         .HasConstraintName("fk_store_approve_stage")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdApprovalRejection", "RejectionNavigation")
-                        .WithMany("MtdStoreApproval")
-                        .HasForeignKey("Rejection")
-                        .HasConstraintName("fk_store_stage_rejection")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdApprovalResolution", "ResolutionNavigation")
-                        .WithMany("MtdStoreApproval")
-                        .HasForeignKey("Resolution")
-                        .HasConstraintName("fk_store_stage_resolution")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

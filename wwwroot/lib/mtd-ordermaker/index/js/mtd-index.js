@@ -62,8 +62,7 @@ const ListenerPageMenu = () => {
     });
 }
 
-const ListenerFilter = () => {
-
+const ListenerFilter = () => {    
     const selectField = new mdc.select.MDCSelect(document.getElementById("indexSelectField"));
     const selectTerm = new mdc.select.MDCSelect(document.getElementById("indexSelectTerm"));
     const selectFilter = new mdc.textField.MDCTextField(document.getElementById("indexSelectFilter"));

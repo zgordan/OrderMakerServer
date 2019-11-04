@@ -118,16 +118,3 @@
     <div class="mdc-dialog__scrim"></div>
 </div>
 
-@section  Scripts{ 
-    <script>
-        (() => {
-            const dialog = document.getElementById('dialog-delete');
-            if (dialog) {
-                const d = new mdc.dialog.MDCDialog(dialog);
-                document.getElementById('action-delete').addEventListener('click', () => {
-                    d.open();
-                });
-            }
-        })();
-    </script>
-}

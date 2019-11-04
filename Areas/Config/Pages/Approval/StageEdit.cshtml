@@ -38,6 +38,15 @@
 
 
 @section Action {
+    <li class="mdc-list-item" role="menuitem" mtd-data-href="/config/approval/resolutions/index?stage=@Model.MtdApprovalStage.Id">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">thumb_up</span>
+        <span class="mdc-list-item__text">@Localizer["Resolution list"]</span>
+    </li>   
+    <li class="mdc-list-item" role="menuitem" mtd-data-href="/config/approval/rejections/index?stage=@Model.MtdApprovalStage.Id">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">thumb_down</span>
+        <span class="mdc-list-item__text">@Localizer["Rejection list"]</span>
+    </li>
+    <li class="mdc-list-divider"></li>
     <li mtd-data-delete class="mdc-list-item" role="menuitem">
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">delete</span>
         <span class="mdc-list-item__text">@Localizer["Delete"]</span>
@@ -56,95 +65,29 @@
                 <span class="mdc-fab__label">@Localizer["Save"]</span>
             </button>
         </div>
-        <div style="display: flex; flex-wrap:wrap">
-            <div class="mdc-elevation--z1" style="padding: 8px; margin:8px">
+        <div style="display: flex; flex-wrap:wrap; justify-content:center">
+            <div class="mdc-elevation--z1" style="padding: 8px; margin:8px; width:100%">
                 <div>
-                    @Localizer["Fields"]
+                    <strong>@Localizer["Fields"]</strong>
                     <hr />
                 </div>
                 @await Html.PartialAsync("~/Areas/Config/Pages/Approval/Partials/StageEditFields.cshtml", Model.MtdApprovalStage)
             </div>
-            <div class="mdc-elevation--z1" style="padding: 8px; margin:8px; min-width: 280px">
-                <div>
-                    @Localizer["Resolutions"]
+            <div class="mdc-elevation--z1"  style="padding: 8px; margin:8px">
+                <div style="">
+                    <strong>@Localizer["Parts of the form that will be uneditable after approval"]</strong>
                     <hr />
                 </div>
-                <div>
-                    <button id="button-dialog-add" type="button" class="mdc-button mdc-button--dense" onclick="clickResolutionAdd()">
-                        <i class="material-icons mdc-button__icon">library_add</i>
-                        @Localizer["Add"]
-                    </button>
-                    <ul id="ul-resolution" class="mdc-list mdc-list--two-line">
-                        @foreach (var resolution in Model.Resolutions)
-                        {
-                            <li id="@resolution.Id-resolution-li" class="mdc-list-item" tabindex="0" onclick="clickResolutionEdit(event)">
-                                <span class="mdc-list-item__text" style="padding: 4px;">
-                                    <span id="@resolution.Id-span-name" style="color: @resolution.Color" class="mdc-list-item__primary-text">@resolution.Name</span>
-                                    <span id="@resolution.Id-span-note" style="color: @resolution.Color" class="mdc-list-item__secondary-text">@resolution.Note</span>
-                                </span>
-                                <span class="mdc-list-item__meta material-icons" aria-hidden="true">
-                                    <button id="@resolution.Id-delete-button" type="button" class="mdc-icon-button material-icons" onclick="clickDeleteDialog(event)">delete</button>
-                                </span>
-                                <input id="@resolution.Id-resolution" name="@resolution.Id-resolution-id" value="@resolution.Id" style="display:none" />
-                                <input id="@resolution.Id-resolution-name" name="@resolution.Id-resolution-name" value="@resolution.Name" style="display:none" />
-                                <input id="@resolution.Id-resolution-note" name="@resolution.Id-resolution-note" value="@resolution.Note" style="display:none" />
-                                <input id="@resolution.Id-resolution-number" name="@resolution.Id-resolution-number" value="@resolution.Sequence" style="display:none" />
-                                <input id="@resolution.Id-resolution-color" name="@resolution.Id-resolution-color" value="@resolution.Color" style="display:none" />
-                            </li>
-                        }
-                    </ul>
-                </div>
+                @await Html.PartialAsync("~/Areas/Config/Pages/Approval/Partials/StageEditParts.cshtml", Model)
             </div>
-            <div class="mdc-elevation--z1" style="padding: 8px; margin:8px; min-width: 280px">
-                <div>
-                    @Localizer["Rejections"]
-                    <hr />
-                </div>
-                <div>
-                    <button id="button-dialog-add-rejection" type="button" class="mdc-button mdc-button--dense" onclick="clickRejectionAdd()">
-                        <i class="material-icons mdc-button__icon">library_add</i>
-                        @Localizer["Add"]
-                    </button>
-                    <ul id="ul-rejection" class="mdc-list mdc-list--two-line">
-                        @foreach (var rejection in Model.Rejections)
-                        {
-                            <li id="@rejection.Id-rejection-li" class="mdc-list-item" tabindex="0" onclick="clickRejectionEdit(event)">
-                                <span class="mdc-list-item__text" style="padding: 4px;">
-                                    <span id="@rejection.Id-span-name-rejection" style="color: @rejection.Color" class="mdc-list-item__primary-text">@rejection.Name</span>
-                                    <span id="@rejection.Id-span-note-rejection" style="color: @rejection.Color" class="mdc-list-item__secondary-text">@rejection.Note</span>
-                                </span>
-                                <span class="mdc-list-item__meta material-icons" aria-hidden="true">
-                                    <button id="@rejection.Id-delete-button-rejection" type="button" class="mdc-icon-button material-icons" onclick="clickDeleteDialogRejection(event)">delete</button>
-                                </span>
-                                <input id="@rejection.Id-rejection" name="@rejection.Id-rejection-id" value="@rejection.Id" style="display:none" />
-                                <input id="@rejection.Id-rejection-name" name="@rejection.Id-rejection-name" value="@rejection.Name" style="display:none" />
-                                <input id="@rejection.Id-rejection-note" name="@rejection.Id-rejection-note" value="@rejection.Note" style="display:none" />
-                                <input id="@rejection.Id-rejection-number" name="@rejection.Id-rejection-number" value="@rejection.Sequence" style="display:none" />
-                                <input id="@rejection.Id-rejection-color" name="@rejection.Id-rejection-color" value="@rejection.Color" style="display:none" />
-                            </li>
-                        }
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="mdc-elevation--z1">
-            <div style="padding: 8px; margin:8px">
-                @Localizer["Parts of the form that will be uneditable after approval"]
-                <hr />
-            </div>
-            @await Html.PartialAsync("~/Areas/Config/Pages/Approval/Partials/StageEditParts.cshtml", Model)
         </div>
     </div>
 </form>
 
 @await Html.PartialAsync("~/Areas/Config/Pages/Approval/Partials/StageEditDialogDelete.cshtml", Model)
-@await Html.PartialAsync("~/Areas/Config/Pages/Approval/Partials/ResolutionDialog.cshtml", Model)
-@await Html.PartialAsync("~/Areas/Config/Pages/Approval/Partials/RejectionDialog.cshtml", Model)
 
 
 
 @section Scripts{
     <script src="~/lib/mtd-ordermaker/config/js/mtd-config-approval.js" asp-append-version="true"></script>
-    <script src="~/lib/mtd-ordermaker/config/js/mtd-config-resolution.js" asp-append-version="true"></script>
-    <script src="~/lib/mtd-ordermaker/config/js/mtd-config-rejection.js" asp-append-version="true"></script>
 }

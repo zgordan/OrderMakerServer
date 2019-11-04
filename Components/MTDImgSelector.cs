@@ -37,14 +37,27 @@ namespace Mtd.OrderMaker.Web.Components
             return null;
         }
 
+        private static string GetImageType(string codeForm, HttpRequest request)
+        {
+
+            string idInput = $"{codeForm}-file-upload-input";
+            IFormFile file = request.Form.Files.FirstOrDefault(x => x.Name == idInput);
+            if (file != null)
+            {
+                return file.ContentType;
+            }
+
+            return "image/png";
+        }
 
         public static async Task<MTDImgSModify> ImageModifyAsync(string codeForm, HttpRequest request)
         {
 
             var imgArray = await MTDImgSelector.GetImageAsync(codeForm, request);
             bool delCommand = MTDImgSelector.CheckDelete(codeForm, request);
-
-            MTDImgSModify imgSModify = new MTDImgSModify { Image = null, Modify = false };
+            string imgType = GetImageType(codeForm, request);
+            MTDImgSModify imgSModify = new MTDImgSModify { Image = null, Modify = false, ImgType = imgType };
+            
 
             if (delCommand)
             {
@@ -67,15 +80,16 @@ namespace Mtd.OrderMaker.Web.Components
             return imgSModify;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string id, bool required = false, byte[] imgArray = null)
+        public async Task<IViewComponentResult> InvokeAsync(string id, bool required = false, byte[] imgArray = null, string imgType="image/png")
         {
-            MTDImgSelectorModel ism = await Task.Run(()=> new MTDImgSelectorModel { Id = id, ImgArray = imgArray, Required = required });
+            MTDImgSelectorModel ism = await Task.Run(()=> new MTDImgSelectorModel { Id = id, ImgArray = imgArray, Required = required, ImgType = imgType });
             return View(ism);
         }
     }
 
     public class MTDImgSModify
     {
+        public string ImgType { get; set; }
         public byte[] Image { get; set; }
         public bool Modify { get; set; }
     }
@@ -83,6 +97,7 @@ namespace Mtd.OrderMaker.Web.Components
     public class MTDImgSelectorModel
     {
         public string Id { get; set; }
+        public string ImgType { get; set; }        
         public byte[] ImgArray { get; set; }
         public bool Required { get; set; }
     }

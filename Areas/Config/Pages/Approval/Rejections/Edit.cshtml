@@ -1,0 +1,81 @@
+﻿@page
+@model EditModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Model.MtdApprovalStage.Name;
+    ViewData["SecondTitle"] = Localizer["Edit rejection"];
+    string stage = Request.Query["stage"];
+}
+
+@section Breadcrumb {
+    <li><a href="/config">@Localizer["Configurator"]</a></li>
+    <li><a href="/config/approval">@Localizer["Approvals"]</a></li>
+    <li><a href="/config/approval/edit?id=@Model.MtdApprovalStage.MtdApproval">@Localizer["Approval editor"]</a></li>
+    <li><a href="/config/approval/stages?idApproval=@Model.MtdApprovalStage.MtdApproval">@Localizer["Stages list"]</a></li>
+    <li><a href="/config/approval/rejections?stage=@Model.MtdApprovalStage.Id">@Localizer["Rejections"]</a></li>
+    <li>@Localizer["Edit"]</li>
+}
+
+@section Action {
+    <li mtd-data-delete class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">delete</span>
+        <span class="mdc-list-item__text">@Localizer["Delete"]</span>
+    </li>
+}
+
+<form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="">
+    <input type="hidden" asp-for="@Model.MtdApprovalRejection.Id" />
+    <input type="hidden" asp-for="@Model.MtdApprovalRejection.MtdApprovalStageId" />
+    <input type="hidden" asp-for="@Model.MtdApprovalRejection.Sequence" />
+    <div class="mtd-desk">
+        <div class="mtd-desk-savebar">
+            <button mtd-data-clicker mtd-data-location="/config/approval/rejections?stage=@Model.MtdApprovalStage.Id" type="button" class="mdc-fab mdc-fab--extended">
+                <span class="material-icons mdc-fab__icon">save</span>
+                <span class="mdc-fab__label">@Localizer["Save"]</span>
+            </button>
+        </div>
+        <div style="display: flex; flex-direction: column; align-items:center">
+            @await Component.InvokeAsync("MTDImgSelector", new { id = "img", imgArray = Model.MtdApprovalRejection.ImgData, imgType = Model.MtdApprovalRejection.ImgType })
+            <div style="display:flex; width: 100%; max-width: 600px; margin-top: 16px;">
+                <div class="mdc-text-field mdc-text-field--outlined" style="flex-grow:1">
+                    <input type="text" id="tf-outlined" mtd-required="config-form-name" class="mdc-text-field__input" asp-for="MtdApprovalRejection.Name" required />
+                    <div class="mdc-notched-outline">
+                        <div class="mdc-notched-outline__leading"></div>
+                        <div class="mdc-notched-outline__notch">
+                            <label for="tf-outlined" class="mdc-floating-label">@Localizer["Name"]</label>
+                        </div>
+                        <div class="mdc-notched-outline__trailing"></div>
+                    </div>
+                </div>
+                <div style="padding: 12px 4px 4px 4px; height: 100%; text-align:center; display:flex;">
+                    <div>
+                        <span style="padding: 8px;">@Localizer["Color"]</span>
+                    </div>
+                    <div style="align-self:center">
+                        <input asp-for="MtdApprovalRejection.Color" type="color">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mdc-text-field mdc-text-field--textarea" style="width: 100%; max-width:600px; margin-top: 16px;">
+                <textarea id="textarea" mtd-required="config-form-description" class="mdc-text-field__input" rows="3" cols="40" asp-for="MtdApprovalRejection.Note" required></textarea>
+                <div class="mdc-notched-outline">
+                    <div class="mdc-notched-outline__leading"></div>
+                    <div class="mdc-notched-outline__notch">
+                        <label for="textarea" class="mdc-floating-label">@Localizer["Description"]</label>
+                    </div>
+                    <div class="mdc-notched-outline__trailing"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@await Html.PartialAsync("./_DialogDelete")
+
+
+@section Scripts{
+    <script src="~/lib/mtd-ordermaker/config/js/mtd-config-approval.js" asp-append-version="true"></script>
+}

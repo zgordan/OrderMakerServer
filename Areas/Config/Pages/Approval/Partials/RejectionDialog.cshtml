@@ -15,6 +15,9 @@
                 @Localizer["Rejection"]
             </h2>
             <div class="mdc-dialog__content" id="dialog-rejection-content">
+                <label>Image</label>
+                @await Component.InvokeAsync("MTDImgSelector",new {id="ID-image"})
+
                 <div style="padding:4px;">
                     <div class="mdc-text-field mdc-text-field--fullwidth">
                         <input id="dialog-rejection-name" name="dialog-rejection-name" class="mdc-text-field__input"

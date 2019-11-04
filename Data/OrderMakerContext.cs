@@ -110,25 +110,73 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasColumnName("img_start")
                     .HasColumnType("mediumblob");
 
+                entity.Property(e => e.ImgStartType)
+                    .HasColumnName("img_start_type")
+                    .HasColumnType("varchar(48)");
+
+                entity.Property(e => e.ImgStartText)
+                    .HasColumnName("img_start_text")
+                    .HasColumnType("varchar(255)");
+
                 entity.Property(e => e.ImgIteraction)           
                     .HasColumnName("img_iteraction")
                     .HasColumnType("mediumblob");
+
+                entity.Property(e => e.ImgIteractionType)
+                    .HasColumnName("img_iteraction_type")
+                    .HasColumnType("varchar(48)");
+
+                entity.Property(e => e.ImgIteractionText)
+                    .HasColumnName("img_iteraction_text")
+                    .HasColumnType("varchar(255)");
 
                 entity.Property(e => e.ImgWaiting)             
                     .HasColumnName("img_waiting")
                     .HasColumnType("mediumblob");
 
+                entity.Property(e => e.ImgWaitingType)
+                    .HasColumnName("img_waiting_type")
+                    .HasColumnType("varchar(48)");
+                
+                entity.Property(e => e.ImgWaitingText)
+                    .HasColumnName("img_waiting_text")
+                    .HasColumnType("varchar(255)");
+
                 entity.Property(e => e.ImgApproved)                
                     .HasColumnName("img_approved")
                     .HasColumnType("mediumblob");
+
+                entity.Property(e => e.ImgApprovedType)
+                    .HasColumnName("img_approved_type")
+                    .HasColumnType("varchar(48)");
+                
+                entity.Property(e => e.ImgApprovedText)
+                    .HasColumnName("img_approved_text")
+                    .HasColumnType("varchar(255)");
 
                 entity.Property(e => e.ImgRejected)
                     .HasColumnName("img_rejected")
                     .HasColumnType("mediumblob");
 
+                entity.Property(e => e.ImgRejectedType)
+                    .HasColumnName("img_rejected_type")
+                    .HasColumnType("varchar(48)");
+                
+                entity.Property(e => e.ImgRejectedText)
+                    .HasColumnName("img_rejected_text")
+                    .HasColumnType("varchar(255)");
+
                 entity.Property(e => e.ImgRequired)
                     .HasColumnName("img_required")
                     .HasColumnType("mediumblob");
+
+                entity.Property(e => e.ImgRequiredType)
+                    .HasColumnName("img_required_type")
+                    .HasColumnType("varchar(48)");
+
+                entity.Property(e => e.ImgRequiredText)
+                    .HasColumnName("img_required_text")
+                    .HasColumnType("varchar(255)");
 
                 entity.HasOne(d => d.MtdFormNavigation)
                     .WithMany(p => p.MtdApproval)
@@ -173,6 +221,14 @@ namespace Mtd.OrderMaker.Web.Data
                     .IsRequired()
                     .HasColumnName("note")
                     .HasColumnType("varchar(512)");
+
+                entity.Property(e => e.ImgData)
+                    .HasColumnName("img_data")
+                    .HasColumnType("mediumblob");
+
+                entity.Property(e => e.ImgType)
+                    .HasColumnName("img_type")
+                    .HasColumnType("varchar(45)");
 
                 entity.Property(e => e.Sequence)
                     .HasColumnName("sequence")
@@ -222,6 +278,14 @@ namespace Mtd.OrderMaker.Web.Data
                     .IsRequired()
                     .HasColumnName("note")
                     .HasColumnType("varchar(512)");
+                
+                entity.Property(e => e.ImgData)
+                    .HasColumnName("img_data")
+                    .HasColumnType("mediumblob");
+
+                entity.Property(e => e.ImgType)
+                    .HasColumnName("img_type")
+                    .HasColumnType("varchar(45)");
 
                 entity.Property(e => e.Sequence)
                     .HasColumnName("sequence")
@@ -977,12 +1041,6 @@ namespace Mtd.OrderMaker.Web.Data
                 entity.HasIndex(e => e.MtdStore)
                     .HasName("fk_log_approval_store_idx");
 
-                entity.HasIndex(e => e.Resolution)
-                    .HasName("fk_log_resolution_idx");
-
-                entity.HasIndex(e => e.Rejection)
-                    .HasName("fk_log_rejection_idx");
-
                 entity.HasIndex(e => e.Stage)
                     .HasName("fk_log_approval_stage_idx");
 
@@ -993,14 +1051,6 @@ namespace Mtd.OrderMaker.Web.Data
                 entity.Property(e => e.MtdStore)
                     .IsRequired()
                     .HasColumnName("mtd_store")
-                    .HasColumnType("varchar(36)");
-
-                entity.Property(e => e.Resolution)
-                    .HasColumnName("resolution")
-                    .HasColumnType("varchar(36)");
-
-                entity.Property(e => e.Rejection)
-                    .HasColumnName("rejection")
                     .HasColumnType("varchar(36)");
 
                 entity.Property(e => e.Result)
@@ -1020,22 +1070,27 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasColumnName("user_id")
                     .HasColumnType("varchar(36)");
 
+                entity.Property(e => e.ImgData)                    
+                    .HasColumnName("img_data")
+                    .HasColumnType("mediumblob");
+
+                entity.Property(e => e.ImgType)
+                    .HasColumnName("img_type")
+                    .HasColumnType("varchar(50)");
+
+                entity.Property(e => e.Color)
+                    .HasColumnName("color")
+                    .HasColumnType("varchar(50)");
+
+                entity.Property(e => e.Note)
+                    .HasColumnName("note")
+                    .HasColumnType("varchar(512)");
+
+
                 entity.HasOne(d => d.MtdStoreNavigation)
                     .WithMany(p => p.MtdLogApproval)
                     .HasForeignKey(d => d.MtdStore)
                     .HasConstraintName("fk_log_approval_store");
-
-                entity.HasOne(d => d.ResolutionNavigation)
-                    .WithMany(p => p.MtdLogApproval)
-                    .HasForeignKey(d => d.Resolution)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("fk_log_resolution");
-
-                entity.HasOne(d => d.RejectionNavigation)
-                    .WithMany(p => p.MtdLogApproval)
-                    .HasForeignKey(d => d.Rejection)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("fk_log_rejection");
 
                 entity.HasOne(d => d.StageNavigation)
                     .WithMany(p => p.MtdLogApproval)
@@ -1346,11 +1401,6 @@ namespace Mtd.OrderMaker.Web.Data
                 entity.HasIndex(e => e.MtdApproveStage)
                     .HasName("fk_store_approve_stage_idx");
 
-                entity.HasIndex(e => e.Resolution)
-                    .HasName("fk_store_stage_resolution_idx");
-                
-                entity.HasIndex(e => e.Rejection)
-                    .HasName("fk_store_stage_rejection_idx");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -1370,14 +1420,6 @@ namespace Mtd.OrderMaker.Web.Data
                     .HasColumnName("parts_approved")
                     .HasColumnType("longtext");
 
-                entity.Property(e => e.Resolution)
-                    .HasColumnName("resolution")
-                    .HasColumnType("varchar(36)");
-
-                entity.Property(e => e.Rejection)
-                    .HasColumnName("rejection")
-                    .HasColumnType("varchar(36)");
-
                 entity.Property(e => e.Result)
                     .HasColumnName("result")
                     .HasColumnType("int(11)")
@@ -1392,18 +1434,6 @@ namespace Mtd.OrderMaker.Web.Data
                     .WithMany(p => p.MtdStoreApproval)
                     .HasForeignKey(d => d.MtdApproveStage)
                     .HasConstraintName("fk_store_approve_stage");
-
-                entity.HasOne(d => d.ResolutionNavigation)
-                    .WithMany(p => p.MtdStoreApproval)
-                    .HasForeignKey(d => d.Resolution)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("fk_store_stage_resolution");
-    
-                entity.HasOne(d => d.RejectionNavigation)
-                    .WithMany(p => p.MtdStoreApproval)
-                    .HasForeignKey(d => d.Rejection)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("fk_store_stage_rejection");
             });
 
             modelBuilder.Entity<MtdStoreLink>(entity =>

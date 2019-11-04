@@ -9,7 +9,7 @@
     <div style="display: flex; margin-top: 8px;">
         @{
             <div style="max-width: 48px; overflow:hidden">
-                @await Component.InvokeAsync("MTDImgViewer", new { height = 48, imgArray = @Model.ImgArray })
+                @await Component.InvokeAsync("MTDImgViewer", new { height = 48, imgArray = @Model.ImgArray, imgType=Model.ImgType })
             </div>
             string shadow = "";
             if (Model.ImgArray != null) { shadow = "mtd-img-select-shadow"; }

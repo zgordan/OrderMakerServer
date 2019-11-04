@@ -24,21 +24,16 @@ namespace Mtd.OrderMaker.Web.Data
 {
     public partial class MtdApprovalResolution
     {
-        public MtdApprovalResolution()
-        {
-            MtdLogApproval = new HashSet<MtdLogApproval>();
-            MtdStoreApproval = new HashSet<MtdStoreApproval>();
-        }
-
+ 
         public string Id { get; set; }
         public string Name { get; set; }
         public string Note { get; set; }
         public int Sequence { get; set; }
         public string Color { get; set; }
         public int MtdApprovalStageId { get; set; }
+        public byte[] ImgData { get; set; }
+        public string ImgType { get; set; }
 
         public virtual MtdApprovalStage MtdApprovalStage { get; set; }
-        public virtual ICollection<MtdLogApproval> MtdLogApproval { get; set; }
-        public virtual ICollection<MtdStoreApproval> MtdStoreApproval { get; set; }
     }
 }

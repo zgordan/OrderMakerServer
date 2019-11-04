@@ -70,27 +70,39 @@ namespace Mtd.OrderMaker.Web.Areas.Config.Pages.Approval
 
             MTDImgSModify mStart = await MTDImgSelector.ImageModifyAsync("img-start", Request);
             MtdApproval.ImgStart = mStart.Image;
+            MtdApproval.ImgStartType = mStart.ImgType;
             _context.Entry(MtdApproval).Property(x => x.ImgStart).IsModified = mStart.Modify;
+            _context.Entry(MtdApproval).Property(x => x.ImgStartType).IsModified = mStart.Modify;
 
             MTDImgSModify mIteraction = await MTDImgSelector.ImageModifyAsync("img-iteraction", Request);
             MtdApproval.ImgIteraction = mIteraction.Image;
+            MtdApproval.ImgIteractionType = mIteraction.ImgType;
             _context.Entry(MtdApproval).Property(x => x.ImgIteraction).IsModified = mIteraction.Modify;
+            _context.Entry(MtdApproval).Property(x => x.ImgIteractionType).IsModified = mIteraction.Modify;
 
             MTDImgSModify mRequired = await MTDImgSelector.ImageModifyAsync("img-required", Request);
             MtdApproval.ImgRequired = mRequired.Image;
+            MtdApproval.ImgRequiredType = mRequired.ImgType;
             _context.Entry(MtdApproval).Property(x => x.ImgRequired).IsModified = mRequired.Modify;
+            _context.Entry(MtdApproval).Property(x => x.ImgRequiredType).IsModified = mRequired.Modify;
 
             MTDImgSModify mWaiting = await MTDImgSelector.ImageModifyAsync("img-waiting", Request);
             MtdApproval.ImgWaiting = mWaiting.Image;
-            _context.Entry(MtdApproval).Property(x => x.ImgWaiting).IsModified = mWaiting.Modify;            
-            
+            MtdApproval.ImgWaitingType = mWaiting.ImgType;
+            _context.Entry(MtdApproval).Property(x => x.ImgWaiting).IsModified = mWaiting.Modify;
+            _context.Entry(MtdApproval).Property(x => x.ImgWaitingType).IsModified = mWaiting.Modify;
+
             MTDImgSModify mApproved = await MTDImgSelector.ImageModifyAsync("img-approved", Request);
             MtdApproval.ImgApproved = mApproved.Image;
+            MtdApproval.ImgApprovedType = mApproved.ImgType;
             _context.Entry(MtdApproval).Property(x => x.ImgApproved).IsModified = mApproved.Modify;
+            _context.Entry(MtdApproval).Property(x => x.ImgApprovedType).IsModified = mApproved.Modify;
 
             MTDImgSModify mRejected = await MTDImgSelector.ImageModifyAsync("img-rejected", Request);
-            MtdApproval.ImgRejected = mApproved.Image;
+            MtdApproval.ImgRejected = mRejected.Image;
+            MtdApproval.ImgRejectedType = mRejected.ImgType;
             _context.Entry(MtdApproval).Property(x => x.ImgRejected).IsModified = mRejected.Modify;
+            _context.Entry(MtdApproval).Property(x => x.ImgRejectedType).IsModified = mRejected.Modify;
 
 
             await _context.SaveChangesAsync();

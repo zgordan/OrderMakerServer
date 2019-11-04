@@ -109,7 +109,9 @@ namespace Mtd.OrderMaker.Web
                         options.Conventions.AuthorizeAreaFolder("Config", "/", "RoleAdmin");
                     });
 
-            
+            //.AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+
             services.AddSingleton<PolicyCache>();
             services.AddScoped<UserHandler>();            
             services.AddTransient<ConfigHandler>();
@@ -127,16 +129,23 @@ namespace Mtd.OrderMaker.Web
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
-            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+
+            var config = serviceProvider.GetRequiredService<IOptions<ConfigSettings>>();
+            
+            if (config.Value.Migrate == "true")
             {
-                var context = serviceScope.ServiceProvider.GetService<OrderMakerContext>();
-                context.Database.Migrate();
+                using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+                {
+                    var context = serviceScope.ServiceProvider.GetService<OrderMakerContext>();
+                    context.Database.Migrate();
 
-                var contextIdentity = serviceScope.ServiceProvider.GetService<IdentityDbContext>();
-                contextIdentity.Database.Migrate();
+                    var contextIdentity = serviceScope.ServiceProvider.GetService<IdentityDbContext>();
+                    contextIdentity.Database.Migrate();
 
-                InitDataBase(serviceProvider);
+                    InitDataBase(serviceProvider);
+                }
             }
+
 
             if (env.IsDevelopment())
             {
@@ -154,7 +163,7 @@ namespace Mtd.OrderMaker.Web
             app.UseCookiePolicy();
             app.UseAuthentication();
 
-            var config = serviceProvider.GetRequiredService<IOptions<ConfigSettings>>();
+            
             var cultureInfo = new CultureInfo(config.Value.CultureInfo);
             var localizationOptions = new RequestLocalizationOptions()
             {

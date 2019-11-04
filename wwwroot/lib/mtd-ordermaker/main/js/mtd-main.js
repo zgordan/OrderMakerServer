@@ -108,7 +108,6 @@ const ListenerForPostData = () => {
                     return false;
                 }
 
-
                 ActionShowModal();
                 if (value) { result.value = value; }
 
@@ -128,7 +127,6 @@ const ListenerForPostData = () => {
                         } else {
                             document.location.reload();
                         }
-
                     }
                 }
             });
@@ -167,7 +165,6 @@ const ListenerForPostData = () => {
                         }
                     }
                 }
-
             });
         });
 
@@ -232,6 +229,13 @@ const DetectMobile = () => {
         const fond = new mdc.textField.MDCTextFieldFoundation(textField);
     });
 
+    const toggleButtons = document.querySelectorAll('.mdc-icon-button');
+    toggleButtons.forEach((item) => {
+        new mdc.iconButton.MDCIconButtonToggle(item);
+    });
+
+    
+
     const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
 
     const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.getElementById('app-bar'));
@@ -268,9 +272,10 @@ const DetectMobile = () => {
     const mainUserButton = document.getElementById('main-user-button');
     if (mainUserButton) {
         const mainUserMenu = new mdc.menuSurface.MDCMenuSurface(document.getElementById('main-user-menu'));
+        
         mainUserMenu.setFixedPosition(true);
         mainUserButton.addEventListener('click', () => {
-            mainUserMenu.open = !mainUserMenu.open;
+            if (mainUserMenu.isOpen()) { mainUserMenu.close() } else { mainUserMenu.open()}
         });
     }
 

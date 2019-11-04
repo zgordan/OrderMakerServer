@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="After approval of the document the Parts below will not be editable:" xml:space="preserve">
-    <value>После Утверждения документа следующие части не будут доступны для редактирования:</value>
-  </data>
   <data name="Apply" xml:space="preserve">
     <value>Применить</value>
   </data>
@@ -129,17 +126,11 @@
   <data name="Approval process was started." xml:space="preserve">
     <value>Процесс согласования начался.</value>
   </data>
-  <data name="Approval status" xml:space="preserve">
-    <value>Статус согласования</value>
-  </data>
   <data name="Approve" xml:space="preserve">
     <value>Утвердить</value>
   </data>
   <data name="Approved" xml:space="preserve">
     <value>Согласовано</value>
-  </data>
-  <data name="Are you  confirm your approval?" xml:space="preserve">
-    <value>Утвердить документ?</value>
   </data>
   <data name="Are you confirm start approval workflow?" xml:space="preserve">
     <value>Вы подтверждаете начало процесса утверждения?</value>
@@ -150,23 +141,14 @@
   <data name="Cancel" xml:space="preserve">
     <value>Отмена</value>
   </data>
-  <data name="Changes history" xml:space="preserve">
-    <value>История изменений</value>
-  </data>
   <data name="Choose a route to rejection" xml:space="preserve">
     <value>Выбор маршрута согласования</value>
   </data>
   <data name="Complete the approval process" xml:space="preserve">
     <value>Завершить процесс согласования</value>
   </data>
-  <data name="Confirmation of approval" xml:space="preserve">
-    <value>Подтверждение согласования</value>
-  </data>
   <data name="Create" xml:space="preserve">
     <value>Создать</value>
-  </data>
-  <data name="Created by" xml:space="preserve">
-    <value>Создано</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Удалить</value>
@@ -180,12 +162,6 @@
   <data name="Do you confirm the restart of the workflow?" xml:space="preserve">
     <value>Подтвердите  перезапуск процесса согласования?</value>
   </data>
-  <data name="Document information" xml:space="preserve">
-    <value>Информация о документе</value>
-  </data>
-  <data name="Document is approved" xml:space="preserve">
-    <value>Документ утвержден</value>
-  </data>
   <data name="Document is rejected" xml:space="preserve">
     <value>Документ отвергнут</value>
   </data>
@@ -194,9 +170,6 @@
   </data>
   <data name="Form view" xml:space="preserve">
     <value>Просмотр</value>
-  </data>
-  <data name="Last edited by" xml:space="preserve">
-    <value>Последняя редакция</value>
   </data>
   <data name="List data" xml:space="preserve">
     <value>Список</value>
@@ -210,9 +183,6 @@
   <data name="Once the document approval process has begun, the following parts will not access to be editable:" xml:space="preserve">
     <value>После начала процесса утверждения документа следующие части не будут доступны для редактирования:</value>
   </data>
-  <data name="Owner" xml:space="preserve">
-    <value>Владелец</value>
-  </data>
   <data name="Print" xml:space="preserve">
     <value>Печать</value>
   </data>
@@ -225,6 +195,9 @@
   <data name="Rejected" xml:space="preserve">
     <value>Отказано</value>
   </data>
+  <data name="Resolution" xml:space="preserve">
+    <value>Резолюция</value>
+  </data>
   <data name="Restart Approval" xml:space="preserve">
     <value>Новое согласование</value>
   </data>
@@ -233,6 +206,9 @@
   </data>
   <data name="Save" xml:space="preserve">
     <value>Сохранить</value>
+  </data>
+  <data name="Select the resolution:" xml:space="preserve">
+    <value>Выберете вариант резолюции:</value>
   </data>
   <data name="Select the stage to which the approval process will be returned." xml:space="preserve">
     <value>Выберите этап согласования на который будет возвращен процесс согласования.</value>

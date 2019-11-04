@@ -35,6 +35,20 @@
                                 </div>
                             </div>
                         }
+
+                        @if (Model.ListResolutions != null && Model.ListResolutions.Count > 0)
+                        {
+                            <div style="padding-top: 18px;">
+                                @Localizer["Select the resolution:"]
+                            </div>
+                            <div class="mdc-select" style="width: 100%; margin-top: 8px;">
+                                <i class="mdc-select__dropdown-icon"></i>
+                                <select class="mdc-select__native-control" asp-items="ViewBag.ListResolution" name="id-resolution"></select>
+                                <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Resolution"]</label>
+                                <div class="mdc-line-ripple"></div>
+                            </div>
+                        }
+
                     </div>
                     <footer class="mdc-dialog__actions">
                         <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">

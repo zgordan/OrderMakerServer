@@ -25,6 +25,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Web.Areas.Identity.Data;
+using Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store.Models;
 using Mtd.OrderMaker.Web.Data;
 using Mtd.OrderMaker.Web.DataHandler.Approval;
 using Mtd.OrderMaker.Web.Models.LogDocument;
@@ -57,6 +58,12 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
         public ApprovalStatus ApprovalStatus { get; set; }
         public List<MtdFormPart> BlockParts { get; set; }
         public bool IsFormApproval { get; set; }
+        public MtdApproval MtdApproval { get; set; }
+
+        public List<ApprovalLog> ApprovalHistory  { get; set; }
+
+        public List<MtdApprovalResolution> ListResolutions { get; set; }
+        public List<MtdApprovalRejection> ListRejections { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -124,15 +131,13 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
 
                 ViewData["UsersList"] = new SelectList(webAppUsers.OrderBy(x=>x.Title), "Id", "Title");
             }
-
-
-
+            
             ApprovalHandler approvalHandler = new ApprovalHandler(_context, MtdStore.Id);
             IsApprover = await approvalHandler.IsApproverAsync(user);
             IsFirstStage = await approvalHandler.IsFirstStageAsync();            
             IList<MtdApprovalStage> stages = await approvalHandler.GetStagesDownAsync();
             ViewData["Stages"] = new SelectList(stages.OrderByDescending(x => x.Stage), "Id", "Name");
-
+            MtdApproval = await approvalHandler.GetApproval();
             List<string> partIds = await approvalHandler.GetWilBeBlockedPartsIds();
             BlockParts = new List<MtdFormPart>();
             if (partIds.Count > 0)
@@ -145,6 +150,39 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
             {
                 ApprovalStatus = await approvalHandler.GetStatusAsync(user);
 
+            }
+
+            IList<MtdLogApproval> logs = await _context.MtdLogApproval
+                .Where(x => x.MtdStore == id).ToListAsync();
+
+            ApprovalHistory = new List<ApprovalLog>();
+            foreach(var log in logs)
+            {
+                WebAppUser appUser = await _userHandler.FindByIdAsync(log.UserId);
+                ApprovalLog temp = new ApprovalLog
+                {
+                    Time = log.Timecr,
+                    UserName = appUser.Title,
+                    Result = log.Result,
+                    ImgData = log.ImgData,
+                    ImgType = log.ImgType,
+                    Note = log.Note,
+                    Color = log.Color
+                };
+
+                ApprovalHistory.Add(temp);
+            }
+
+            MtdApprovalStage currentStage = await approvalHandler.GetCurrentStageAsync();
+            if (currentStage != null)
+            {
+                ListRejections = await _context.MtdApprovalRejection
+                    .Where(x => x.MtdApprovalStageId == currentStage.Id).OrderBy(x => x.Sequence).ToListAsync();
+                ViewData["ListRejection"] = new SelectList(ListRejections, "Id", "Name");
+
+                ListResolutions = await _context.MtdApprovalResolution
+                    .Where(x => x.MtdApprovalStageId == currentStage.Id).OrderBy(x => x.Sequence).ToListAsync();
+                ViewData["ListResolution"] = new SelectList(ListResolutions, "Id", "Name");
             }
 
 

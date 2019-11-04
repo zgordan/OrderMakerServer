@@ -319,8 +319,9 @@ namespace Mtd.OrderMaker.Web.DataHandler.Approval
             return result;
         }
 
-        public async Task<bool> ActionApprove(WebAppUser webAppUser)
+        public async Task<bool> ActionApprove(WebAppUser webAppUser, string resolution = null)
         {
+
             MtdStore mtdStore = await GetStoreAsync();
             if (mtdStore.MtdStoreApproval != null && mtdStore.MtdStoreApproval.Complete == 1) { return false; }
 
@@ -337,6 +338,7 @@ namespace Mtd.OrderMaker.Web.DataHandler.Approval
                 Complete = complete,
                 Result = 1,
             };
+
 
             if (mtdStore.MtdStoreApproval == null)
             {
@@ -356,6 +358,18 @@ namespace Mtd.OrderMaker.Web.DataHandler.Approval
                 UserId = webAppUser.Id
             };
 
+            if (resolution != null)
+            {
+                MtdApprovalResolution Resolution = await _context.MtdApprovalResolution.FindAsync(resolution);
+                if (Resolution != null)
+                {
+                    mtdLogApproval.ImgData = Resolution.ImgData;
+                    mtdLogApproval.ImgType = Resolution.ImgType;
+                    mtdLogApproval.Note = Resolution.Name;
+                    mtdLogApproval.Color = Resolution.Color;
+                }
+            }
+
             await _context.MtdLogApproval.AddAsync(mtdLogApproval);
 
             try
@@ -370,7 +384,7 @@ namespace Mtd.OrderMaker.Web.DataHandler.Approval
             return true;
         }
 
-        public async Task<bool> ActionReject(bool complete, int idStage, WebAppUser webAppUser)
+        public async Task<bool> ActionReject(bool complete, int idStage, WebAppUser webAppUser, string rejection=null)
         {
             MtdStore mtdStore = await GetStoreAsync();
             if (mtdStore.MtdStoreApproval != null && mtdStore.MtdStoreApproval.Complete == 1) { return false; }
@@ -426,10 +440,20 @@ namespace Mtd.OrderMaker.Web.DataHandler.Approval
                 UserId = webAppUser.Id
             };
 
+            if (rejection != null)
+            {
+                MtdApprovalRejection Rejection = await _context.MtdApprovalRejection.FindAsync(rejection);
+                if (Rejection != null)
+                {
+                    mtdLogApproval.ImgData = Rejection.ImgData;
+                    mtdLogApproval.ImgType = Rejection.ImgType;
+                    mtdLogApproval.Note = Rejection.Name;
+                    mtdLogApproval.Color = Rejection.Color;
+                }
+            }
+
             await _context.MtdLogApproval.AddAsync(mtdLogApproval);
-
-
-
+            
             try
             {
                 await _context.SaveChangesAsync();

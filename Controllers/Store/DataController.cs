@@ -228,7 +228,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             await _context.SaveChangesAsync();
             _context.Database.CommitTransaction();
 
-            return Ok(mtdStore);
+            return Ok();
         }
 
         [HttpPost("delete")]

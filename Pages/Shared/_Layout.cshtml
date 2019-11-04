@@ -56,7 +56,12 @@
 
     <title>@ViewData["Title"] | OrderMaker</title>
     <link rel="stylesheet" href="~/lib/google/css/material-components-web.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/google/iconfont/material-icons.css" asp-append-version="true" />
+    @*<link rel="stylesheet" href="~/lib/google/iconfont/material-icons.css" asp-append-version="true" />*@    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    @*<link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">*@
+
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/main/css/mtd-main.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/common/css/mtd-desk.css" asp-append-version="true" />
@@ -126,9 +131,9 @@
                 <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
                     @if (SignInManager.IsSignedIn(User))
                     {
-                        <a href="#" class="demo-menu material-icons mdc-top-app-bar__navigation-icon" style="color: @ViewBag.ColorIcon">menu</a>
+                        <button class="mdc-icon-button material-icons mdc-top-app-bar__navigation-icon" style="color: @ViewBag.ColorIcon">menu</button>
                     }
-                    <span style="padding-left: 8px">
+                    <span class="mdc-top-app-bar__title" style="padding-left: 8px">
                         @{
                             string pathAppBar = "/lib/mtd-ordermaker/images/logo-mtd-white.png";
                             var imgAppBar = await configHandler.GetImageFromConfig(configHandler.CodeImgAppBar);
@@ -141,7 +146,7 @@
                 {
                     <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
                         <div class="toolbar mdc-menu-surface--anchor">
-                            <button id="main-user-button" href="#" class="material-icons mdc-top-app-bar__action-item" aria-label="person" alt="person" style="color: @ViewBag.ColorIcon">person</button>
+                            <button id="main-user-button" class="mdc-icon-button material-icons mdc-top-app-bar__action-item" aria-label="person" alt="person" style="color: @ViewBag.ColorIcon">person</button>
                             <div id="main-user-menu" class="mdc-menu-surface" style="margin-top: 50px; margin-right: 8px;">
                                 <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" style="cursor: pointer">
                                     <li mtd-data-href="/Identity/Account/Manage" class="mdc-list-item" role="menuitem">
@@ -249,6 +254,7 @@
     </div>
 
     <script src="~/lib/google/js/material-components-web.js" asp-append-version="true"></script>
+    @*<script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>*@
     <script src="~/lib/mtd-ordermaker/main/js/mtd-main.js" asp-append-version="true"></script>
     <script src="~/lib/mtd-ordermaker/mtd-img-selector/js/mtd-img-selector.js" asp-append-version="true"></script>
 
