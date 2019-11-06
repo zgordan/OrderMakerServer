@@ -77,10 +77,10 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             {
                 bool isOk = DateTime.TryParse(dateCreate, out DateTime dateTime);
                 if (isOk)
-                {                    
+                {
                     mtdStore.Timecr = dateTime.Add(DateTime.Now.TimeOfDay);
                     _context.MtdStore.Update(mtdStore);
-                }               
+                }
             }
 
             MtdLogDocument mtdLog = new MtdLogDocument
@@ -94,7 +94,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
 
             OutData outData = await CreateDataAsync(Id, webAppUser, TypeAction.Edit);
             List<MtdStoreStack> stackNew = outData.MtdStoreStacks;
-            
+
 
             IList<MtdStoreStack> stackOld = await _context.MtdStoreStack
                 .Include(m => m.MtdStoreStackText)
@@ -118,7 +118,6 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                     stack.MtdStoreStackInt = stackForField.MtdStoreStackInt;
                 }
             }
-
 
             try
             {
@@ -191,12 +190,14 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                 bool isOk = DateTime.TryParse(dateCreate, out DateTime dateTime);
                 if (isOk)
                 {
-                    mtdStore.Timecr = dateTime.Add(DateTime.Now.TimeOfDay);                    
-                } else
+                    mtdStore.Timecr = dateTime.Add(DateTime.Now.TimeOfDay);
+                }
+                else
                 {
                     mtdStore.Timecr = DateTime.Now;
                 }
-            } else
+            }
+            else
             {
                 mtdStore.Timecr = DateTime.Now;
             }
@@ -287,47 +288,49 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostSetOwnerAsync()
         {
-
             string idStore = Request.Form["setowner-id-store"];
             string idUser = Request.Form["setowner-id-user"];
 
+            MtdStore mtdStore = await _context.MtdStore.FindAsync(idStore);
+            if (mtdStore == null) { return Ok(403); }
+
             WebAppUser webAppUser = await _userHandler.FindByIdAsync(idUser);
-            
-            if (webAppUser != null)
+            if (webAppUser == null) { return Ok(403); }
+
+            bool isInstallerOwner = await _userHandler.IsInstallerOwner(webAppUser, mtdStore.MtdForm);
+
+            if (!isInstallerOwner) { return Ok(403); }
+
+            MtdStoreOwner mtdStoreOwner = await _context.MtdStoreOwner.Include(x => x.IdNavigation).FirstOrDefaultAsync(x => x.Id == idStore);
+
+            if (mtdStoreOwner == null)
             {
 
-                MtdStoreOwner mtdStoreOwner = await _context.MtdStoreOwner.Include(x=>x.IdNavigation).FirstOrDefaultAsync(x=>x.Id==idStore);                               
-
-                if (mtdStoreOwner == null)
+                string idForm = mtdStoreOwner.IdNavigation.MtdForm;
+                bool IsInstllerOwner = await _userHandler.IsInstallerOwner(webAppUser, idForm);
+                if (!IsInstllerOwner)
                 {
-
-                    string idForm = mtdStoreOwner.IdNavigation.MtdForm;
-                    bool IsInstllerOwner = await _userHandler.IsInstallerOwner(webAppUser,idForm);
-                    if (!IsInstllerOwner)
-                    {
-                        return Forbid();
-                    }
-
-                    mtdStoreOwner = new MtdStoreOwner
-                    {
-                        Id = idStore,
-                        UserId = webAppUser.Id,
-                        UserName = webAppUser.Title
-                    };
-
-                    await _context.MtdStoreOwner.AddAsync(mtdStoreOwner);
-                    await _context.SaveChangesAsync();
-
-                    return Ok();
-
+                    return Forbid();
                 }
 
-                mtdStoreOwner.UserId = webAppUser.Id;
-                mtdStoreOwner.UserName = webAppUser.Title;
-                _context.Entry(mtdStoreOwner).State = EntityState.Modified;
+                mtdStoreOwner = new MtdStoreOwner
+                {
+                    Id = idStore,
+                    UserId = webAppUser.Id,
+                    UserName = webAppUser.Title
+                };
+
+                await _context.MtdStoreOwner.AddAsync(mtdStoreOwner);
                 await _context.SaveChangesAsync();
 
+                return Ok();
+
             }
+
+            mtdStoreOwner.UserId = webAppUser.Id;
+            mtdStoreOwner.UserName = webAppUser.Title;
+            _context.Entry(mtdStoreOwner).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
 
             return Ok();
         }
@@ -339,7 +342,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
                .Include(m => m.MtdFormNavigation)
                .ThenInclude(p => p.MtdFormPart)
                .FirstOrDefaultAsync(m => m.Id == Id);
-            
+
             List<string> partsIds = new List<string>();
             bool isReviewer = await _userHandler.IsReviewer(user, store.MtdForm);
             ApprovalHandler approvalHandler = new ApprovalHandler(_context, store.Id);
@@ -347,7 +350,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             bool isApproval = await approvalHandler.IsApprovalFormAsync();
             if (isApproval)
             {
-                 bool isExists = await _context.MtdStoreApproval.Where(x => x.Id == store.Id).AnyAsync();
+                bool isExists = await _context.MtdStoreApproval.Where(x => x.Id == store.Id).AnyAsync();
                 if (!isExists)
                 {
                     var firstStage = await approvalHandler.GetFirstStageAsync();
@@ -360,7 +363,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
             {
                 blockedParts = await approvalHandler.GetBlockedPartsIds();
             }
-            
+
             foreach (var part in store.MtdFormNavigation.MtdFormPart)
             {
                 switch (typeAction)
@@ -544,7 +547,6 @@ namespace Mtd.OrderMaker.Web.Controllers.Store
         {
             return _context.MtdStore.Any(e => e.Id == id);
         }
-
     }
 
     public class OutData

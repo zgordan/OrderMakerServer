@@ -275,7 +275,7 @@ const DetectMobile = () => {
         
         mainUserMenu.setFixedPosition(true);
         mainUserButton.addEventListener('click', () => {
-            if (mainUserMenu.isOpen()) { mainUserMenu.close() } else { mainUserMenu.open()}
+            mainUserMenu.open = !mainUserMenu.open;
         });
     }
 
