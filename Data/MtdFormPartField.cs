@@ -33,9 +33,9 @@ namespace Mtd.OrderMaker.Web.Data
         public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public bool Required { get; set; }
+        public sbyte Required { get; set; }
         public int Sequence { get; set; }
-        public bool Active { get; set; }
+        public sbyte Active { get; set; }
         public int MtdSysType { get; set; }
         public string MtdFormPart { get; set; }
 

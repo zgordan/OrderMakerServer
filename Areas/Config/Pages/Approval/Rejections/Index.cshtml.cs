@@ -23,10 +23,10 @@ namespace Mtd.OrderMaker.Web.Areas.Config.Pages.Approval.Rejections
         public MtdApprovalStage MtdApprovalStage { get; set; }
         [BindProperty]
         public string SearchText { get; set; }
-        public async Task<IActionResult> OnGetAsync(string searchText, int stage)
+        public async Task<IActionResult> OnGetAsync(string searchText, int stage=0)
         {
             SearchText = searchText;
-            if (stage == null) { return NotFound(); }
+            if (stage == 0) { return NotFound(); }
             MtdApprovalStage = await _context.MtdApprovalStage.FindAsync(stage);
             if (MtdApprovalStage == null) { return NotFound(); }
             IQueryable<MtdApprovalRejection> query = _context.MtdApprovalRejection.Where(x => x.MtdApprovalStageId == stage);

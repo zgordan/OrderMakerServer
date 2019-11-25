@@ -79,11 +79,14 @@
 
     <div class="mtd-desk-field mtd-desk-field--border" style="padding-bottom: 28px">
         <label>@Localizer["Visibility"]</label>
-
+        @{
+            bool boolTitle = Model.MtdFormPart.Title == 1 ? true : false;
+            bool boolChild = Model.MtdFormPart.Child == 1 ? true : false;
+        }
 
         <div class="mdc-form-field">
             <div class="mdc-checkbox">
-                <input type="checkbox" asp-for="@Model.MtdFormPart.Title"
+                <input type="checkbox" @if (boolTitle) { <text>checked</text>} 
                        class="mdc-checkbox__native-control"
                        id="checkbox-1" name="partTitle" />
                 <div class="mdc-checkbox__background">
@@ -101,7 +104,7 @@
 
         <div class="mdc-form-field">
             <div class="mdc-checkbox">
-                <input type="checkbox" asp-for="@Model.MtdFormPart.Child"
+                <input type="checkbox" @if (boolChild) { <text>checked</text>} 
                        class="mdc-checkbox__native-control"
                        id="checkbox-2" name="partChild" />
                 <div class="mdc-checkbox__background">

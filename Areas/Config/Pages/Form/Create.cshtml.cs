@@ -71,7 +71,7 @@ namespace Mtd.OrderMaker.Web.Areas.Config.Pages.Form
 
             MtdForm.MtdCategory = group.Id;
             MtdForm.Parent = MtdForm.Parent == "null" ? null : MtdForm.Parent;
-            MtdForm.Active = true;
+            MtdForm.Active = 1;
 
             _context.MtdForm.Add(MtdForm);
             await _context.SaveChangesAsync();

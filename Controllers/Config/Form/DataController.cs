@@ -160,11 +160,11 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Form
                 Id = fieldId,
                 Name = fieldName,
                 Description = fieldNote,
-                Active = true,
+                Active = 1,
                 MtdFormPart = partId,
                 MtdSysType = fieldTypeID,
                 Sequence = seq + 1,
-                Required = false,
+                Required = 0,
 
             };
 
@@ -284,7 +284,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Form
                 Description = partNote,
                 Active = true,
                 MtdForm = formId,
-                Title = true,
+                Title = 1,
                 MtdSysStyle = 4,
                 Sequence = seq + 1,
 
@@ -311,8 +311,8 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Form
 
             int styleId = int.Parse(partStyle);
             int sequence = int.Parse(partSeq);
-            bool titleCheck = bool.Parse(partTitle);
-            bool childCheck = bool.Parse(partChild);            
+            bool.TryParse(partTitle, out bool titleCheck);
+            bool.TryParse(partChild, out bool childCheck);            
 
             MtdFormPart mtdFormPart = new MtdFormPart
             {
@@ -321,8 +321,8 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Form
                 Description = partNote,
                 Active = true,
                 MtdForm = formId,
-                Title = titleCheck,
-                Child = childCheck,
+                Title = titleCheck ? (sbyte) 1: (sbyte)0,
+                Child = childCheck ? (sbyte)1 : (sbyte)0,
                 MtdSysStyle = styleId,
                 Sequence = sequence             
 

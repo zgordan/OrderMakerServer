@@ -58,9 +58,9 @@
 
     @if (Model.Parent != null)
     {
-        @foreach (var part in Model.Parent.Parts.Where(x => x.Child))
+        @foreach (var part in Model.Parent.Parts.Where(x => x.Child==1))
         {
-            @if (part.Title)
+            @if (part.Title == 1)
             {
                 <div class="mtd-store-style-part">
                     @part.Name
@@ -77,7 +77,7 @@
     @foreach (var part in Model.Owner.Parts)
     {
 
-        if (part.Title)
+        if (part.Title == 1 )
         {
             <div class="mtd-store-style-part">
                 @part.Name

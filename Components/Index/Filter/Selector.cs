@@ -52,7 +52,7 @@ namespace Mtd.OrderMaker.Web.Components.Index.Filter
             MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == idForm);
 
             var query = _context.MtdFormPartField.Include(m => m.MtdFormPartNavigation)
-                    .Where(x => x.MtdFormPartNavigation.MtdForm == idForm & x.Active & partIds.Contains(x.MtdFormPart))
+                    .Where(x => x.MtdFormPartNavigation.MtdForm == idForm & x.Active == 1 & partIds.Contains(x.MtdFormPart))
                     .OrderBy(x => x.MtdFormPartNavigation.Sequence).ThenBy(x => x.Sequence);
 
             IList<MtdFormPartField> mtdFields;

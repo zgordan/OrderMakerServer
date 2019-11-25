@@ -142,7 +142,7 @@ namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
             BlockParts = new List<MtdFormPart>();
             if (partIds.Count > 0)
             {
-                BlockParts = await _context.MtdFormPart.Where(x => partIds.Contains(x.Id) && x.Title == true).OrderBy(x => x.Sequence).ToListAsync();
+                BlockParts = await _context.MtdFormPart.Where(x => partIds.Contains(x.Id) && x.Title == 1).OrderBy(x => x.Sequence).ToListAsync();
             }
             IsFormApproval = await approvalHandler.IsApprovalFormAsync();
 
