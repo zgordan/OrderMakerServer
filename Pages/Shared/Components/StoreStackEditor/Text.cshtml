@@ -24,7 +24,8 @@
     case "Columns":
         <div class="mtd-store-edit-col-root">
             <div class="mtd-ui-material-form">
-                <input type="text" id="@Model.MtdFormPartFieldNavigation.Id" name="@Model.MtdFormPartFieldNavigation.Id" asp-for="MtdStoreStackText.Register" />
+                <input @if (@Model.MtdFormPartFieldNavigation.Required == 1) {<text>required</text>} 
+                       type="text" id="@Model.MtdFormPartFieldNavigation.Id" name="@Model.MtdFormPartFieldNavigation.Id" value="@Model.MtdStoreStackText.Register" />
                 <label mtd-info="@Model.MtdFormPartFieldNavigation.Description" for="@Model.MtdFormPartFieldNavigation.Id" class="mtd-ui-text-label">@Model.MtdFormPartFieldNavigation.Name</label>
                 <i class="mtd-ui-text-bottom"></i>
             </div>
@@ -32,7 +33,8 @@
         break;
     default:
         <div class="mtd-ui-material-form">
-            <input type="text" id="@Model.MtdFormPartFieldNavigation.Id" name="@Model.MtdFormPartFieldNavigation.Id" asp-for="MtdStoreStackText.Register" />
+            <input @if (@Model.MtdFormPartFieldNavigation.Required == 1) {<text>required</text>}
+                   type="text" id="@Model.MtdFormPartFieldNavigation.Id" name="@Model.MtdFormPartFieldNavigation.Id" value="@Model.MtdStoreStackText.Register" />
             <label mtd-info="@Model.MtdFormPartFieldNavigation.Description" for="@Model.MtdFormPartFieldNavigation.Id" class="mtd-ui-text-label">@Model.MtdFormPartFieldNavigation.Name</label>
             <i class="mtd-ui-text-bottom"></i>
         </div>

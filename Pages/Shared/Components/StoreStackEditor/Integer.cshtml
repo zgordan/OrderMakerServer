@@ -19,22 +19,31 @@
 
 @model Data.MtdStoreStack
 
+@{
+    string value = string.Empty;
+    if (Model.MtdStoreStackInt != null && Model.MtdStoreStackInt.Register > 0)
+    {
+        value = Model.MtdStoreStackInt.Register.ToString();
+    }
+}
 
 @switch (ViewBag.TypeStyle)
 {
     case "Columns":
         <div class="mtd-store-edit-col-root">
             <div class="mtd-ui-material-form">
-                <input type="number" id="@Model.MtdFormPartFieldNavigation.Id" name="@Model.MtdFormPartFieldNavigation.Id" asp-for="MtdStoreStackInt.Register" />
-                <label mtd-info="@Model.MtdFormPartFieldNavigation.Description" for="input" class="mtd-ui-text-label">@Model.MtdFormPartFieldNavigation.Name</label>
+                <input @if (@Model.MtdFormPartFieldNavigation.Required == 1) { <text> required min="1" </text> } placeholder="0"
+                       type="number" id="@Model.MtdFormPartFieldNavigation.Id" name="@Model.MtdFormPartFieldNavigation.Id" value="@value" />
+                <label mtd-info="@Model.MtdFormPartFieldNavigation.Description" for="@Model.MtdFormPartFieldNavigation.Id" class="mtd-ui-text-label">@Model.MtdFormPartFieldNavigation.Name</label>
                 <i class="mtd-ui-text-bottom"></i>
             </div>
         </div>
         break;
     default:
         <div class="mtd-ui-material-form">
-            <input type="number" id="@Model.MtdFormPartFieldNavigation.Id" name="@Model.MtdFormPartFieldNavigation.Id" asp-for="MtdStoreStackInt.Register" />
-            <label mtd-info="@Model.MtdFormPartFieldNavigation.Description" for="input" class="mtd-ui-text-label">@Model.MtdFormPartFieldNavigation.Name</label>
+            <input @if (@Model.MtdFormPartFieldNavigation.Required == 1) { <text> required min="1" </text> } placeholder="0"
+                   type="number" id="@Model.MtdFormPartFieldNavigation.Id" name="@Model.MtdFormPartFieldNavigation.Id" value="@value" />
+            <label mtd-info="@Model.MtdFormPartFieldNavigation.Description" for="@Model.MtdFormPartFieldNavigation.Id" class="mtd-ui-text-label">@Model.MtdFormPartFieldNavigation.Name</label>
             <i class="mtd-ui-text-bottom"></i>
         </div>
         break;

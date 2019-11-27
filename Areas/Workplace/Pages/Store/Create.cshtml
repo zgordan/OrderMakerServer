@@ -63,7 +63,8 @@
 </div>
 
 
-@section Scripts {
+
+@section Scripts {   
     <script src="~/lib/mtd-ordermaker/store/js/mtd-store-edit.js" asp-append-version="true"></script>
     <script src="~/lib/mtd-ordermaker/ui/js/mtd-ui-material.js" asp-append-version="true"></script>
     <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
@@ -74,9 +75,10 @@
         $("input.mtd-data-datepicker").each(function () {
             $(this).datetimepicker({
                 timepicker: false,
-                mask: @Localizer["'19/39/9999'"],
+                @*mask: @Localizer["'19/39/9999'"],*@
                 format: @Localizer["'m/d/Y'"],
                 defaultDate: new Date(),
+                defaultSelect: true,
                 validateOnBlur: false,
             });
         });
@@ -86,7 +88,7 @@
                 timepicker: true,
                 formatTime: @Localizer["'h:i A'"],
                 validateOnBlur: false,
-                mask: @Localizer["'19/39/9999 29:59'"],
+                @*mask: @Localizer["'19/39/9999 29:59'"],*@
                 format: @Localizer["'m/d/Y h:i A'"],
                 defaultDate: new Date(),
             });

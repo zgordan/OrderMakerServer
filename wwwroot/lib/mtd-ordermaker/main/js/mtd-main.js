@@ -81,13 +81,13 @@ const CreateFormData = (form) => {
 const CheckRequired = () => {
     let counter = 0;
     document.querySelectorAll("[required]").forEach((obj) => {
-        if (!obj.value) { obj.focus(); counter++; obj.blur() }
+        if (!obj.value) { counter++; }
     });
     return counter;
 }
 
 const ListenerForPostData = () => {
-
+    
     const forms = document.querySelectorAll("form[mtd-data-form]");
     forms.forEach((form) => {
 
@@ -105,6 +105,8 @@ const ListenerForPostData = () => {
 
                 const check = CheckRequired();
                 if (check > 0) {
+                    const dialog = new mdc.dialog.MDCDialog(document.getElementById('dialog-main-info'));
+                    dialog.open();
                     return false;
                 }
 

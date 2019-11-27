@@ -201,6 +201,9 @@ namespace Mtd.OrderMaker.Web.Controllers.Config.Form
             mtdFormPartField.Name = fieldName;
             mtdFormPartField.Description = fieldNote;
 
+            bool required = await Components.MTDCheckbox.GetResultAsync(mtdFormPartField.Id, Request);
+            mtdFormPartField.Required = required ? (sbyte)1 : (sbyte)0;
+
             _context.MtdFormPartField.Update(mtdFormPartField);
             await _context.SaveChangesAsync();
 

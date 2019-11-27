@@ -28,6 +28,9 @@
   font-weight: normal;
   -webkit-transition: all 0.28s ease;
   transition: all 0.28s ease;
+  top: -1rem;
+  font-size: 0.8rem;
+  left: 0;
 }
 .mtd-ui-material-form .mtd-ui-text-bottom {
   position: relative;
@@ -45,6 +48,10 @@
   -webkit-transition: left 0.28s ease, width 0.28s ease;
   transition: left 0.28s ease, width 0.28s ease;
   z-index: 2;
+}
+.mtd-ui-material-form input:required ~ .mtd-ui-text-label,
+.mtd-ui-material-form textarea:required ~ .mtd-ui-text-label {
+  color: red !important;
 }
 .mtd-ui-material-form input,
 .mtd-ui-material-form textarea {
@@ -74,7 +81,7 @@
 .mtd-ui-material-form textarea:valid ~ .mtd-ui-text-label {
   top: -1rem;
   font-size: 0.8rem;
-  color: gray;
+  color: gray !important;
   left: 0;
 }
 .mtd-ui-material-form select:focus,

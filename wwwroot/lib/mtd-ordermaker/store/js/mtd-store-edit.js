@@ -24,7 +24,7 @@ function pad(num, size) {
 }
 
 const ListenerCreate = (e) => {
-
+   
     const spn = document.getElementById("store-parent-input");
     if (!spn) {
         const storeCreateButton = document.getElementById("store-create-button");
@@ -51,7 +51,7 @@ const ListenerCreate = (e) => {
         const formData = CreateFormData(form);
         xmlHttp.open("post", action, true);
         xmlHttp.onreadystatechange = function (e) {
-            if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {                
                 setTimeout(() => {
                     if (this.responseText) {
                         iconCheck.style.display = "";
@@ -68,7 +68,6 @@ const ListenerCreate = (e) => {
             }
         }
         xmlHttp.send(formData);
-
     });
 }
 
@@ -205,5 +204,5 @@ const ListenerForParent = () => {
             return false;
         }
     });
-
+    
 })();

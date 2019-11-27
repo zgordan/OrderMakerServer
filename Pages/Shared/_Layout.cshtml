@@ -56,16 +56,17 @@
 
     <title>@ViewData["Title"] | OrderMaker</title>
     <link rel="stylesheet" href="~/lib/google/css/material-components-web.css" asp-append-version="true" />
-    @*<link rel="stylesheet" href="~/lib/google/iconfont/material-icons.css" asp-append-version="true" />*@    
+    @*<link rel="stylesheet" href="~/lib/google/iconfont/material-icons.css" asp-append-version="true" />*@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     @*<link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">*@
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">*@
 
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/main/css/mtd-main.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/common/css/mtd-desk.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/mtd-img-selector/css/mtd-img-selector.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/mtd-checkbox/css/mtd-checkbox.css" asp-append-version="true" />
 
     @RenderSection("Head", required: false)
 </head>
@@ -253,10 +254,34 @@
         </div>
     </div>
 
+    <div id="dialog-main-info" class="mdc-dialog"
+         role="alertdialog"
+         aria-modal="true"
+         aria-labelledby="dialog-main-info-title"
+         aria-describedby="dialog-main-info-content">
+        <div class="mdc-dialog__container">
+            <div class="mdc-dialog__surface">
+                <h2 class="mdc-dialog__title" id="dialog-main-info-title">                    
+                    Обязательные поля не заполнены!
+                </h2>
+                <div class="mdc-dialog__content" id="dialog-main-info-content">
+                    Заполните обязательные поля отмеченные красным цветом.
+                </div>
+                <footer class="mdc-dialog__actions">
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                        <span class="mdc-button__label">Ok</span>
+                    </button>
+                </footer>
+            </div>
+        </div>
+        <div class="mdc-dialog__scrim"></div>
+    </div>
+
     <script src="~/lib/google/js/material-components-web.js" asp-append-version="true"></script>
     @*<script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>*@
     <script src="~/lib/mtd-ordermaker/main/js/mtd-main.js" asp-append-version="true"></script>
     <script src="~/lib/mtd-ordermaker/mtd-img-selector/js/mtd-img-selector.js" asp-append-version="true"></script>
+    <script src="~/lib/mtd-ordermaker/mtd-checkbox/js/mtd-checkbox.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

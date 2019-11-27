@@ -36,7 +36,8 @@
         <div class="mtd-field-file-choose">
             <div class="mtd-field-file-selector-fon"></div>
             <div class="mtd-field-file-selector" mtdSelector="@ViewBag.FieldID">
-                <input type="file" id="@ViewBag.FieldID" name="@ViewBag.FieldID" asp-for="MtdStoreStackFile.Register" style="display: none;" />
+                <input @if (@Model.MtdFormPartFieldNavigation.Required == 1) {<text>required </text>} 
+                       type="file" id="@ViewBag.FieldID" name="@ViewBag.FieldID" value="@Model.MtdStoreStackFile.Register" style="display: none;" />
                 <input type="checkbox" id="@{@ViewBag.FieldID}-delete" name="@{@ViewBag.FieldID}-delete" style="display: none;" />
             </div>
             <div id="@{@ViewBag.FieldID}-href" class="mtd-field-file-info">

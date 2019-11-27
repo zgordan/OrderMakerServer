@@ -57,9 +57,11 @@ namespace Mtd.OrderMaker.Web.Services
                 var htmlArray = File.ReadAllText(file);
                 string htmlText = htmlArray.ToString();
 
-                htmlText = htmlText.Replace("{title}", "VERA");
+                htmlText = htmlText.Replace("{title}", _emailSettings.Title);
                 htmlText = htmlText.Replace("{header}", blankEmail.Header);
                 htmlText = htmlText.Replace("{content}", message);
+                htmlText = htmlText.Replace("{copyright}", _emailSettings.CopyRight);
+                htmlText = htmlText.Replace("{footer}", _emailSettings.Footer);
 
                 await SendEmailAsync(blankEmail.Email, blankEmail.Subject, htmlText);
             }

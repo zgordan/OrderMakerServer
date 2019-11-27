@@ -24,6 +24,7 @@
         @Html.DisplayFor(model => model.MtdFormPartFieldNavigation.Name)
     </div>
     <div style="flex-grow:1;padding-left: 8px; align-self:center">
-        <input type="time" id="@Model.MtdFormPartFieldNavigation.Id" name="@Model.MtdFormPartFieldNavigation.Id" asp-for="MtdStoreStackDate.Register" style="width: 100%;" />
+        <input @if (@Model.MtdFormPartFieldNavigation.Required == 1) {<text>required </text>}
+               type="time" id="@Model.MtdFormPartFieldNavigation.Id" name="@Model.MtdFormPartFieldNavigation.Id" value="@Model.MtdStoreStackDate.Register" style="width: 100%;" />
     </div>
 </div>
