@@ -51,13 +51,14 @@
             @if (Model.Owner.Store.MtdFormNavigation.VisibleDate == 1)
             {
                 <span class="mtd-store-style-date">@Localizer["Date"] @Model.Owner.Store.Timecr.ToShortDateString()</span>
+
             }
         </div>
     </div>
 
     @if (Model.Parent != null)
     {
-        @foreach (var part in Model.Parent.Parts.Where(x => x.Child==1).ToList())
+        @foreach (var part in Model.Parent.Parts.Where(x => x.Child == 1).ToList())
         {
 
             @if (part.Title == 1)
