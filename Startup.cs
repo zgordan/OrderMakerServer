@@ -23,14 +23,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Server.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Mtd.OrderMaker.Web.DataConfig;
+using Mtd.OrderMaker.Server.DataConfig;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Mtd.OrderMaker.Web.Services;
+using Mtd.OrderMaker.Server.Services;
 using System;
-using Mtd.OrderMaker.Web.Areas.Identity.Data;
+using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.DataProtection;
@@ -41,7 +41,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
 using Mtd.OrderMaker.Server;
 
-namespace Mtd.OrderMaker.Web
+namespace Mtd.OrderMaker.Server
 {
     public class Startup
     {
@@ -177,13 +177,8 @@ namespace Mtd.OrderMaker.Web
             };
 
             app.UseRequestLocalization(localizationOptions);
-
             app.UseMvc();
-
-
-
         }
-
 
         private void InitDataBase(IServiceProvider serviceProvider)
         {

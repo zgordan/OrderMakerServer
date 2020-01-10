@@ -17,7 +17,7 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
-namespace Mtd.OrderMaker.Web.DataHandler.Filter
+namespace Mtd.OrderMaker.Server.DataHandler.Filter
 {
     public enum TypeQuery { number, text, field, textField, empty };
 }

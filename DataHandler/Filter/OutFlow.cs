@@ -17,10 +17,10 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
-using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Server.Data;
 using System.Collections.Generic;
 
-namespace Mtd.OrderMaker.Web.DataHandler.Filter
+namespace Mtd.OrderMaker.Server.DataHandler.Filter
 {
     public class OutFlow
     {

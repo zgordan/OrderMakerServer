@@ -30,11 +30,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Mtd.OrderMaker.Web.Areas.Identity.Data;
-using Mtd.OrderMaker.Web.DataConfig;
+using Mtd.OrderMaker.Server.Areas.Identity.Data;
+using Mtd.OrderMaker.Server.DataConfig;
 using Microsoft.Extensions.Localization;
 
-namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users.Accounts
+namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
 {
     public partial class CreateModel : PageModel
     {

@@ -21,10 +21,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Mtd.OrderMaker.Web.Data;
-using Mtd.OrderMaker.Web.Services;
+using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Services;
 
-namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store
+namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
 {
     public class CreateModel : PageModel
     {

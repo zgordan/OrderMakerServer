@@ -18,12 +18,12 @@
 */
 
 using Microsoft.EntityFrameworkCore;
-using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Server.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Mtd.OrderMaker.Web.DataHandler.Stack
+namespace Mtd.OrderMaker.Server.DataHandler.Stack
 {
     public partial class StackHandler
     {

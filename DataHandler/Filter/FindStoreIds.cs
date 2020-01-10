@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Mtd.OrderMaker.Web.DataHandler.Filter
+namespace Mtd.OrderMaker.Server.DataHandler.Filter
 {
     public partial class FilterHandler
     {

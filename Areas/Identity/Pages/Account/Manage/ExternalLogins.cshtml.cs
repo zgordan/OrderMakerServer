@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Mtd.OrderMaker.Web.Areas.Identity.Data;
+using Mtd.OrderMaker.Server.Areas.Identity.Data;
 
-namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Account.Manage
+namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account.Manage
 {
     public class ExternalLoginsModel : PageModel
     {

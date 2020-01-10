@@ -20,7 +20,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Mtd.OrderMaker.Web.Data
+namespace Mtd.OrderMaker.Server.Data
 {
     public partial class MtdConfigFile
     {

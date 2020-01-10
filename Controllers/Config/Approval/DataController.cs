@@ -26,10 +26,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
-using Mtd.OrderMaker.Web.Data;
-using Mtd.OrderMaker.Web.DataHandler.Approval;
+using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.DataHandler.Approval;
 
-namespace Mtd.OrderMaker.Web.Controllers.Config.Approval
+namespace Mtd.OrderMaker.Server.Controllers.Config.Approval
 {
     [Route("api/config/approval")]
     [ApiController]

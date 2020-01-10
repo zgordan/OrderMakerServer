@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Mtd.OrderMaker.Web.Models.LogDocument
+namespace Mtd.OrderMaker.Server.Models.LogDocument
 {
     public class ChangesHistory
     {

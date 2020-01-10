@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Server.Data;
 
-namespace Mtd.OrderMaker.Web.Data.Migrations
+namespace Mtd.OrderMaker.Server.Data.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
     [Migration("20190411145226_CustomUserRole")]
@@ -107,7 +107,7 @@ namespace Mtd.OrderMaker.Web.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Areas.Identity.Data.WebAppRole", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Areas.Identity.Data.WebAppRole", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -132,7 +132,7 @@ namespace Mtd.OrderMaker.Web.Data.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Areas.Identity.Data.WebAppUser", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Areas.Identity.Data.WebAppUser", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -186,7 +186,7 @@ namespace Mtd.OrderMaker.Web.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Areas.Identity.Data.WebAppRole")
+                    b.HasOne("Mtd.OrderMaker.Server.Areas.Identity.Data.WebAppRole")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -194,7 +194,7 @@ namespace Mtd.OrderMaker.Web.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Areas.Identity.Data.WebAppUser")
+                    b.HasOne("Mtd.OrderMaker.Server.Areas.Identity.Data.WebAppUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -202,7 +202,7 @@ namespace Mtd.OrderMaker.Web.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Areas.Identity.Data.WebAppUser")
+                    b.HasOne("Mtd.OrderMaker.Server.Areas.Identity.Data.WebAppUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -210,12 +210,12 @@ namespace Mtd.OrderMaker.Web.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Areas.Identity.Data.WebAppRole")
+                    b.HasOne("Mtd.OrderMaker.Server.Areas.Identity.Data.WebAppRole")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Mtd.OrderMaker.Web.Areas.Identity.Data.WebAppUser")
+                    b.HasOne("Mtd.OrderMaker.Server.Areas.Identity.Data.WebAppUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -223,7 +223,7 @@ namespace Mtd.OrderMaker.Web.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Areas.Identity.Data.WebAppUser")
+                    b.HasOne("Mtd.OrderMaker.Server.Areas.Identity.Data.WebAppUser")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

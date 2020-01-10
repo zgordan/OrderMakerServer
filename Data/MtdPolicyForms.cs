@@ -17,11 +17,11 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
-using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Server.Data;
 using System;
 using System.Collections.Generic;
 
-namespace Mtd.OrderMaker.Web.Data
+namespace Mtd.OrderMaker.Server.Data
 {
     public partial class MtdPolicyForms
     {

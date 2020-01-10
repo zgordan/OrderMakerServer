@@ -25,10 +25,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Mtd.OrderMaker.Web.Areas.Identity.Data;
-using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Server.Areas.Identity.Data;
+using Mtd.OrderMaker.Server.Data;
 
-namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users.Policy
+namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Policy
 {
     public class EditModel : PageModel
     {

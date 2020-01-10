@@ -18,12 +18,12 @@
 */
 
 using Microsoft.AspNetCore.Mvc;
-using Mtd.OrderMaker.Web.Data;
-using Mtd.OrderMaker.Web.Models.Store;
+using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Models.Store;
 using System.Linq;
 
 
-namespace Mtd.OrderMaker.Web.Components.Store.Part
+namespace Mtd.OrderMaker.Server.Components.Store.Part
 {
     [ViewComponent (Name = "StorePartEditor")]
     public class Editor : ViewComponent

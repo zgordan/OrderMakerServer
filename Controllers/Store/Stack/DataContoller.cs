@@ -21,14 +21,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Mtd.OrderMaker.Web.Data;
-using Mtd.OrderMaker.Web.Services;
+using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Services;
 using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Mtd.OrderMaker.Web.Controllers.Store.Stack
+namespace Mtd.OrderMaker.Server.Controllers.Store.Stack
 {
     [Route("api/store/stack")]
     [ApiController]

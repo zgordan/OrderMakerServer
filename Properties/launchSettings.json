@@ -19,7 +19,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Mtd.OrderMaker.Web": {
+    "Mtd.OrderMaker.Server": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

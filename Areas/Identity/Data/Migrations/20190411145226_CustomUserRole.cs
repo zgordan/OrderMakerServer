@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Mtd.OrderMaker.Web.Data.Migrations
+namespace Mtd.OrderMaker.Server.Data.Migrations
 {
     public partial class CustomUserRole : Migration
     {

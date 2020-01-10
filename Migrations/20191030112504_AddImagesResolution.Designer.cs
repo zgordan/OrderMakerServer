@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Server.Data;
 
-namespace Mtd.OrderMaker.Web.Migrations
+namespace Mtd.OrderMaker.Server.Migrations
 {
     [DbContext(typeof(OrderMakerContext))]
     [Migration("20191030112504_AddImagesResolution")]
@@ -19,7 +19,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdApproval", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdApproval", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -77,7 +77,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_approval");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdApprovalRejection", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdApprovalRejection", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -134,7 +134,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_approval_rejection");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdApprovalResolution", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdApprovalResolution", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -191,7 +191,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_approval_resolution");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdApprovalStage", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdApprovalStage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -242,7 +242,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_approval_stage");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdCategoryForm", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdCategoryForm", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -276,7 +276,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_category_form");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdConfigFile", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdConfigFile", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -313,7 +313,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_config_file");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdConfigParam", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdConfigParam", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -337,7 +337,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_config_param");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdFilter", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdFilter", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -409,7 +409,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_filter");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdFilterColumn", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdFilterColumn", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -446,7 +446,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_filter_column");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdFilterDate", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdFilterDate", b =>
                 {
                     b.Property<int>("Id")
                         .HasColumnName("id")
@@ -469,7 +469,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_filter_date");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdFilterField", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdFilterField", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -512,7 +512,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_filter_field");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdFilterScript", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdFilterScript", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -556,7 +556,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_filter_script");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdForm", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdForm", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -618,7 +618,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_form");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdFormDesk", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdFormDesk", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnName("id")
@@ -661,7 +661,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_form_desk");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdFormHeader", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdFormHeader", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnName("id")
@@ -690,7 +690,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_form_header");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdFormList", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdFormList", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnName("id")
@@ -713,7 +713,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_form_list");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdFormPart", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdFormPart", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -778,7 +778,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_form_part");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdFormPartField", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdFormPartField", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -837,7 +837,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_form_part_field");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdFormPartHeader", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdFormPartHeader", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnName("id")
@@ -866,7 +866,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_form_part_header");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdGroup", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdGroup", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -892,7 +892,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_group");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdLogApproval", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdLogApproval", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -950,7 +950,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_log_approval");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdLogDocument", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdLogDocument", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -991,7 +991,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_log_document");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdPolicy", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdPolicy", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -1017,7 +1017,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_policy");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdPolicyForms", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdPolicyForms", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1131,7 +1131,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_policy_forms");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdPolicyParts", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdPolicyParts", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1185,7 +1185,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_policy_parts");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdStore", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdStore", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -1237,7 +1237,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_store");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdStoreApproval", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdStoreApproval", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnName("id")
@@ -1293,7 +1293,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_store_approval");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdStoreLink", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdStoreLink", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnName("id")
@@ -1324,7 +1324,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_store_link");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdStoreOwner", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdStoreOwner", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnName("id")
@@ -1352,7 +1352,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_store_owner");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdStoreStack", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdStoreStack", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -1388,7 +1388,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_store_stack");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdStoreStackDate", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdStoreStackDate", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnName("id")
@@ -1410,7 +1410,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_store_stack_date");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdStoreStackDecimal", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdStoreStackDecimal", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnName("id")
@@ -1432,7 +1432,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_store_stack_decimal");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdStoreStackFile", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdStoreStackFile", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnName("id")
@@ -1466,7 +1466,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_store_stack_file");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdStoreStackInt", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdStoreStackInt", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnName("id")
@@ -1488,7 +1488,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_store_stack_int");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdStoreStackText", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdStoreStackText", b =>
                 {
                     b.Property<long>("Id")
                         .HasColumnName("id")
@@ -1511,7 +1511,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_store_stack_text");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdSysStyle", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdSysStyle", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1543,7 +1543,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_sys_style");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdSysTerm", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdSysTerm", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1569,7 +1569,7 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_sys_term");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdSysType", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdSysType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1601,380 +1601,380 @@ namespace Mtd.OrderMaker.Web.Migrations
                     b.ToTable("mtd_sys_type");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdApproval", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdApproval", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdForm", "MtdFormNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdForm", "MtdFormNavigation")
                         .WithMany("MtdApproval")
                         .HasForeignKey("MtdForm")
                         .HasConstraintName("fk_approvel_form")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdApprovalRejection", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdApprovalRejection", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdApprovalStage", "MtdApprovalStage")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdApprovalStage", "MtdApprovalStage")
                         .WithMany("MtdApprovalRejection")
                         .HasForeignKey("MtdApprovalStageId")
                         .HasConstraintName("fk_rejection_stage")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdApprovalResolution", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdApprovalResolution", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdApprovalStage", "MtdApprovalStage")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdApprovalStage", "MtdApprovalStage")
                         .WithMany("MtdApprovalResolution")
                         .HasForeignKey("MtdApprovalStageId")
                         .HasConstraintName("fk_resolution_stage")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdApprovalStage", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdApprovalStage", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdApproval", "MtdApprovalNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdApproval", "MtdApprovalNavigation")
                         .WithMany("MtdApprovalStage")
                         .HasForeignKey("MtdApproval")
                         .HasConstraintName("fk_stage_approval")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdFilter", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdFilter", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdForm", "MtdFormNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdForm", "MtdFormNavigation")
                         .WithMany("MtdFilter")
                         .HasForeignKey("MtdForm")
                         .HasConstraintName("mtd_filter_mtd_form")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdFilterColumn", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdFilterColumn", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdFilter", "MtdFilterNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdFilter", "MtdFilterNavigation")
                         .WithMany("MtdFilterColumn")
                         .HasForeignKey("MtdFilter")
                         .HasConstraintName("mtd_filter_column_mtd_field")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdFormPartField", "MtdFormPartFieldNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdFormPartField", "MtdFormPartFieldNavigation")
                         .WithMany("MtdFilterColumn")
                         .HasForeignKey("MtdFormPartField")
                         .HasConstraintName("mtd_roster_field")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdFilterDate", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdFilterDate", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdFilter", "IdNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdFilter", "IdNavigation")
                         .WithOne("MtdFilterDate")
-                        .HasForeignKey("Mtd.OrderMaker.Web.Data.MtdFilterDate", "Id")
+                        .HasForeignKey("Mtd.OrderMaker.Server.Data.MtdFilterDate", "Id")
                         .HasConstraintName("fk_date_filter")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdFilterField", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdFilterField", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdFilter", "MtdFilterNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdFilter", "MtdFilterNavigation")
                         .WithMany("MtdFilterField")
                         .HasForeignKey("MtdFilter")
                         .HasConstraintName("mtd_filter_field_mtd_field")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdFormPartField", "MtdFormPartFieldNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdFormPartField", "MtdFormPartFieldNavigation")
                         .WithMany("MtdFilterField")
                         .HasForeignKey("MtdFormPartField")
                         .HasConstraintName("mtd_filter_field_mtd_form_field")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdSysTerm", "MtdTermNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdSysTerm", "MtdTermNavigation")
                         .WithMany("MtdFilterField")
                         .HasForeignKey("MtdTerm")
                         .HasConstraintName("mtd_filter_field_mtd_term")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdFilterScript", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdFilterScript", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdFilter", "MtdFilterNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdFilter", "MtdFilterNavigation")
                         .WithMany("MtdFilterScript")
                         .HasForeignKey("MtdFilter")
                         .HasConstraintName("fk_script_filter")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdForm", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdForm", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdCategoryForm", "MtdCategoryNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdCategoryForm", "MtdCategoryNavigation")
                         .WithMany("MtdForm")
                         .HasForeignKey("MtdCategory")
                         .HasConstraintName("fk_form_category")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdForm", "ParentNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdForm", "ParentNavigation")
                         .WithMany("InverseParentNavigation")
                         .HasForeignKey("Parent")
                         .HasConstraintName("fk_form_parent")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdFormDesk", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdFormDesk", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdForm", "IdNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdForm", "IdNavigation")
                         .WithOne("MtdFormDesk")
-                        .HasForeignKey("Mtd.OrderMaker.Web.Data.MtdFormDesk", "Id")
+                        .HasForeignKey("Mtd.OrderMaker.Server.Data.MtdFormDesk", "Id")
                         .HasConstraintName("fk_mtd_form_des_mtd_from")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdFormHeader", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdFormHeader", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdForm", "IdNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdForm", "IdNavigation")
                         .WithOne("MtdFormHeader")
-                        .HasForeignKey("Mtd.OrderMaker.Web.Data.MtdFormHeader", "Id")
+                        .HasForeignKey("Mtd.OrderMaker.Server.Data.MtdFormHeader", "Id")
                         .HasConstraintName("fk_image_form")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdFormList", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdFormList", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdFormPartField", "IdNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdFormPartField", "IdNavigation")
                         .WithOne("MtdFormList")
-                        .HasForeignKey("Mtd.OrderMaker.Web.Data.MtdFormList", "Id")
+                        .HasForeignKey("Mtd.OrderMaker.Server.Data.MtdFormList", "Id")
                         .HasConstraintName("fk_list_field")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdForm", "MtdFormNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdForm", "MtdFormNavigation")
                         .WithMany("MtdFormList")
                         .HasForeignKey("MtdForm")
                         .HasConstraintName("fk_list_form")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdFormPart", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdFormPart", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdForm", "MtdFormNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdForm", "MtdFormNavigation")
                         .WithMany("MtdFormPart")
                         .HasForeignKey("MtdForm")
                         .HasConstraintName("fk_mtd_form_part_mtd_form1")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdSysStyle", "MtdSysStyleNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdSysStyle", "MtdSysStyleNavigation")
                         .WithMany("MtdFormPart")
                         .HasForeignKey("MtdSysStyle")
                         .HasConstraintName("fk_mtd_form_part_mtd_sys_style1")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdFormPartField", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdFormPartField", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdFormPart", "MtdFormPartNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdFormPart", "MtdFormPartNavigation")
                         .WithMany("MtdFormPartField")
                         .HasForeignKey("MtdFormPart")
                         .HasConstraintName("fk_mtd_form_part_field_mtd_form_part1")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdSysType", "MtdSysTypeNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdSysType", "MtdSysTypeNavigation")
                         .WithMany("MtdFormPartField")
                         .HasForeignKey("MtdSysType")
                         .HasConstraintName("fk_mtd_form_part_field_mtd_sys_type1")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdFormPartHeader", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdFormPartHeader", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdFormPart", "IdNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdFormPart", "IdNavigation")
                         .WithOne("MtdFormPartHeader")
-                        .HasForeignKey("Mtd.OrderMaker.Web.Data.MtdFormPartHeader", "Id")
+                        .HasForeignKey("Mtd.OrderMaker.Server.Data.MtdFormPartHeader", "Id")
                         .HasConstraintName("fk_image_form_part")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdLogApproval", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdLogApproval", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdStore", "MtdStoreNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdStore", "MtdStoreNavigation")
                         .WithMany("MtdLogApproval")
                         .HasForeignKey("MtdStore")
                         .HasConstraintName("fk_log_approval_store")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdApprovalRejection", "RejectionNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdApprovalRejection", "RejectionNavigation")
                         .WithMany("MtdLogApproval")
                         .HasForeignKey("Rejection")
                         .HasConstraintName("fk_log_rejection")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdApprovalResolution", "ResolutionNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdApprovalResolution", "ResolutionNavigation")
                         .WithMany("MtdLogApproval")
                         .HasForeignKey("Resolution")
                         .HasConstraintName("fk_log_resolution")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdApprovalStage", "StageNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdApprovalStage", "StageNavigation")
                         .WithMany("MtdLogApproval")
                         .HasForeignKey("Stage")
                         .HasConstraintName("fk_log_approval_stage")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdLogDocument", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdLogDocument", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdStore", "MtdStoreNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdStore", "MtdStoreNavigation")
                         .WithMany("MtdLogDocument")
                         .HasForeignKey("MtdStore")
                         .HasConstraintName("fk_log_document_store")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdPolicyForms", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdPolicyForms", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdForm", "MtdFormNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdForm", "MtdFormNavigation")
                         .WithMany("MtdPolicyForms")
                         .HasForeignKey("MtdForm")
                         .HasConstraintName("fk_policy_forms_form")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdPolicy", "MtdPolicyNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdPolicy", "MtdPolicyNavigation")
                         .WithMany("MtdPolicyForms")
                         .HasForeignKey("MtdPolicy")
                         .HasConstraintName("fk_policy_forms_policy")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdPolicyParts", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdPolicyParts", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdFormPart", "MtdFormPartNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdFormPart", "MtdFormPartNavigation")
                         .WithMany("MtdPolicyParts")
                         .HasForeignKey("MtdFormPart")
                         .HasConstraintName("fk_policy_part_part")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdPolicy", "MtdPolicyNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdPolicy", "MtdPolicyNavigation")
                         .WithMany("MtdPolicyParts")
                         .HasForeignKey("MtdPolicy")
                         .HasConstraintName("fk_policy_part_policy")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdStore", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdStore", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdForm", "MtdFormNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdForm", "MtdFormNavigation")
                         .WithMany("MtdStore")
                         .HasForeignKey("MtdForm")
                         .HasConstraintName("fk_mtd_store_mtd_form1")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdStore", "ParentNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdStore", "ParentNavigation")
                         .WithMany("InverseParentNavigation")
                         .HasForeignKey("Parent")
                         .HasConstraintName("fk_mtd_store_parent")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdStoreApproval", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdStoreApproval", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdStore", "IdNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdStore", "IdNavigation")
                         .WithOne("MtdStoreApproval")
-                        .HasForeignKey("Mtd.OrderMaker.Web.Data.MtdStoreApproval", "Id")
+                        .HasForeignKey("Mtd.OrderMaker.Server.Data.MtdStoreApproval", "Id")
                         .HasConstraintName("fk_store_approve")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdApprovalStage", "MtdApproveStageNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdApprovalStage", "MtdApproveStageNavigation")
                         .WithMany("MtdStoreApproval")
                         .HasForeignKey("MtdApproveStage")
                         .HasConstraintName("fk_store_approve_stage")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdApprovalRejection", "RejectionNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdApprovalRejection", "RejectionNavigation")
                         .WithMany("MtdStoreApproval")
                         .HasForeignKey("Rejection")
                         .HasConstraintName("fk_store_stage_rejection")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdApprovalResolution", "ResolutionNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdApprovalResolution", "ResolutionNavigation")
                         .WithMany("MtdStoreApproval")
                         .HasForeignKey("Resolution")
                         .HasConstraintName("fk_store_stage_resolution")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdStoreLink", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdStoreLink", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdStoreStack", "IdNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdStoreStack", "IdNavigation")
                         .WithOne("MtdStoreLink")
-                        .HasForeignKey("Mtd.OrderMaker.Web.Data.MtdStoreLink", "Id")
+                        .HasForeignKey("Mtd.OrderMaker.Server.Data.MtdStoreLink", "Id")
                         .HasConstraintName("fk_mtd_store_link_mtd_store_stack")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdStore", "MtdStoreNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdStore", "MtdStoreNavigation")
                         .WithMany("MtdStoreLink")
                         .HasForeignKey("MtdStore")
                         .HasConstraintName("fk_mtd_store_link_mtd_store1")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdStoreOwner", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdStoreOwner", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdStore", "IdNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdStore", "IdNavigation")
                         .WithOne("MtdStoreOwner")
-                        .HasForeignKey("Mtd.OrderMaker.Web.Data.MtdStoreOwner", "Id")
+                        .HasForeignKey("Mtd.OrderMaker.Server.Data.MtdStoreOwner", "Id")
                         .HasConstraintName("fk_owner_store")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdStoreStack", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdStoreStack", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdFormPartField", "MtdFormPartFieldNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdFormPartField", "MtdFormPartFieldNavigation")
                         .WithMany("MtdStoreStack")
                         .HasForeignKey("MtdFormPartField")
                         .HasConstraintName("fk_mtd_store_stack_mtd_form_part_field1")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdStore", "MtdStoreNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdStore", "MtdStoreNavigation")
                         .WithMany("MtdStoreStack")
                         .HasForeignKey("MtdStore")
                         .HasConstraintName("fk_mtd_store_stack_mtd_store")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdStoreStackDate", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdStoreStackDate", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdStoreStack", "IdNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdStoreStack", "IdNavigation")
                         .WithOne("MtdStoreStackDate")
-                        .HasForeignKey("Mtd.OrderMaker.Web.Data.MtdStoreStackDate", "Id")
+                        .HasForeignKey("Mtd.OrderMaker.Server.Data.MtdStoreStackDate", "Id")
                         .HasConstraintName("fk_date_stack")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdStoreStackDecimal", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdStoreStackDecimal", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdStoreStack", "IdNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdStoreStack", "IdNavigation")
                         .WithOne("MtdStoreStackDecimal")
-                        .HasForeignKey("Mtd.OrderMaker.Web.Data.MtdStoreStackDecimal", "Id")
+                        .HasForeignKey("Mtd.OrderMaker.Server.Data.MtdStoreStackDecimal", "Id")
                         .HasConstraintName("fk_decimal_stack")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdStoreStackFile", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdStoreStackFile", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdStoreStack", "IdNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdStoreStack", "IdNavigation")
                         .WithOne("MtdStoreStackFile")
-                        .HasForeignKey("Mtd.OrderMaker.Web.Data.MtdStoreStackFile", "Id")
+                        .HasForeignKey("Mtd.OrderMaker.Server.Data.MtdStoreStackFile", "Id")
                         .HasConstraintName("fk_file_stack")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdStoreStackInt", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdStoreStackInt", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdStoreStack", "IdNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdStoreStack", "IdNavigation")
                         .WithOne("MtdStoreStackInt")
-                        .HasForeignKey("Mtd.OrderMaker.Web.Data.MtdStoreStackInt", "Id")
+                        .HasForeignKey("Mtd.OrderMaker.Server.Data.MtdStoreStackInt", "Id")
                         .HasConstraintName("fk_int_stack")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Web.Data.MtdStoreStackText", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Data.MtdStoreStackText", b =>
                 {
-                    b.HasOne("Mtd.OrderMaker.Web.Data.MtdStoreStack", "IdNavigation")
+                    b.HasOne("Mtd.OrderMaker.Server.Data.MtdStoreStack", "IdNavigation")
                         .WithOne("MtdStoreStackText")
-                        .HasForeignKey("Mtd.OrderMaker.Web.Data.MtdStoreStackText", "Id")
+                        .HasForeignKey("Mtd.OrderMaker.Server.Data.MtdStoreStackText", "Id")
                         .HasConstraintName("fk_text_stack")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

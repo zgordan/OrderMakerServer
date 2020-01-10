@@ -19,7 +19,7 @@
 
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Mtd.OrderMaker.Web.Areas.Config.Pages
+namespace Mtd.OrderMaker.Server.Areas.Config.Pages
 {
     public class IndexModel : PageModel
     {

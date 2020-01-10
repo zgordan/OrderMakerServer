@@ -1,10 +1,10 @@
-﻿using Mtd.OrderMaker.Web.DataHandler.Approval;
+﻿using Mtd.OrderMaker.Server.DataHandler.Approval;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Mtd.OrderMaker.Web.DataHandler.Approval
+namespace Mtd.OrderMaker.Server.DataHandler.Approval
 {
     public enum ApprovalStatus
     {

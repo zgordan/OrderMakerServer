@@ -17,7 +17,7 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
-namespace Mtd.OrderMaker.Web.Models.Index
+namespace Mtd.OrderMaker.Server.Models.Index
 {
     public class SelecorStore
     {

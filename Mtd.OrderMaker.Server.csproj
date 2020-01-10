@@ -23,6 +23,7 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
     <ApplicationIcon>form.ico</ApplicationIcon>
     <Version>1.0.8</Version>
     <Platforms>AnyCPU;x64</Platforms>
+    <TypeScriptToolsVersion>3.5</TypeScriptToolsVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -81,7 +82,7 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
       <AllowExplicitVersion>true</AllowExplicitVersion>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
     <PackageReference Include="MySql.Data" Version="8.0.17" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
   </ItemGroup>
@@ -122,5 +123,22 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
     <Folder Include="wwwroot\lib\mtd-ordermaker\ui\css\" />
     <Folder Include="wwwroot\lib\mtd-ordermaker\users\css\" />
   </ItemGroup>
+
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptModuleKind />
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
 
 </Project>

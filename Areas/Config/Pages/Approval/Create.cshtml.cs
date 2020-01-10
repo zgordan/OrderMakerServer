@@ -25,9 +25,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Server.Data;
 
-namespace Mtd.OrderMaker.Web.Areas.Config.Pages.Approval
+namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Approval
 {
     public class CreateModel : PageModel
     {

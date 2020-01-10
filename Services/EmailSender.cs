@@ -19,7 +19,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
-using Mtd.OrderMaker.Web.DataConfig;
+using Mtd.OrderMaker.Server.DataConfig;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,7 +29,7 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Localization;
 
-namespace Mtd.OrderMaker.Web.Services
+namespace Mtd.OrderMaker.Server.Services
 {
     
     public class EmailSender : IEmailSender

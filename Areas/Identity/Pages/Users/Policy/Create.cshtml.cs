@@ -23,9 +23,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Server.Data;
 
-namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users.Policy
+namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Policy
 {
     public class CreateModel : PageModel
     {

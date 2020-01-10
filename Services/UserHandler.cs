@@ -22,8 +22,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Mtd.OrderMaker.Web.Areas.Identity.Data;
-using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Server.Areas.Identity.Data;
+using Mtd.OrderMaker.Server.Data;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -31,7 +31,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Mtd.OrderMaker.Web.Services
+namespace Mtd.OrderMaker.Server.Services
 {
     public enum RightsType
     {
@@ -125,7 +125,7 @@ namespace Mtd.OrderMaker.Web.Services
         public async Task<MtdPolicy> GetPolicyForUser (WebAppUser user)
         {            
             string policyId = await GetPolicyIdAsync(user);
-            if (policyId == null);
+            if (policyId == null) return null;
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             if (mtdPolicy == null) return null;
             return mtdPolicy.Where(x=>x.Id == policyId).FirstOrDefault();            

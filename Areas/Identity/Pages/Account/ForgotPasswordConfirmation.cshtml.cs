@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Account
+namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ForgotPasswordConfirmation : PageModel

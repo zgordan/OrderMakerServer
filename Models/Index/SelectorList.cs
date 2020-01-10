@@ -17,10 +17,10 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
-using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Server.Data;
 using System.Collections.Generic;
 
-namespace Mtd.OrderMaker.Web.Models.Index
+namespace Mtd.OrderMaker.Server.Models.Index
 {
     public class SelectorList
     {

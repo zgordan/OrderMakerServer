@@ -20,7 +20,7 @@
 using System.Collections.Generic;
 
 
-namespace Mtd.OrderMaker.Web.Models.Index
+namespace Mtd.OrderMaker.Server.Models.Index
 {
     public class DisplayData
     {

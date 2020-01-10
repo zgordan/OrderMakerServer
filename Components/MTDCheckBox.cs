@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Mtd.OrderMaker.Web.Components
+namespace Mtd.OrderMaker.Server.Components
 {
     [ViewComponent(Name = "MTDCheckbox")]
     public class MTDCheckbox : ViewComponent

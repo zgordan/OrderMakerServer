@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Account.Manage
+namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account.Manage
 {
     public static class ManageNavPages
     {

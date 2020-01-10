@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Users
+namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users
 {
     public class IndexModel : PageModel
     {

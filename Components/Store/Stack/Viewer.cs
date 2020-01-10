@@ -18,12 +18,12 @@
 */
 
 using Microsoft.AspNetCore.Mvc;
-using Mtd.OrderMaker.Web.Data;
-using Mtd.OrderMaker.Web.Models.Store;
+using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Models.Store;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Mtd.OrderMaker.Web.Components.Store.Stack
+namespace Mtd.OrderMaker.Server.Components.Store.Stack
 {
     [ViewComponent(Name = "StoreStackViewer")]
     public class Viewer : ViewComponent

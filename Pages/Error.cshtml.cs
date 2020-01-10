@@ -32,10 +32,10 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
-using Mtd.OrderMaker.Web.Areas.Identity.Data;
-using Mtd.OrderMaker.Web.DataConfig;
+using Mtd.OrderMaker.Server.Areas.Identity.Data;
+using Mtd.OrderMaker.Server.DataConfig;
 
-namespace Mtd.OrderMaker.Web.Pages
+namespace Mtd.OrderMaker.Server.Pages
 {
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public class ErrorModel : PageModel

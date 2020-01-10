@@ -24,10 +24,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Mtd.OrderMaker.Web.Data;
-using Mtd.OrderMaker.Web.Components;
+using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Components;
 
-namespace Mtd.OrderMaker.Web.Areas.Config.Pages.Approval
+namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Approval
 {
     public class EditModel : PageModel
     {

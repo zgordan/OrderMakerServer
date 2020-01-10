@@ -17,9 +17,9 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
-using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Server.Data;
 
-namespace Mtd.OrderMaker.Web.Models.Index
+namespace Mtd.OrderMaker.Server.Models.Index
 {
     public class CellModelView
     {

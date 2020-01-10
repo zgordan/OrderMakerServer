@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Mtd.OrderMaker.Web.Areas.Workplace.Pages.Store.Models
+namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store.Models
 {
     public class ApprovalLog
     {

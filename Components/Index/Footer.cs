@@ -20,12 +20,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Mtd.OrderMaker.Web.Areas.Identity.Data;
-using Mtd.OrderMaker.Web.Data;
-using Mtd.OrderMaker.Web.Models.Index;
+using Mtd.OrderMaker.Server.Areas.Identity.Data;
+using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Models.Index;
 using System.Threading.Tasks;
 
-namespace Mtd.OrderMaker.Web.Components.Index
+namespace Mtd.OrderMaker.Server.Components.Index
 {
     [ViewComponent(Name = "IndexFooter")]
     public class Footer : ViewComponent

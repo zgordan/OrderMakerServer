@@ -1,10 +1,10 @@
-﻿using Mtd.OrderMaker.Web.Data;
+﻿using Mtd.OrderMaker.Server.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Mtd.OrderMaker.Web.Services
+namespace Mtd.OrderMaker.Server.Services
 {
     public class ConfigHandler
     {

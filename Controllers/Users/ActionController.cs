@@ -20,7 +20,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Server.Data;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -28,7 +28,7 @@ using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-namespace Mtd.OrderMaker.Web.Controllers.Users
+namespace Mtd.OrderMaker.Server.Controllers.Users
 {
     [Authorize(Roles = "Admin")]
     public partial class UsersController : ControllerBase

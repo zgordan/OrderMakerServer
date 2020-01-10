@@ -10,9 +10,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using Mtd.OrderMaker.Web.Areas.Identity.Data;
+using Mtd.OrderMaker.Server.Areas.Identity.Data;
 
-namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Account.Manage
+namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account.Manage
 {
     public class EnableAuthenticatorModel : PageModel
     {
@@ -149,7 +149,7 @@ namespace Mtd.OrderMaker.Web.Areas.Identity.Pages.Account.Manage
         {
             return string.Format(
                 AuthenticatorUriFormat,
-                _urlEncoder.Encode("Mtd.OrderMaker.Web"),
+                _urlEncoder.Encode("Mtd.OrderMaker.Server"),
                 _urlEncoder.Encode(email),
                 unformattedKey);
         }

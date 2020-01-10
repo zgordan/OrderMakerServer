@@ -18,14 +18,14 @@
 */
 
 using Microsoft.EntityFrameworkCore;
-using Mtd.OrderMaker.Web.Areas.Identity.Data;
-using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Server.Areas.Identity.Data;
+using Mtd.OrderMaker.Server.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Mtd.OrderMaker.Web.DataHandler.Approval
+namespace Mtd.OrderMaker.Server.DataHandler.Approval
 {
     public class ApprovalHandler
     {

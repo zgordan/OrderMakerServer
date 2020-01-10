@@ -18,7 +18,7 @@
 */
 
 
-namespace Mtd.OrderMaker.Web.Data
+namespace Mtd.OrderMaker.Server.Data
 {
     public partial class MtdFormList
     {

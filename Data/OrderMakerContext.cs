@@ -21,7 +21,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Mtd.OrderMaker.Web.Data
+namespace Mtd.OrderMaker.Server.Data
 {
     public partial class OrderMakerContext : DbContext
     {

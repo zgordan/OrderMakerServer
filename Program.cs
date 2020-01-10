@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Mtd.OrderMaker.Web
+namespace Mtd.OrderMaker.Server
 {
     public class Program
     {

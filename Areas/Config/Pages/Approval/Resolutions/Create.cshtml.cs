@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Mtd.OrderMaker.Web.Components;
-using Mtd.OrderMaker.Web.Data;
+using Mtd.OrderMaker.Server.Components;
+using Mtd.OrderMaker.Server.Data;
 
-namespace Mtd.OrderMaker.Web.Areas.Config.Pages.Approval.Resolutions
+namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Approval.Resolutions
 {
     public class CreateModel : PageModel
     {

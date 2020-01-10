@@ -17,7 +17,7 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
-namespace Mtd.OrderMaker.Web.Data
+namespace Mtd.OrderMaker.Server.Data
 {
     public partial class MtdStoreLink
     {

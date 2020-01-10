@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Mtd.OrderMaker.Web.Migrations
+namespace Mtd.OrderMaker.Server.Migrations
 {
     public partial class DeletePolicyGroup : Migration
     {

@@ -25,10 +25,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Mtd.OrderMaker.Web.Data;
-using Mtd.OrderMaker.Web.Services;
+using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Services;
 
-namespace Mtd.OrderMaker.Web.Controllers.Config.Form
+namespace Mtd.OrderMaker.Server.Controllers.Config.Form
 {
     [Route("api/config/form")]
     [ApiController]

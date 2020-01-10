@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Mtd.OrderMaker.Web.Pages
+namespace Mtd.OrderMaker.Server.Pages
 {
     public class PrivacyModel : PageModel
     {

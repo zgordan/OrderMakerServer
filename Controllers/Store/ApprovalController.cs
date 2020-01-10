@@ -20,20 +20,20 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Mtd.OrderMaker.Web.Areas.Identity.Data;
-using Mtd.OrderMaker.Web.Data;
-using Mtd.OrderMaker.Web.DataHandler.Approval;
-using Mtd.OrderMaker.Web.Services;
+using Mtd.OrderMaker.Server.Areas.Identity.Data;
+using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.DataHandler.Approval;
+using Mtd.OrderMaker.Server.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Localization;
-using Mtd.OrderMaker.Web;
+using Mtd.OrderMaker.Server;
 using Mtd.OrderMaker.Server;
 
-namespace Mtd.OrderMaker.Web.Controllers.Store
+namespace Mtd.OrderMaker.Server.Controllers.Store
 {
 
     [Route("api/store/approval")]
