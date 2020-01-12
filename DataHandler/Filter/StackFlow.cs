@@ -50,12 +50,15 @@ namespace Mtd.OrderMaker.Server.DataHandler.Filter
             }
 
             IList<MtdFilterScript> scripts = await GetScriptsAsync();
-            if (scripts != null && scripts.Count > 0)
+            if (scripts != null && scripts.Count > 0 && incomer.WaitList != 1)
             {
                 foreach (var fs in scripts)
                 {
                     if (fs.Apply == 1)
-                        queryMtdStore = queryMtdStore.FromSql(fs.Script);
+                    {
+                        List<string> scriptIds = await _context.MtdStore.FromSqlRaw(fs.Script).Select(x => x.Id).ToListAsync();
+                        queryMtdStore = queryMtdStore.Where(x => scriptIds.Contains(x.Id));
+                    }
                 }
             }
 
@@ -79,22 +82,27 @@ namespace Mtd.OrderMaker.Server.DataHandler.Filter
             {
                 case TypeQuery.number:
                     {
+                        /*ID search*/
                         outFlow = await GetDataForNumberAsync(incomer);
                         break;
                     }
                 case TypeQuery.text:
                     {
+                        /*Search line*/
                         outFlow = await GetDataForTextAsync(incomer);
                         break;
                     }
                 case TypeQuery.field:
                 case TypeQuery.textField:
+                case TypeQuery.script:
                     {
+                        /*Basic search - selection from the list*/
                         outFlow = await GetDataForFieldAsync(incomer);
                         break;
                     }
                 default:
                     {
+                        /*Without filters*/
                         outFlow = await GetDataForEmptyAsync(incomer);
                         break;
                     }

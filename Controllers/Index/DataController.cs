@@ -50,10 +50,10 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostSearchTextAsync()
         {
-            var form = Request.Form["indexForm"];
-            var value = Request.Form["indexSearchText"];
-            var user = await _userManager.GetUserAsync(User);
-            MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id & x.MtdForm == form);
+            string form = Request.Form["indexForm"];
+            string value = Request.Form["indexSearchText"];
+            WebAppUser user = await _userManager.GetUserAsync(User);
+            MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == form);
             bool old = true;
             if (filter == null)
             {
@@ -92,7 +92,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
             string form = Request.Form["formId"];
             string value = Request.Form["searchNumber"];
 
-            var user = await _userManager.GetUserAsync(User);
+            WebAppUser user = await _userManager.GetUserAsync(User);
             MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id & x.MtdForm == form);
             bool old = true;
             if (filter == null)
@@ -183,18 +183,18 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostFilterAddAsync()
         {
-            var valueField = Request.Form["indexInputField"];
-            var idForm = Request.Form["indexInputForm"];
-            var valueFilter = Request.Form["indexInputFilter"];
-            var valueTerm = Request.Form["indexInputTerm"];
-            var valueFieldList = Request.Form[$"{valueField}-inputlist"];
+            string valueField = Request.Form["indexInputField"];
+            string idForm = Request.Form["indexInputForm"];
+            string valueFilter = Request.Form["indexInputFilter"];
+            string valueTerm = Request.Form["indexInputTerm"];
+            string valueFieldList = Request.Form[$"{valueField}-inputlist"];
 
             string result = "";
-            if (valueFilter.FirstOrDefault() != null) { result = valueFilter; }
-            if (valueFieldList.FirstOrDefault() != null) { result = valueFieldList; }
+            if (valueFilter != null) { result = valueFilter; }
+            if (valueFieldList != null) { result = valueFieldList; }
 
-            var user = await _userManager.GetUserAsync(User);
-            MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id & x.MtdForm == idForm);
+            WebAppUser user = await _userManager.GetUserAsync(User);
+            MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == idForm);
 
             if (filter == null)
             {
@@ -217,8 +217,8 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
 
             } else
             {
-                var dateStart = Request.Form["periodStart"];
-                var dateFinish = Request.Form["periodFinish"];
+                string dateStart = Request.Form["periodStart"];
+                string dateFinish = Request.Form["periodFinish"];
 
                 bool isOkDateStart = DateTime.TryParse(dateStart, out DateTime dateTimeStart);
                 bool isOkDateFinish = DateTime.TryParse(dateFinish, out DateTime dateTimeFinish);
@@ -243,14 +243,9 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
                     }
 
                     await _context.SaveChangesAsync();
-
                 }
-
-            }
-            
-
+            }            
             return Ok();
-
         }
 
         private async Task SaveFilterField(StringValues valueField, StringValues valueTerm, string result, MtdFilter filter)
@@ -350,14 +345,14 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
         public async Task<IActionResult> PostFilterColumnsAsync()
         {
 
-            var idForm = Request.Form["indexDataColumnIdForm"];
-            var data = Request.Form["indexDataColumnList"];
-            var showNumber = Request.Form["indexDataColumnNumber"];
-            var showDate = Request.Form["indexDataColumnDate"];
+            string idForm = Request.Form["indexDataColumnIdForm"];
+            string data = Request.Form["indexDataColumnList"];
+            string showNumber = Request.Form["indexDataColumnNumber"];
+            string showDate = Request.Form["indexDataColumnDate"];
 
             List<string> fieldIds = new List<string>();
-            if (data.FirstOrDefault() != null && data.FirstOrDefault().Length > 0) fieldIds = data.FirstOrDefault().Split(",").ToList();
-            var user = await _userManager.GetUserAsync(User);
+            if (data != null && data.Length > 0) fieldIds = data.Split(",").ToList();
+            WebAppUser user = await _userManager.GetUserAsync(User);
             MtdFilter filter = await _context.MtdFilter.Include(m => m.MtdFilterColumn).FirstOrDefaultAsync(x => x.IdUser == user.Id & x.MtdForm == idForm);
 
             if (filter == null)
@@ -450,7 +445,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostFilterScriptAsync()
         {
-            var valueField = Request.Form["script-selector"];
+            string valueField = Request.Form["script-selector"];
             bool isOk = int.TryParse(valueField, out int id);
             if (!isOk) { return NotFound(); }
             MtdFilterScript mtdFilterScript = await _context.MtdFilterScript.FindAsync(id);

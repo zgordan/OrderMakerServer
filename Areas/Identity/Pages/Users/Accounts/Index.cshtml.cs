@@ -39,10 +39,10 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
             }
 
             Accounts = new List<WebAppPerson>();
-
-            foreach (var user in query)
+            IList<WebAppUser> users = await query.ToListAsync();
+            foreach (WebAppUser user in users)
             {
-                var roles = await _userHandler.GetRolesAsync(user);
+                IList<string> roles = await _userHandler.GetRolesAsync(user);
                 Accounts.Add(new WebAppPerson
                 {
                     User = user,

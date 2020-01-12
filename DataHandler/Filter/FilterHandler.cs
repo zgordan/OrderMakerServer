@@ -34,7 +34,7 @@ namespace Mtd.OrderMaker.Server.DataHandler.Filter
         private readonly OrderMakerContext _context;
         private MtdFilter register;
         private WebAppUser _user;
-        private IQueryable<MtdStore> queryMtdStore;        
+        private IQueryable<MtdStore> queryMtdStore;
         private UserHandler _userHandler;
 
         public string IdForm { get; private set; }
@@ -111,6 +111,10 @@ namespace Mtd.OrderMaker.Server.DataHandler.Filter
                 if (mtdFilter.SearchNumber == "" && mtdFilter.SearchText != "" && !filterField) { typeQuery = TypeQuery.text; }
                 if (mtdFilter.SearchNumber == "" && mtdFilter.SearchText == "" && filterField) { typeQuery = TypeQuery.field; }
                 if (mtdFilter.SearchNumber == "" && mtdFilter.SearchText != "" && filterField) { typeQuery = TypeQuery.textField; }
+
+                bool isScript = await _context.MtdFilterScript.Where(x => x.MtdFilter == mtdFilter.Id && x.Apply == 1).AnyAsync();
+                if (isScript) { typeQuery = TypeQuery.script; }
+
             }
 
             return typeQuery;
@@ -163,7 +167,7 @@ namespace Mtd.OrderMaker.Server.DataHandler.Filter
         public async Task<bool> IsShowDate()
         {
             MtdFilter mtdFilter = await GetFilterAsync();
-            return mtdFilter.ShowDate == 1 ? true: false;
+            return mtdFilter.ShowDate == 1 ? true : false;
         }
 
         public async Task<bool> IsShowNumber()

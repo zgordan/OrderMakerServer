@@ -22,10 +22,10 @@ namespace Mtd.OrderMaker.Server.Services
     public class EmailSenderBlank : IEmailSenderBlank
     {
         private EmailSettings _emailSettings { get; }
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
 
-        public EmailSenderBlank(IOptions<EmailSettings> emailSettings, IHostingEnvironment hostingEnvironment)
+        public EmailSenderBlank(IOptions<EmailSettings> emailSettings, IWebHostEnvironment hostingEnvironment)
         {
             _emailSettings = emailSettings.Value;
             _hostingEnvironment = hostingEnvironment;

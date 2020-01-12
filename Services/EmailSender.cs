@@ -35,10 +35,10 @@ namespace Mtd.OrderMaker.Server.Services
     public class EmailSender : IEmailSender
     {
         private EmailSettings _emailSettings { get; }
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
 
-        public EmailSender(IOptions<EmailSettings> emailSettings, IHostingEnvironment hostingEnvironment)
+        public EmailSender(IOptions<EmailSettings> emailSettings, IWebHostEnvironment hostingEnvironment)
         {
             _emailSettings = emailSettings.Value;
             _hostingEnvironment = hostingEnvironment;

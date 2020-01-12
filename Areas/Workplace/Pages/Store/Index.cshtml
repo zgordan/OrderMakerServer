@@ -43,13 +43,13 @@
     <input name="InputFormForExport" value="@ViewBag.idForm" type="hidden" />
 </form>
 
-@section Action  {
+@*@section Action  {
 
     <li class="mdc-list-item" role="menuitem" onclick="document.getElementById('index-excel-form').submit()">
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">import_export</span>
         <span class="mdc-list-item__text">@Localizer["Export to Excel"]</span>
     </li>
-}
+}*@
 
 @await Component.InvokeAsync("IndexPlace", new { idForm = ViewBag.idForm })
 

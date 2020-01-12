@@ -46,13 +46,13 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
 
         public async Task<IViewComponentResult> InvokeAsync(string idForm)
         {
-            var user = await _userHandler.GetUserAsync(HttpContext.User);
+            WebAppUser user = await _userHandler.GetUserAsync(HttpContext.User);
             List<string> partIds = await _userHandler.GetAllowPartsForView(user, idForm);
 
             MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == idForm);
 
             var query = _context.MtdFormPartField.Include(m => m.MtdFormPartNavigation)
-                    .Where(x => x.MtdFormPartNavigation.MtdForm == idForm & x.Active == 1 & partIds.Contains(x.MtdFormPart))
+                    .Where(x => x.MtdFormPartNavigation.MtdForm == idForm && x.Active == 1 && partIds.Contains(x.MtdFormPart))
                     .OrderBy(x => x.MtdFormPartNavigation.Sequence).ThenBy(x => x.Sequence);
 
             IList<MtdFormPartField> mtdFields;
@@ -61,7 +61,6 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
                 List<string> fieldIds = await _context.MtdFilterField.Where(x => x.MtdFilter == filter.Id)
                     .Select(x => x.MtdFormPartField).ToListAsync();
                 mtdFields = await query.Where(x => !fieldIds.Contains(x.Id)).ToListAsync();
-
             }
             else
             {
@@ -74,7 +73,7 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
             {
                 string idFormForList = await _context.MtdFormList.Where(x => x.Id == field.Id).Select(x => x.MtdForm).FirstOrDefaultAsync();
                 MtdFormPartField fieldForList = await _context.MtdFormPartField.Include(m => m.MtdFormPartNavigation)
-                        .Where(x => x.MtdFormPartNavigation.MtdForm == idFormForList & x.MtdSysType == 1)
+                        .Where(x => x.MtdFormPartNavigation.MtdForm == idFormForList && x.MtdSysType == 1)
                         .OrderBy(o => o.MtdFormPartNavigation.Sequence).ThenBy(o => o.Sequence).FirstOrDefaultAsync();
 
                 if (idFormForList != null)

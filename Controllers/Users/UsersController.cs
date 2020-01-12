@@ -44,7 +44,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
         private readonly RoleManager<WebAppRole> _roleManager;
         private readonly SignInManager<WebAppUser> _signInManager;
         private readonly IEmailSender _emailSender;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly OrderMakerContext _context;
         private readonly IStringLocalizer<UsersController> _localizer;
         private readonly IOptions<ConfigSettings> _options;
@@ -55,7 +55,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             RoleManager<WebAppRole> roleManager,
         SignInManager<WebAppUser> signInManager,
             IEmailSender emailSender,
-            IHostingEnvironment hostingEnvironment,
+            IWebHostEnvironment hostingEnvironment,
             OrderMakerContext context,
             IStringLocalizer<UsersController> localizer,
             IOptions<ConfigSettings> options
@@ -76,8 +76,8 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostAdminDeleteAsync()
         {
-            var userId = Request.Form["user-delete-id"];
-            var user = await _userManager.FindByIdAsync(userId);
+            string userId = Request.Form["user-delete-id"];
+            WebAppUser user = await _userManager.FindByIdAsync(userId);
 
             IList<MtdFilter> mtdFilters = await _context.MtdFilter.Where(x => x.IdUser == user.Id).ToListAsync();
             _context.MtdFilter.RemoveRange(mtdFilters);
@@ -91,9 +91,9 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
         public async Task<IActionResult> OnPostAdminProfileAsync()
         {
 
-            var username = Request.Form["UserName"];
+            string username = Request.Form["UserName"];
 
-            if (username.Count == 0)
+            if (username == null)
             {
                 return BadRequest();
             }

@@ -34,7 +34,7 @@
 }
 
 @section Action {
-    <li id="action-delete" class="mdc-list-item" role="menuitem">
+    <li mtd-data-delete id="action-delete" class="mdc-list-item" role="menuitem">
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">delete</span>
         <span class="mdc-list-item__text">@Localizer["Delete group"]</span>
     </li>
@@ -118,3 +118,15 @@
     <div class="mdc-dialog__scrim"></div>
 </div>
 
+@section Scripts {
+    <script>   
+        (() => {            
+            const dialog = new mdc.dialog.MDCDialog(document.getElementById('dialog-delete'));
+            if (dialog) {   
+                document.querySelector('[mtd-data-delete]').addEventListener('click', () => {
+                    dialog.open();
+                });
+            }
+        })();
+    </script>
+}

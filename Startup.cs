@@ -39,19 +39,22 @@ using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
+using Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore;
 using Mtd.OrderMaker.Server;
+using Microsoft.Extensions.Hosting;
 
 namespace Mtd.OrderMaker.Server
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            CurrentEnvironment = env;
         }
 
         public IConfiguration Configuration { get; }
-
+        public IWebHostEnvironment CurrentEnvironment { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -82,8 +85,7 @@ namespace Mtd.OrderMaker.Server
 
             services.AddMvc()
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .AddDataAnnotationsLocalization();
 
             services.AddAuthorization(options =>
             {
@@ -108,10 +110,7 @@ namespace Mtd.OrderMaker.Server
                         options.Conventions.AuthorizeAreaFolder("Identity", "/Users", "RoleAdmin");
                         options.Conventions.AuthorizeAreaFolder("Config", "/", "RoleAdmin");
                     });
-
-            //.AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-
-
+     
             services.AddSingleton<PolicyCache>();
             services.AddScoped<UserHandler>();            
             services.AddTransient<ConfigHandler>();
@@ -120,34 +119,33 @@ namespace Mtd.OrderMaker.Server
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.Configure<ConfigSettings>(Configuration.GetSection("ConfigSettings"));
 
-            var environment = services.BuildServiceProvider().GetRequiredService<IHostingEnvironment>();
             services.AddDataProtection()
-                    .SetApplicationName($"ordermaker-{environment.EnvironmentName}")
-                    .PersistKeysToFileSystem(new DirectoryInfo($@"{environment.ContentRootPath}\keys"));
+                    .SetApplicationName($"ordermaker-{CurrentEnvironment.EnvironmentName}")
+                    .PersistKeysToFileSystem(new DirectoryInfo($@"{CurrentEnvironment.ContentRootPath}\keys"));
+
+            services.AddMvc(options => options.EnableEndpointRouting = false);
         }
 
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IServiceProvider serviceProvider)
         {
 
             var config = serviceProvider.GetRequiredService<IOptions<ConfigSettings>>();
             
             if (config.Value.Migrate == "true")
             {
-                using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-                {
-                    var context = serviceScope.ServiceProvider.GetService<OrderMakerContext>();
-                    context.Database.Migrate();
+                using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+                var context = serviceScope.ServiceProvider.GetService<OrderMakerContext>();
+                context.Database.Migrate();
 
-                    var contextIdentity = serviceScope.ServiceProvider.GetService<IdentityDbContext>();
-                    contextIdentity.Database.Migrate();
+                var contextIdentity = serviceScope.ServiceProvider.GetService<IdentityDbContext>();
+                contextIdentity.Database.Migrate();
 
-                    InitDataBase(serviceProvider);
-                }
+                InitDataBase(serviceProvider);
             }
 
 
-            if (env.IsDevelopment())
+            if (CurrentEnvironment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
@@ -158,12 +156,6 @@ namespace Mtd.OrderMaker.Server
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseCookiePolicy();
-            app.UseAuthentication();
-
-            
             var cultureInfo = new CultureInfo(config.Value.CultureInfo);
             var localizationOptions = new RequestLocalizationOptions()
             {
@@ -177,6 +169,21 @@ namespace Mtd.OrderMaker.Server
             };
 
             app.UseRequestLocalization(localizationOptions);
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            
+            app.UseRouting();
+
+            app.UseCookiePolicy();
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapRazorPages();
+            });
+
             app.UseMvc();
         }
 

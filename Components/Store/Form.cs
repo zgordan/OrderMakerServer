@@ -106,12 +106,7 @@ namespace Mtd.OrderMaker.Server.Components.Store
                 .FirstOrDefaultAsync(m => m.Id == store.Id);
 
 
-            var query = from n in _context.MtdStoreStack
-                    .Where(x => x.MtdStore == mtdStore.Id)
-                        group n by n.MtdFormPartField into g
-                        select new { idField = g.Key, idStack = g.FirstOrDefault(x => x.Id == g.Max(m => m.Id)).Id };
-
-            IList<long> ids = await query.Select(x => x.idStack).ToListAsync();
+            IList<long> ids = await _context.MtdStoreStack.Where(x => x.MtdStore == mtdStore.Id).Select(x => x.Id).ToListAsync();
 
             IList<MtdStoreStack> stack = await _context.MtdStoreStack
                 .Include(m => m.MtdStoreStackText)
@@ -165,8 +160,6 @@ namespace Mtd.OrderMaker.Server.Components.Store
                         mtdFormPartFields.Remove(field);
                     }
                 }
-
-
             }
 
 

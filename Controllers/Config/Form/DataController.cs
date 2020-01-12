@@ -183,8 +183,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Config.Form
         [HttpPost("field/edit")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostFieldEditAsync()
-        {
-            string formId = Request.Form["formId"];
+        {          
             string partId = Request.Form["fieldPart"];
             string fieldId = Request.Form["fieldId"];
             string fieldName = Request.Form["fieldName"];

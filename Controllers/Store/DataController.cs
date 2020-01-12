@@ -177,12 +177,11 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             }
 
             await _context.Database.BeginTransactionAsync();
-            int sequence;
-            var forms = await _context.MtdStore.Where(x => x.MtdForm == idForm).ToListAsync();
-            if (forms != null && forms.Count > 0) { sequence = forms.Max(x => x.Sequence); } else sequence = 0;
+            //int sequence = 0;
+            int? sequence = await _context.MtdStore.Where(x => x.MtdForm == idForm).MaxAsync(x=>(int?) x.Sequence) ?? 0;                      
             sequence++;
 
-            MtdStore mtdStore = new MtdStore { MtdForm = idForm, Sequence = sequence, Parent = idFormParent.Length > 0 ? idFormParent : null };
+            MtdStore mtdStore = new MtdStore {Id = Guid.NewGuid().ToString(), MtdForm = idForm, Sequence = sequence??1, Parent = idFormParent.Length > 0 ? idFormParent : null };
 
             bool setData = await _userHandler.GetFormPolicyAsync(webAppUser, mtdStore.MtdForm, RightsType.SetDate);
             if (setData)
@@ -297,9 +296,23 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             WebAppUser webAppUser = await _userHandler.FindByIdAsync(idUser);
             if (webAppUser == null) { return Ok(403); }
 
-            bool isInstallerOwner = await _userHandler.IsInstallerOwner(webAppUser, mtdStore.MtdForm);
+            WebAppUser currentUser = await _userHandler.GetUserAsync(HttpContext.User);
+            bool isInstallerOwner = await _userHandler.IsInstallerOwner(currentUser, mtdStore.MtdForm);
 
             if (!isInstallerOwner) { return Ok(403); }
+
+            List<WebAppUser> webAppUsers = new List<WebAppUser>();
+            bool isViewAll = await _userHandler.GetFormPolicyAsync(currentUser, mtdStore.MtdForm, RightsType.View);
+            if (isViewAll)
+            {
+                webAppUsers = await _userHandler.Users.ToListAsync();
+            }
+            else
+            {
+                webAppUsers = await _userHandler.GetUsersInGroupsAsync(currentUser);
+            }
+
+            if (!webAppUsers.Where(x=>x.Id == idUser).Any()) { return Ok(403); }
 
             MtdStoreOwner mtdStoreOwner = await _context.MtdStoreOwner.Include(x => x.IdNavigation).FirstOrDefaultAsync(x => x.Id == idStore);
 
@@ -307,12 +320,6 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             {
 
                 string idForm = mtdStoreOwner.IdNavigation.MtdForm;
-                bool IsInstllerOwner = await _userHandler.IsInstallerOwner(webAppUser, idForm);
-                if (!IsInstllerOwner)
-                {
-                    return Forbid();
-                }
-
                 mtdStoreOwner = new MtdStoreOwner
                 {
                     Id = idStore,

@@ -19,5 +19,5 @@
 
 namespace Mtd.OrderMaker.Server.DataHandler.Filter
 {
-    public enum TypeQuery { number, text, field, textField, empty };
+    public enum TypeQuery { number, text, field, textField, script, empty };
 }

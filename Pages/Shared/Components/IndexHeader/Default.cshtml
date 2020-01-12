@@ -46,7 +46,7 @@
     <div class="mtd-index-header-search">
         <form mtd-data-form method="post" action="/api/index/search/text" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
             @Html.AntiForgeryToken()
-            <input asp-for="@Model.IdForm" name="indexForm" value="@Model.IdForm" hidden />
+            <input asp-for="@Model.IdForm" name="indexForm" value="@Model.IdForm" id="indexForm" hidden />
             <div class="mdc-text-field mdc-text-field--fullwidth mdc-text-field--with-leading-icon">
                 <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">search</i>
 

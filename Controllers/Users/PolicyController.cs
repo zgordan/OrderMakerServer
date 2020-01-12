@@ -49,9 +49,9 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostPolicyAddAsync()
         {
-            var policyName = Request.Form["policy-name"];
-            var policyNote = Request.Form["policy-note"];
-            var policyId = Request.Form["policy-id"];
+            string policyName = Request.Form["policy-name"];
+            string policyNote = Request.Form["policy-note"];
+            string policyId = Request.Form["policy-id"];
 
             MtdPolicy mtdPolicy = new MtdPolicy
             {
@@ -71,9 +71,9 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostPolicyEditAsync()
         {
-            var policyName = Request.Form["policy-name"];
-            var policyNote = Request.Form["policy-note"];
-            var policyId = Request.Form["policy-id"];
+            string policyName = Request.Form["policy-name"];
+            string policyNote = Request.Form["policy-note"];
+            string policyId = Request.Form["policy-id"];
 
             MtdPolicy mtdPolicy = await _context.MtdPolicy.FindAsync(policyId);
             if (mtdPolicy == null) { return NotFound(); }
@@ -182,7 +182,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostPolicyAllAsync()
         {
-            var policyId = Request.Form["policy-id"];
+            string policyId = Request.Form["policy-id"];
             MtdPolicy mtdPolicy = await _context.MtdPolicy.FindAsync(policyId);
             if (mtdPolicy == null) { return NotFound(); }
 
@@ -266,7 +266,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostPolicyClearAsync()
         {
-            var policyId = Request.Form["policy-id"];
+            string policyId = Request.Form["policy-id"];
             MtdPolicy mtdPolicy = await _context.MtdPolicy.FindAsync(policyId);
             if (mtdPolicy == null) { return NotFound(); }
 
@@ -350,7 +350,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostPolicyDelete() {
 
-            var policyId = Request.Form["policy-delete-id"];
+            string policyId = Request.Form["policy-delete-id"];
             MtdPolicy mtdPolicy = new MtdPolicy { Id = policyId };
             _context.MtdPolicy.Remove(mtdPolicy);            
             await _context.SaveChangesAsync();

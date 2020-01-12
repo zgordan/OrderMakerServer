@@ -47,7 +47,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             string name = Request.Form["group-name"];
             string note = Request.Form["group-note"];
 
-            MtdGroup mtdGroup = new MtdGroup { Name = name, Description = note };
+            MtdGroup mtdGroup = new MtdGroup { Id = Guid.NewGuid().ToString(), Name = name, Description = note };
 
             await _context.MtdGroup.AddAsync(mtdGroup);
             await _context.SaveChangesAsync();
@@ -81,7 +81,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
         {
             string id = Request.Form["group-id"];
 
-            MtdGroup mtdGroup = new MtdGroup { Id = id  };
+            MtdGroup mtdGroup = new MtdGroup { Id = id };
 
             _context.MtdGroup.Remove(mtdGroup);
             await _context.SaveChangesAsync();

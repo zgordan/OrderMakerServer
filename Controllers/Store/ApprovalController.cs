@@ -31,7 +31,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.Extensions.Localization;
 using Mtd.OrderMaker.Server;
-using Mtd.OrderMaker.Server;
 
 namespace Mtd.OrderMaker.Server.Controllers.Store
 {

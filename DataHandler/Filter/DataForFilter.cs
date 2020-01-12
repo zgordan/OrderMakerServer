@@ -51,7 +51,7 @@ namespace Mtd.OrderMaker.Server.DataHandler.Filter
 
         public async Task<OutFlow> GetDataForNumberAsync(Incomer incomer)
         {
-            MtdStore mtdStore = await queryMtdStore.Where(x => x.MtdForm == incomer.IdForm & x.Sequence.ToString().Equals(incomer.SearchNumber)).FirstOrDefaultAsync();
+            MtdStore mtdStore = await queryMtdStore.Where(x => x.MtdForm == incomer.IdForm && x.Sequence.ToString().Equals(incomer.SearchNumber)).FirstOrDefaultAsync();
 
             return new OutFlow
             {
@@ -77,12 +77,12 @@ namespace Mtd.OrderMaker.Server.DataHandler.Filter
         public async Task<OutFlow> GetDataForFieldAsync(Incomer incomer)
         {
 
-            IList<string> storeIds = null;
+            IList<string> storeIds = await queryMtdStore.Select(x=>x.Id).ToListAsync();
 
             if (incomer.SearchText.Length > 0)
             {
                 List<string> fieldsIds = incomer.FieldForColumn.Select(x => x.Id).ToList();
-                storeIds = await FindStoreIdsForText(fieldsIds, incomer.SearchText, 4);
+                storeIds = await FindStoreIdsForText(fieldsIds, incomer.SearchText, 4, storeIds);
             }
 
             if (incomer.FieldForFilter != null && incomer.FieldForFilter.Count > 0)

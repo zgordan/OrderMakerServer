@@ -41,14 +41,14 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
         private readonly UserHandler _userManager;
         private readonly RoleManager<WebAppRole> _roleManager;
         private readonly IEmailSender _emailSender;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly OrderMakerContext _context;
 
         public EditModel(
             UserHandler userManager,
             RoleManager<WebAppRole> roleManager,
             IEmailSender emailSender,
-            IHostingEnvironment hostingEnvironment,
+            IWebHostEnvironment hostingEnvironment,
             OrderMakerContext context
             )
         {

@@ -90,7 +90,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Config.Approval
             }
 
             MtdApprovalStage stage = new MtdApprovalStage
-            {
+            {                
                 MtdApproval = approvalId,
                 BlockParts = blockParts,
                 Description = fieldNote,

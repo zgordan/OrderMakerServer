@@ -22,11 +22,11 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account
     {
         private readonly UserManager<WebAppUser> _userManager;
         private readonly IEmailSender _emailSender;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly IOptions<ConfigSettings> _options;
         private readonly IStringLocalizer<ForgotPasswordModel> _localizer;
 
-        public ForgotPasswordModel(UserManager<WebAppUser> userManager, IEmailSender emailSender,IHostingEnvironment hostingEnvironment, 
+        public ForgotPasswordModel(UserManager<WebAppUser> userManager, IEmailSender emailSender, IWebHostEnvironment hostingEnvironment, 
             IOptions<ConfigSettings> options, IStringLocalizer<ForgotPasswordModel> localizer)
         {
             _userManager = userManager;
@@ -71,8 +71,7 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account
                 {
                     culture = $".{_options.Value.CultureInfo}";
                 }
-
-                string webRootPath = _hostingEnvironment.WebRootPath;
+        
                 string contentRootPath = _hostingEnvironment.ContentRootPath;
                 var file = Path.Combine(contentRootPath, "wwwroot", "lib", "mtd-ordermaker", "emailform", $"userPassword{culture}.html");
                 var htmlArray = System.IO.File.ReadAllText(file);

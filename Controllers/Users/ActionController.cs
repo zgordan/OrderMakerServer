@@ -20,6 +20,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Data;
 using System.Collections.Generic;
 using System.IO;
@@ -82,16 +83,15 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
         {
 
             string userName = Request.Form["UserName"];
-            var user = await _userManager.FindByNameAsync(userName);
+            WebAppUser user = await _userManager.FindByNameAsync(userName);
 
             if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
             {
                 return NotFound();
             }
-
-            var userId = await _userManager.GetUserIdAsync(user);
-            var email = await _userManager.GetEmailAsync(user);
-            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+         
+            string email = await _userManager.GetEmailAsync(user);
+            string code = await _userManager.GeneratePasswordResetTokenAsync(user);
             var callbackUrl = Url.Page(
                 "/Account/ResetPassword",
                 pageHandler: null,
@@ -103,8 +103,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             {
                 culture = $".{_options.Value.CultureInfo}";
             }
-
-            string webRootPath = _hostingEnvironment.WebRootPath;
+     
             string contentRootPath = _hostingEnvironment.ContentRootPath;
             var file = Path.Combine(contentRootPath, "wwwroot", "lib", "mtd-ordermaker", "emailform", $"userPassword{culture}.html");
             var htmlArray = System.IO.File.ReadAllText(file);
