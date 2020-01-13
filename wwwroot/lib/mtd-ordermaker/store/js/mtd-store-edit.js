@@ -198,11 +198,11 @@ const ListenerForParent = () => {
         });
     }
 
-    document.addEventListener("keydown", (e) => {
-        if (e.keyCode == 13) {
-            event.preventDefault();
-            return false;
-        }
-    });
+    //document.addEventListener("keydown", (e) => {
+    //    if (e.keyCode == 13) {
+    //        event.preventDefault();
+    //        return false;
+    //    }
+    //});
     
 })();
