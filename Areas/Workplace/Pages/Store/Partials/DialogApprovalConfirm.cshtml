@@ -3,63 +3,64 @@
 @inject IViewLocalizer Localizer
 
 
-    <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/approval/approve'>
-        @Html.AntiForgeryToken()
-        <input type="hidden" name="id-store" value="@Model.MtdStore.Id" />
-        <div id="dialog-accept" class="mdc-dialog"
-             role="alertdialog"
-             aria-modal="true"
-             aria-labelledby="dialog-accept-title"
-             aria-describedby="dialog-accept-content">
-            <div class="mdc-dialog__container">
-                <div class="mdc-dialog__surface">
-                    <h2 class="mdc-dialog__title" id="accept-form-title">
-                        @Localizer["Confirmation of approval"]
-                    </h2>
-                    <div class="mdc-dialog__content" id="accept-dialog-content">
-                        @Localizer["Are you  confirm your approval?"]
-                        @if (Model.BlockParts.Count > 0)
-                        {
-                            <div style="padding: 4px; background-color: whitesmoke">
-                                @Localizer["After approval of the document the Parts below will not be editable:"]
-                                <div style="font-weight:600; margin-top: 4px;">
-                                    @{
-                                        int counter = Model.BlockParts.Count;
-                                        foreach (var part in Model.BlockParts)
-                                        {
-                                            counter--;
-                                            <text> @part.Name </text> if (counter > 0)
-                                            { <text>/</text> }
-                                    }
-                                    }
-                                </div>
+<form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/approval/approve'>
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="id-store" value="@Model.MtdStore.Id" />
+    <div id="dialog-accept" class="mdc-dialog"
+         role="alertdialog"
+         aria-modal="true"
+         aria-labelledby="dialog-accept-title"
+         aria-describedby="dialog-accept-content">
+        <div class="mdc-dialog__container">
+            <div class="mdc-dialog__surface">
+                <h2 class="mdc-dialog__title" id="accept-form-title">
+                   
+                    @Localizer["Confirmation of approval"]
+                </h2>
+                <div class="mdc-dialog__content" id="accept-dialog-content">
+                    @Localizer["Are you  confirm your approval?"]
+                    @if (Model.BlockParts.Count > 0)
+                    {
+                        <div style="padding: 4px; background-color: whitesmoke">
+                            @Localizer["After approval of the document the Parts below will not be editable:"]
+                            <div style="font-weight:600; margin-top: 4px;">
+                                @{
+                                    int counter = Model.BlockParts.Count;
+                                    foreach (var part in Model.BlockParts)
+                                    {
+                                        counter--;
+                                        <text> @part.Name </text> if (counter > 0)
+                                        { <text>/</text> }
+                                }
+                                }
                             </div>
-                        }
+                        </div>
+                    }
+               
+                    @if (Model.ListResolutions != null && Model.ListResolutions.Count > 0)
+                    {
+                        <div style="padding-top: 18px;">                            
+                            @Localizer["Select the resolution:"]
+                        </div>
+                        <div class="mdc-select" style="width: 100%; margin-top: 8px;">
+                            <i class="mdc-select__dropdown-icon"></i>
+                            <select class="mdc-select__native-control" asp-items="ViewBag.ListResolution" name="id-resolution"></select>
+                            <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Resolution"]</label>
+                            <div class="mdc-line-ripple"></div>
+                        </div>
+                    }
 
-                        @if (Model.ListResolutions != null && Model.ListResolutions.Count > 0)
-                        {
-                            <div style="padding-top: 18px;">
-                                @Localizer["Select the resolution:"]
-                            </div>
-                            <div class="mdc-select" style="width: 100%; margin-top: 8px;">
-                                <i class="mdc-select__dropdown-icon"></i>
-                                <select class="mdc-select__native-control" asp-items="ViewBag.ListResolution" name="id-resolution"></select>
-                                <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Resolution"]</label>
-                                <div class="mdc-line-ripple"></div>
-                            </div>
-                        }
-
-                    </div>
-                    <footer class="mdc-dialog__actions">
-                        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
-                            <span class="mdc-button__label">@Localizer["Cancel"]</span>
-                        </button>
-                        <button type="button" id="clicker-approve" mtd-data-clicker mtd-data-message="@Localizer["Document is approved"]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" style="color:green">
-                            <span class="mdc-button__label">@Localizer["Approve"]</span>
-                        </button>
-                    </footer>
                 </div>
+                <footer class="mdc-dialog__actions">
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                        <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                    </button>
+                    <button type="button" id="clicker-approve" mtd-data-clicker mtd-data-message="@Localizer["Document is approved"]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" style="color:green">
+                        <span class="mdc-button__label">@Localizer["Approve"]</span>
+                    </button>
+                </footer>
             </div>
-            <div class="mdc-dialog__scrim"></div>
         </div>
-    </form>
+        <div class="mdc-dialog__scrim"></div>
+    </div>
+</form>

@@ -53,7 +53,7 @@
          aria-describedby="dialog-accept-content">
         <div class="mdc-dialog__container">
             <div class="mdc-dialog__surface">
-                <h2 class="mdc-dialog__title" id="start-form-title">
+                <h2 class="mdc-dialog__title" id="start-form-title">        
                     @Localizer["Begin Approval Process"]
                 </h2>
                 <div class="mdc-dialog__content" id="accept-dialog-content">
@@ -75,6 +75,20 @@
                             </div>
                         </div>
                     }
+
+                    @if (Model.ListResolutions != null && Model.ListResolutions.Count > 0)
+                    {
+                        <div style="padding-top: 18px;">
+                            @Localizer["Select the resolution:"]
+                        </div>
+                        <div class="mdc-select" style="width: 100%; margin-top: 8px;">
+                            <i class="mdc-select__dropdown-icon"></i>
+                            <select class="mdc-select__native-control" asp-items="ViewBag.ListResolution" name="id-resolution"></select>
+                            <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Resolution"]</label>
+                            <div class="mdc-line-ripple"></div>
+                        </div>
+                    }
+
                 </div>
                 <footer class="mdc-dialog__actions">
                     <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
@@ -176,7 +190,6 @@
 <div class="mtd-desk">
     @if (Model.IsApprover && Model.IsFirstStage)
     {
-
         <div style=" top: 65px; z-index:2; position: sticky; position: -webkit-sticky;">
             <div class="mdc-elevation--z4" style="background-color: white; text-align: center; color: red; padding: 8px;">
                 <i class="material-icons" aria-hidden="true" style="vertical-align:middle">assignment_turned_in</i>

@@ -432,10 +432,10 @@ namespace Mtd.OrderMaker.Server.DataHandler.Approval
             }
 
             MtdLogApproval mtdLogApproval = new MtdLogApproval()
-            {
+            {             
                 MtdStore = mtdStore.Id,
                 Result = -1,
-                Stage = currentStage.Stage,
+                Stage = currentStage.Id,
                 Timecr = DateTime.Now,
                 UserId = webAppUser.Id
             };
