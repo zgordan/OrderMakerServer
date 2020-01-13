@@ -14,6 +14,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.DataConfig;
+using Mtd.OrderMaker.Server.Services;
 
 namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account
 {
@@ -21,19 +22,14 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account
     public class ForgotPasswordModel : PageModel
     {
         private readonly UserManager<WebAppUser> _userManager;
-        private readonly IEmailSender _emailSender;
-        private readonly IWebHostEnvironment _hostingEnvironment;
-        private readonly IOptions<ConfigSettings> _options;
-        private readonly IStringLocalizer<ForgotPasswordModel> _localizer;
+        private readonly IEmailSenderBlank _emailSender;    
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public ForgotPasswordModel(UserManager<WebAppUser> userManager, IEmailSender emailSender, IWebHostEnvironment hostingEnvironment, 
-            IOptions<ConfigSettings> options, IStringLocalizer<ForgotPasswordModel> localizer)
+        public ForgotPasswordModel(UserManager<WebAppUser> userManager, IEmailSenderBlank emailSender, IStringLocalizer<SharedResource> localizer)
         {
             _userManager = userManager;
-            _emailSender = emailSender;
-            _hostingEnvironment = hostingEnvironment;
+            _emailSender = emailSender;            
             _localizer = localizer;
-            _options = options;
         }
 
         [BindProperty]
@@ -57,30 +53,27 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account
                     return RedirectToPage("./ForgotPasswordConfirmation");
                 }
 
-                // For more information on how to enable account confirmation and password reset please 
-                // visit https://go.microsoft.com/fwlink/?LinkID=532713
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.Page(
                     "/Account/ResetPassword",
                     pageHandler: null,
                     values: new { code },
-                    protocol: Request.Scheme);
+                    protocol: Request.Scheme);       
 
-                string culture = "";
-                if (!_options.Value.CultureInfo.Equals("en-US"))
+                BlankEmail blankEmail = new BlankEmail
                 {
-                    culture = $".{_options.Value.CultureInfo}";
-                }
-        
-                string contentRootPath = _hostingEnvironment.ContentRootPath;
-                var file = Path.Combine(contentRootPath, "wwwroot", "lib", "mtd-ordermaker", "emailform", $"userPassword{culture}.html");
-                var htmlArray = System.IO.File.ReadAllText(file);
-                string htmlText = htmlArray.ToString();
+                    Email = Input.Email,
+                    Subject = _localizer["Password reset"],
+                    Header = _localizer["Password reset"],
+                    Content = new List<string>()
+                       {
+                           $"{_localizer["Your login"]}: <strong>{user.UserName}</strong>",
+                           _localizer["To change your account password, follow the link below"],
+                           $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["Create account password"]}</a>"
+                       }
+                };
 
-                htmlText = htmlText.Replace("{link}", $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["Create account password"]}</a>");
-                htmlText = htmlText.Replace("{login}", user.UserName);
-
-                await _emailSender.SendEmailAsync(Input.Email,_localizer["Password reset"],htmlText);
+                await _emailSender.SendEmailBlankAsync(blankEmail);
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

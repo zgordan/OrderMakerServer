@@ -32,6 +32,7 @@ using Microsoft.Extensions.Options;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Data;
 using Mtd.OrderMaker.Server.DataConfig;
+using Mtd.OrderMaker.Server.Services;
 
 namespace Mtd.OrderMaker.Server.Controllers.Users
 {
@@ -41,29 +42,26 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
     public partial class UsersController : ControllerBase
     {
         private readonly UserManager<WebAppUser> _userManager;
-        private readonly RoleManager<WebAppRole> _roleManager;
-        private readonly SignInManager<WebAppUser> _signInManager;
-        private readonly IEmailSender _emailSender;
+        private readonly RoleManager<WebAppRole> _roleManager;     
+        private readonly IEmailSenderBlank _emailSender;
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly OrderMakerContext _context;
-        private readonly IStringLocalizer<UsersController> _localizer;
+        private readonly IStringLocalizer<SharedResource> _localizer;
         private readonly IOptions<ConfigSettings> _options;
 
 
         public UsersController(
             UserManager<WebAppUser> userManager,
-            RoleManager<WebAppRole> roleManager,
-        SignInManager<WebAppUser> signInManager,
-            IEmailSender emailSender,
+            RoleManager<WebAppRole> roleManager,   
+            IEmailSenderBlank emailSender,
             IWebHostEnvironment hostingEnvironment,
             OrderMakerContext context,
-            IStringLocalizer<UsersController> localizer,
+            IStringLocalizer<SharedResource> localizer,
             IOptions<ConfigSettings> options
             )
         {
             _userManager = userManager;
-            _roleManager = roleManager;
-            _signInManager = signInManager;
+            _roleManager = roleManager;   
             _emailSender = emailSender;
             _hostingEnvironment = hostingEnvironment;
             _context = context;
@@ -145,8 +143,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             IList<string> roles = await _userManager.GetRolesAsync(user);
             await _userManager.RemoveFromRolesAsync(user, roles);
             await _userManager.AddToRoleAsync(user, roleUser.Name);
-
-            List<Claim> newClaims = new List<Claim>();
+    
             IEnumerable<Claim> claims = await _userManager.GetClaimsAsync(user);
             await _userManager.RemoveClaimsAsync(user, claims);
 

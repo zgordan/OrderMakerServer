@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Services;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -40,36 +41,35 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
         public async Task<IActionResult> OnPostAdminConfimEmailAsync()
         {
             string userName = Request.Form["UserName"];
-            var user = await _userManager.FindByNameAsync(userName);
+            WebAppUser user = await _userManager.FindByNameAsync(userName);
 
             if (user == null)
             {
                 return NotFound();
             }
 
-            var userId = await _userManager.GetUserIdAsync(user);
-            var email = await _userManager.GetEmailAsync(user);
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var callbackUrl = Url.Page(
+            string userId = await _userManager.GetUserIdAsync(user);
+            string email = await _userManager.GetEmailAsync(user);
+            string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            string callbackUrl = Url.Page(
                 "/Account/ConfirmEmail",
                 pageHandler: null,
                 values: new { area = "Identity", userId, code },
                 protocol: Request.Scheme);
 
-            string culture = "";
-            if (!_options.Value.CultureInfo.Equals("en-US"))
+            BlankEmail blankEmail = new BlankEmail
             {
-                culture = $".{_options.Value.CultureInfo}";
-            }
+                Email = email,
+                Subject = _localizer["Email Verification Procedure"],
+                Header = _localizer["Email Verification Procedure"],
+                Content = new List<string>()
+                       {                           
+                           _localizer["Confirm the ownership of the mailbox by clicking on the link below"],
+                           $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["Email Verification"]}</a>"
+                       }
+            };
 
-            string webRootPath = _hostingEnvironment.WebRootPath;
-            string contentRootPath = _hostingEnvironment.ContentRootPath;
-            var file = Path.Combine(contentRootPath, "wwwroot", "lib", "mtd-ordermaker", "emailform", $"userEmail{culture}.html");
-            var htmlArray = System.IO.File.ReadAllText(file);
-            string htmlText = htmlArray.ToString();
-
-            htmlText = htmlText.Replace("{link}", $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["Verify Email Address"]}</a>");
-            await _emailSender.SendEmailAsync(email, _localizer["Email Verification"], htmlText);
+            await _emailSender.SendEmailBlankAsync(blankEmail);
 
             user.EmailConfirmed = false;
             await _userManager.UpdateAsync(user);
@@ -89,7 +89,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             {
                 return NotFound();
             }
-         
+
             string email = await _userManager.GetEmailAsync(user);
             string code = await _userManager.GeneratePasswordResetTokenAsync(user);
             var callbackUrl = Url.Page(
@@ -98,21 +98,20 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 values: new { area = "Identity", code },
                 protocol: Request.Scheme);
 
-            string culture = "";
-            if (!_options.Value.CultureInfo.Equals("en-US"))
+            BlankEmail blankEmail = new BlankEmail
             {
-                culture = $".{_options.Value.CultureInfo}";
-            }
-     
-            string contentRootPath = _hostingEnvironment.ContentRootPath;
-            var file = Path.Combine(contentRootPath, "wwwroot", "lib", "mtd-ordermaker", "emailform", $"userPassword{culture}.html");
-            var htmlArray = System.IO.File.ReadAllText(file);
-            string htmlText = htmlArray.ToString();
+                Email = email,
+                Subject = _localizer["Password reset"],
+                Header = _localizer["Password reset"],
+                Content = new List<string>()
+                       {
+                           $"{_localizer["Your login"]}: <strong>{user.UserName}</strong>",
+                           _localizer["To change your account password, follow the link below"],
+                           $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["Create account password"]}</a>"
+                       }
+            };
 
-            htmlText = htmlText.Replace("{link}", $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["Create account password"]}</a>");
-            htmlText = htmlText.Replace("{login}", user.UserName);
-
-            await _emailSender.SendEmailAsync(email, _localizer["Password reset"], htmlText);
+            await _emailSender.SendEmailBlankAsync(blankEmail);
 
             return Ok();
         }

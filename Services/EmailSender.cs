@@ -34,7 +34,7 @@ namespace Mtd.OrderMaker.Server.Services
     
     public class EmailSender : IEmailSender
     {
-        private EmailSettings _emailSettings { get; }
+        private readonly EmailSettings _emailSettings;
         private readonly IWebHostEnvironment _hostingEnvironment;
 
 
@@ -100,14 +100,14 @@ namespace Mtd.OrderMaker.Server.Services
                     IsBodyHtml = true,
                 };
 
-                using (SmtpClient smtp = new SmtpClient(_emailSettings.SmtpServer, _emailSettings.Port))
+                using SmtpClient smtp = new SmtpClient(_emailSettings.SmtpServer, _emailSettings.Port)
                 {
-                    smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    smtp.UseDefaultCredentials = false;
-                    smtp.Credentials = new NetworkCredential(_emailSettings.FromAddress, _emailSettings.Password);
-                    smtp.EnableSsl = true;
-                    await smtp.SendMailAsync(mail);
-                }
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(_emailSettings.FromAddress, _emailSettings.Password),
+                    EnableSsl = true
+                };
+                await smtp.SendMailAsync(mail);
             }
             catch (Exception ex)
             {

@@ -159,4 +159,31 @@
   <data name="started a new approval at" xml:space="preserve">
     <value>начал новый процесс согласования</value>
   </data>
+  <data name="Confirm the ownership of the mailbox by clicking on the link below" xml:space="preserve">
+    <value>Подтвердите право собственности на почтовый ящик, нажав на ссылку ниже</value>
+  </data>
+  <data name="Create account password" xml:space="preserve">
+    <value>Создать новый пароль</value>
+  </data>
+  <data name="Email Verification" xml:space="preserve">
+    <value>Подтверждение адреса электронной почты</value>
+  </data>
+  <data name="Email Verification Procedure" xml:space="preserve">
+    <value>Процедура проверки электронной почты</value>
+  </data>
+  <data name="Error sending message. Perhaps this address does not exist." xml:space="preserve">
+    <value>Ошибка при отправке сообщения. Возможно, этот адрес не существует.</value>
+  </data>
+  <data name="Password reset" xml:space="preserve">
+    <value>Восстановление пароля</value>
+  </data>
+  <data name="To change your account password, follow the link below" xml:space="preserve">
+    <value>Чтобы изменить пароль своей учетной записи, перейдите по ссылке ниже</value>
+  </data>
+  <data name="Verification email sent. Please check your email." xml:space="preserve">
+    <value>Письмо с подтверждением отправлено. Пожалуйста, проверьте вашу электронную почту.</value>
+  </data>
+  <data name="Your login" xml:space="preserve">
+    <value>Ваш логин</value>
+  </data>
 </root>

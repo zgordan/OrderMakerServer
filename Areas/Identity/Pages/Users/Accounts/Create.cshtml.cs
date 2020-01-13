@@ -33,36 +33,29 @@ using Microsoft.Extensions.Options;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.DataConfig;
 using Microsoft.Extensions.Localization;
+using Mtd.OrderMaker.Server.Services;
+using System.Collections.Generic;
 
 namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
 {
     public partial class CreateModel : PageModel
     {
         private readonly UserManager<WebAppUser> _userManager;
-        private readonly SignInManager<WebAppUser> _signInManager;
-        private readonly IEmailSender _emailSender;
+        private readonly IEmailSenderBlank _emailSender;
         private readonly ILogger<CreateModel> _logger;
-        private readonly IWebHostEnvironment _hostingEnvironment;
-        private readonly IOptions<ConfigSettings> _options;
-        private readonly IStringLocalizer<CreateModel> _localizer;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
 
         public CreateModel(
             UserManager<WebAppUser> userManager,
-            SignInManager<WebAppUser> signInManager,
-            IEmailSender emailSender,
+            IEmailSenderBlank emailSender,
             ILogger<CreateModel> logger,
-            IWebHostEnvironment hostingEnvironment,
-            IOptions<ConfigSettings> options,
-            IStringLocalizer<CreateModel> localizer
+            IStringLocalizer<SharedResource> localizer
             )
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
-            _hostingEnvironment = hostingEnvironment;
-            _options = options;
             _localizer = localizer;
         }
 
@@ -136,27 +129,20 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
                     values: new { userId = user.Id, code },
                     protocol: Request.Scheme);
 
-                string webRootPath = _hostingEnvironment.WebRootPath;
-                string contentRootPath = _hostingEnvironment.ContentRootPath;
-
-                string culture = "";
-                if (!_options.Value.CultureInfo.Equals("en-US"))
+                BlankEmail blankEmail = new BlankEmail
                 {
-                    culture = $".{_options.Value.CultureInfo}";
-                }
+                    Email = user.Email,
+                    Subject = _localizer["Password reset"],
+                    Header = _localizer["Password reset"],
+                    Content = new List<string>()
+                       {
+                           $"{_localizer["Your login"]}: <strong>{user.UserName}</strong>",
+                           _localizer["To change your account password, follow the link below"],
+                           $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["Create account password"]}</a>"
+                       }
+                };
 
-                var file = Path.Combine(contentRootPath, "wwwroot", "lib", "mtd-ordermaker", "emailform", $"userCreated{culture}.html" );
-                var htmlArray = System.IO.File.ReadAllText(file);
-                string htmlText = htmlArray.ToString();
-                
-                htmlText = htmlText.Replace("{link}", $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["Create account password"]}</a>");
-                htmlText = htmlText.Replace("{login}", user.UserName);
-
-                await _emailSender.SendEmailAsync(Input.Email, _localizer["Access to OrderMaker granted"], htmlText);                
-
-                //await _signInManager.SignInAsync(user, isPersistent: false);
-                //return LocalRedirect(returnUrl);
-                // return RedirectToPage("./CheckEmail");                
+                await _emailSender.SendEmailBlankAsync(blankEmail);
             }
 
             if (!result.Succeeded) {

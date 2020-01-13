@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Text.Encodings.Web;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.DataConfig;
+using Mtd.OrderMaker.Server.Services;
 
 namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account.Manage
 {
@@ -19,27 +21,20 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<WebAppUser> _userManager;
         private readonly SignInManager<WebAppUser> _signInManager;
-        private readonly IEmailSender _emailSender;
-        private readonly IWebHostEnvironment _hostingEnvironment;
-        private readonly IOptions<ConfigSettings> _options;
-        private readonly IStringLocalizer<IndexModel> _localizer;
+        private readonly IEmailSenderBlank _emailSender;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
 
         public IndexModel(
             UserManager<WebAppUser> userManager,
             SignInManager<WebAppUser> signInManager,
-            IEmailSender emailSender, 
-            IWebHostEnvironment hostingEnvironment,
-            IStringLocalizer<IndexModel> localizer,
-            IOptions<ConfigSettings> options
-            )
+            IEmailSenderBlank emailSender, 
+            IStringLocalizer<SharedResource> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _emailSender = emailSender;
-            _hostingEnvironment = hostingEnvironment;
+            _emailSender = emailSender;            
             _localizer = localizer;
-            _options = options;
             
         }
 
@@ -164,35 +159,30 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account.Manage
                 pageHandler: null,
                 values: new { userId,  code },
                 protocol: Request.Scheme);
+           
+            StatusMessage = _localizer["Verification email sent. Please check your email."];
 
-            string culture = "";
-            if (!_options.Value.CultureInfo.Equals("en-US"))
+            BlankEmail blankEmail = new BlankEmail
             {
-                culture = $".{_options.Value.CultureInfo}";
-            }
-
-            string webRootPath = _hostingEnvironment.WebRootPath;
-            string contentRootPath = _hostingEnvironment.ContentRootPath;
-            var file = Path.Combine(contentRootPath, "wwwroot", "lib", "mtd-ordermaker", "emailform", $"userEmail{culture}.html");
-            var htmlArray = System.IO.File.ReadAllText(file);
-            string htmlText = htmlArray.ToString();
-
-            htmlText = htmlText.Replace("{link}", $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["Verify Email Address"]}</a>");
-            StatusMessage = "На указанный почтовый ящик отправлена ссылка для подтвеждения.";
-
+                Email = email,
+                Subject = _localizer["Email Verification Procedure"],
+                Header = _localizer["Email Verification Procedure"],
+                Content = new List<string>()
+                       {
+                           _localizer["Confirm the ownership of the mailbox by clicking on the link below"],
+                           $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["Email Verification"]}</a>"
+                       }
+            };
+            
             try
             {
-                await _emailSender.SendEmailAsync(email, _localizer["Email Verification"], htmlText);
+                await _emailSender.SendEmailBlankAsync(blankEmail);
+
             } catch
             {
-                StatusMessage = "Ошибка отправки сообшения. Возможно такого адреса не существует";
+                StatusMessage = "Error sending message. Perhaps this address does not exist.";
             }
-            
-
-            //StatusMessage = "Verification email sent. Please check your email.";
-
-            
-
+                       
             return RedirectToPage("/Index");
         }
     }

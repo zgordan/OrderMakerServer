@@ -88,14 +88,12 @@ namespace Mtd.OrderMaker.Server.Services
                     IsBodyHtml = true,
                 };
 
-                using (SmtpClient smtp = new SmtpClient(_emailSettings.SmtpServer, _emailSettings.Port))
-                {
-                    smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    smtp.UseDefaultCredentials = false;
-                    smtp.Credentials = new NetworkCredential(_emailSettings.FromAddress, _emailSettings.Password);
-                    smtp.EnableSsl = true;
-                    await smtp.SendMailAsync(mail);
-                }
+                using SmtpClient smtp = new SmtpClient(_emailSettings.SmtpServer, _emailSettings.Port);
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = new NetworkCredential(_emailSettings.FromAddress, _emailSettings.Password);
+                smtp.EnableSsl = true;
+                await smtp.SendMailAsync(mail);
             }
             catch (Exception ex)
             {
