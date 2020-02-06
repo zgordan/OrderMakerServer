@@ -85,7 +85,10 @@ namespace Mtd.OrderMaker.Server.Controllers.Store.Stack
             message = $"Successful access to file at {DateTime.Now.ToLongTimeString()}";
             _logger.LogWarning("Access file Control: User {0} File {1} {2}", user.Title,id, message);
 
-            return new FileStreamResult(new MemoryStream(mtdStoreStack.MtdStoreStackFile.Register), mtdStoreStack.MtdStoreStackFile.FileType);
+            return new FileStreamResult(new MemoryStream(mtdStoreStack.MtdStoreStackFile.Register), mtdStoreStack.MtdStoreStackFile.FileType)
+            {
+                FileDownloadName = mtdStoreStack.MtdStoreStackFile.FileName
+            };
         }
     }
 }
