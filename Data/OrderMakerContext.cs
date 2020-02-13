@@ -959,6 +959,11 @@ namespace Mtd.OrderMaker.Server.Data
                     .HasColumnType("tinyint(4)")
                     .HasDefaultValueSql("'0'");
 
+                entity.Property(e => e.ReadOnly)
+                    .HasColumnName("read_only")
+                    .HasColumnType("tinyint(4)")
+                    .HasDefaultValueSql("'0'");
+
                 entity.Property(e => e.Sequence)
                     .HasColumnName("sequence")
                     .HasColumnType("int(11)")

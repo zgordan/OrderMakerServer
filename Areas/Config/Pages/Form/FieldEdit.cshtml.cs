@@ -37,8 +37,7 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
         {
             _context = context;
         }
-
-
+        
         public MtdForm MtdForm { get; set; }
 
         public IList<MtdFormPart> MtdFormParts { get; set; }

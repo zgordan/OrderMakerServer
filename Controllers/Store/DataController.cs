@@ -394,9 +394,8 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                 }
             }
 
-
             var fields = await _context.MtdFormPartField.Include(m => m.MtdFormPartNavigation)
-                .Where(x => partsIds.Contains(x.MtdFormPartNavigation.Id))
+                .Where(x => partsIds.Contains(x.MtdFormPartNavigation.Id) && x.ReadOnly == 0)
                 .OrderBy(x => x.MtdFormPartNavigation.Sequence)
                 .ThenBy(x => x.Sequence)
                 .ToListAsync();

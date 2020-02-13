@@ -36,6 +36,7 @@ namespace Mtd.OrderMaker.Server.Data
         public sbyte Required { get; set; }
         public int Sequence { get; set; }
         public sbyte Active { get; set; }
+        public sbyte ReadOnly { get; set; }
         public int MtdSysType { get; set; }
         public string MtdFormPart { get; set; }
 

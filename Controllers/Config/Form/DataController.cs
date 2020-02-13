@@ -203,6 +203,9 @@ namespace Mtd.OrderMaker.Server.Controllers.Config.Form
             bool required = await Components.MTDCheckbox.GetResultAsync(mtdFormPartField.Id, Request);
             mtdFormPartField.Required = required ? (sbyte)1 : (sbyte)0;
 
+            bool readOnly = await Components.MTDCheckbox.GetResultAsync($"{mtdFormPartField.Id}-readOnly", Request);
+            mtdFormPartField.ReadOnly = readOnly ? (sbyte)1 : (sbyte)0;
+
             _context.MtdFormPartField.Update(mtdFormPartField);
             await _context.SaveChangesAsync();
 

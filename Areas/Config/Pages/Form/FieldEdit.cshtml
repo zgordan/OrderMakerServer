@@ -85,9 +85,15 @@
         <input type="hidden" asp-for="MtdForm.Id" name="formId" />
         <input type="hidden" asp-for="MtdFormPartField.Id" name="fieldId" />
 
-        <div style="text-align: right; padding: 4px;">
-            @await Component.InvokeAsync("MTDCheckbox", new { id = Model.MtdFormPartField.Id, Label = "Required", result = Model.MtdFormPartField.Required == 1 ? true : false })
-        </div>
+        <div style="display: flex;">
+            <div style="text-align: right; padding: 4px;">
+                @await Component.InvokeAsync("MTDCheckbox", new { id = Model.MtdFormPartField.Id, Label = "Required", result = Model.MtdFormPartField.Required == 1 ? true : false })
+            </div>
+
+            <div style="text-align: right; padding: 4px;">
+                @await Component.InvokeAsync("MTDCheckbox", new { id = $"{Model.MtdFormPartField.Id}-readOnly", Label = "ReadOnly", result = Model.MtdFormPartField.ReadOnly == 1 ? true : false })
+            </div>
+        </div>        
 
         <div id="fieldType" class="mdc-select" style="width: 100%; margin-top: 8px;">
             <i class="mdc-select__dropdown-icon"></i>
