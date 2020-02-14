@@ -95,7 +95,7 @@ namespace Mtd.OrderMaker.Server.Components.Store.Stack
                 case 2:
                     {
                         viewName = "Integer";
-                        if (mtdStoreStack.MtdStoreStackInt.Register != null) { break; }
+                        if (mtdStoreStack.MtdStoreStackInt.Register != null && mtdStoreStack.MtdStoreStackInt.Register > 0) { break; }
                         isOk = int.TryParse(field.DefaultData, out int result);
                         if (isOk)
                         {
@@ -106,7 +106,7 @@ namespace Mtd.OrderMaker.Server.Components.Store.Stack
                 case 3:
                     {
                         viewName = "Decimal";
-                        if (mtdStoreStack.MtdStoreStackDecimal.Register != null) { break; }
+                        if (mtdStoreStack.MtdStoreStackDecimal.Register != null && mtdStoreStack.MtdStoreStackDecimal.Register > 0) { break; }
 
                         isOk = decimal.TryParse(field.DefaultData, out decimal result);
                         if (isOk)
@@ -152,7 +152,7 @@ namespace Mtd.OrderMaker.Server.Components.Store.Stack
                 case 12:
                     {
                         viewName = "CheckBox";
-                        if (mtdStoreStack.MtdStoreStackInt.Register != null) { break; }
+                        if (mtdStoreStack.MtdStoreStackInt.Register != null && mtdStoreStack.MtdStoreStackInt.Register > 0) { break; }
                         isOk = int.TryParse(field.DefaultData, out int result);
                         if (isOk)
                         {
