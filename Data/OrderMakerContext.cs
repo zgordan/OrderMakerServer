@@ -979,6 +979,13 @@ namespace Mtd.OrderMaker.Server.Data
                     .HasColumnType("varchar(36)")
                     .HasDefaultValue("'9C85B07F-9236-4314-A29E-87B20093CF82'");
 
+                entity.Property(e => e.DefaultData)
+                    .IsRequired()
+                    .HasColumnName("default_data")
+                    .HasColumnType("varchar(255)")
+                    .HasDefaultValue("");
+
+
                 entity.HasOne(d => d.MtdFormPartNavigation)
                     .WithMany(p => p.MtdFormPartField)
                     .HasForeignKey(d => d.MtdFormPart)

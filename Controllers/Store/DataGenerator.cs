@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using static Mtd.OrderMaker.Server.Controllers.Store.DataController;
 
 namespace Mtd.OrderMaker.Server.Controllers.Store
 {
@@ -30,13 +31,13 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
         {
             _context = context;
             userName = user_name;
-            userGroup = user_group;
+            userGroup = user_group ?? string.Empty;
         }                
 
         public async Task<MtdStoreStack> CreateStoreStack(StackParams stackParams)
-        {
-
+        {            
             StringValues data = stackParams.Data;
+
             MtdStoreStack mtdStoreStack = new MtdStoreStack()
             {
                 MtdStore = stackParams.StroreID,

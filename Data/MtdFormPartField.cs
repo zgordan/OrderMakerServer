@@ -40,6 +40,7 @@ namespace Mtd.OrderMaker.Server.Data
         public int MtdSysType { get; set; }
         public string MtdFormPart { get; set; }
         public string MtdSysTrigger { get; set; }
+        public string DefaultData { get; set; }
 
         public virtual MtdFormPart MtdFormPartNavigation { get; set; }
         public virtual MtdSysType MtdSysTypeNavigation { get; set; }

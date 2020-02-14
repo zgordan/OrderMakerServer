@@ -191,6 +191,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Config.Form
             string fieldId = Request.Form["fieldId"];
             string fieldName = Request.Form["fieldName"];
             string fieldNote = Request.Form["fieldNote"];
+            string fieldDefault = Request.Form["fieldDefault"];
 
             MtdFormPartField mtdFormPartField = await _context.MtdFormPartField.FindAsync(fieldId);
 
@@ -203,6 +204,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Config.Form
             mtdFormPartField.MtdSysTrigger = triggerId;
             mtdFormPartField.Name = fieldName;
             mtdFormPartField.Description = fieldNote;
+            mtdFormPartField.DefaultData = fieldDefault;
 
             bool required = await Components.MTDCheckbox.GetResultAsync(mtdFormPartField.Id, Request);
             mtdFormPartField.Required = required ? (sbyte)1 : (sbyte)0;

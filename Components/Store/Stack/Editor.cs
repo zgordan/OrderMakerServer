@@ -23,6 +23,7 @@ using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Data;
 using Mtd.OrderMaker.Server.DataHandler.Approval;
 using Mtd.OrderMaker.Server.Models.Store;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -44,8 +45,6 @@ namespace Mtd.OrderMaker.Server.Components.Store.Stack
 
             MtdStoreStack mtdStoreStack = dataSet.Stack.Where(x => x.MtdFormPartField == field.Id).FirstOrDefault();
 
-            string viewName = GetViewName(field.MtdSysType, dataSet.Parts.FirstOrDefault().MtdSysStyle);
-
             if (mtdStoreStack == null)
             {
                 mtdStoreStack = new MtdStoreStack()
@@ -62,15 +61,15 @@ namespace Mtd.OrderMaker.Server.Components.Store.Stack
             {
                 var fieldForList = await _context.MtdFormPartField.Include(m => m.MtdFormPartNavigation)
                         .Where(x => x.MtdFormPartNavigation.MtdForm == field.MtdFormList.MtdForm & x.MtdSysType == 1)
-                        .OrderBy(o => o.MtdFormPartNavigation.Sequence).ThenBy(o=>o.Sequence).FirstOrDefaultAsync();                
+                        .OrderBy(o => o.MtdFormPartNavigation.Sequence).ThenBy(o => o.Sequence).FirstOrDefaultAsync();
 
                 IList<long> stackIds = await _context.MtdStoreStack.Where(x => x.MtdFormPartField == fieldForList.Id).Select(x => x.Id).ToListAsync();
 
                 var dataList = await _context.MtdStoreStack
-                    .Include(m => m.MtdStoreStackText)                    
+                    .Include(m => m.MtdStoreStackText)
                     .Where(x => stackIds.Contains(x.Id))
                     .Select(x => new { Id = x.MtdStore, Name = x.MtdStoreStackText.Register })
-                    .OrderBy(x=>x.Name)
+                    .OrderBy(x => x.Name)
                     .ToListAsync();
 
                 string idSelected = null;
@@ -80,27 +79,94 @@ namespace Mtd.OrderMaker.Server.Components.Store.Stack
 
             ViewData["TypeStyle"] = field.MtdFormPartNavigation.MtdSysStyle == 5 ? "Columns" : "Rows";
 
+            string viewName = GetViewName(field.MtdSysType, dataSet.Parts.FirstOrDefault().MtdSysStyle, mtdStoreStack, field);
+
             return View(viewName, mtdStoreStack);
         }
 
 
-        private string GetViewName(int type, int style)
+        private string GetViewName(int type, int style, MtdStoreStack mtdStoreStack, MtdFormPartField field)
         {
-
+            bool isOk;
             string viewName;
 
             switch (type)
             {
-                case 2: { viewName = "Integer"; break; }
-                case 3: { viewName = "Decimal"; break; }
-                case 4: { viewName = "Memo"; break; }
-                case 5: { viewName = "Date"; break; }
-                case 6: { viewName = "DateTime"; break; }
+                case 2:
+                    {
+                        viewName = "Integer";
+                        if (mtdStoreStack.MtdStoreStackInt.Register != null) { break; }
+                        isOk = int.TryParse(field.DefaultData, out int result);
+                        if (isOk)
+                        {
+                            mtdStoreStack.MtdStoreStackInt.Register = result;
+                        }
+                        break;
+                    }
+                case 3:
+                    {
+                        viewName = "Decimal";
+                        if (mtdStoreStack.MtdStoreStackDecimal.Register != null) { break; }
+
+                        isOk = decimal.TryParse(field.DefaultData, out decimal result);
+                        if (isOk)
+                        {
+                            mtdStoreStack.MtdStoreStackDecimal.Register = result;
+                        }
+                        break;
+                    }
+                case 4:
+                    {
+                        viewName = "Memo";
+                        if (mtdStoreStack.MtdStoreStackText.Register != null) { break; }
+                        mtdStoreStack.MtdStoreStackText.Register = field.DefaultData;
+                        break;
+                    }
+                case 5:
+                    {
+                        viewName = "Date";
+                        if (mtdStoreStack.MtdStoreStackDate.Register != null) { break; }
+
+                        isOk = DateTime.TryParse(field.DefaultData, out DateTime dateTime);
+                        if (isOk)
+                        {
+                            mtdStoreStack.MtdStoreStackDate.Register = dateTime;
+                        }
+                        break;
+                    }
+                case 6:
+                    {
+                        viewName = "DateTime";
+                        if (mtdStoreStack.MtdStoreStackDate.Register != null) { break; }
+
+                        isOk = DateTime.TryParse(field.DefaultData, out DateTime dateTime);
+                        if (isOk)
+                        {
+                            mtdStoreStack.MtdStoreStackDate.Register = dateTime;
+                        }
+                        break;
+                    }
                 case 7:
                 case 8: { viewName = style == 5 ? "FileColumn" : "FileRow"; break; }
                 case 11: { viewName = "ListForm"; break; }
-                case 12: { viewName = "CheckBox"; break; }
-                default: { viewName = "Text"; break; }
+                case 12:
+                    {
+                        viewName = "CheckBox";
+                        if (mtdStoreStack.MtdStoreStackInt.Register != null) { break; }
+                        isOk = int.TryParse(field.DefaultData, out int result);
+                        if (isOk)
+                        {
+                            mtdStoreStack.MtdStoreStackInt.Register = result;
+                        }
+                        break;
+                    }
+                default:
+                    {
+                        viewName = "Text";
+                        if (mtdStoreStack.MtdStoreStackText.Register != null) { break; }
+                        mtdStoreStack.MtdStoreStackText.Register = field.DefaultData;
+                        break;
+                    }
             };
 
             return viewName;
