@@ -36,7 +36,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Config.Form
     public class DataController : ControllerBase
     {
 
-        private readonly OrderMakerContext _context;        
+        private readonly OrderMakerContext _context;
 
 
         public DataController(OrderMakerContext context)
@@ -60,13 +60,13 @@ namespace Mtd.OrderMaker.Server.Controllers.Config.Form
                 .Select(x => x.IdNavigation).ToListAsync();
 
             MtdForm mtdForm = new MtdForm { Id = formId };
-            
+
             _context.MtdForm.Remove(mtdForm);
             if (fields != null)
             {
                 _context.MtdFormPartField.RemoveRange(fields);
             }
-            
+
             await _context.SaveChangesAsync();
             return Ok();
         }
@@ -165,6 +165,8 @@ namespace Mtd.OrderMaker.Server.Controllers.Config.Form
                 MtdSysType = fieldTypeID,
                 Sequence = seq + 1,
                 Required = 0,
+                ReadOnly = 0,
+                MtdSysTrigger = "9C85B07F-9236-4314-A29E-87B20093CF82",
 
             };
 
@@ -183,8 +185,9 @@ namespace Mtd.OrderMaker.Server.Controllers.Config.Form
         [HttpPost("field/edit")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostFieldEditAsync()
-        {          
+        {
             string partId = Request.Form["fieldPart"];
+            string triggerId = Request.Form["fieldTrigger"];
             string fieldId = Request.Form["fieldId"];
             string fieldName = Request.Form["fieldName"];
             string fieldNote = Request.Form["fieldNote"];
@@ -197,6 +200,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Config.Form
             }
 
             mtdFormPartField.MtdFormPart = partId;
+            mtdFormPartField.MtdSysTrigger = triggerId;
             mtdFormPartField.Name = fieldName;
             mtdFormPartField.Description = fieldNote;
 
@@ -274,7 +278,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Config.Form
             {
                 partId = null;
             }
-            
+
             bool isExists = await _context.MtdFormPart.Where(x => x.MtdForm == formId).AnyAsync();
             int seq = 0;
             if (isExists)
@@ -311,13 +315,13 @@ namespace Mtd.OrderMaker.Server.Controllers.Config.Form
             string partNote = Request.Form["partNote"];
             string partStyle = Request.Form["partStyle"];
             string partTitle = Request.Form["partTitle"];
-            string partChild = Request.Form["partChild"];            
+            string partChild = Request.Form["partChild"];
             string partSeq = Request.Form["partSeq"];
 
             int styleId = int.Parse(partStyle);
             int sequence = int.Parse(partSeq);
             bool.TryParse(partTitle, out bool titleCheck);
-            bool.TryParse(partChild, out bool childCheck);            
+            bool.TryParse(partChild, out bool childCheck);
 
             MtdFormPart mtdFormPart = new MtdFormPart
             {
@@ -326,10 +330,10 @@ namespace Mtd.OrderMaker.Server.Controllers.Config.Form
                 Description = partNote,
                 Active = true,
                 MtdForm = formId,
-                Title = titleCheck ? (sbyte) 1: (sbyte)0,
+                Title = titleCheck ? (sbyte)1 : (sbyte)0,
                 Child = childCheck ? (sbyte)1 : (sbyte)0,
                 MtdSysStyle = styleId,
-                Sequence = sequence             
+                Sequence = sequence
 
             };
 

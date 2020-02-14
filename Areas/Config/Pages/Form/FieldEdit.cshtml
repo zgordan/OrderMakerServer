@@ -93,7 +93,7 @@
             <div style="text-align: right; padding: 4px;">
                 @await Component.InvokeAsync("MTDCheckbox", new { id = $"{Model.MtdFormPartField.Id}-readOnly", Label = "ReadOnly", result = Model.MtdFormPartField.ReadOnly == 1 ? true : false })
             </div>
-        </div>        
+        </div>
 
         <div id="fieldType" class="mdc-select" style="width: 100%; margin-top: 8px;">
             <i class="mdc-select__dropdown-icon"></i>
@@ -101,6 +101,14 @@
             <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Form part"]</label>
             <div class="mdc-line-ripple"></div>
         </div>
+
+        <div id="fieldTrigger" class="mdc-select" style="width: 100%; margin-top: 8px;">
+            <i class="mdc-select__dropdown-icon"></i>
+            <select class="mdc-select__native-control" asp-for="@Model.MtdFormPartField.MtdSysTrigger" asp-items="ViewBag.Triggers" name="fieldTrigger"></select>
+            <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Trigger"]</label>
+            <div class="mdc-line-ripple"></div>
+        </div>
+
         <div id="config-form-name" class="mdc-text-field mdc-text-field--outlined" style="width: 100%; margin-top: 16px">
             <input type="text" id="tf-outlined" mtd-required="config-form-name" class="mdc-text-field__input" asp-for="MtdFormPartField.Name" name="fieldName" required />
             <div class="mdc-notched-outline">

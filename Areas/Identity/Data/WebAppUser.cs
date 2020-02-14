@@ -10,5 +10,6 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Data
     {
         [PersonalData]
         public string Title { get; set; }
+        public string TitleGroup { get; set; }
     }
 }

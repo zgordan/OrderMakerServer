@@ -105,6 +105,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
 
             string email = Request.Form["Input.Email"];
             string title = Request.Form["Input.Title"];
+            string titleGroup = Request.Form["Input.TitleGroup"];
             string phone = Request.Form["Input.PhoneNumber"];
             string roleId = Request.Form["Input.Role"];
             string policyId = Request.Form["Input.Policy"];
@@ -127,6 +128,11 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             if (user.Title != title)
             {
                 user.Title = title;
+            }
+
+            if (user.TitleGroup != titleGroup)
+            {
+                user.TitleGroup = titleGroup;
             }
 
             if (user.PhoneNumber != phone)

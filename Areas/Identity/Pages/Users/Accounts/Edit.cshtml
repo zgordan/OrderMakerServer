@@ -92,7 +92,20 @@
                     @await Html.PartialAsync("_ProfielPartial.cshtml")
                 </div>
                 <div style="flex-grow: 1; padding: 24px 8px 8px 8px;">
-                    <div style="border: 1px solid lightgray; padding: 8px; height: 327px; overflow: hidden; overflow-y: auto">
+                    <div style="padding-bottom: 16px;">
+                        <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon" style="width: 100%;">
+                            <i class="material-icons mdc-text-field__icon">group</i>
+                            <input id="login-title-group" asp-for="Input.TitleGroup" type="text" class="mdc-text-field__input" />
+                            <div class="mdc-notched-outline">
+                                <div class="mdc-notched-outline__leading"></div>
+                                <div class="mdc-notched-outline__notch">
+                                    <label for="login-title-group" class="mdc-floating-label">@Localizer["Title group name"]</label>
+                                </div>
+                                <div class="mdc-notched-outline__trailing"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="border: 1px solid lightgray; padding: 8px; height: 256px; overflow: hidden; overflow-y: auto">
                         <div><span style="font-weight: bold; padding: 4px;">@Localizer["Groups user"]</span></div>
                         <div style="display: flex; flex-wrap:wrap; max-width: 950px;">
                             @if (!Model.MtdGroups.Any())

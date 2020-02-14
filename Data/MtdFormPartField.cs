@@ -39,9 +39,11 @@ namespace Mtd.OrderMaker.Server.Data
         public sbyte ReadOnly { get; set; }
         public int MtdSysType { get; set; }
         public string MtdFormPart { get; set; }
+        public string MtdSysTrigger { get; set; }
 
         public virtual MtdFormPart MtdFormPartNavigation { get; set; }
         public virtual MtdSysType MtdSysTypeNavigation { get; set; }
+        public virtual MtdSysTrigger MtdSysTriggerNavigation { get; set; }
         public virtual MtdFormList MtdFormList { get; set; }
         public virtual ICollection<MtdFilterColumn> MtdFilterColumn { get; set; }
         public virtual ICollection<MtdFilterField> MtdFilterField { get; set; }

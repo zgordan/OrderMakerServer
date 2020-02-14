@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Primitives;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Data;
 using Mtd.OrderMaker.Server.DataHandler.Approval;
@@ -178,10 +179,10 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
 
             await _context.Database.BeginTransactionAsync();
             //int sequence = 0;
-            int? sequence = await _context.MtdStore.Where(x => x.MtdForm == idForm).MaxAsync(x=>(int?) x.Sequence) ?? 0;                      
+            int? sequence = await _context.MtdStore.Where(x => x.MtdForm == idForm).MaxAsync(x => (int?)x.Sequence) ?? 0;
             sequence++;
 
-            MtdStore mtdStore = new MtdStore {Id = Guid.NewGuid().ToString(), MtdForm = idForm, Sequence = sequence??1, Parent = idFormParent.Length > 0 ? idFormParent : null };
+            MtdStore mtdStore = new MtdStore { Id = Guid.NewGuid().ToString(), MtdForm = idForm, Sequence = sequence ?? 1, Parent = idFormParent.Length > 0 ? idFormParent : null };
 
             bool setData = await _userHandler.GetFormPolicyAsync(webAppUser, mtdStore.MtdForm, RightsType.SetDate);
             if (setData)
@@ -312,7 +313,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                 webAppUsers = await _userHandler.GetUsersInGroupsAsync(currentUser);
             }
 
-            if (!webAppUsers.Where(x=>x.Id == idUser).Any()) { return Ok(403); }
+            if (!webAppUsers.Where(x => x.Id == idUser).Any()) { return Ok(403); }
 
             MtdStoreOwner mtdStoreOwner = await _context.MtdStoreOwner.Include(x => x.IdNavigation).FirstOrDefaultAsync(x => x.Id == idStore);
 
@@ -342,13 +343,13 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             return Ok();
         }
 
-        private async Task<OutData> CreateDataAsync(string Id, WebAppUser user, TypeAction typeAction)
+        private async Task<OutData> CreateDataAsync(string store_id, WebAppUser user, TypeAction typeAction)
         {
-
+                       
             var store = await _context.MtdStore
                .Include(m => m.MtdFormNavigation)
                .ThenInclude(p => p.MtdFormPart)
-               .FirstOrDefaultAsync(m => m.Id == Id);
+               .FirstOrDefaultAsync(m => m.Id == store_id);
 
             List<string> partsIds = new List<string>();
             bool isReviewer = await _userHandler.IsReviewer(user, store.MtdForm);
@@ -370,6 +371,9 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             {
                 blockedParts = await approvalHandler.GetBlockedPartsIds();
             }
+
+            
+            DataGenerator dataGenerator = new DataGenerator(_context, user.Title, user.TitleGroup);
 
             foreach (var part in store.MtdFormNavigation.MtdFormPart)
             {
@@ -395,7 +399,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             }
 
             var fields = await _context.MtdFormPartField.Include(m => m.MtdFormPartNavigation)
-                .Where(x => partsIds.Contains(x.MtdFormPartNavigation.Id) && x.ReadOnly == 0)
+                .Where(x => partsIds.Contains(x.MtdFormPartNavigation.Id))
                 .OrderBy(x => x.MtdFormPartNavigation.Sequence)
                 .ThenBy(x => x.Sequence)
                 .ToListAsync();
@@ -406,136 +410,20 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
 
             foreach (MtdFormPartField field in fields)
             {
-                var data = Request.Form[field.Id];
-                MtdStoreStack mtdStoreStack = new MtdStoreStack()
+
+                if (field.ReadOnly == 1 && field.MtdSysTrigger.Equals("9C85B07F-9236-4314-A29E-87B20093CF82")) continue;
+
+                StackParams stackParams = new StackParams
                 {
-                    MtdStore = Id,
-                    MtdFormPartField = field.Id
+                    StroreID = store_id,
+                    Data = Request.Form[field.Id],
+                    Field = field,
+                    ActionDelete = Request.Form[$"{field.Id}-delete"],
+                    DataLink = Request.Form[$"{field.Id}-datalink"],
+                    File = Request.Form.Files.FirstOrDefault(x => x.Name == field.Id)
                 };
 
-
-                switch (field.MtdSysType)
-                {
-                    case 2:
-                        {
-                            if (data.FirstOrDefault() != string.Empty)
-                            {
-                                bool isOkInt = int.TryParse(data.FirstOrDefault(), out int result);
-                                if (isOkInt)
-                                {
-                                    mtdStoreStack.MtdStoreStackInt = new MtdStoreStackInt { Register = result };
-                                }
-
-                            }
-                            break;
-                        }
-                    case 3:
-                        {
-                            if (data.FirstOrDefault() != string.Empty)
-                            {
-                                string separ = CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-                                bool isOkDecimal = decimal.TryParse(data.FirstOrDefault().Replace(".", separ), out decimal result);
-                                if (isOkDecimal)
-                                {
-                                    mtdStoreStack.MtdStoreStackDecimal = new MtdStoreStackDecimal { Register = result };
-                                }
-
-                            }
-                            break;
-                        }
-                    case 5:
-                    case 6:
-                    case 10:
-                        {
-                            if (data.FirstOrDefault() != string.Empty)
-                            {
-                                bool isOkDate = DateTime.TryParse(data.FirstOrDefault(), out DateTime dateTime);
-                                if (isOkDate)
-                                {
-                                    mtdStoreStack.MtdStoreStackDate = new MtdStoreStackDate { Register = dateTime };
-                                }
-
-                            }
-                            break;
-                        }
-                    case 7:
-                    case 8:
-                        {
-
-                            var actionDelete = Request.Form[$"{field.Id}-delete"];
-
-                            if (actionDelete.FirstOrDefault() == null || actionDelete.FirstOrDefault() == "false")
-                            {
-
-                                IFormFile file = Request.Form.Files.FirstOrDefault(x => x.Name == field.Id);
-
-                                if (file != null)
-                                {
-                                    byte[] streamArray = new byte[file.Length];
-                                    await file.OpenReadStream().ReadAsync(streamArray, 0, streamArray.Length);
-                                    mtdStoreStack.MtdStoreStackFile = new MtdStoreStackFile()
-                                    {
-                                        Register = streamArray,
-                                        FileName = file.FileName,
-                                        FileSize = streamArray.Length,
-                                        FileType = file.ContentType
-                                    };
-
-                                }
-
-                                if (file == null)
-                                {
-                                    MtdStoreStack stackOld = await _context.MtdStoreStack
-                                        .Include(m => m.MtdStoreStackFile)
-                                        .OrderByDescending(x => x.Id)
-                                        .FirstOrDefaultAsync(x => x.MtdStore == Id & x.MtdFormPartField == field.Id);
-
-                                    if (stackOld != null && stackOld.MtdStoreStackFile != null)
-                                    {
-                                        mtdStoreStack.MtdStoreStackFile = new MtdStoreStackFile()
-                                        {
-                                            FileName = stackOld.MtdStoreStackFile.FileName,
-                                            FileSize = stackOld.MtdStoreStackFile.FileSize,
-                                            Register = stackOld.MtdStoreStackFile.Register,
-                                            FileType = stackOld.MtdStoreStackFile.FileType,
-                                        };
-                                    }
-                                }
-                            }
-
-                            break;
-                        }
-
-                    case 11:
-                        {
-                            if (data.FirstOrDefault() != string.Empty)
-                            {
-                                string datalink = Request.Form[$"{field.Id}-datalink"];
-                                mtdStoreStack.MtdStoreLink = new MtdStoreLink { MtdStore = data.FirstOrDefault(), Register = datalink };
-                            }
-
-                            break;
-                        }
-
-                    case 12:
-                        {
-                            bool isOkCheck = bool.TryParse(data.FirstOrDefault(), out bool check);
-                            if (isOkCheck)
-                            {
-                                mtdStoreStack.MtdStoreStackInt = new MtdStoreStackInt { Register = check ? 1 : 0 };
-                            }
-                            break;
-                        }
-
-                    default:
-                        {
-                            if (data.FirstOrDefault() != string.Empty)
-                            {
-                                mtdStoreStack.MtdStoreStackText = new MtdStoreStackText() { Register = data.FirstOrDefault() };
-                            }
-                            break;
-                        }
-                }
+                MtdStoreStack mtdStoreStack = await dataGenerator.CreateStoreStack(stackParams);
 
                 stackNew.Add(mtdStoreStack);
             }

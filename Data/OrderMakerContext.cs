@@ -72,6 +72,7 @@ namespace Mtd.OrderMaker.Server.Data
         public virtual DbSet<MtdSysStyle> MtdSysStyle { get; set; }
         public virtual DbSet<MtdSysTerm> MtdSysTerm { get; set; }
         public virtual DbSet<MtdSysType> MtdSysType { get; set; }
+        public virtual DbSet<MtdSysTrigger> MtdSysTrigger { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {         
@@ -926,6 +927,9 @@ namespace Mtd.OrderMaker.Server.Data
                 entity.HasIndex(e => e.MtdSysType)
                     .HasName("fk_mtd_form_part_field_mtd_sys_type1_idx");
 
+                entity.HasIndex(e => e.MtdSysTrigger)
+                    .HasName("fk_mtd_form_part_field_mtd_sys_trigger_idx");
+
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
                     .HasColumnType("varchar(36)");
@@ -968,6 +972,12 @@ namespace Mtd.OrderMaker.Server.Data
                     .HasColumnName("sequence")
                     .HasColumnType("int(11)")
                     .HasDefaultValueSql("'0'");
+                
+                entity.Property(e => e.MtdSysTrigger)
+                    .IsRequired()
+                    .HasColumnName("mtd_sys_trigger")
+                    .HasColumnType("varchar(36)")
+                    .HasDefaultValue("'9C85B07F-9236-4314-A29E-87B20093CF82'");
 
                 entity.HasOne(d => d.MtdFormPartNavigation)
                     .WithMany(p => p.MtdFormPartField)
@@ -978,6 +988,11 @@ namespace Mtd.OrderMaker.Server.Data
                     .WithMany(p => p.MtdFormPartField)
                     .HasForeignKey(d => d.MtdSysType)
                     .HasConstraintName("fk_mtd_form_part_field_mtd_sys_type1");
+
+                entity.HasOne(d => d.MtdSysTriggerNavigation)
+                    .WithMany(p => p.MtdFormPartField)
+                    .HasForeignKey(d => d.MtdSysTrigger)
+                    .HasConstraintName("fk_mtd_form_part_field_mtd_sys_trigger");
             });
 
             modelBuilder.Entity<MtdFormPartHeader>(entity =>
@@ -1769,6 +1784,30 @@ namespace Mtd.OrderMaker.Server.Data
                     .IsRequired()
                     .HasColumnName("name")
                     .HasColumnType("varchar(120)");
+            });
+
+            modelBuilder.Entity<MtdSysTrigger>(entity =>
+            {
+                entity.ToTable("mtd_sys_trigger");
+
+                entity.HasIndex(e => e.Id)
+                    .HasName("id_UNIQUE")
+                    .IsUnique();
+
+                entity.Property(e => e.Id)
+                    .IsRequired()
+                    .HasColumnName("id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
+                    .HasColumnType("varchar(120)");
+
+                entity.Property(e => e.Sequence)
+                    .IsRequired()
+                    .HasColumnName("sequence")
+                    .HasColumnType("int");
             });
         }
     }

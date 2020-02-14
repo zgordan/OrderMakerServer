@@ -124,6 +124,14 @@ namespace Mtd.OrderMaker.Server
                     .PersistKeysToFileSystem(new DirectoryInfo($@"{CurrentEnvironment.ContentRootPath}\keys"));
 
             services.AddMvc(options => options.EnableEndpointRouting = false);
+
+            IMvcBuilder builder = services.AddRazorPages();
+            #if DEBUG
+            if (CurrentEnvironment.IsDevelopment())
+            {
+                builder.AddRazorRuntimeCompilation();
+            }
+            #endif
         }
 
 

@@ -40,7 +40,6 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
         
         public MtdForm MtdForm { get; set; }
 
-        public IList<MtdFormPart> MtdFormParts { get; set; }
         public MtdFormPartField MtdFormPartField { get; set; }
 
         public string FieldTypeName { get; set; }
@@ -60,6 +59,7 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
             MtdForm = await _context.MtdForm.Include(m => m.MtdFormHeader).FirstOrDefaultAsync(x => x.Id == selfPart.MtdForm);
 
             IList<MtdFormPart> parts = await _context.MtdFormPart.Where(x=>x.MtdForm == MtdForm.Id).OrderBy(x=>x.Sequence).ToListAsync();
+            IList<MtdSysTrigger> triggers = await _context.MtdSysTrigger.OrderBy(x => x.Sequence).ToListAsync();
 
             FieldTypeName = await _context.MtdSysType.Where(x => x.Id == MtdFormPartField.MtdSysType).Select(x => x.Name).FirstOrDefaultAsync();
 
@@ -70,6 +70,7 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
             }
 
             ViewData["Parts"] = new SelectList(parts, "Id", "Name", selfPart.Id);
+            ViewData["Triggers"] = new SelectList(triggers, "Id", "Name", MtdFormPartField.MtdSysTrigger);
 
             return Page();
         }

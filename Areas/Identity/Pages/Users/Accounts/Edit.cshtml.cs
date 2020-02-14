@@ -86,7 +86,7 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
          
             public string Role { get; set; }
             public string Policy { get; set; }
-            
+            public string TitleGroup { get; set; }            
         }
 
         public async Task<IActionResult> OnGetAsync(string id)
@@ -110,7 +110,8 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 Title = user.Title,
-                IsConfirm = user.EmailConfirmed
+                IsConfirm = user.EmailConfirmed,
+                TitleGroup = user.TitleGroup
             };
 
             ViewData["Roles"] = new SelectList(roles.OrderBy(x=>x.Seq), "Id", "Title", Input.Role);

@@ -45,7 +45,7 @@ namespace Mtd.OrderMaker.Server.DataHandler.Filter
             _user = user;
             _userHandler = userHandler;
             IdForm = idForm;
-            queryMtdStore = _context.MtdStore.Where(x=>x.Active==0);
+            queryMtdStore = _context.MtdStore;
         }
 
         public async Task<MtdFilter> GetFilterAsync()

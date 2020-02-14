@@ -77,14 +77,17 @@
                     <th>
                         @Localizer["Role"]
                     </th>
+                    <th>
+                        @Localizer["Title group"]
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var person in Model.Accounts.OrderBy(x=>x.User.Title))
                 {
                 <tr mtd-data-href="/identity/users/accounts/edit?id=@person.User.Id" mtd-data-class="mtd-users-rows-selected" style="cursor: pointer">
-                    <td>                        
-                            @person.User.Title                                              
+                    <td>
+                        @person.User.Title
                     </td>
                     <td>
                         @person.User.UserName
@@ -112,7 +115,9 @@
                             @person.Role.Title
                         </div>
                     </td>
-
+                    <td>
+                        @person.User.TitleGroup
+                    </td>
                 </tr>
                 }
             </tbody>
