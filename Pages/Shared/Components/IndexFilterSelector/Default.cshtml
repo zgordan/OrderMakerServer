@@ -58,7 +58,7 @@
 
             <form id="indexFormFilter" method="post" action="/api/index/filter/add" enctype="multipart/form-data" autocomplete='off'>
                 @Html.AntiForgeryToken()
-                <input asp-for="@Model.IdForm" name="indexInputForm" value="@Model.IdForm" hidden />
+                <input name="indexInputForm" value="@Model.IdForm" hidden />
                 <div style="display: flex; flex-direction: column;padding: 12px 4px 4px 4px; background-color: white; height: 170px">
                     <input id="indexInputField" type="hidden" name="indexInputField" value="period">
                     <div id="indexSelectField" class="mdc-select">
@@ -137,13 +137,13 @@
                     </div>
                     <div id="indexSelectPeriod" >
                         <div class="mdc-text-field" style="max-width:136px; margin-top: 12px;">
-                            <input type="text" id="my-text-field" class="mdc-text-field__input mtd-data-datepicker" name="periodStart">
-                            <label class="mdc-floating-label mdc-floating-label--float-above" for="my-text-field">@Localizer["Date start"]</label>
+                            <input type="text" id="date-start" class="mdc-text-field__input mtd-data-datepicker" name="periodStart">
+                            <label class="mdc-floating-label mdc-floating-label--float-above" for="date-start">@Localizer["Date start"]</label>
                             <div class="mdc-line-ripple"></div>
                         </div>
                         <div class="mdc-text-field" style="max-width:136px">
-                            <input type="text" id="my-text-field" class="mdc-text-field__input mtd-data-datepicker" name="periodFinish">
-                            <label class="mdc-floating-label mdc-floating-label--float-above" for="my-text-field">@Localizer["Date finish"]</label>
+                            <input type="text" id="date-finish" class="mdc-text-field__input mtd-data-datepicker" name="periodFinish">
+                            <label class="mdc-floating-label mdc-floating-label--float-above" for="date-finish">@Localizer["Date finish"]</label>
                             <div class="mdc-line-ripple"></div>
                         </div>
                     </div>

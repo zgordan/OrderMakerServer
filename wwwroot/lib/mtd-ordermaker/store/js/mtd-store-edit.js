@@ -176,10 +176,14 @@ const ListenerForParent = () => {
         const id = datalink.attributes.getNamedItem("datalink").nodeValue;
         const input = document.getElementById(`${id}-datalink`);
 
-        input.value = datalink.options[datalink.selectedIndex].textContent;
-        datalink.addEventListener('change', (e) => {
-            document.getElementById(`${id}-datalink`).value = e.target.options[e.target.selectedIndex].textContent;
-        });
+        const dlv = datalink.options[datalink.selectedIndex];
+        if (dlv) {
+            input.value = dlv.textContent;
+            datalink.addEventListener('change', (e) => {
+                document.getElementById(`${id}-datalink`).value = e.target.options[e.target.selectedIndex].textContent;
+            });
+        }
+        
     });
 
     const dialog = document.getElementById('dialog-info');
