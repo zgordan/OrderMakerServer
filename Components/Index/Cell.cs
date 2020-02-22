@@ -73,6 +73,7 @@ namespace Mtd.OrderMaker.Server.Components.Index
                 case 10: { viewName = "Time"; break; }
                 case 11: { viewName = "List"; break; }
                 case 12: { viewName = "CheckBox"; break; }
+                case 13: { viewName = "Link"; break; }
 
                 default:
                     {

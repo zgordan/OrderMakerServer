@@ -160,6 +160,13 @@ namespace Mtd.OrderMaker.Server.Components.Store.Stack
                         }
                         break;
                     }
+                case 13:
+                    {
+                        viewName = "Link";
+                        if (mtdStoreStack.MtdStoreStackText.Register != null) { break; }
+                        mtdStoreStack.MtdStoreStackText.Register = field.DefaultData;
+                        break;                        
+                    }
                 default:
                     {
                         viewName = "Text";

@@ -70,6 +70,7 @@ namespace Mtd.OrderMaker.Server.Components.Store.Stack
                 case 8: { viewName = "Picture"; break; }
                 case 11: { viewName = "ListForm"; break; }
                 case 12: { viewName = "CheckBox"; break; }
+                case 13: { viewName = "Link"; break; }
                 default: { viewName = "Text"; break; }
             };
                        
