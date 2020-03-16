@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-Mtd.OrderMaker.Server-37BF32C5-192C-49FD-9796-64BBBCB87F61</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <AssemblyVersion>1.1.5.1</AssemblyVersion>
+    <AssemblyVersion>1.1.5.2</AssemblyVersion>
     <FileVersion>1.1.5.1</FileVersion>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageLicenseUrl></PackageLicenseUrl>
@@ -18,7 +18,7 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
 </Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <RepositoryUrl>https://github.com/olegbruev/OrderMakerServer</RepositoryUrl>
-    <PackageReleaseNotes>Release 1.1.5.beta.1 Add Link type</PackageReleaseNotes>
+    <PackageReleaseNotes>Release 1.1.5.beta.2  Fix Error Migration</PackageReleaseNotes>
     <PackageIconUrl>http://ordermaker.org/favicon.ico</PackageIconUrl>
     <ApplicationIcon>form.ico</ApplicationIcon>
     <Version>1.1.5</Version>
