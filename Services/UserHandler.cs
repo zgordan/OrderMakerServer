@@ -129,7 +129,19 @@ namespace Mtd.OrderMaker.Server.Services
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             if (mtdPolicy == null) return null;
             return mtdPolicy.Where(x=>x.Id == policyId).FirstOrDefault();            
-        } 
+        }
+
+        public async Task<WebAppUser> GetOwnerAsync(string idStore)
+        {
+            WebAppUser webAppUser = null;
+            MtdStoreOwner owner = await _context.MtdStoreOwner.Where(x => x.Id == idStore).FirstOrDefaultAsync();
+            if (owner != null)
+            {
+                webAppUser = await FindByIdAsync(owner.UserId);
+            }
+
+            return webAppUser;
+        }
 
         public async Task<bool> IsAdmin(WebAppUser user)
         {
@@ -326,45 +338,7 @@ namespace Mtd.OrderMaker.Server.Services
             }
 
             return webAppUsers;
-
-            //List<WebAppUser> webAppUsers = new List<WebAppUser>();
-            //IList<MtdPolicy> mtdPolicies = await CacheGetOrCreateAsync();
-            //IList<Claim> claims = await GetClaimsAsync(webAppUser);
-            //string policyID = claims.Where(x => x.Type == "policy").Select(x => x.Value).FirstOrDefault();
-            //if (policyID == null) return webAppUsers;
-
-            //List<MtdPolicyGroup> policyGroups = mtdPolicies
-            //    .SelectMany(x => x.MtdPolicyGroup)
-            //    .Where(x => x.Member == 1)
-            //    .ToList();
-
-            //List<string> groupIds = policyGroups
-            //    .Where(x => x.MtdPolicy == policyID)
-            //    .GroupBy(g => g.MtdGroup)
-            //    .Select(x => x.Key)
-            //    .ToList();
-
-            //List<string> policyIds = policyGroups
-            //    .Where(x => groupIds.Contains(x.MtdGroup) && x.Member == 1)
-            //    .GroupBy(x => x.MtdPolicy)
-            //    .Select(x => x.Key)
-            //    .ToList();
-
-            //foreach (var policyId in policyIds)
-            //{
-            //    Claim claim = new Claim("policy", policyId);
-            //    IList<WebAppUser> users = await GetUsersForClaimAsync(claim);
-            //    if (users != null)
-            //    {
-            //        var temp = users.Where(x => !webAppUsers.Select(w => w.Id).Contains(x.Id)).ToList();
-            //        if (temp != null)
-            //        {
-            //            webAppUsers.AddRange(temp);
-            //        }
-            //    }
-            //}
-
-            //return webAppUsers;
+       
         }
 
 

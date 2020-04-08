@@ -372,8 +372,15 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                 blockedParts = await approvalHandler.GetBlockedPartsIds();
             }
 
-            
-            DataGenerator dataGenerator = new DataGenerator(_context, user.Title, user.TitleGroup);
+
+            string userTitleGroup = user.Title;
+            if (typeAction == TypeAction.Edit)
+            {
+                WebAppUser userOwner = await _userHandler.GetOwnerAsync(store.Id);
+                userTitleGroup = userOwner.TitleGroup;
+            }
+
+            DataGenerator dataGenerator = new DataGenerator(_context, user.Title, userTitleGroup);
 
             foreach (var part in store.MtdFormNavigation.MtdFormPart)
             {
