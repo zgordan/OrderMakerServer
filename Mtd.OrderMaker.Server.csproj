@@ -5,7 +5,7 @@
     <UserSecretsId>aspnet-Mtd.OrderMaker.Server-37BF32C5-192C-49FD-9796-64BBBCB87F61</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <AssemblyVersion>1.1.6.1</AssemblyVersion>
-    <FileVersion>1.1.6.5</FileVersion>
+    <FileVersion>1.1.6.1</FileVersion>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>http://ordermaker.org</PackageProjectUrl>
