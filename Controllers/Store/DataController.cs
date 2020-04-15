@@ -399,9 +399,8 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             {
                 blockedParts = await approvalHandler.GetBlockedPartsIds();
             }
-
-
-            string userTitleGroup = user.Title;
+            
+            string userTitleGroup = user.TitleGroup;
             if (typeAction == TypeAction.Edit)
             {
                 WebAppUser userOwner = await _userHandler.GetOwnerAsync(store.Id);
