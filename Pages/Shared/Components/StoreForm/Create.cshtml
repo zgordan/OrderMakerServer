@@ -22,7 +22,7 @@
 @inject Services.UserHandler userHandler
 @{
     string action = $"/api/store/create";
-    string idStore = Model.Store.Id == null ? Model.Store.MtdForm : Model.Store.Id;
+    string idStore = Guid.NewGuid().ToString();
     var user = await userHandler.GetUserAsync(User);
 }
 
@@ -119,15 +119,17 @@
                     {
                         <span class="mtd-store-style-date">@Localizer["Date"] @DateTime.Now.ToShortDateString()</span>
                         <input type="hidden" value="@DateTime.Now.ToShortDateString()" name="date-create" />
-                    }                    
+                    }
                 }
             </div>
         </div>
 
         @Html.AntiForgeryToken()
         <input id="store-parent-id" value="@Model.Store.Parent" type="hidden" name="store-parent-id" />
-        <input id="store-create-clicker" mtd-data-clicker mtd-data-location="/workplace/store?indexform=@Model.Store.MtdForm" type="hidden" />
+        <input id="store-create-clicker" mtd-data-clicker mtd-data-location="/workplace/store/details?id=@idStore" type="hidden" />
         <input type="hidden" name="idForm" value="@Model.Store.MtdForm" />
+        <input type="hidden" name="store-id" value="@idStore" />
+
         <div>
             @foreach (var part in Model.Parts)
             {

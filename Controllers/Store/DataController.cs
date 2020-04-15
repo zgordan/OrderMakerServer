@@ -169,6 +169,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             string idForm = Request.Form["idForm"];
             string idFormParent = Request.Form["store-parent-id"];
             string dateCreate = Request.Form["date-create"];
+            string idStore = Request.Form["store-id"];
 
             WebAppUser webAppUser = await _userHandler.GetUserAsync(HttpContext.User);
             bool isCreator = await _userHandler.IsCreator(webAppUser, idForm);
@@ -182,7 +183,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             int? sequence = await _context.MtdStore.Where(x => x.MtdForm == idForm).MaxAsync(x => (int?)x.Sequence) ?? 0;
             sequence++;
 
-            MtdStore mtdStore = new MtdStore { Id = Guid.NewGuid().ToString(), MtdForm = idForm, Sequence = sequence ?? 1, Parent = idFormParent.Length > 0 ? idFormParent : null };
+            MtdStore mtdStore = new MtdStore { Id = idStore, MtdForm = idForm, Sequence = sequence ?? 1, Parent = idFormParent.Length > 0 ? idFormParent : null };
 
             bool setData = await _userHandler.GetFormPolicyAsync(webAppUser, mtdStore.MtdForm, RightsType.SetDate);
             if (setData)
@@ -328,12 +329,19 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                     UserName = webAppUser.Title
                 };
 
+                /**Update all fields for SysTrigger UserGroup 33E8212E-059B-482D-8CBD-DFDB073E3B63**/
+                await UpdateTriggerUserGroup(idStore, webAppUser, idForm);
+             
+
                 await _context.MtdStoreOwner.AddAsync(mtdStoreOwner);
                 await _context.SaveChangesAsync();
 
                 return Ok();
 
             }
+
+            /**Update all fields for SysTrigger UserGroup 33E8212E-059B-482D-8CBD-DFDB073E3B63**/
+            await UpdateTriggerUserGroup(idStore, webAppUser, mtdStore.MtdForm);
 
             mtdStoreOwner.UserId = webAppUser.Id;
             mtdStoreOwner.UserName = webAppUser.Title;
@@ -343,9 +351,29 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             return Ok();
         }
 
+        private async Task UpdateTriggerUserGroup(string idStore, WebAppUser webAppUser, string idForm)
+        {
+            IList<string> partsIds = await _context.MtdFormPart.Where(x => x.MtdForm == idForm).Select(x => x.Id).ToListAsync();
+            IList<string> fieldIds = await _context.MtdFormPartField
+                .Where(x => x.MtdSysTrigger == "33E8212E-059B-482D-8CBD-DFDB073E3B63" && partsIds.Contains(x.MtdFormPart))
+                .Select(x => x.Id)
+                .ToListAsync();
+
+            if (fieldIds != null)
+            {
+                IList<long> stackIds = await _context.MtdStoreStack.Where(x => fieldIds.Contains(x.MtdFormPartField) && x.MtdStore == idStore)
+                    .Select(x => x.Id).ToListAsync();
+
+                IList<MtdStoreStackText> newTriggerResult = await _context.MtdStoreStackText.Where(x => stackIds.Contains(x.Id))
+                    .Select(x => new MtdStoreStackText { Id = x.Id, Register = webAppUser.TitleGroup }).ToListAsync();
+
+                _context.MtdStoreStackText.UpdateRange(newTriggerResult);
+            }
+        }
+
         private async Task<OutData> CreateDataAsync(string store_id, WebAppUser user, TypeAction typeAction)
         {
-                       
+
             var store = await _context.MtdStore
                .Include(m => m.MtdFormNavigation)
                .ThenInclude(p => p.MtdFormPart)
