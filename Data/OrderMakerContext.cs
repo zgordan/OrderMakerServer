@@ -1113,6 +1113,9 @@ namespace Mtd.OrderMaker.Server.Data
                     .HasColumnName("note")
                     .HasColumnType("varchar(512)");
 
+                entity.Property(e => e.Comment)
+                    .HasColumnName("app_comment")
+                    .HasColumnType("varchar(512)");
 
                 entity.HasOne(d => d.MtdStoreNavigation)
                     .WithMany(p => p.MtdLogApproval)

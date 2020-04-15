@@ -319,7 +319,7 @@ namespace Mtd.OrderMaker.Server.DataHandler.Approval
             return result;
         }
 
-        public async Task<bool> ActionApprove(WebAppUser webAppUser, string resolution = null)
+        public async Task<bool> ActionApprove(WebAppUser webAppUser, string resolution = null, string comment=null)
         {
 
             MtdStore mtdStore = await GetStoreAsync();
@@ -355,7 +355,8 @@ namespace Mtd.OrderMaker.Server.DataHandler.Approval
                 Result = 1,
                 Stage = currentStage.Id,
                 Timecr = DateTime.Now,
-                UserId = webAppUser.Id
+                UserId = webAppUser.Id,
+                Comment = comment
             };
 
             if (resolution != null)
@@ -384,7 +385,7 @@ namespace Mtd.OrderMaker.Server.DataHandler.Approval
             return true;
         }
 
-        public async Task<bool> ActionReject(bool complete, int idStage, WebAppUser webAppUser, string rejection=null)
+        public async Task<bool> ActionReject(bool complete, int idStage, WebAppUser webAppUser, string rejection=null, string comment = null)
         {
             MtdStore mtdStore = await GetStoreAsync();
             if (mtdStore.MtdStoreApproval != null && mtdStore.MtdStoreApproval.Complete == 1) { return false; }
@@ -432,12 +433,13 @@ namespace Mtd.OrderMaker.Server.DataHandler.Approval
             }
 
             MtdLogApproval mtdLogApproval = new MtdLogApproval()
-            {             
+            {
                 MtdStore = mtdStore.Id,
                 Result = -1,
                 Stage = currentStage.Id,
                 Timecr = DateTime.Now,
-                UserId = webAppUser.Id
+                UserId = webAppUser.Id,
+                Comment = comment
             };
 
             if (rejection != null)

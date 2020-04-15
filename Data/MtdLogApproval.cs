@@ -15,6 +15,7 @@ namespace Mtd.OrderMaker.Server.Data
         public string ImgType { get; set; }
         public string Color { get; set; }
         public string Note { get; set; }
+        public string Comment { get; set; }
 
         public virtual MtdStore MtdStoreNavigation { get; set; }
         public virtual MtdApprovalStage StageNavigation { get; set; }

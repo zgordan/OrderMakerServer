@@ -59,13 +59,14 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
         {
             string storeId = Request.Form["id-store"];
             string resolutionId = Request.Form["id-resolution"];
+            string comment = Request.Form["comment-start-id"];
 
             WebAppUser webAppUser = await _userHandler.GetUserAsync(HttpContext.User);
             ApprovalHandler approvalHandler = new ApprovalHandler(_context, storeId);
             bool isApprover = await approvalHandler.IsApproverAsync(webAppUser);
             if (!isApprover) { return NotFound(); }
 
-            bool isOk = await approvalHandler.ActionApprove(webAppUser, resolutionId);
+            bool isOk = await approvalHandler.ActionApprove(webAppUser, resolutionId, comment);
             if (isOk)
             {
                 await SendEmailStart(approvalHandler);
@@ -79,12 +80,14 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
         {
             string storeId = Request.Form["id-store"];
             string resolutionId = Request.Form["id-resolution"];
+            string comment = Request.Form["comment-confirm-id"];
+
             WebAppUser webAppUser = await _userHandler.GetUserAsync(HttpContext.User);
             ApprovalHandler approvalHandler = new ApprovalHandler(_context, storeId);
             bool isApprover = await approvalHandler.IsApproverAsync(webAppUser);
             if (!isApprover) { return NotFound(); }
 
-            bool isOk = await approvalHandler.ActionApprove(webAppUser, resolutionId);
+            bool isOk = await approvalHandler.ActionApprove(webAppUser, resolutionId, comment);
             if (isOk)
             {
                 await SendEmailApprove(approvalHandler);
@@ -98,6 +101,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
         {
             string storeId = Request.Form["id-store"];
             string rejectionId = Request.Form["id-rejection"];
+            string comment = Request.Form["comment-reject-id"];
 
             bool completeOk = bool.TryParse(Request.Form["checkbox-complete"], out bool completeCheck);
             bool stageOk = int.TryParse(Request.Form["next-stage"], out int stageId);
@@ -110,7 +114,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             bool isApprover = await approvalHandler.IsApproverAsync(webAppUser);
             if (!isApprover || isFirstStage) { return NotFound(); }
 
-            bool isOk = await approvalHandler.ActionReject(completeCheck, stageId, webAppUser, rejectionId);
+            bool isOk = await approvalHandler.ActionReject(completeCheck, stageId, webAppUser, rejectionId, comment);
             if (isOk)
             {
                 await SendEmailReject(approvalHandler);

@@ -32,7 +32,7 @@
             <tr><td colspan="3"></td></tr>
             @foreach (var item in Model.ApprovalHistory)
             {
-                <tr  style=" border-top: 1px solid #ccc;">
+                <tr style=" border-top: 1px solid #ccc;">
                     <td align="center">
                         @if (item.Result == 1)
                         {
@@ -53,8 +53,8 @@
                             }
                             else
                             {
-                                    <i class="material-icons" style="color:red">thumb_down_alt</i>
-                            }                            
+                                <i class="material-icons" style="color:red">thumb_down_alt</i>
+                            }
                         }
                     </td>
 
@@ -65,8 +65,16 @@
                         <div>
                             @item.UserName
                         </div>
+                        @if (item.Comment.Length > 0)
+                        {
+                            <div style="font-style:italic; font-size:small;">
+                                <i class="material-icons" aria-hidden="true" style="color: slategray">comment</i>
+                                @item.Comment
+                            </div>
+                        }
+
                     </td>
-                    <td>                     
+                    <td>
                         <div>@item.Time</div>
                     </td>
                 </tr>

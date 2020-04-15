@@ -14,6 +14,7 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store.Models
         public DateTime Time { get; set; }
         public int Result { get; set; }
         public string Color { get; set; }
+        public string Comment { get; set; }
 
     }
 }

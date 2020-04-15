@@ -167,7 +167,8 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                     ImgData = log.ImgData,
                     ImgType = log.ImgType,
                     Note = log.Note,
-                    Color = log.Color
+                    Color = log.Color,
+                    Comment = log.Comment ?? string.Empty
                 };
 
                 ApprovalHistory.Add(temp);
