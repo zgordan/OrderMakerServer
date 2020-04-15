@@ -117,14 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="After approval of the document the Parts below will not be editable:" xml:space="preserve">
-    <value>После Утверждения документа следующие части не будут доступны для редактирования:</value>
+  <data name="Approval process was started" xml:space="preserve">
+    <value>Процесс согласования запущен</value>
   </data>
-  <data name="Approve" xml:space="preserve">
-    <value>Утвердить</value>
-  </data>
-  <data name="Are you  confirm your approval?" xml:space="preserve">
-    <value>Утвердить документ?</value>
+  <data name="Begin approval process" xml:space="preserve">
+    <value>Начать процесс согласования</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Отмена</value>
@@ -132,19 +129,16 @@
   <data name="Comment" xml:space="preserve">
     <value>Комментарий</value>
   </data>
-  <data name="Confirmation of approval" xml:space="preserve">
-    <value>Утверждение документа</value>
-  </data>
   <data name="Create a comment if necessary" xml:space="preserve">
     <value>Добавьте комментарий если это необходимо</value>
-  </data>
-  <data name="Document is approved" xml:space="preserve">
-    <value>Документ утвержден</value>
   </data>
   <data name="Resolution" xml:space="preserve">
     <value>Резолюция</value>
   </data>
-  <data name="Select the resolution:" xml:space="preserve">
-    <value>Выберете вариант резолюции:</value>
+  <data name="Select the resolution" xml:space="preserve">
+    <value>Выберете вариант согласования</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Применить</value>
   </data>
 </root>

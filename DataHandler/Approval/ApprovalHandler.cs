@@ -349,6 +349,7 @@ namespace Mtd.OrderMaker.Server.DataHandler.Approval
                 _context.MtdStoreApproval.Update(storeApproval);
             }
 
+            string commentText = comment ?? string.Empty;
             MtdLogApproval mtdLogApproval = new MtdLogApproval()
             {
                 MtdStore = mtdStore.Id,
@@ -356,7 +357,7 @@ namespace Mtd.OrderMaker.Server.DataHandler.Approval
                 Stage = currentStage.Id,
                 Timecr = DateTime.Now,
                 UserId = webAppUser.Id,
-                Comment = comment
+                Comment = commentText.Length > 250 ? commentText.Substring(0, 250) : commentText
             };
 
             if (resolution != null)
@@ -432,6 +433,7 @@ namespace Mtd.OrderMaker.Server.DataHandler.Approval
                 }
             }
 
+            string commentText = comment ?? string.Empty;
             MtdLogApproval mtdLogApproval = new MtdLogApproval()
             {
                 MtdStore = mtdStore.Id,
@@ -439,7 +441,7 @@ namespace Mtd.OrderMaker.Server.DataHandler.Approval
                 Stage = currentStage.Id,
                 Timecr = DateTime.Now,
                 UserId = webAppUser.Id,
-                Comment = comment
+                Comment = commentText.Length > 250 ? commentText.Substring(0, 250) : commentText
             };
 
             if (rejection != null)

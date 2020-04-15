@@ -117,34 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="After approval of the document the Parts below will not be editable:" xml:space="preserve">
-    <value>После Утверждения документа следующие части не будут доступны для редактирования:</value>
-  </data>
-  <data name="Approve" xml:space="preserve">
-    <value>Утвердить</value>
-  </data>
-  <data name="Are you  confirm your approval?" xml:space="preserve">
-    <value>Утвердить документ?</value>
-  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Отмена</value>
+  </data>
+  <data name="Choose a route to rejection" xml:space="preserve">
+    <value>Выберете маршрут для отказа</value>
   </data>
   <data name="Comment" xml:space="preserve">
     <value>Комментарий</value>
   </data>
-  <data name="Confirmation of approval" xml:space="preserve">
-    <value>Утверждение документа</value>
+  <data name="Complete the approval process" xml:space="preserve">
+    <value>Завершить процесс утверждения</value>
   </data>
   <data name="Create a comment if necessary" xml:space="preserve">
     <value>Добавьте комментарий если это необходимо</value>
   </data>
-  <data name="Document is approved" xml:space="preserve">
-    <value>Документ утвержден</value>
+  <data name="Document is rejected" xml:space="preserve">
+    <value>Документ отклонен</value>
+  </data>
+  <data name="Reject" xml:space="preserve">
+    <value>Отказать</value>
   </data>
   <data name="Resolution" xml:space="preserve">
     <value>Резолюция</value>
   </data>
-  <data name="Select the resolution:" xml:space="preserve">
-    <value>Выберете вариант резолюции:</value>
+  <data name="Select the resolution" xml:space="preserve">
+    <value>Выберите вариант резолюции</value>
+  </data>
+  <data name="Select the stage to which the approval process will be returned" xml:space="preserve">
+    <value>Выберите этап, на который будет возвращен процесс утверждения</value>
+  </data>
+  <data name="Stages" xml:space="preserve">
+    <value>Этап</value>
   </data>
 </root>

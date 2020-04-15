@@ -29,14 +29,16 @@
                             <div class="mdc-line-ripple"></div>
                         </div>
                     }
+
                     <div style="padding-top: 18px; width: 100%">
                         <label class="mdc-text-field mdc-text-field--textarea" style="width:100%">
-                            <textarea class="mdc-text-field__input" aria-labelledby="comment-confirm-id" name="comment-confirm-id" rows="3" cols="40"
-                                      placeholder="@Localizer["Create a comment if necessary"]"></textarea>
+                            <div class="mdc-text-field-character-counter">0 / 250</div>
+                            <textarea class="mdc-text-field__input" aria-labelledby="comment-start-id" name="comment-confirm-id" rows="3" cols="40"
+                                      maxlength="250" placeholder="@Localizer["Create a comment if necessary"]"></textarea>
                             <div class="mdc-notched-outline">
                                 <div class="mdc-notched-outline__leading"></div>
                                 <div class="mdc-notched-outline__notch">
-                                    <label class="mdc-floating-label" id="comment-confirm-id">@Localizer["Comment"]</label>
+                                    <span class="mdc-floating-label" id="comment-confirm-id">@Localizer["Comment"]</span>
                                 </div>
                                 <div class="mdc-notched-outline__trailing"></div>
                             </div>
@@ -47,7 +49,7 @@
                     <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
                         <span class="mdc-button__label">@Localizer["Cancel"]</span>
                     </button>
-                    <button type="button" id="clicker-approve" mtd-data-clicker mtd-data-message="@Localizer[" Document is approved"]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" style="color:green">
+                    <button type="button" id="clicker-approve" mtd-data-clicker mtd-data-message="@Localizer["Document is approved"]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" style="color:green">
                         <span class="mdc-button__label">@Localizer["Approve"]</span>
                     </button>
                 </footer>
