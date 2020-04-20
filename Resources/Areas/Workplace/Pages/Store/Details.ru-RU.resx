@@ -127,7 +127,7 @@
     <value>Процесс согласования начался.</value>
   </data>
   <data name="Approve" xml:space="preserve">
-    <value>Утвердить</value>
+    <value>Согласовать</value>
   </data>
   <data name="Approved" xml:space="preserve">
     <value>Согласовано</value>
@@ -176,6 +176,9 @@
   </data>
   <data name="New approval" xml:space="preserve">
     <value>Новое согласование</value>
+  </data>
+  <data name="NO" xml:space="preserve">
+    <value>НЕТ</value>
   </data>
   <data name="Not started" xml:space="preserve">
     <value>Не запущен</value>
@@ -248,5 +251,8 @@
   </data>
   <data name="Waiting" xml:space="preserve">
     <value>Ожидание </value>
+  </data>
+  <data name="YES" xml:space="preserve">
+    <value>ДА</value>
   </data>
 </root>

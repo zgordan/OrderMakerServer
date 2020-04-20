@@ -186,4 +186,16 @@
   <data name="Your login" xml:space="preserve">
     <value>Ваш логин</value>
   </data>
+  <data name="New password" xml:space="preserve">
+    <value>Новый пароль доступа</value>
+  </data>
+  <data name="Web-application address" xml:space="preserve">
+    <value>Адрес для входа в систему</value>
+  </data>
+  <data name="You have been granted access to the system and a new password has been created" xml:space="preserve">
+    <value>Вам предоставлен доступ к системе и создан новый пароль</value>
+  </data>
+  <data name="Your new password" xml:space="preserve">
+    <value>Ваш новый пароль</value>
+  </data>
 </root>

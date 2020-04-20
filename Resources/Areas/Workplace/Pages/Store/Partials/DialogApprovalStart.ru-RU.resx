@@ -121,7 +121,7 @@
     <value>Процесс согласования запущен</value>
   </data>
   <data name="Begin approval process" xml:space="preserve">
-    <value>Начать процесс согласования</value>
+    <value>Запуск процесса согласования</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Отмена</value>
@@ -139,6 +139,6 @@
     <value>Выберете вариант согласования</value>
   </data>
   <data name="Start" xml:space="preserve">
-    <value>Применить</value>
+    <value>Начать</value>
   </data>
 </root>

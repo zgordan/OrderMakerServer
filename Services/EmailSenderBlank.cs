@@ -33,7 +33,6 @@ namespace Mtd.OrderMaker.Server.Services
 
         public Task SendEmailAsync(string email, string subject, string message)
         {
-
             Execute(email, subject, message).Wait();
             return Task.FromResult(0);
         }

@@ -1,0 +1,66 @@
+﻿@page
+@model Mtd.OrderMaker.Server.Areas.Support.Pages.FeedbackModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+
+@{
+    ViewData["Title"] = Localizer["Обратная связь"];
+    ViewData["SecondTitle"] = Localizer["Служба поддержки сервиса"];
+}
+
+@section Head {
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/config/css/mtd-config-form.css" asp-append-version="true" />
+}
+
+<div class="mdc-elevation--z1 mtd-config-form-place" style="padding: 12px">
+    <div style="display: flex; flex-wrap:wrap">
+        <div style="display: flex; align-items:center; flex-wrap:wrap">
+            <div>
+                <img src="~/lib/mtd-ordermaker/images/logo-mtd-350.png" width="250" />
+            </div>
+            <div style="padding-left: 6px">
+                <strong>MTD OrderMaker Server - версия: @System.Reflection.Assembly.GetEntryAssembly().GetName().Version</strong> <br /> 
+                Сервис для совместной работы и управления документами.                
+            </div>
+        </div>
+        <div style="padding: 18px; width: 100%">
+            <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action=''>
+                <label class="mdc-text-field mdc-text-field--textarea mdc-text-field--outlined" style="width: 100%">
+                    <textarea class="mdc-text-field__input" aria-labelledby="text-message" rows="6" cols="40"
+                              name="text-message"
+                              placeholder="Сообщение для разработчиков веб-приложения MTD OrderMaker. Опишите проблему, с которой вы столкнулись, используя веб-приложение или пожелания по улучшению возможностей сервиса."></textarea>
+                    <div class="mdc-notched-outline">
+                        <div class="mdc-notched-outline__leading"></div>
+                        <div class="mdc-notched-outline__notch">
+                            <label class="mdc-floating-label" id="text-message">Текст сообщения</label>
+                        </div>
+                        <div class="mdc-notched-outline__trailing"></div>
+                    </div>
+                </label>
+
+                <div style="padding-top: 4px">
+                    <button type="button" class="mdc-button" mtd-data-clicker mtd-data-message="Спасибо за отзыв! Сообщение отправлено."><span class="mdc-button__ripple"></span> Отправить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div style="display: flex; background-color: whitesmoke; width: 100%; text-align:right">
+        <div style="padding-right: 4px;flex-grow:1; color: gray;">
+            Техническое сопровождение <br /> и поддержка сервиса
+        </div>
+        <div>
+            <a href="https://ceoserv.com" target="_blank">
+                <img src="~/lib/mtd-ordermaker/images/ceotex-ru-250.png" height="42px" />
+            </a>
+        </div>
+
+    </div>
+
+
+
+
+
+
+</div>

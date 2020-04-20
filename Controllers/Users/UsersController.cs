@@ -41,7 +41,8 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
     [Authorize(Roles = "Admin")]
     public partial class UsersController : ControllerBase
     {
-        private readonly UserManager<WebAppUser> _userManager;
+        private readonly UserHandler _userManager;
+        private readonly SignInManager<WebAppUser> signInManager;
         private readonly RoleManager<WebAppRole> _roleManager;     
         private readonly IEmailSenderBlank _emailSender;
         private readonly IWebHostEnvironment _hostingEnvironment;
@@ -51,7 +52,8 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
 
 
         public UsersController(
-            UserManager<WebAppUser> userManager,
+            SignInManager<WebAppUser> signInManager,
+            UserHandler userManager,
             RoleManager<WebAppRole> roleManager,   
             IEmailSenderBlank emailSender,
             IWebHostEnvironment hostingEnvironment,
@@ -60,6 +62,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             IOptions<ConfigSettings> options
             )
         {
+            this.signInManager = signInManager;
             _userManager = userManager;
             _roleManager = roleManager;   
             _emailSender = emailSender;

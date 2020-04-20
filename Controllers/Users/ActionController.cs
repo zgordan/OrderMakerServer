@@ -23,6 +23,7 @@ using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Data;
 using Mtd.OrderMaker.Server.Services;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -63,7 +64,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 Subject = _localizer["Email Verification Procedure"],
                 Header = _localizer["Email Verification Procedure"],
                 Content = new List<string>()
-                       {                           
+                       {
                            _localizer["Confirm the ownership of the mailbox by clicking on the link below"],
                            $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["Email Verification"]}</a>"
                        }
@@ -108,6 +109,52 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                            $"{_localizer["Your login"]}: <strong>{user.UserName}</strong>",
                            _localizer["To change your account password, follow the link below"],
                            $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["Create account password"]}</a>"
+                       }
+            };
+
+            await _emailSender.SendEmailBlankAsync(blankEmail);
+
+            return Ok();
+        }
+
+        [HttpPost("admin/create/password")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> OnPostAdminCreatePasswordAsync()
+        {
+
+            string userName = Request.Form["UserName"];
+            WebAppUser user = await _userManager.FindByNameAsync(userName);
+
+            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+            {
+                return NotFound();
+            }
+
+            string email = await _userManager.GetEmailAsync(user);
+            string password = _userManager.GeneratePassword();
+
+            await _userManager.RemovePasswordAsync(user);
+            await _userManager.AddPasswordAsync(user, password);
+            await _userManager.SetLockoutEndDateAsync(user, new DateTimeOffset(DateTime.UtcNow));            
+
+
+            var callbackUrl = Url.Page(
+                     "/Account/Login",
+                     pageHandler: null,
+                     values: new { area = "Identity" },
+                     protocol: Request.Scheme);
+
+            BlankEmail blankEmail = new BlankEmail
+            {
+                Email = email,
+                Subject = _localizer["New password for access"],
+                Header = _localizer["New password"],
+                Content = new List<string>()
+                       {
+                           $"{_localizer["You have been granted access to the system and a new password has been created"]}.",
+                           $"{_localizer["Your login"]}: <strong>{user.UserName}</strong>",
+                           $"{_localizer["Your new password"]}: <strong>{password}</strong>",
+                           $"{_localizer["Web-application address"]}: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{callbackUrl}</strong>",
                        }
             };
 

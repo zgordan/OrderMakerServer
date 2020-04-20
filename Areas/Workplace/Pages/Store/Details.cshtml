@@ -122,17 +122,24 @@
 </form>
 
 
-<div class="mtd-desk">
+<div class="mtd-desk" style="position: relative">
+
+    <div style="position: absolute; height: 450px; z-index: 3; margin-top: -35px; margin-left: -5px">
+        <button class="mdc-fab" aria-label="Favorite" mtd-data-href="/workplace/store/index?indexForm=@Model.MtdForm.Id">
+            <div class="mdc-fab__ripple"></div>
+            <span class="mdc-fab__icon material-icons">menu_open</span>
+        </button>
+    </div>
+
     @if (Model.IsApprover && Model.IsFirstStage)
     {
         <div style=" top: 65px; z-index:2; position: sticky; position: -webkit-sticky;">
-            <div class="mdc-elevation--z4" style="background-color: white; text-align: center; color: red; padding: 8px;">
-                <i class="material-icons" aria-hidden="true" style="vertical-align:middle">assignment_turned_in</i>
-                <span> @Localizer["Approval is required"]</span>
-                <div style="padding-bottom: 4px;">
-                    <button id="button-start-approval" class="mdc-button mdc-button--raised" style="color: white">
-                        <i class="material-icons mdc-button__icon" aria-hidden="true">thumb_up</i>
-                        <span class="mdc-button__label">@Localizer["Start approval"]</span>
+            <div class="mdc-elevation--z1" style="background-color: white; text-align: center; padding: 8px;">
+                <div style="padding-bottom: 4px; text-align: right">
+                    <i class="material-icons" aria-hidden="true" style="vertical-align:middle; font-size: 32px; color:#FFA200">notification_important</i>
+                    <button id="button-start-approval" class="mdc-button mdc-button--outlined" style="width: 210px">
+                        <i class="material-icons mdc-button__icon" aria-hidden="true" style="color:green">thumb_up</i>
+                        <span class="mdc-button__label">@Localizer["Approve"]</span>
                     </button>
                 </div>
             </div>
@@ -142,17 +149,16 @@
     @if (Model.IsApprover && !Model.IsFirstStage)
     {
         <div style=" top: 65px; z-index:2; position: sticky; position: -webkit-sticky;">
-            <div class="mdc-elevation--z4" style="background-color: white; text-align: center; color: red; padding: 8px;">
-                <i class="material-icons" aria-hidden="true" style="vertical-align:middle">assignment_turned_in</i>
-                <span> @Localizer["Approval is required"]</span>
-                <div style="padding-bottom: 4px;">
-                    <button id="accept-button" class="mdc-button mdc-button--raised" style="color: white">
-                        <i class="material-icons mdc-button__icon" aria-hidden="true">thumb_up</i>
-                        <span class="mdc-button__label">@Localizer["Approve"]</span>
+            <div class="mdc-elevation--z1" style="background-color: white; text-align: center; padding: 8px;">
+                <div style="padding-bottom: 4px; text-align: right">
+                    <i class="material-icons" aria-hidden="true" style="vertical-align:middle; font-size: 32px; color:#FFA200">notification_important</i>
+                    <button id="accept-button" class="mdc-button mdc-button--outlined" style="width: 105px;">
+                        <i class="material-icons mdc-button__icon" aria-hidden="true" style="color: green;">thumb_up</i>
+                        <span class="mdc-button__label">@Localizer["YES"]</span>
                     </button>
-                    <button id="reject-button" class="mdc-button mdc-button--raised">
-                        <i class="material-icons mdc-button__icon" aria-hidden="true">thumb_down</i>
-                        <span class="mdc-button__label">@Localizer["Reject"]</span>
+                    <button id="reject-button" class="mdc-button mdc-button--outlined" style="width: 105px">
+                        <i class="material-icons mdc-button__icon" aria-hidden="true" style="color: red;">thumb_down</i>
+                        <span class="mdc-button__label">@Localizer["NO"]</span>
                     </button>
                 </div>
             </div>
