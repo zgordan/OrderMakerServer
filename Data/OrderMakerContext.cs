@@ -1097,6 +1097,25 @@ namespace Mtd.OrderMaker.Server.Data
                     .HasColumnName("user_id")
                     .HasColumnType("varchar(36)");
 
+                entity.Property(e => e.UserName)
+                    .IsRequired()
+                    .HasColumnName("user_name")
+                    .HasColumnType("varchar(255)")
+                    .HasDefaultValueSql("'No Name'");
+
+                entity.Property(e => e.UserRecipientId)
+                    .HasColumnName("user_recipient_id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.UserRecipientName)
+                    .HasColumnName("user_recipient_name")
+                    .HasColumnType("varchar(255)");
+
+                entity.Property(e => e.IsSign)
+                    .HasColumnName("is_sign")
+                    .HasColumnType("tinyint(4)")
+                    .HasDefaultValueSql("'0'");
+
                 entity.Property(e => e.ImgData)                    
                     .HasColumnName("img_data")
                     .HasColumnType("mediumblob");
@@ -1454,6 +1473,10 @@ namespace Mtd.OrderMaker.Server.Data
                     .HasColumnName("result")
                     .HasColumnType("int(11)")
                     .HasDefaultValueSql("'0'");
+
+                entity.Property(e => e.SignChain)
+                    .HasColumnName("sign_chain")
+                    .HasColumnType("longtext");
 
                 entity.HasOne(d => d.IdNavigation)
                     .WithOne(p => p.MtdStoreApproval)

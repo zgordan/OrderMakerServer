@@ -15,6 +15,8 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store.Models
         public int Result { get; set; }
         public string Color { get; set; }
         public string Comment { get; set; }
+        public bool IsSign { get; set; }
+        public string UserRecipient { get; set; }
 
     }
 }

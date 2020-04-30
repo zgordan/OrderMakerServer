@@ -29,6 +29,8 @@ namespace Mtd.OrderMaker.Server.Data
         public string PartsApproved { get; set; }
         public sbyte Complete { get; set; }
         public int Result { get; set; }
+        
+        public string SignChain { get; set; }
 
         public virtual MtdStore IdNavigation { get; set; }
         public virtual MtdApprovalStage MtdApproveStageNavigation { get; set; }

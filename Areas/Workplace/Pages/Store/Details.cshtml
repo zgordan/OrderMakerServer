@@ -36,6 +36,7 @@
 @section Head{
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/store/css/mtd-store-view.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/ui/css/mtd-ui-material.css" />
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/index/css/mtd-index.css" />
 }
 @section Breadcrumb {
     <li><a href="/">@Localizer["Desktop"]</a></li>
@@ -124,46 +125,61 @@
 
 <div class="mtd-desk" style="position: relative">
 
-    <div style="position: absolute; height: 450px; z-index: 3; margin-top: -35px; margin-left: -5px">
+    <div style="position: absolute; height: 450px; z-index: 1; margin-top: -28px; margin-left: -5px">
         <button class="mdc-fab" aria-label="Favorite" mtd-data-href="/workplace/store/index?indexForm=@Model.MtdForm.Id">
             <div class="mdc-fab__ripple"></div>
             <span class="mdc-fab__icon material-icons">menu_open</span>
         </button>
     </div>
 
-    @if (Model.IsApprover && Model.IsFirstStage)
+    @if (Model.IsApprover)
     {
-        <div style=" top: 65px; z-index:2; position: sticky; position: -webkit-sticky;">
-            <div class="mdc-elevation--z1" style="background-color: white; text-align: center; padding: 8px;">
-                <div style="padding-bottom: 4px; text-align: right">
-                    <i class="material-icons" aria-hidden="true" style="vertical-align:middle; font-size: 32px; color:#FFA200">notification_important</i>
-                    <button id="button-start-approval" class="mdc-button mdc-button--outlined" style="width: 210px">
-                        <i class="material-icons mdc-button__icon" aria-hidden="true" style="color:green">thumb_up</i>
-                        <span class="mdc-button__label">@Localizer["Approve"]</span>
-                    </button>
+
+        <div style="background-color: white; text-align: center; padding: 4px; height: 56px; color: cornflowerblue">
+            <div style="padding-bottom: 4px; text-align: right; position: relative;">
+                <div style="padding: 12px; position: absolute; right: 0; background-color: white; border-radius: 50%; top: -28px; min-width: 230px
+                        -webkit-box-shadow: 0px -8px 5px 0px rgba(105,105,105,1);
+                        -moz-box-shadow: 0px -8px 5px 0px rgba(105,105,105,1);
+                        box-shadow: 0px -3px 2px 0px rgba(105,105,105,1);">
+                    <i class="material-icons" aria-hidden="true" style="vertical-align: middle; color: red">notification_important</i>
+                    <span style="color: red;">@Localizer["Approval is required"]</span>
                 </div>
+
+                @if (Model.IsSign)
+                {
+                    @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/ApprovalButtonsSign.cshtml")
+                }
+                else
+                {
+                    @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/ApprovalButtons.cshtml")
+                }
+
             </div>
         </div>
+
+        @if (Model.IsSign)
+        {
+            @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogConfirmSign.cshtml")
+            @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogReturnSign.cshtml")
+            @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogRejectSign.cshtml")
+        }
+        else
+        {
+            @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogStart.cshtml")
+            @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogReject.cshtml")
+            @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogReturn.cshtml")
+            @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogConfirm.cshtml")
+        }
+
+
+        @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogRequest.cshtml")
+
     }
 
-    @if (Model.IsApprover && !Model.IsFirstStage)
-    {
-        <div style=" top: 65px; z-index:2; position: sticky; position: -webkit-sticky;">
-            <div class="mdc-elevation--z1" style="background-color: white; text-align: center; padding: 8px;">
-                <div style="padding-bottom: 4px; text-align: right">
-                    <i class="material-icons" aria-hidden="true" style="vertical-align:middle; font-size: 32px; color:#FFA200">notification_important</i>
-                    <button id="accept-button" class="mdc-button mdc-button--outlined" style="width: 105px;">
-                        <i class="material-icons mdc-button__icon" aria-hidden="true" style="color: green;">thumb_up</i>
-                        <span class="mdc-button__label">@Localizer["YES"]</span>
-                    </button>
-                    <button id="reject-button" class="mdc-button mdc-button--outlined" style="width: 105px">
-                        <i class="material-icons mdc-button__icon" aria-hidden="true" style="color: red;">thumb_down</i>
-                        <span class="mdc-button__label">@Localizer["NO"]</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    }
+
+
+
+
     <div class="mtd-desk-blocks">
         <div class="mtd-desk-block">
             <div class="mtd-desk-block-content  mtd-desk-block--border">
@@ -236,12 +252,6 @@
     </form>
 }
 
-@if (Model.IsApprover)
-{
-    @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogApprovalStart.cshtml")
-    @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogApprovalConfirm.cshtml")
-    @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogApprovalReject.cshtml")
-}
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/delete'>
     @Html.AntiForgeryToken()
     <input id="store-delete-id" name="store-delete-id" type="hidden" value="@Model.MtdStore.Id" />
@@ -275,78 +285,7 @@
 
 @section Scripts{
     <script src="~/lib/mtd-ordermaker/store/js/mtd-store-view.js" asp-append-version="true"></script>
-    <script>
-        (() => {
-            const dialogSetOwner = document.getElementById('dialog-setowner');
-            if (dialogSetOwner) {
-                const dialog = new mdc.dialog.MDCDialog(dialogSetOwner);
-                document.getElementById('setowner').addEventListener('click', () => {
-                    dialog.open();
-                });
-            }
-
-            const dialogApproval = document.getElementById('dialog-approval');
-            if (dialogApproval) {
-                const d = new mdc.dialog.MDCDialog(dialogApproval);
-                const rb = document.getElementById('reject-button');
-                if (rb) {
-                    rb.addEventListener('click', () => {
-                        d.open();
-                    });
-                }
-            }
-
-            const dialogAccept = document.getElementById('dialog-accept');
-            if (dialogAccept) {
-                const d = new mdc.dialog.MDCDialog(dialogAccept);
-                const rb = document.getElementById('accept-button');
-                if (rb) {
-                    rb.addEventListener('click', () => {
-                        d.open();
-                    });
-                }
-            }
-
-            const checkComplete = document.getElementById("checkbox-complete");
-            if (checkComplete) {
-                checkComplete.addEventListener('change', () => {
-                    const stageSelector = document.getElementById("stage-selector");
-                    if (!checkComplete.checked) {
-                        stageSelector.classList.remove("mdc-select--disabled");
-                    } else {
-                        stageSelector.classList.add("mdc-select--disabled");
-                    }
-                });
-            }
-
-            const eraser = document.getElementById("eraser");
-            if (eraser) {
-                const dialogDelete = new mdc.dialog.MDCDialog(document.getElementById('dialog-store-delete'));
-                eraser.addEventListener('click', () => {
-                    dialogDelete.open();
-                });
-            }
-
-            const newApproval = document.getElementById("new-approval");
-            if (newApproval) {
-                const dialogApproval = new mdc.dialog.MDCDialog(document.getElementById("dialog-new-approval"));
-                newApproval.addEventListener('click', () => {
-                    dialogApproval.open();
-                });
-            }
-
-            const startApproval = document.getElementById("button-start-approval");
-            if (startApproval) {
-                const dialogStart = new mdc.dialog.MDCDialog(document.getElementById("dialog-start"));
-                startApproval.addEventListener('click', () => {
-                    dialogStart.open();
-                });
-            }
-
-        })();
-    </script>
 }
-
 
 
 

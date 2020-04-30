@@ -198,4 +198,19 @@
   <data name="Your new password" xml:space="preserve">
     <value>Ваш новый пароль</value>
   </data>
+  <data name="User's comment" xml:space="preserve">
+    <value>Комментарий пользователя</value>
+  </data>
+  <data name="answered to request signature document at" xml:space="preserve">
+    <value>ответил на запрос резолюции</value>
+  </data>
+  <data name="Approval process event - answer to request" xml:space="preserve">
+    <value>Событие процесса согласования - ответ на запрос</value>
+  </data>
+  <data name="Approval process event - signature request" xml:space="preserve">
+    <value>Событие процесса согласования - запрос резолюции</value>
+  </data>
+  <data name="requested a signature to approve the document at" xml:space="preserve">
+    <value>запросил резолюцию для утверждения документа </value>
+  </data>
 </root>

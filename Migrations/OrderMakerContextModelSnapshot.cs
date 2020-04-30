@@ -974,6 +974,12 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasColumnName("img_type")
                         .HasColumnType("varchar(50)");
 
+                    b.Property<sbyte>("IsSign")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("is_sign")
+                        .HasColumnType("tinyint(4)")
+                        .HasDefaultValueSql("'0'");
+
                     b.Property<string>("MtdStore")
                         .IsRequired()
                         .HasColumnName("mtd_store")
@@ -999,6 +1005,21 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .IsRequired()
                         .HasColumnName("user_id")
                         .HasColumnType("varchar(36)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("user_name")
+                        .HasColumnType("varchar(255)")
+                        .HasDefaultValueSql("'No Name'");
+
+                    b.Property<string>("UserRecipientId")
+                        .HasColumnName("user_recipient_id")
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<string>("UserRecipientName")
+                        .HasColumnName("user_recipient_name")
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
 
@@ -1326,6 +1347,10 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasColumnName("result")
                         .HasColumnType("int(11)")
                         .HasDefaultValueSql("'0'");
+
+                    b.Property<string>("SignChain")
+                        .HasColumnName("sign_chain")
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 

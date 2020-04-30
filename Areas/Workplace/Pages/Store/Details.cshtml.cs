@@ -55,6 +55,7 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
         public bool IsApprover { get; set; }
         public bool IsReviewer { get; set; }        
         public bool IsFirstStage { get; set; }
+        public bool IsSign { get; set; }
         public ApprovalStatus ApprovalStatus { get; set; }
         public List<MtdFormPart> BlockParts { get; set; }
         public bool IsFormApproval { get; set; }
@@ -114,10 +115,12 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                 ChangesHistory.CreateByUser = created.UserName;
             }
 
+            ApprovalHandler approvalHandler = new ApprovalHandler(_context, MtdStore.Id);
+            IsApprover = await approvalHandler.IsApproverAsync(user);
+            IsFirstStage = await approvalHandler.IsFirstStageAsync();
 
             if (IsInstallerOwner)
             {
-
                 List<WebAppUser> webAppUsers = new List<WebAppUser>();
                 bool isViewAll = await _userHandler.GetFormPolicyAsync(user, MtdStore.MtdForm, RightsType.View);
                 if (isViewAll)
@@ -131,10 +134,24 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
 
                 ViewData["UsersList"] = new SelectList(webAppUsers.OrderBy(x=>x.Title), "Id", "Title");
             }
-            
-            ApprovalHandler approvalHandler = new ApprovalHandler(_context, MtdStore.Id);
-            IsApprover = await approvalHandler.IsApproverAsync(user);
-            IsFirstStage = await approvalHandler.IsFirstStageAsync();            
+
+            if (IsApprover && !IsFirstStage)
+            {
+                List<WebAppUser> usersRequest = await _userHandler.GetUsersForViewingForm(MtdStore.MtdForm,MtdStore.Id);
+                MtdApprovalStage stage =  await approvalHandler.GetCurrentStageAsync();
+                List<string> userIds = await approvalHandler.GetUsersWaitSignAsync();
+                IList<MtdApprovalStage> mas = await approvalHandler.GetStagesAsync();
+                List<string> userInStagesIds = mas.Where(x => x.UserId != "owner").GroupBy(x => x.UserId).Select(x => x.Key).ToList();
+
+                usersRequest = usersRequest.Where(x => !userIds.Contains(x.Id) 
+                    && !userInStagesIds.Contains(x.Id) 
+                    && x.Id != user.Id 
+                    && x.Id != stage.UserId).ToList();
+                
+                ViewData["UsersRequest"] = new SelectList(usersRequest.OrderBy(x => x.Title), "Id", "Title");
+
+            }
+                                              
             IList<MtdApprovalStage> stages = await approvalHandler.GetStagesDownAsync();
             ViewData["Stages"] = new SelectList(stages.OrderByDescending(x => x.Stage), "Id", "Name");
             MtdApproval = await approvalHandler.GetApproval();
@@ -152,8 +169,12 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
 
             }
 
+            IsSign = await approvalHandler.IsSignAsync();
+
             IList<MtdLogApproval> logs = await _context.MtdLogApproval
                 .Where(x => x.MtdStore == id).ToListAsync();
+
+            bool isComplete = await approvalHandler.IsComplete();
 
             ApprovalHistory = new List<ApprovalLog>();
             foreach(var log in logs)
@@ -162,13 +183,15 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                 ApprovalLog temp = new ApprovalLog
                 {
                     Time = log.Timecr,
-                    UserName = appUser.Title,
+                    UserName = appUser == null ? log.UserName : appUser.Title,
                     Result = log.Result,
                     ImgData = log.ImgData,
                     ImgType = log.ImgType,
                     Note = log.Note,
                     Color = log.Color,
-                    Comment = log.Comment ?? string.Empty
+                    Comment = log.Comment ?? string.Empty,
+                    IsSign = log.IsSign == 0 ? false : true,
+                    UserRecipient = log.UserRecipientName,              
                 };
 
                 ApprovalHistory.Add(temp);

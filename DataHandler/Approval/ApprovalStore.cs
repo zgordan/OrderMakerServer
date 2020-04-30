@@ -13,8 +13,7 @@ namespace Mtd.OrderMaker.Server.DataHandler.Approval
         Waiting,
         Approved,
         Rejected,
-        Required,        
-
+        Required
     }
 
     public class ApprovalStore

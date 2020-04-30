@@ -1,0 +1,69 @@
+﻿@model DetailsModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+
+
+    <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/approval/reject/0'>
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id-store" value="@Model.MtdStore.Id" />
+        <input type="checkbox" class="mdc-checkbox__native-control" id="checkbox-complete" name="checkbox-complete" checked style="display: none" />
+        <select class="mdc-select__native-control" asp-items="ViewBag.Stages" name="next-stage" style="display: none"></select>
+
+        <div id="dialog-reject" class="mdc-dialog"
+             role="alertdialog"
+             aria-modal="true"
+             aria-labelledby="dialog-reject-title"
+             aria-describedby="dialog-reject-content">
+            <div class="mdc-dialog__container">
+                <div class="mdc-dialog__surface">
+                    <h2 class="mdc-dialog__title" id="reject-form-title">
+                        @Localizer["Document Rejection"]
+                    </h2>
+                    <div class="mdc-dialog__content" id="reject-dialog-content">
+                        <hr />
+                        @Localizer["Your decision to complete the approval process with a Reject status"].
+                        <hr />
+
+                        @if (Model.ListRejections != null && Model.ListRejections.Count > 0)
+                        {
+                            <div style="padding-top: 18px;">
+                                @Localizer["Select a solution from the list"]:
+                            </div>
+                            <div class="mdc-select" style="width: 100%; margin-top: 8px;">
+                                <i class="mdc-select__dropdown-icon"></i>
+                                <select class="mdc-select__native-control" asp-items="ViewBag.ListRejection" name="id-rejection"></select>
+                                <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Decision Result"]</label>
+                                <div class="mdc-line-ripple"></div>
+                            </div>
+                        }
+
+                        <div style="padding-top: 18px; width: 100%">
+                            <label class="mdc-text-field mdc-text-field--textarea" style="width:100%">
+                                <div class="mdc-text-field-character-counter">0 / 250</div>
+                                <textarea class="mdc-text-field__input" aria-labelledby="comment-reject-id" name="comment-reject-id" rows="3" cols="40"
+                                          maxlength="250" placeholder="@Localizer["Create a comment if necessary"]"></textarea>
+                                <div class="mdc-notched-outline">
+                                    <div class="mdc-notched-outline__leading"></div>
+                                    <div class="mdc-notched-outline__notch">
+                                        <span class="mdc-floating-label" id="comment-reject-id">@Localizer["Comment"]</span>
+                                    </div>
+                                    <div class="mdc-notched-outline__trailing"></div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <footer class="mdc-dialog__actions">
+                        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                            <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                        </button>
+                        <button type="button" mtd-data-clicker mtd-data-message="@Localizer["Document is rejected"]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" style="color:red">
+                            <span class="mdc-button__label">@Localizer["Reject"]</span>
+                        </button>
+                    </footer>
+                </div>
+            </div>
+            <div class="mdc-dialog__scrim"></div>
+        </div>
+    </form>

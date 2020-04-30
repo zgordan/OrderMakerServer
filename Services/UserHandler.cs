@@ -342,6 +342,23 @@ namespace Mtd.OrderMaker.Server.Services
        
         }
 
+        public async Task<List<WebAppUser>> GetUsersForViewingForm(string idForm, string idStore = null)
+        {
+            List<WebAppUser> usersAll = await this.Users.ToListAsync();
+            List<WebAppUser> usersAccess = new List<WebAppUser>();
+
+            foreach(WebAppUser user in usersAll)
+            {
+                bool viewer = await IsViewer(user, idForm, idStore);
+                if (viewer)
+                {
+                    usersAccess.Add(user);
+                }
+            }
+
+            return usersAccess;
+
+        }
 
         public async Task<bool> GetFormPolicyAsync(WebAppUser user, string idForm, RightsType rightsType)
         {

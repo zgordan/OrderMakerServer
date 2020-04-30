@@ -123,7 +123,13 @@
   <data name="Created by" xml:space="preserve">
     <value>Создано</value>
   </data>
+  <data name="Document returned for review" xml:space="preserve">
+    <value>Документ возвращен на пересмотр</value>
+  </data>
   <data name="Last edited by" xml:space="preserve">
     <value>Изменено</value>
+  </data>
+  <data name="User Resolution Request" xml:space="preserve">
+    <value>Запрос резолюции пользователя</value>
   </data>
 </root>

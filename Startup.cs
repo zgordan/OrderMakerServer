@@ -178,7 +178,8 @@ namespace Mtd.OrderMaker.Server
 
             app.UseRequestLocalization(localizationOptions);
 
-            app.UseHttpsRedirection();
+            app.UseHttpsRedirection();           
+
             app.UseStaticFiles();
             
             app.UseRouting();
@@ -193,6 +194,7 @@ namespace Mtd.OrderMaker.Server
             });
 
             app.UseMvc();
+
         }
 
         private void InitDataBase(IServiceProvider serviceProvider)
@@ -275,10 +277,10 @@ namespace Mtd.OrderMaker.Server
                 context.SaveChanges();
             }
 
-            Task<bool> sysType = context.MtdSysType.AnyAsync();
+            Task<int> sysType = context.MtdSysType.CountAsync();
             sysType.Wait();
 
-            if (!sysType.Result)
+            if (sysType.Result < 10)
             {
 
                 List<MtdSysType> mtdSysTypes = new List<MtdSysType> {

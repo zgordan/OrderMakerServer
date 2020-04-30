@@ -78,9 +78,9 @@ const CreateFormData = (form) => {
     return formData;
 }
 
-const CheckRequired = () => {
+const CheckRequired = (form) => {
     let counter = 0;
-    document.querySelectorAll("[required]").forEach((obj) => {
+    form.querySelectorAll("[required]").forEach((obj) => {
         if (!obj.value) { counter++; }
     });
     return counter;
@@ -103,7 +103,7 @@ const ListenerForPostData = () => {
 
             clicker.addEventListener('click', () => {
 
-                const check = CheckRequired();
+                const check = CheckRequired(form);
                 if (check > 0) {
                     const dialog = new mdc.dialog.MDCDialog(document.getElementById('dialog-main-info'));
                     dialog.open();
