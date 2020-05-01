@@ -19,10 +19,13 @@
 
 const snackbar = new mdc.snackbar.MDCSnackbar(document.getElementById('main-snack'));
 
-const MainShowSnackBar = (message) => {
+const MainShowSnackBar = (message, error = false) => {
     const div = document.getElementById('main-snack');
     div.classList.add("mdc-snackbar--open");
     snackbar.labelText = message;
+    if (error) {
+        snackbar.timeoutMs = 10000;
+    }
     snackbar.open();
 }
 
@@ -87,7 +90,7 @@ const CheckRequired = (form) => {
 }
 
 const ListenerForPostData = () => {
-    
+
     const forms = document.querySelectorAll("form[mtd-data-form]");
     forms.forEach((form) => {
 
@@ -122,13 +125,21 @@ const ListenerForPostData = () => {
 
                     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
                         //document.location.reload(location.hash, '');
-                        if (message) { localStorage.setItem("Message", message); }
+                        if (message) { sessionStorage.setItem("Message", message); }
 
                         if (location) {
                             document.location = location;
                         } else {
                             document.location.reload();
                         }
+                    }
+
+                    if (xmlHttp.status == 400) {
+                        setTimeout(() => { ActionShowModal(false); MainShowSnackBar(xmlHttp.responseText, true);}, 1000);                                                                        
+                    }
+
+                    if (xmlHttp.status == 500) {
+                        setTimeout(() => { ActionShowModal(false); MainShowSnackBar("500 Internal Server Error", true); }, 1000);
                     }
                 }
             });
@@ -137,7 +148,7 @@ const ListenerForPostData = () => {
         inputs.forEach((input) => {
             const location = input.getAttribute('mtd-data-location');
             const message = input.getAttribute('mtd-data-message');
-            input.addEventListener('keydown', (e) => {                
+            input.addEventListener('keydown', (e) => {
                 if (e.keyCode === 13) {
 
                     const check = CheckRequired();
@@ -157,13 +168,21 @@ const ListenerForPostData = () => {
                         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
                             //document.location.reload(location.hash, '');
 
-                            if (message) { localStorage.setItem("Message", message); }
+                            if (message) { sessionStorage.setItem("Message", message); }
 
                             if (location) {
                                 document.location = location;
                             } else {
                                 document.location.reload();
                             }
+                        }
+
+                        if (xmlHttp.status == 400) {
+                            setTimeout(() => { ActionShowModal(false); MainShowSnackBar(xmlHttp.responseText, true); }, 1000);  
+                        }
+
+                        if (xmlHttp.status == 500) {
+                            setTimeout(() => { ActionShowModal(false); MainShowSnackBar("500 Internal Server Error", true); }, 1000);
                         }
                     }
                 }
@@ -208,12 +227,18 @@ const DetectMobile = () => {
 
 (() => {
 
-    DetectMobile();   
+    DetectMobile();
 
-    if (localStorage.getItem("Message")) {
+    if (sessionStorage.getItem("Message")) {
 
-        MainShowSnackBar(localStorage.getItem("Message"));
-        localStorage.clear();
+        MainShowSnackBar(sessionStorage.getItem("Message"));
+        sessionStorage.clear();
+    }
+
+    if (sessionStorage.getItem("ErrorMessage")) {
+
+        MainShowSnackBar(sessionStorage.getItem("ErrorMessage"), true);
+        sessionStorage.clear();
     }
 
     ListenerForAction();
@@ -236,7 +261,7 @@ const DetectMobile = () => {
         new mdc.iconButton.MDCIconButtonToggle(item);
     });
 
-    
+
 
     const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
 
@@ -274,7 +299,7 @@ const DetectMobile = () => {
     const mainUserButton = document.getElementById('main-user-button');
     if (mainUserButton) {
         const mainUserMenu = new mdc.menuSurface.MDCMenuSurface(document.getElementById('main-user-menu'));
-        
+
         mainUserMenu.setFixedPosition(true);
         mainUserButton.addEventListener('click', () => {
             mainUserMenu.open = !mainUserMenu.open;

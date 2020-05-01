@@ -61,6 +61,10 @@
             <span class="mdc-list-item__text">@Localizer["Generating a password"]</span>
         </li>
     }
+    <li id="transfer-open-dialog" class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">sync_alt</span>
+        <span class="mdc-list-item__text">@Localizer["Transfer all documents"]</span>
+    </li>
     <li role="separator" class="mdc-list-divider"></li>
     <li id="users-open-dialog" class="mdc-list-item" role="menuitem">
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">delete</span>
@@ -181,8 +185,9 @@
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/users/admin/delete'>
     @Html.AntiForgeryToken()
     <input id="user-delete-id" name="user-delete-id" type="hidden" value="@ViewBag.userId" />
-    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/identity/users" type="hidden" />
+    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/identity/users/accounts"  mtd-data-message="@Localizer["User daleted"]." type="hidden" />
 </form>
+
 <div id="dialog-users-delete" class="mdc-dialog"
      role="alertdialog"
      aria-modal="true"
@@ -208,6 +213,76 @@
     </div>
     <div class="mdc-dialog__scrim"></div>
 </div>
+
+<div id="dialog-users-delete" class="mdc-dialog"
+     role="alertdialog"
+     aria-modal="true"
+     aria-labelledby="my-dialog-title"
+     aria-describedby="my-dialog-content">
+    <div class="mdc-dialog__container">
+        <div class="mdc-dialog__surface">
+            <h2 class="mdc-dialog__title" id="delete-dialog-title">
+                @Localizer["Delete user"]?
+            </h2>
+            <div class="mdc-dialog__content" id="delete-dialog-content">
+                @Localizer["The user will be permanently deleted"].
+            </div>
+            <footer class="mdc-dialog__actions">
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                    <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                </button>
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" onclick="document.getElementById('deleteClicker').click();">
+                    <span class="mdc-button__label">@Localizer["Delete"]</span>
+                </button>
+            </footer>
+        </div>
+    </div>
+    <div class="mdc-dialog__scrim"></div>
+</div>
+
+<form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/users/admin/transfer'>
+    @Html.AntiForgeryToken()
+    <input id="user-owner-id" name="user-owner-id" type="hidden" value="@ViewBag.userId" />
+    <div id="dialog-user-transfer" class="mdc-dialog"
+         role="alertdialog"
+         aria-modal="true"
+         aria-labelledby="transfer-dialog-title"
+         aria-describedby="transfer-dialog-content">
+        <div class="mdc-dialog__container">
+            <div class="mdc-dialog__surface">
+                <h2 class="mdc-dialog__title" id="transfer-dialog-title">
+                    @Localizer["Transfer of documents"]
+                </h2>
+                <div class="mdc-dialog__content" id="transfer-dialog-content">
+                    <hr />
+                    @Localizer["Transfer of documents to the user"].
+                    <hr />
+                    <div style="padding-top: 18px;">
+                        @Localizer["Select a user from the list"]:
+                    </div>
+
+                    <div class="mdc-select" style="width: 100%; margin-top: 8px;">
+                        <i class="mdc-select__dropdown-icon"></i>
+                        <select class="mdc-select__native-control" asp-items="ViewBag.Users" name="user-recipient-id"></select>
+                        <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["User"]</label>
+                        <div class="mdc-line-ripple"></div>
+                    </div>
+                </div>
+                <footer class="mdc-dialog__actions">
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                        <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                    </button>
+                    <button type="button" mtd-data-clicker mtd-data-message="@Localizer["Transfer process completed"]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+                        <span class="mdc-button__label" style="color: red">@Localizer["Transfer"]</span>
+                    </button>
+                </footer>
+            </div>
+        </div>
+        <div class="mdc-dialog__scrim"></div>
+    </div>
+</form>
+
+
 
 @section Scripts {
     <script src="~/lib/mtd-ordermaker/users/js/mtd-users-edit.js" asp-append-version="true"></script>

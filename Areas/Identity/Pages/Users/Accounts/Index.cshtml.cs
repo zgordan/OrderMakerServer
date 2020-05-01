@@ -33,8 +33,9 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
             {
                 string normText = searchText.ToUpper();
                 query = query.Where(x => x.Title.ToUpper().Contains(normText) ||
-                                        x.UserName.ToUpper().Contains(normText) || x.Email.ToUpper().Contains(normText)
-                                        );
+                                        x.UserName.ToUpper().Contains(normText) || 
+                                        x.Email.ToUpper().Contains(normText) || 
+                                        x.TitleGroup.ToUpper().Contains(normText));
                 SearchText = searchText;
             }
 

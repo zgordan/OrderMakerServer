@@ -24,6 +24,11 @@
         dialog.open();
     });
 
+    const dialogTransfer = new mdc.dialog.MDCDialog(document.getElementById('dialog-user-transfer'));
+    document.getElementById('transfer-open-dialog').addEventListener('click', () => {
+        dialogTransfer.open();
+    });
+
     const selectPart = new mdc.select.MDCSelect(document.getElementById("users-edit-role"));
 
 })();

@@ -190,6 +190,7 @@ namespace Mtd.OrderMaker.Server
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
 

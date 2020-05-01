@@ -80,10 +80,25 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             string userId = Request.Form["user-delete-id"];
             WebAppUser user = await _userManager.FindByIdAsync(userId);
 
+            if (user == null) {
+                string errorText = _localizer["ERROR! User not found."];
+                return BadRequest(errorText);
+            }
+
+            bool isApprover = await _context.MtdApprovalStage.Where(x => x.UserId == user.Id).AnyAsync();
+            bool isOwner = await _context.MtdStoreOwner.Where(x => x.UserId == user.Id).AnyAsync();
+
+            if (isApprover || isOwner)
+            {
+                string errorText = _localizer["ERROR! There are documents owned by the user. Before deleting, transfer of documents to another user."];
+                return BadRequest(errorText);
+            }
+
             IList<MtdFilter> mtdFilters = await _context.MtdFilter.Where(x => x.IdUser == user.Id).ToListAsync();
             _context.MtdFilter.RemoveRange(mtdFilters);
             await _context.SaveChangesAsync();
             await _userManager.DeleteAsync(user);
+
             return Ok();
         }
 
@@ -170,6 +185,42 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 }
 
             }
+
+            return Ok();
+        }
+
+        [HttpPost("admin/transfer")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> OnPostAdminTranferAsync()
+        {
+            string UserOwner = Request.Form["user-owner-id"];
+            string UserRecipient = Request.Form["user-recipient-id"];
+
+            WebAppUser userOwner = await _userManager.FindByIdAsync(UserOwner);
+            WebAppUser userRecipient = await _userManager.FindByIdAsync(UserRecipient);
+            
+            if (userOwner == null || userRecipient == null)
+            {
+                string errorText = _localizer["ERROR! User not found."];
+                return BadRequest(errorText);
+            }
+
+            IList<MtdStoreOwner> storeOwners = await _context.MtdStoreOwner.Where(x => x.UserId == userOwner.Id).ToListAsync();                
+            foreach(MtdStoreOwner owner in storeOwners)
+            {
+                owner.UserId = userRecipient.Id;
+                owner.UserName = userRecipient.Title;
+            }
+
+            IList<MtdApprovalStage> stages = await _context.MtdApprovalStage.Where(x => x.UserId == userOwner.Id).ToListAsync();
+            foreach(MtdApprovalStage stage in stages)
+            {
+                stage.UserId = userRecipient.Id;
+            }
+
+            _context.MtdStoreOwner.UpdateRange(storeOwners);
+            _context.MtdApprovalStage.UpdateRange(stages);
+            await _context.SaveChangesAsync();
 
             return Ok();
         }

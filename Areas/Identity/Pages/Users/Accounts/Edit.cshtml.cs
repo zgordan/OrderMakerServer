@@ -40,22 +40,16 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
 
         private readonly UserHandler _userManager;
         private readonly RoleManager<WebAppRole> _roleManager;
-        private readonly IEmailSender _emailSender;
-        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly OrderMakerContext _context;
 
         public EditModel(
             UserHandler userManager,
             RoleManager<WebAppRole> roleManager,
-            IEmailSender emailSender,
-            IWebHostEnvironment hostingEnvironment,
             OrderMakerContext context
             )
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _emailSender = emailSender;
-            _hostingEnvironment = hostingEnvironment;
             _context = context;
         }
         
@@ -115,7 +109,8 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
             };
 
             ViewData["Roles"] = new SelectList(roles.OrderBy(x=>x.Seq), "Id", "Title", Input.Role);
-            
+            ViewData["Users"] = new SelectList(_userManager.Users.OrderBy(x => x.Title), "Id", "Title", Input.Role);
+
             string policyID = await _userManager.GetPolicyIdAsync(user);
             IList<MtdPolicy> mtdPolicy = await _userManager.CacheGetOrCreateAsync(); 
             ViewData["Policies"] = new SelectList(mtdPolicy.OrderBy(x=>x.Name), "Id", "Name", policyID);

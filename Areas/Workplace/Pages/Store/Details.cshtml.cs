@@ -81,15 +81,14 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
             }
 
             var user = await _userHandler.GetUserAsync(HttpContext.User);
-            bool isViewer = await _userHandler.IsViewer(user, MtdStore.MtdForm, MtdStore.Id);
-
-            IsEditor = await _userHandler.IsEditor(user, MtdStore.MtdForm, MtdStore.Id);            
+            bool isViewer = await _userHandler.IsViewer(user, MtdStore.MtdForm, MtdStore.Id);                    
             
             if (!isViewer)
             {
-                return Forbid();
+                return NotFound();
             }
 
+            IsEditor = await _userHandler.IsEditor(user, MtdStore.MtdForm, MtdStore.Id);
             IsInstallerOwner = await _userHandler.IsInstallerOwner(user, MtdStore.MtdForm);
             IsEraser = await _userHandler.IsEraser(user, MtdStore.MtdForm, MtdStore.Id);
             
