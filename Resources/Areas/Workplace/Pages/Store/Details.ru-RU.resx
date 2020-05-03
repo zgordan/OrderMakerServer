@@ -135,6 +135,9 @@
   <data name="Are you confirm start approval workflow?" xml:space="preserve">
     <value>Вы подтверждаете начало процесса утверждения?</value>
   </data>
+  <data name="Back" xml:space="preserve">
+    <value>Назад</value>
+  </data>
   <data name="Begin Approval Process" xml:space="preserve">
     <value>Начало процесса согласования</value>
   </data>
@@ -171,11 +174,17 @@
   <data name="Form view" xml:space="preserve">
     <value>Просмотр</value>
   </data>
+  <data name="List" xml:space="preserve">
+    <value>Список</value>
+  </data>
   <data name="List data" xml:space="preserve">
     <value>Список</value>
   </data>
   <data name="New approval" xml:space="preserve">
     <value>Новое согласование</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Далее</value>
   </data>
   <data name="NO" xml:space="preserve">
     <value>НЕТ</value>

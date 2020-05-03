@@ -90,8 +90,8 @@ namespace Mtd.OrderMaker.Server.Components.Index
                 ShowDate = await handlerFilter.IsShowDate(),
                 ShowNumber = await handlerFilter.IsShowNumber(),
                 ApprovalStores = approvalStores,
-                MtdApproval = mtdApproval
-                                         
+                MtdApproval = mtdApproval,
+                StoreIds = string.Join("&", storeIds)                                         
             };
 
             return View("Default", rowsModel);

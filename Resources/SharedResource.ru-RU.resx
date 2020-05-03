@@ -213,4 +213,7 @@
   <data name="requested a signature to approve the document at" xml:space="preserve">
     <value>запросил резолюцию для утверждения документа </value>
   </data>
+  <data name="ERROR! There are documents owned by the user. Before deleting, transfer of documents to another user." xml:space="preserve">
+    <value>ОШИБКА! Есть документы, принадлежащие пользователю. Перед удалением передайте документы другому пользователю.</value>
+  </data>
 </root>

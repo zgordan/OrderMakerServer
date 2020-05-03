@@ -340,6 +340,11 @@ var cols = document.querySelectorAll('#indexListColumn .mdc-list-item');
 
 (() => {
 
+    const storeIds = document.getElementById("nav-store-ids");
+    if (storeIds) {
+        sessionStorage.setItem("storeIds", storeIds.value);
+    }
+
     const rows = document.querySelectorAll("tr[mtd-data-row]");
     rows.forEach((row) => {
 

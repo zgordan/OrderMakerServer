@@ -36,5 +36,6 @@ namespace Mtd.OrderMaker.Server.Models.Index
         public bool ShowDate { get; set; }
         public List<ApprovalStore> ApprovalStores { get; set; }
         public MtdApproval MtdApproval { get; set; }
+        public string StoreIds { get; set; }
     }
 }

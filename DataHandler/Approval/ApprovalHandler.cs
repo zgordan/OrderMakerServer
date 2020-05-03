@@ -177,7 +177,7 @@ namespace Mtd.OrderMaker.Server.DataHandler.Approval
         {
             MtdStore mtdStore = await GetStoreAsync();
             List<string> result = new List<string>();
-            if (mtdStore.MtdStoreApproval.SignChain != null && mtdStore.MtdStoreApproval.SignChain.Length > 0)
+            if (mtdStore.MtdStoreApproval != null && mtdStore.MtdStoreApproval.SignChain != null && mtdStore.MtdStoreApproval.SignChain.Length > 0)
             {
                 result = mtdStore.MtdStoreApproval.SignChain.Split('&').ToList();
             }
