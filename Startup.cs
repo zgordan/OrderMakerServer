@@ -42,6 +42,9 @@ using System.Globalization;
 using Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore;
 using Mtd.OrderMaker.Server;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Mtd.OrderMaker.Server
 {
@@ -58,12 +61,13 @@ namespace Mtd.OrderMaker.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
-
+           
             services.Configure<CookiePolicyOptions>(options =>
             {
-
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
+                options.HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always;
+                options.CheckConsentNeeded = context => false;
+                options.MinimumSameSitePolicy = SameSiteMode.Lax;
+                options.Secure = CookieSecurePolicy.Always;
             });
 
             services.AddDbContext<IdentityDbContext>(options =>
@@ -86,6 +90,7 @@ namespace Mtd.OrderMaker.Server
             services.AddMvc()
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
+
 
             services.AddAuthorization(options =>
             {
@@ -179,7 +184,6 @@ namespace Mtd.OrderMaker.Server
             app.UseRequestLocalization(localizationOptions);
 
             app.UseHttpsRedirection();           
-
             app.UseStaticFiles();
             
             app.UseRouting();
@@ -189,12 +193,11 @@ namespace Mtd.OrderMaker.Server
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
+            {                
                 endpoints.MapRazorPages();
             });
 
-            app.UseMvc();
+            app.UseMvc();           
 
         }
 
