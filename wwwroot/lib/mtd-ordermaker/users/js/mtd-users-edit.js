@@ -31,4 +31,26 @@
 
     const selectPart = new mdc.select.MDCSelect(document.getElementById("users-edit-role"));
 
+    const cpqViewAll = document.getElementById("cpq-view-all");
+    const cpqViewGroup = document.getElementById("cpq-view-group");
+    const cpqViewOwn = document.getElementById("cpq-view-own");
+
+    cpqViewAll.addEventListener("change", () => {
+        cpqViewGroup.checked = false;
+        cpqViewOwn.checked = false;
+        cpqViewAll.checked = true;
+    });
+
+    cpqViewGroup.addEventListener("change", () => {
+        cpqViewAll.checked = false;
+        cpqViewOwn.checked = false;
+        cpqViewGroup.checked = true;
+    });
+
+    cpqViewOwn.addEventListener("change", () => {
+        cpqViewAll.checked = false;
+        cpqViewGroup.checked = false;
+        cpqViewOwn.checked = true;
+    });
+
 })();

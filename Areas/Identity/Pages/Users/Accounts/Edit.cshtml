@@ -117,9 +117,11 @@
                             </div>
                         </div>
                     </div>
-                    <div style="border: 1px solid lightgray; padding: 8px; height: 256px; overflow: hidden; overflow-y: auto">
-                        <div><span style="font-weight: bold; padding: 4px;">@Localizer["Groups user"]</span></div>
-                        <div style="display: flex; flex-wrap:wrap; max-width: 950px;">
+                    <div style="border: 1px solid lightgray; padding: 8px; height: 256px;position:relative">
+                        <div style="position: absolute; padding: 4px; top: -16px; left: 12px; background-color:white;font-weight: 500; z-index:1;">
+                            @Localizer["Groups user"]
+                        </div>
+                        <div style="display: flex; flex-wrap:wrap; max-width: 950px;  overflow: hidden; overflow-y: auto; ">
                             @if (!Model.MtdGroups.Any())
                             {
                                 <span style="padding: 4px;">
@@ -156,6 +158,7 @@
                 </div>
             </div>
         </div>
+        @await Html.PartialAsync("_CpqRulesPartial.cshtml")
     </div>
 </form>
 
@@ -185,7 +188,7 @@
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/users/admin/delete'>
     @Html.AntiForgeryToken()
     <input id="user-delete-id" name="user-delete-id" type="hidden" value="@ViewBag.userId" />
-    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/identity/users/accounts"  mtd-data-message="@Localizer["User daleted"]." type="hidden" />
+    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/identity/users/accounts" mtd-data-message="@Localizer["User daleted"]." type="hidden" />
 </form>
 
 <div id="dialog-users-delete" class="mdc-dialog"
@@ -231,7 +234,7 @@
                 <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
                     <span class="mdc-button__label">@Localizer["Cancel"]</span>
                 </button>
-                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" 
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes"
                         onclick="document.getElementById('deleteClicker').click();">
                     <span class="mdc-button__label">@Localizer["Delete"]</span>
                 </button>

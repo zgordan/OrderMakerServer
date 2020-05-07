@@ -2,19 +2,21 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mtd.OrderMaker.Server.Data;
 
 namespace Mtd.OrderMaker.Server.Data.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
-    partial class IdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200504163149_AddCpqRoles")]
+    partial class AddCpqRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.2")
+                .HasAnnotation("ProductVersion", "3.1.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -121,104 +123,6 @@ namespace Mtd.OrderMaker.Server.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("Mtd.Cpq.Manager.Areas.Identity.Data.MtdCpqLogAction", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
-
-                    b.Property<DateTime>("ActionTime")
-                        .HasColumnName("action_time")
-                        .HasColumnType("datetime");
-
-                    b.Property<int>("ActionType")
-                        .HasColumnName("action_type")
-                        .HasColumnType("int");
-
-                    b.Property<string>("DocumentId")
-                        .IsRequired()
-                        .HasColumnName("document_id")
-                        .HasColumnType("varchar(36)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnName("user_id")
-                        .HasColumnType("varchar(36)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnName("user_name")
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DocumentId")
-                        .HasName("idx_documentid");
-
-                    b.HasIndex("Id")
-                        .IsUnique()
-                        .HasName("id_UNIQUE");
-
-                    b.HasIndex("UserId")
-                        .HasName("idx_userid");
-
-                    b.ToTable("mtd_cpq_log_action");
-                });
-
-            modelBuilder.Entity("Mtd.Cpq.Manager.Areas.Identity.Data.MtdCpqProposalOwner", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnName("user_name")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Id")
-                        .IsUnique()
-                        .HasName("id_UNIQUE");
-
-                    b.HasIndex("UserId")
-                        .HasName("idx_userid");
-
-                    b.ToTable("mtd_cpq_proposal_owner");
-                });
-
-            modelBuilder.Entity("Mtd.Cpq.Manager.Areas.Identity.Data.MtdCpqTitlesOwner", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnName("user_id")
-                        .HasColumnType("varchar(36)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnName("user_name")
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Id")
-                        .IsUnique()
-                        .HasName("id_UNIQUE");
-
-                    b.HasIndex("UserId")
-                        .HasName("idx_userid");
-
-                    b.ToTable("mtd_cpq_titles_owner");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Areas.Identity.Data.WebAppRole", b =>

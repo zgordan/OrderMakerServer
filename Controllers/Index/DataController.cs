@@ -39,7 +39,6 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
         private readonly OrderMakerContext _context;
         private readonly UserManager<WebAppUser> _userManager;
 
-
         public DataController(OrderMakerContext context, UserManager<WebAppUser> userManager)
         {
             _context = context;

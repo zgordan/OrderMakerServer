@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -29,6 +30,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using Mtd.Cpq.Manager.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Data;
 using Mtd.OrderMaker.Server.DataConfig;
@@ -42,34 +44,27 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
     public partial class UsersController : ControllerBase
     {
         private readonly UserHandler _userManager;
-        private readonly SignInManager<WebAppUser> signInManager;
         private readonly RoleManager<WebAppRole> _roleManager;     
         private readonly IEmailSenderBlank _emailSender;
-        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly OrderMakerContext _context;
         private readonly IStringLocalizer<SharedResource> _localizer;
-        private readonly IOptions<ConfigSettings> _options;
+        private readonly Mtd.OrderMaker.Server.Data.IdentityDbContext identity;
 
 
         public UsersController(
-            SignInManager<WebAppUser> signInManager,
             UserHandler userManager,
             RoleManager<WebAppRole> roleManager,   
             IEmailSenderBlank emailSender,
-            IWebHostEnvironment hostingEnvironment,
             OrderMakerContext context,
-            IStringLocalizer<SharedResource> localizer,
-            IOptions<ConfigSettings> options
+            IStringLocalizer<SharedResource> localizer, IdentityDbContext identity
             )
         {
-            this.signInManager = signInManager;
             _userManager = userManager;
             _roleManager = roleManager;   
             _emailSender = emailSender;
-            _hostingEnvironment = hostingEnvironment;
             _context = context;
             _localizer = localizer;
-            _options = options;
+            this.identity = identity;
         }
 
 
@@ -87,8 +82,10 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
 
             bool isApprover = await _context.MtdApprovalStage.Where(x => x.UserId == user.Id).AnyAsync();
             bool isOwner = await _context.MtdStoreOwner.Where(x => x.UserId == user.Id).AnyAsync();
+            bool isCpqTitlesOwner = await identity.MtdCpqTitlesOwners.Where(x => x.UserId == user.Id).AnyAsync();
+            bool isCpqQuoteOwner = await identity.MtdCpqProposalOwners.Where(x => x.UserId == user.Id).AnyAsync();
 
-            if (isApprover || isOwner)
+            if (isApprover || isOwner || isCpqQuoteOwner || isCpqTitlesOwner)
             {
                 string errorText = _localizer["ERROR! There are documents owned by the user. Before deleting, transfer of documents to another user."];
                 return BadRequest(errorText);
@@ -107,7 +104,9 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
         public async Task<IActionResult> OnPostAdminProfileAsync()
         {
 
-            string username = Request.Form["UserName"];
+            var form = await HttpContext.Request.ReadFormAsync();
+
+            string username = form["UserName"];
 
             if (username == null)
             {
@@ -121,16 +120,21 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 return NotFound();
             }
 
-            string email = Request.Form["Input.Email"];
-            string title = Request.Form["Input.Title"];
-            string titleGroup = Request.Form["Input.TitleGroup"];
-            string phone = Request.Form["Input.PhoneNumber"];
-            string roleId = Request.Form["Input.Role"];
-            string policyId = Request.Form["Input.Policy"];
+            string email = form["Input.Email"];
+            string title = form["Input.Title"];
+            string titleGroup = form["Input.TitleGroup"];
+            string phone = form["Input.PhoneNumber"];
+            string roleId = form["Input.Role"];
+            string roleCpqId = form["Input.RoleCpq"];
+            string policyId = form["Input.Policy"];
+            string cpqViewAll = form["cpq-view-all"];
+            string cpqViewGroup = form["cpq-view-group"];
+            string cpqViewOwn = form["cpq-view-own"];
 
             WebAppRole roleUser = await _roleManager.FindByIdAsync(roleId);
+            WebAppRole roleCpq = await _roleManager.FindByIdAsync(roleCpqId);
 
-            string[] formConfirm = Request.Form["Input.IsConfirm"];
+            string[] formConfirm = form["Input.IsConfirm"];
             bool isConfirm = false;
             if (formConfirm.FirstOrDefault() != null)
             {
@@ -167,7 +171,8 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             IList<string> roles = await _userManager.GetRolesAsync(user);
             await _userManager.RemoveFromRolesAsync(user, roles);
             await _userManager.AddToRoleAsync(user, roleUser.Name);
-    
+            await _userManager.AddToRoleAsync(user, roleCpq.Name);
+
             IEnumerable<Claim> claims = await _userManager.GetClaimsAsync(user);
             await _userManager.RemoveClaimsAsync(user, claims);
 
@@ -177,14 +182,19 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             IList<MtdGroup> groups = await _context.MtdGroup.ToListAsync();
             foreach (var group in groups)
             {
-                string value = Request.Form[$"{group.Id}-group"];
+                string value = form[$"{group.Id}-group"];
                 if (value == "true")
                 {
                     Claim claimGroup = new Claim("group", group.Id);
                     await _userManager.AddClaimAsync(user, claimGroup);
                 }
-
             }
+           
+            string cpqPolicy = "own";
+            if (cpqViewAll == "true") { cpqPolicy = "all"; }
+            if (cpqViewGroup == "true") { cpqPolicy = "group"; }
+            Claim cpqClaim = new Claim("cpq-policy", cpqPolicy);
+            await _userManager.AddClaimAsync(user, cpqClaim);
 
             return Ok();
         }
@@ -218,6 +228,22 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 stage.UserId = userRecipient.Id;
             }
 
+            IList<MtdCpqTitlesOwner> titlesOwners = await identity.MtdCpqTitlesOwners.Where(x => x.UserId == userOwner.Id).ToListAsync();
+            foreach (MtdCpqTitlesOwner owner in titlesOwners)
+            {
+                owner.UserId = userRecipient.Id;
+                owner.UserName = userRecipient.Title;
+            }
+
+            IList<MtdCpqProposalOwner> quoteOwners = await identity.MtdCpqProposalOwners.Where(x => x.UserId == userOwner.Id).ToListAsync();
+            foreach (MtdCpqProposalOwner owner in quoteOwners)
+            {
+                owner.UserId = userRecipient.Id;
+                owner.UserName = userRecipient.Title;
+            }
+
+            identity.MtdCpqProposalOwners.UpdateRange(quoteOwners);
+            identity.MtdCpqTitlesOwners.UpdateRange(titlesOwners);
             _context.MtdStoreOwner.UpdateRange(storeOwners);
             _context.MtdApprovalStage.UpdateRange(stages);
             await _context.SaveChangesAsync();

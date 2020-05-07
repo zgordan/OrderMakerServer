@@ -16,10 +16,12 @@
     along with this program.If not, see https://www.gnu.org/licenses/.
 */
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
@@ -49,14 +51,13 @@ namespace Mtd.OrderMaker.Server.Services
         }
     }
 
-
     public class UserHandler : UserManager<WebAppUser>
     {
         private readonly PolicyCache _cache;
         private readonly OrderMakerContext _context;
         private readonly SignInManager<WebAppUser> _signInManager;
 
-        public static readonly string PolicyKey = "PolicyCache";
+        public static readonly string PolicyKey = "PolicyCache";        
 
         public UserHandler(PolicyCache cache, OrderMakerContext context,
             IUserStore<WebAppUser> store,

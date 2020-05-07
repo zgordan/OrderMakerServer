@@ -124,9 +124,17 @@ namespace Mtd.OrderMaker.Server
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.Configure<ConfigSettings>(Configuration.GetSection("ConfigSettings"));
 
+            //services.AddDataProtection()
+            //        .SetApplicationName($"OrderMaker-{CurrentEnvironment.EnvironmentName}")
+            //        .PersistKeysToFileSystem(new DirectoryInfo($@"{CurrentEnvironment.ContentRootPath}\keys"));
+
             services.AddDataProtection()
-                    .SetApplicationName($"ordermaker-{CurrentEnvironment.EnvironmentName}")
-                    .PersistKeysToFileSystem(new DirectoryInfo($@"{CurrentEnvironment.ContentRootPath}\keys"));
+                    .SetApplicationName($"OrderMaker&CPQManager - {Configuration.GetConnectionString("ClientName")}")
+                    .PersistKeysToFileSystem(new DirectoryInfo(Configuration.GetConnectionString("KeysFolder")));
+
+            services.ConfigureApplicationCookie(options => {
+                options.Cookie.Name = ".MTD.Service";
+            });
 
             services.AddMvc(options => options.EnableEndpointRouting = false);
 

@@ -79,8 +79,10 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
             public bool IsConfirm { get; set; }
          
             public string Role { get; set; }
+            public string RoleCpq { get; set; }
             public string Policy { get; set; }
-            public string TitleGroup { get; set; }            
+            public string TitleGroup { get; set; }  
+            public string CpqPolicy { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync(string id)
@@ -95,12 +97,15 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
             UserName = user.UserName;
             IList<WebAppRole> roles = await _roleManager.Roles.ToListAsync();
             var userRoles = await _userManager.GetRolesAsync(user);
-            var userRoleName = userRoles.FirstOrDefault();
-            var userRole = await _roleManager.FindByNameAsync(userRoleName);            
+            var userRoleName = userRoles.Where(x => !x.ToUpper().Contains("CPQ-")).FirstOrDefault();
+            var userRoleNameCpq = userRoles.Where(x => x.ToUpper().Contains("CPQ-")).FirstOrDefault();
+            var userRole =  await _roleManager.FindByNameAsync(userRoleName);
+            var userRoleCpq = await _roleManager.FindByNameAsync(userRoleNameCpq ?? "cpq-guest");
 
             Input = new InputModel
             {
                 Role = userRole.Id,
+                RoleCpq = userRoleCpq.Id,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 Title = user.Title,
@@ -108,7 +113,8 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
                 TitleGroup = user.TitleGroup
             };
 
-            ViewData["Roles"] = new SelectList(roles.OrderBy(x=>x.Seq), "Id", "Title", Input.Role);
+            ViewData["Roles"] = new SelectList(roles.Where(x=>!x.NormalizedName.Contains("CPQ-")).OrderBy(x=>x.Seq), "Id", "Title", Input.Role);
+            ViewData["RolesCPQ"] = new SelectList(roles.Where(x =>x.NormalizedName.Contains("CPQ-")).OrderBy(x => x.Seq), "Id", "Title", Input.RoleCpq);
             ViewData["Users"] = new SelectList(_userManager.Users.OrderBy(x => x.Title), "Id", "Title", Input.Role);
 
             string policyID = await _userManager.GetPolicyIdAsync(user);
@@ -119,11 +125,9 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
             IList<Claim> claims = await _userManager.GetClaimsAsync(user);
             GroupIds = new List<string>();
             GroupIds = claims.Where(x => x.Type == "group").Select(x => x.Value).ToList();
-
+            Input.CpqPolicy = claims.Where(x => x.Type == "cpq-policy").Select(x => x.Value).FirstOrDefault() ?? "own";
             return Page();
         }
 
-               
-       
     }
 }

@@ -47,7 +47,7 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
                 Accounts.Add(new WebAppPerson
                 {
                     User = user,
-                    Role = await _roleManager.FindByNameAsync(roles.FirstOrDefault()),
+                    Role = await _roleManager.FindByNameAsync(roles.Where(x=>!x.ToUpper().Contains("CPQ-")).FirstOrDefault()),
                     MtdPolicy = await _userHandler.GetPolicyForUser(user)
                 });
             }
