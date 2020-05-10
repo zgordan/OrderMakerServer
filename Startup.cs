@@ -42,8 +42,6 @@ using System.Globalization;
 using Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore;
 using Mtd.OrderMaker.Server;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 namespace Mtd.OrderMaker.Server

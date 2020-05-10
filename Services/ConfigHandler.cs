@@ -1,4 +1,6 @@
-﻿using Mtd.OrderMaker.Server.Data;
+﻿using Microsoft.Extensions.Options;
+using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.DataConfig;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +14,12 @@ namespace Mtd.OrderMaker.Server.Services
         public int CodeImgAppBar =>2;        
 
         private readonly OrderMakerContext _context;
+        public readonly IOptions<ConfigSettings> options;
 
-        public ConfigHandler(OrderMakerContext context)
+        public ConfigHandler(OrderMakerContext context, IOptions<ConfigSettings> options)
         {
             _context = context;
+            this.options = options;
         }
 
         public async Task<string> GetImageFromConfig(int code)

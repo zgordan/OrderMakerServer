@@ -129,7 +129,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             string policyId = form["Input.Policy"];
             string cpqViewAll = form["cpq-view-all"];
             string cpqViewGroup = form["cpq-view-group"];
-            string cpqViewOwn = form["cpq-view-own"];
+           // string cpqViewOwn = form["cpq-view-own"];
 
             WebAppRole roleUser = await _roleManager.FindByIdAsync(roleId);
             WebAppRole roleCpq = await _roleManager.FindByIdAsync(roleCpqId);

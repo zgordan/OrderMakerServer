@@ -486,7 +486,10 @@ namespace Mtd.OrderMaker.Server.Services
 
             while (password.Length < length)
             {
-                char c = (char)random.Next(32, 126);
+                getCode:
+                int code = random.Next(33, 126);
+                if (code == 92 || code == 47) { goto getCode; }
+                char c = (char) code;
 
                 password.Append(c);
 
@@ -501,7 +504,7 @@ namespace Mtd.OrderMaker.Server.Services
             }
 
             if (nonAlphanumeric)
-                password.Append((char)random.Next(33, 48));
+                password.Append((char)random.Next(33, 46));
             if (digit)
                 password.Append((char)random.Next(48, 58));
             if (lowercase)
@@ -509,6 +512,7 @@ namespace Mtd.OrderMaker.Server.Services
             if (uppercase)
                 password.Append((char)random.Next(65, 91));
 
+            
             return password.ToString();
         }
 

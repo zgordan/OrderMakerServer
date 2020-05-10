@@ -83,9 +83,14 @@ const CreateFormData = (form) => {
 
 const CheckRequired = (form) => {
     let counter = 0;
-    form.querySelectorAll("[required]").forEach((obj) => {
-        if (!obj.value) { counter++; }
-    });
+    if (form) {
+        const rs = form.querySelectorAll("[required]");
+        if (rs) {
+            rs.forEach((obj) => {
+                if (!obj.value) { counter++; }
+            });
+        }
+    }
     return counter;
 }
 
@@ -220,9 +225,7 @@ const DetectMobile = () => {
     ) {
         document.body.style.height = "";
     }
-
 }
-
 
 
 (() => {
@@ -232,13 +235,13 @@ const DetectMobile = () => {
     if (sessionStorage.getItem("Message")) {
 
         MainShowSnackBar(sessionStorage.getItem("Message"));
-        sessionStorage.clear();
+        sessionStorage.removeItem("Message");
     }
 
     if (sessionStorage.getItem("ErrorMessage")) {
 
         MainShowSnackBar(sessionStorage.getItem("ErrorMessage"), true);
-        sessionStorage.clear();
+        sessionStorage.removeItem("ErrorMessage");
     }
 
     ListenerForAction();
@@ -302,6 +305,16 @@ const DetectMobile = () => {
 
         mainUserMenu.setFixedPosition(true);
         mainUserButton.addEventListener('click', () => {
+            mainUserMenu.open = !mainUserMenu.open;
+        });
+    }
+
+    const mainAppsButton = document.getElementById('main-apps-button');
+    if (mainAppsButton) {
+        const mainUserMenu = new mdc.menuSurface.MDCMenuSurface(document.getElementById('main-apps-menu'));
+
+        mainUserMenu.setFixedPosition(true);
+        mainAppsButton.addEventListener('click', () => {
             mainUserMenu.open = !mainUserMenu.open;
         });
     }
