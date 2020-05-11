@@ -25,7 +25,7 @@ namespace Mtd.OrderMaker.Server.Extensions
 
             if (signInManager.IsSignedIn(context.User))
             {
-                await signInManager.RefreshSignInAsync(user);
+                await signInManager.RefreshSignInAsync(user);                
             }
         }
     }

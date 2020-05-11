@@ -24,6 +24,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +35,7 @@ using Mtd.Cpq.Manager.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Data;
 using Mtd.OrderMaker.Server.DataConfig;
+using Mtd.OrderMaker.Server.Extensions;
 using Mtd.OrderMaker.Server.Services;
 
 namespace Mtd.OrderMaker.Server.Controllers.Users
@@ -48,7 +50,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
         private readonly IEmailSenderBlank _emailSender;
         private readonly OrderMakerContext _context;
         private readonly IStringLocalizer<SharedResource> _localizer;
-        private readonly Mtd.OrderMaker.Server.Data.IdentityDbContext identity;
+        private readonly Mtd.OrderMaker.Server.Data.IdentityDbContext identity; 
 
 
         public UsersController(
@@ -119,7 +121,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             {
                 return NotFound();
             }
-
+           
             string email = form["Input.Email"];
             string title = form["Input.Title"];
             string titleGroup = form["Input.TitleGroup"];
@@ -129,7 +131,9 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             string policyId = form["Input.Policy"];
             string cpqViewAll = form["cpq-view-all"];
             string cpqViewGroup = form["cpq-view-group"];
-           // string cpqViewOwn = form["cpq-view-own"];
+            // string cpqViewOwn = form["cpq-view-own"];
+            string cpqEditAll = form["cpq-edit-all"];
+            string cpqEditGroup = form["cpq-edit-group"];
 
             WebAppRole roleUser = await _roleManager.FindByIdAsync(roleId);
             WebAppRole roleCpq = await _roleManager.FindByIdAsync(roleCpqId);
@@ -190,11 +194,18 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 }
             }
            
-            string cpqPolicy = "own";
-            if (cpqViewAll == "true") { cpqPolicy = "all"; }
-            if (cpqViewGroup == "true") { cpqPolicy = "group"; }
+            string cpqPolicy = "view-own";
+            if (cpqViewAll == "true") { cpqPolicy = "view-all"; }
+            if (cpqViewGroup == "true") { cpqPolicy = "view-group"; }
+            string cpqPolicyEdit = "edit-own";
+            if (cpqEditAll == "true") { cpqPolicyEdit = "edit-all"; }
+            if (cpqEditGroup == "true") { cpqPolicyEdit = "edit-group"; }
+
+            cpqPolicy += cpqPolicyEdit;
             Claim cpqClaim = new Claim("cpq-policy", cpqPolicy);
             await _userManager.AddClaimAsync(user, cpqClaim);
+
+            await _userManager.AddClaimAsync(user, new Claim("revoke", "false"));
 
             return Ok();
         }

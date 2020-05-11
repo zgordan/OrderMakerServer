@@ -469,6 +469,7 @@ namespace Mtd.OrderMaker.Server.Services
 
             return user;
         }
+     
 
         public string GeneratePassword()
         {

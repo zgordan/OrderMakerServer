@@ -29,8 +29,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.DataConfig;
 using Mtd.OrderMaker.Server.Services;
 
 namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
@@ -41,8 +43,10 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
         private readonly UserHandler _userManager;
         private readonly RoleManager<WebAppRole> _roleManager;
         private readonly OrderMakerContext _context;
+        private readonly IOptions<ConfigSettings> options;
 
         public EditModel(
+            IOptions<ConfigSettings> options,
             UserHandler userManager,
             RoleManager<WebAppRole> roleManager,
             OrderMakerContext context
@@ -51,6 +55,7 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
             _userManager = userManager;
             _roleManager = roleManager;
             _context = context;
+            this.options = options;
         }
         
 
@@ -59,6 +64,7 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
         public IList<MtdGroup> MtdGroups { get; set; }
         public InputModel Input { get; set; }
         public List<string> GroupIds { get; set; }
+        public bool CpqModule { get; set; }
 
         public class InputModel
         {
@@ -81,8 +87,9 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
             public string Role { get; set; }
             public string RoleCpq { get; set; }
             public string Policy { get; set; }
-            public string TitleGroup { get; set; }  
-            public string CpqPolicy { get; set; }
+            public string TitleGroup { get; set; }              
+            public string CpqPolicyView { get; set; }
+            public string CpqPolicyEdit { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync(string id)
@@ -125,7 +132,18 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
             IList<Claim> claims = await _userManager.GetClaimsAsync(user);
             GroupIds = new List<string>();
             GroupIds = claims.Where(x => x.Type == "group").Select(x => x.Value).ToList();
-            Input.CpqPolicy = claims.Where(x => x.Type == "cpq-policy").Select(x => x.Value).FirstOrDefault() ?? "own";
+            Input.CpqPolicyView = "view-own";
+            Input.CpqPolicyEdit = "edit-own";
+            string cpqPolicy =  claims.Where(x => x.Type == "cpq-policy").Select(x => x.Value).FirstOrDefault();
+            if (cpqPolicy != null)
+            {
+                if (cpqPolicy.Contains("view-all")) { Input.CpqPolicyView = "view-all"; }
+                if (cpqPolicy.Contains("view-group")) { Input.CpqPolicyView = "view-group"; }
+                if (cpqPolicy.Contains("edit-all")) { Input.CpqPolicyEdit= "edit-all"; }
+                if (cpqPolicy.Contains("edit-group")) { Input.CpqPolicyEdit = "edit-group"; }
+            }
+
+            CpqModule = options.Value.CPQManagerLink.Length > 0 ? true : false; 
             return Page();
         }
 

@@ -43,6 +43,8 @@ using Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore;
 using Mtd.OrderMaker.Server;
 using Microsoft.Extensions.Hosting;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Mtd.OrderMaker.Server.Extensions;
 
 namespace Mtd.OrderMaker.Server
 {
@@ -59,7 +61,8 @@ namespace Mtd.OrderMaker.Server
 
         public void ConfigureServices(IServiceCollection services)
         {
-           
+
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always;
@@ -67,6 +70,13 @@ namespace Mtd.OrderMaker.Server
                 options.MinimumSameSitePolicy = SameSiteMode.Lax;
                 options.Secure = CookieSecurePolicy.Always;
             });
+
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            //    .AddCookie(options =>
+            //    {                    
+            //        options.EventsType = typeof(RevokeAuthenticationEvents);
+            //    });
+
 
             services.AddDbContext<IdentityDbContext>(options =>
                 options.UseMySql(
@@ -89,7 +99,6 @@ namespace Mtd.OrderMaker.Server
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
 
-
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("RoleAdmin", policy => policy.RequireRole("Admin"));
@@ -100,7 +109,8 @@ namespace Mtd.OrderMaker.Server
 
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddMvc()
-                .AddDataAnnotationsLocalization(options => {
+                .AddDataAnnotationsLocalization(options =>
+                {
                     options.DataAnnotationLocalizerProvider = (type, factory) =>
                     factory.Create(typeof(SharedResource));
                 });
@@ -113,36 +123,33 @@ namespace Mtd.OrderMaker.Server
                         options.Conventions.AuthorizeAreaFolder("Identity", "/Users", "RoleAdmin");
                         options.Conventions.AuthorizeAreaFolder("Config", "/", "RoleAdmin");
                     });
-     
+
             services.AddSingleton<PolicyCache>();
-            services.AddScoped<UserHandler>();            
+            services.AddScoped<UserHandler>();
             services.AddTransient<ConfigHandler>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IEmailSenderBlank, EmailSenderBlank>();
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.Configure<ConfigSettings>(Configuration.GetSection("ConfigSettings"));
 
-            //services.AddDataProtection()
-            //        .SetApplicationName($"OrderMaker-{CurrentEnvironment.EnvironmentName}")
-            //        .PersistKeysToFileSystem(new DirectoryInfo($@"{CurrentEnvironment.ContentRootPath}\keys"));
-
             services.AddDataProtection()
                     .SetApplicationName($"OrderMaker&CPQManager - {Configuration.GetConnectionString("ClientName")}")
                     .PersistKeysToFileSystem(new DirectoryInfo(Configuration.GetConnectionString("KeysFolder")));
 
-            services.ConfigureApplicationCookie(options => {
+            services.ConfigureApplicationCookie(options =>
+            {
                 options.Cookie.Name = ".MTD.Service";
             });
 
             services.AddMvc(options => options.EnableEndpointRouting = false);
 
             IMvcBuilder builder = services.AddRazorPages();
-            #if DEBUG
+#if DEBUG
             if (CurrentEnvironment.IsDevelopment())
             {
                 builder.AddRazorRuntimeCompilation();
             }
-            #endif
+#endif
         }
 
 
@@ -150,7 +157,7 @@ namespace Mtd.OrderMaker.Server
         {
 
             var config = serviceProvider.GetRequiredService<IOptions<ConfigSettings>>();
-            
+
             if (config.Value.Migrate == "true")
             {
                 using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
@@ -178,8 +185,8 @@ namespace Mtd.OrderMaker.Server
             var cultureInfo = new CultureInfo(config.Value.CultureInfo);
             var localizationOptions = new RequestLocalizationOptions()
             {
-                SupportedCultures = new List<CultureInfo> {cultureInfo},
-                SupportedUICultures = new List<CultureInfo> {cultureInfo},
+                SupportedCultures = new List<CultureInfo> { cultureInfo },
+                SupportedUICultures = new List<CultureInfo> { cultureInfo },
                 DefaultRequestCulture = new RequestCulture(cultureInfo),
 
                 FallBackToParentCultures = false,
@@ -189,9 +196,9 @@ namespace Mtd.OrderMaker.Server
 
             app.UseRequestLocalization(localizationOptions);
 
-            app.UseHttpsRedirection();           
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
-            
+
             app.UseRouting();
 
             app.UseCookiePolicy();
@@ -199,11 +206,11 @@ namespace Mtd.OrderMaker.Server
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
-            {                
+            {
                 endpoints.MapRazorPages();
             });
 
-            app.UseMvc();           
+            app.UseMvc();
 
         }
 

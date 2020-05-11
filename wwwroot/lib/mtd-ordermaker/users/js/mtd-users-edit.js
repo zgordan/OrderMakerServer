@@ -53,4 +53,28 @@
         cpqViewOwn.checked = true;
     });
 
+
+    const cpqEditAll = document.getElementById("cpq-edit-all");
+    const cpqEditGroup = document.getElementById("cpq-edit-group");
+    const cpqEditOwn = document.getElementById("cpq-edit-own");
+
+
+    cpqEditAll.addEventListener("change", () => {
+        cpqEditGroup.checked = false;
+        cpqEditOwn.checked = false;
+        cpqEditAll.checked = true;
+    });
+
+    cpqEditGroup.addEventListener("change", () => {
+        cpqEditAll.checked = false;
+        cpqEditOwn.checked = false;
+        cpqEditGroup.checked = true;
+    });
+
+    cpqEditOwn.addEventListener("change", () => {
+        cpqEditAll.checked = false;
+        cpqEditGroup.checked = false;
+        cpqEditOwn.checked = true;
+    });
+
 })();
