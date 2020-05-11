@@ -62,7 +62,6 @@ namespace Mtd.OrderMaker.Server
         public void ConfigureServices(IServiceCollection services)
         {
 
-
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always;
@@ -71,12 +70,15 @@ namespace Mtd.OrderMaker.Server
                 options.Secure = CookieSecurePolicy.Always;
             });
 
-            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            //    .AddCookie(options =>
-            //    {                    
-            //        options.EventsType = typeof(RevokeAuthenticationEvents);
-            //    });
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Domain = Configuration.GetConnectionString("Domain");
+                options.Cookie.Name = ".MTD.Service";
+            });
 
+            services.AddDataProtection()
+                .SetApplicationName($"{Configuration.GetConnectionString("ClientName")}")
+                .PersistKeysToFileSystem(new DirectoryInfo(Configuration.GetConnectionString("KeysFolder")));
 
             services.AddDbContext<IdentityDbContext>(options =>
                 options.UseMySql(
@@ -132,14 +134,6 @@ namespace Mtd.OrderMaker.Server
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.Configure<ConfigSettings>(Configuration.GetSection("ConfigSettings"));
 
-            services.AddDataProtection()
-                    .SetApplicationName($"OrderMaker&CPQManager - {Configuration.GetConnectionString("ClientName")}")
-                    .PersistKeysToFileSystem(new DirectoryInfo(Configuration.GetConnectionString("KeysFolder")));
-
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.Cookie.Name = ".MTD.Service";
-            });
 
             services.AddMvc(options => options.EnableEndpointRouting = false);
 
