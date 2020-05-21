@@ -484,12 +484,13 @@ namespace Mtd.OrderMaker.Server.Services
 
             StringBuilder password = new StringBuilder();
             Random random = new Random();
+            int[] exceptions = new int[] { 92, 47, 40, 41, 39, 34, 44, 46, 60, 62, 96, 32, 123, 124, 125, 38, 43 };
 
             while (password.Length < length)
             {
                 getCode:
                 int code = random.Next(33, 126);
-                if (code == 92 || code == 47) { goto getCode; }
+                if (exceptions.Where(x => exceptions.Contains(code)).Any()) { goto getCode; }
                 char c = (char) code;
 
                 password.Append(c);

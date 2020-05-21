@@ -154,7 +154,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                            $"{_localizer["You have been granted access to the system and a new password has been created"]}.",
                            $"{_localizer["Your login"]}: <strong>{user.UserName}</strong>",
                            $"{_localizer["Your new password"]}: <strong>{password}</strong>",
-                           $"{_localizer["Web-application address"]}: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{callbackUrl}</strong>",
+                           $"{_localizer["Web-application address"]}: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{Request.Scheme}://{Request.Host}</a>",
                        }
             };
 
