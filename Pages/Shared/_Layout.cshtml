@@ -76,12 +76,12 @@
     <meta name="format-detection" content="telephone=no">
 
     <title>@ViewData["Title"] | OrderMaker</title>
-    <link rel="stylesheet" href="~/lib/google/css/material-components-web.css" asp-append-version="true" />
+    @*<link rel="stylesheet" href="~/lib/google/css/material-components-web.css" asp-append-version="true" />*@
     @*<link rel="stylesheet" href="~/lib/google/iconfont/material-icons.css" asp-append-version="true" />*@
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 
-    @*<link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">*@
+    <link href="https://unpkg.com/material-components-web@6.0.0/dist/material-components-web.min.css" rel="stylesheet" />
+        
 
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/main/css/mtd-main.css" asp-append-version="true" />
@@ -126,7 +126,7 @@
                 </div>
             </div>
             <hr />
-            <nav class="mdc-list">
+            <nav class="mdc-list" tabindex="0">
                 <a id="menu-desk" class="mdc-list-item" href="/" aria-selected="true">
                     <i class="material-icons mdc-list-item__graphic" aria-hidden="true">dashboard</i>
                     <span class="mdc-list-item__text">@Localizer["Desktop"]</span>
@@ -326,8 +326,8 @@
         <div class="mdc-dialog__scrim"></div>
     </div>
 
-    <script src="~/lib/google/js/material-components-web.js" asp-append-version="true"></script>
-    @*<script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>*@
+    @*<script src="~/lib/google/js/material-components-web.js" asp-append-version="true"></script>*@
+    <script src="https://unpkg.com/material-components-web@6.0.0/dist/material-components-web.min.js"></script>
     <script src="~/lib/mtd-ordermaker/main/js/mtd-main.js" asp-append-version="true"></script>
     <script src="~/lib/mtd-ordermaker/mtd-img-selector/js/mtd-img-selector.js" asp-append-version="true"></script>
     <script src="~/lib/mtd-ordermaker/mtd-checkbox/js/mtd-checkbox.js" asp-append-version="true"></script>

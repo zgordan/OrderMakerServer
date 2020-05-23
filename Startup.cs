@@ -97,10 +97,6 @@ namespace Mtd.OrderMaker.Server
 
             services.AddMemoryCache();
 
-            services.AddMvc()
-                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization();
-
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("RoleAdmin", policy => policy.RequireRole("Admin"));
@@ -108,17 +104,20 @@ namespace Mtd.OrderMaker.Server
                 options.AddPolicy("RoleGuest", policy => policy.RequireRole("Guest", "User", "Admin"));
             });
 
-
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddMvc()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization()
                 .AddDataAnnotationsLocalization(options =>
-                {
-                    options.DataAnnotationLocalizerProvider = (type, factory) =>
-                    factory.Create(typeof(SharedResource));
-                });
-
-            services.AddMvc()
-                    .AddRazorPagesOptions(options =>
+                    {
+                        options.DataAnnotationLocalizerProvider = (type, factory) =>
+                        factory.Create(typeof(SharedResource));
+                    })
+                //.AddRazorOptions(options =>
+                //    {
+                //        options.ViewLocationFormats.Add("/{0}.cshtml");
+                //    })
+                .AddRazorPagesOptions(options =>
                     {
                         options.Conventions.AuthorizeFolder("/");
                         options.Conventions.AuthorizeAreaFolder("Workplace", "/", "RoleUser");

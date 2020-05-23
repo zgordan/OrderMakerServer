@@ -1,0 +1,40 @@
+﻿
+@model MTDSListModel
+@{ 
+    string id = $"mtd-slist-{@Model.ValueId}";
+}
+
+<div id="@id" class="mdc-select">    
+    <div class="mdc-select__anchor" style="background-color: transparent !important; width:100%">
+        <span class="mdc-select__ripple"></span>
+        <input type="text" disabled readonly class="mdc-select__selected-text" name="@id">
+        <i class="mdc-select__dropdown-icon"></i>
+        <span class="mdc-floating-label">@Model.Items.Where(x => x.Key == Model.ValueId).Select(x => x.Value).FirstOrDefault()</span>
+        <span class="mdc-line-ripple"></span>
+    </div>
+
+    <div class="mdc-select__menu mdc-menu mdc-menu-surface" style="width: 100%">
+        <ul class="mdc-list">
+            @foreach (KeyValuePair<string, string> entry in Model.Items)
+            {
+                if (entry.Key == Model.ValueId)
+                {
+                    <li class="mdc-list-item mdc-list-item--selected" data-value="@entry.Key" aria-selected="true">
+                        <span class="mdc-list-item__text">
+                            @entry.Value
+                        </span>
+                    </li>
+                }
+                else
+                {
+                    <li class="mdc-list-item" data-value="@entry.Key">
+                        <span class="mdc-list-item__text">
+                            @entry.Value
+                        </span>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+</div>
+

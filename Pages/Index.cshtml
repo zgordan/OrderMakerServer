@@ -22,26 +22,38 @@
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
+@using  Mtd.OrderMaker.Server.Components.Controls
+@*@addTagHelper *, Mtd.OrderMaker.Server*@
 
 @{
-    ViewData["Title"] = @Localizer["Desktop"];
-    ViewData["SecondTitle"] = @Localizer["Selecting database"];
+    ViewData["Title"] = Localizer["Desktop"];
+    ViewData["SecondTitle"] = Localizer["Selecting database"];
 }
 @section Head  {
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/desktop/css/mtd-desktop.css" />
 }
 
+
 <div class="mtd-desktop mdc-elevation--z1">
     <div class="mtd-desktop-search">
         <form id="desktopFormText" method="get" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
-            <div class="mdc-text-field mdc-text-field--fullwidth mdc-text-field--with-leading-icon">
-                <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">search</i>
-                <input id="desktopSearchText" name="searchText" value="@Model.SearchText" class="mdc-text-field__input"
-                       type="text"
-                       placeholder="@Localizer["Search for text"]"
-                       aria-label="search for text"
-                       autocomplete="off">
-            </div>
+
+            @*@await Component.InvokeAsync("MTDTextField")*@
+
+            <vc:mtd-text-field></vc:mtd-text-field>
+
+            @*@{ MTDTextFieldModel textFieldModel = new MTDTextFieldModel { Id = "desktopSearchText",
+                       Name="searchText", Placeholder = "Search for text", IconLeading ="search", Value = Model.SearchText};}
+                @await Html.PartialAsync("~/Views/Controls/MTDTextField.cshtml", @textFieldModel)*@
+
+            @*<div class="mdc-text-field mdc-text-field--fullwidth mdc-text-field--with-leading-icon">
+                    <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">search</i>
+                    <input id="desktopSearchText" name="searchText" value="@Model.SearchText" class="mdc-text-field__input"
+                           type="text"
+                           placeholder="@Localizer["Search for text"]"
+                           aria-label="search for text"
+                           autocomplete="off">
+                </div>*@
         </form>
     </div>
 

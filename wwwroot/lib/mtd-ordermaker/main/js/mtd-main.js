@@ -276,6 +276,7 @@ const DetectMobile = () => {
 
     let checked = 0;
     const url = window.location.href.toLowerCase();
+
     if (url.includes("/identity/users")) {
         checked++;
         document.getElementById("menu-users").classList.add("mdc-list-item--activated");
@@ -318,5 +319,13 @@ const DetectMobile = () => {
             mainUserMenu.open = !mainUserMenu.open;
         });
     }
+
+    const selectLists = document.querySelectorAll(".mdc-select");
+    if (selectLists) {
+        selectLists.forEach((item) => {
+           const selector = new mdc.select.MDCSelect(item);
+        });
+    }
+    
 
 })();

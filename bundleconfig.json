@@ -1,0 +1,8 @@
+[
+  {
+    "outputFileName": "wwwroot/lib/mtd-ordermaker/main/js/mtd-main.min.js",
+    "inputFiles": [
+      "wwwroot/lib/mtd-ordermaker/main/js/mtd-main.js"
+    ]
+  }
+]

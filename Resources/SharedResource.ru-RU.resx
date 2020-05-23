@@ -216,4 +216,7 @@
   <data name="ERROR! There are documents owned by the user. Before deleting, transfer of documents to another user." xml:space="preserve">
     <value>ОШИБКА! Есть документы, принадлежащие пользователю. Перед удалением передайте документы другому пользователю.</value>
   </data>
+  <data name="Search for text" xml:space="preserve">
+    <value>Поиск по тексту</value>
+  </data>
 </root>
