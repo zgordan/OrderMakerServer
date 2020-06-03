@@ -23,8 +23,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
-using Mtd.OrderMaker.Server.Data;
-using Mtd.OrderMaker.Server.DataHandler.Approval;
+using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.EntityHandler.Approval;
 using Mtd.OrderMaker.Server.Services;
 using System;
 using System.Collections.Generic;
@@ -166,13 +166,13 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostCreateAsync()
         {
-            string idForm = Request.Form["idForm"];
-            string idFormParent = Request.Form["store-parent-id"];
+            string formId = Request.Form["form-id"];
+            string parentId = Request.Form["store-parent-id"];
             string dateCreate = Request.Form["date-create"];
             string idStore = Request.Form["store-id"];
 
             WebAppUser webAppUser = await _userHandler.GetUserAsync(HttpContext.User);
-            bool isCreator = await _userHandler.IsCreator(webAppUser, idForm);
+            bool isCreator = await _userHandler.IsCreator(webAppUser, formId);
             if (!isCreator)
             {
                 return Ok(403);
@@ -180,10 +180,10 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
 
             await _context.Database.BeginTransactionAsync();
             //int sequence = 0;
-            int? sequence = await _context.MtdStore.Where(x => x.MtdForm == idForm).MaxAsync(x => (int?)x.Sequence) ?? 0;
+            int? sequence = await _context.MtdStore.Where(x => x.MtdForm == formId).MaxAsync(x => (int?)x.Sequence) ?? 0;
             sequence++;
 
-            MtdStore mtdStore = new MtdStore { Id = idStore, MtdForm = idForm, Sequence = sequence ?? 1, Parent = idFormParent.Length > 0 ? idFormParent : null };
+            MtdStore mtdStore = new MtdStore { Id = idStore, MtdForm = formId, Sequence = sequence ?? 1, Parent = parentId.Length > 0 ? parentId : null };
 
             bool setData = await _userHandler.GetFormPolicyAsync(webAppUser, mtdStore.MtdForm, RightsType.SetDate);
             if (setData)
@@ -265,7 +265,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
         public async Task<IActionResult> OnPostGetIDAsync()
         {
             string result = "";
-            string idFormPart = Request.Form["idFromParent"];
+            string partId = Request.Form["idFromParent"];
             string parentNumber = Request.Form["store-parent-number"];
 
             if (parentNumber.Length == 0) { return Ok(result); }
@@ -275,7 +275,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
 
             if (!isOk) { return Ok(result); }
 
-            MtdStore mtdStore = await _context.MtdStore.FirstOrDefaultAsync(x => x.MtdForm == idFormPart & x.Sequence == num);
+            MtdStore mtdStore = await _context.MtdStore.FirstOrDefaultAsync(x => x.MtdForm == partId & x.Sequence == num);
 
             if (mtdStore != null)
             {
@@ -304,7 +304,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             if (!isInstallerOwner) { return Ok(403); }
 
             List<WebAppUser> webAppUsers = new List<WebAppUser>();
-            bool isViewAll = await _userHandler.GetFormPolicyAsync(currentUser, mtdStore.MtdForm, RightsType.View);
+            bool isViewAll = await _userHandler.GetFormPolicyAsync(currentUser, mtdStore.MtdForm, RightsType.ViewAll);
             if (isViewAll)
             {
                 webAppUsers = await _userHandler.Users.ToListAsync();
@@ -321,7 +321,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             if (mtdStoreOwner == null)
             {
 
-                string idForm = mtdStoreOwner.IdNavigation.MtdForm;
+                string formId = mtdStoreOwner.IdNavigation.MtdForm;
                 mtdStoreOwner = new MtdStoreOwner
                 {
                     Id = idStore,
@@ -330,7 +330,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                 };
 
                 /**Update all fields for SysTrigger UserGroup 33E8212E-059B-482D-8CBD-DFDB073E3B63**/
-                await UpdateTriggerUserGroup(idStore, webAppUser, idForm);
+                await UpdateTriggerUserGroup(idStore, webAppUser, formId);
              
 
                 await _context.MtdStoreOwner.AddAsync(mtdStoreOwner);
@@ -351,9 +351,9 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             return Ok();
         }
 
-        private async Task UpdateTriggerUserGroup(string idStore, WebAppUser webAppUser, string idForm)
+        private async Task UpdateTriggerUserGroup(string idStore, WebAppUser webAppUser, string formId)
         {
-            IList<string> partsIds = await _context.MtdFormPart.Where(x => x.MtdForm == idForm).Select(x => x.Id).ToListAsync();
+            IList<string> partsIds = await _context.MtdFormPart.Where(x => x.MtdForm == formId).Select(x => x.Id).ToListAsync();
             IList<string> fieldIds = await _context.MtdFormPartField
                 .Where(x => x.MtdSysTrigger == "33E8212E-059B-482D-8CBD-DFDB073E3B63" && partsIds.Contains(x.MtdFormPart))
                 .Select(x => x.Id)

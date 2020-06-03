@@ -17,7 +17,7 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
-using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Entity;
 using System.Collections.Generic;
 
 
@@ -25,10 +25,8 @@ namespace Mtd.OrderMaker.Server.Models.Index
 {
     public class ColumnsModelView
     {
-        public string IdForm { get; set; }
-        public IList<MtdFormPart> MtdFormParts { get; set; }
-        public IList<MtdFilterColumn> MtdFilterColumns { get; set; }
-        public IList<MtdFormPartField> MtdFormPartFields { get; set; }
+        public string FormId { get; set; }
+        public List<ColumnItem> ColumnItems { get; set; }
         public bool ShowNumber { get; set; }
         public bool ShowDate { get; set; }        
     }

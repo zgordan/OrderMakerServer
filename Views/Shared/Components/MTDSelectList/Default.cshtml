@@ -1,0 +1,28 @@
+﻿@model MTDSelectListTagsModel
+
+@{
+    string mainClass = "mdc-select ";
+    if (Model.Label == null) { mainClass += "mdc-select--no-label "; }
+}
+
+<div mtd-select-list id="@Model.Id" class="@mainClass">
+    <input id="@Model.IdInput" name="@Model.Name" type="hidden" value="@Model.ValueId" />
+    <div class="mdc-select__anchor mdc-select--w100"
+         role="button"
+         aria-haspopup="listbox"
+         aria-labelledby="@Model.IdLabel @Model.IdSelectedText">
+        <span class="mdc-select__ripple"></span>
+        <input type="text" disabled readonly class="mdc-select__selected-text"/>
+        <span class="mdc-select__dropdown-icon"></span>
+
+        @await Html.PartialAsync("./_label.cshtml")
+
+        <span class="mdc-line-ripple"></span>
+    </div>
+
+    <div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-select--w100" role="listbox">
+        <ul class="mdc-list">
+            @await Html.PartialAsync("./_items.cshtml")
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+﻿@model MTDSelectListTagsModel
+
+@foreach (var entry in Model.Items)
+{
+ 
+    if (entry.Id == Model.ValueId)
+    {
+
+        <li @entry.Attributes class="mdc-list-item mdc-list-item--selected" data-value="@entry.Id" aria-selected="true" role="option">
+            <span class="mdc-list-item__text">
+                @entry.Value
+            </span>
+        </li>
+    }
+    else
+    {
+        <li @entry.Attributes class="mdc-list-item" data-value="@entry.Id" role="option">
+            <span class="mdc-list-item__text">
+                @entry.Value
+            </span>
+        </li>
+    }
+}

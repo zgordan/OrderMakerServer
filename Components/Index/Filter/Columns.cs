@@ -21,10 +21,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
-using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Models.Index;
 using Mtd.OrderMaker.Server.Services;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -42,73 +43,58 @@ namespace Mtd.OrderMaker.Server.Components.Index
             _userHandler = userHandler;
         }
 
-
-        public async Task<IViewComponentResult> InvokeAsync(string idForm)
+        public async Task<IViewComponentResult> InvokeAsync(string formId)
         {
-
             var user = await _userHandler.GetUserAsync(HttpContext.User);
-            List<string> partIds = await _userHandler.GetAllowPartsForView(user, idForm);
-
-            IList<MtdFilterColumn> mtdFilterColumns = await _context.MtdFilterColumn
-                .Include(m => m.MtdFormPartFieldNavigation)
-                .Include(x => x.MtdFilterNavigation)
-                .Where(x => x.MtdFilterNavigation.IdUser == user.Id && x.MtdFilterNavigation.MtdForm == idForm)
-                .OrderBy(x => x.Sequence)
-                .ToListAsync();
-
-            List<MtdFormPartField> mtdFormPartFields = new List<MtdFormPartField>();
-            IList<MtdFormPartField> tempFields = await _context.MtdFormPartField
-                .Include(x => x.MtdFormPartNavigation)
-                .Where(x => x.MtdFormPartNavigation.MtdForm == idForm && partIds.Contains(x.MtdFormPart))
-                .OrderBy(o => o.MtdFormPartNavigation.Sequence).ThenBy(o => o.Sequence)
-                .ToListAsync();
-
-            int sequence = 0;
-            foreach (var column in mtdFilterColumns)
-            {
-
-                var field = tempFields.Where(x => x.Id == column.MtdFormPartField).FirstOrDefault();
-                if (field != null)
-                {
-                    sequence++;
-                    field.Sequence = sequence;
-                    mtdFormPartFields.Add(field);
-                }
-
-            }
-
-            foreach (var field in tempFields)
-            {
-                if (!mtdFilterColumns.Where(x => x.MtdFormPartField == field.Id).Any())
-                {
-                    sequence++;
-                    field.Sequence = sequence;
-                    mtdFormPartFields.Add(field);
-                }
-            }
-
-            IList<MtdFormPart> mtdFormParts = mtdFormPartFields.GroupBy(x => x.MtdFormPartNavigation.Id)
-                .Select(g => g.FirstOrDefault(x => x.MtdFormPartNavigation.Id == g.Key).MtdFormPartNavigation)
-                .OrderBy(x => x.Sequence)
-                .ToList();
-
-            MtdFilter mtdFilter = await _context.MtdFilter.Where(x => x.MtdForm == idForm && x.IdUser == user.Id).FirstOrDefaultAsync();
+            List<MtdFormPart> parts = await _userHandler.GetAllowPartsForView(user, formId);
+            List<string> partIds = parts.Select(x => x.Id).ToList();
+            MtdFilter mtdFilter = await _context.MtdFilter.Where(x => x.MtdForm == formId && x.IdUser == user.Id).FirstOrDefaultAsync();
             bool showNumber = true;
             bool showDate = true;
             if (mtdFilter != null)
             {
-                showNumber = mtdFilter.ShowNumber == 1 ? true : false;
-                showDate = mtdFilter.ShowDate == 1 ? true : false;
+                showNumber = mtdFilter.ShowNumber == 1;
+                showDate = mtdFilter.ShowDate == 1;
+            }
+            
+            IList<MtdFilterColumn> columns = await _context.MtdFilterColumn
+                .Where(x => x.MtdFilter == mtdFilter.Id)
+                .OrderBy(x => x.Sequence)
+                .ToListAsync() ?? new List<MtdFilterColumn>();
+
+            
+            IList<MtdFormPartField> fields = await _context.MtdFormPartField
+                .Where(x => partIds.Contains(x.MtdFormPart))
+                .OrderBy(o => o.Sequence)
+                .ToListAsync() ?? new List<MtdFormPartField>();
+
+
+            List<ColumnItem> columnItems = new List<ColumnItem>();
+            int i = columns.Count();
+            foreach (var p in parts)
+            {                
+                fields.Where(x => x.MtdFormPart == p.Id).ToList().ForEach((fs) =>
+                {
+                    i++;
+                    MtdFilterColumn column = columns.Where(x => x.MtdFormPartField == fs.Id).FirstOrDefault();
+                    columnItems.Add(new ColumnItem
+                    {
+                        PartId = p.Id,
+                        PartName = p.Name,
+                        FieldId = fs.Id,
+                        FieldName = fs.Name,
+                        IsChecked = column != null,
+                        Sequence = column != null ? column.Sequence : i,                        
+                    });
+                });
             }
 
             ColumnsModelView fieldsModelView = new ColumnsModelView
             {
-                IdForm = idForm,
-                MtdFormParts = mtdFormParts,
-                MtdFilterColumns = mtdFilterColumns,
-                MtdFormPartFields = mtdFormPartFields,
+                FormId = formId,
+                ColumnItems = columnItems.OrderBy(x=>x.Sequence).ToList(),
                 ShowNumber = showNumber,
-                ShowDate = showDate                
+                ShowDate = showDate
             };
 
             return View(fieldsModelView);

@@ -26,8 +26,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
-using Mtd.OrderMaker.Server.Data;
-using Mtd.OrderMaker.Server.DataHandler.Approval;
+using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.EntityHandler.Approval;
 
 namespace Mtd.OrderMaker.Server.Controllers.Config.Approval
 {

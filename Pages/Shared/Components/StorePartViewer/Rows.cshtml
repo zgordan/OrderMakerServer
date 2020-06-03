@@ -17,7 +17,7 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 *@
 
-@model Models.Store.DataSet
+@model Models.Store.Warehouse
 
 <div class="mtd-store-view-row-block">
     @if (Model.Parts.FirstOrDefault().MtdFormPartHeader != null)
@@ -33,14 +33,14 @@
     @foreach (var fieldPic in Model.Fields.Where(x => x.MtdSysType == 8).ToList())
     {
         <div class="mtd-store-view-row-header">
-            @await Component.InvokeAsync("StoreStackViewer", new { field = fieldPic, dataSet = Model })
+            @await Component.InvokeAsync("StoreStackViewer", new { field = fieldPic, warehouse = Model })
         </div>
     }
 
     <div class="mtd-store-view-row-wrap">
         @foreach (var field in Model.Fields.Where(x => x.MtdSysType != 8))
         {
-            @await Component.InvokeAsync("StoreStackViewer", new { field = field, dataSet = Model })
+            @await Component.InvokeAsync("StoreStackViewer", new { field = field, warehouse = Model })
         }
     </div>
 </div>

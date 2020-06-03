@@ -20,7 +20,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
-using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Models.Index;
 using System.Collections.Generic;
 using System.Linq;

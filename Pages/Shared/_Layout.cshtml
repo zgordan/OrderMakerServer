@@ -25,48 +25,8 @@
 
 
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> Localizer
 
-@{
-    string userName = "";
-    string userEmail = "";
-    string userCheck = "";
-    bool isAdmin = false;
-
-    var user = await UserManager.GetUserAsync(User);
-
-    if (user != null)
-    {
-        userName = user.Title;
-        userEmail = user.Email;
-        userCheck = user.EmailConfirmed ? "green" : "red";
-        isAdmin =  User.IsInRole("Admin");
-        var list = await UserManager.GetClaimsAsync(user);
-
-        if (list.Where(x => x.Type == "revoke").Any())
-        {
-            Context.Response.Redirect("/Identity/Account/Relogin");
-        }
-
-    }
-
-    ViewData["ColorBar"] = await configHandler.GetColorBar();
-    ViewData["ColorIcon"] = await configHandler.GetColorIcon();
-    string CPQLink = configHandler.options.Value.CPQManagerLink;
-
-
-    @*@if (SignInManager.IsSignedIn(User))
-    {
-        // normal stuff
-    }
-    else if (!Context.Request.Path.ToString().Contains("/About"))
-    {
-        // If we aren't processing a request for the target page,
-        // then redirect to it.
-        Context.Response.Redirect("/About");
-    }*@
-
-}
 
 <!DOCTYPE html>
 <html>
@@ -81,214 +41,89 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 
     <link href="https://unpkg.com/material-components-web@6.0.0/dist/material-components-web.min.css" rel="stylesheet" />
-        
 
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link rel="stylesheet" href="~/lib/mtd-ordermaker/main/css/mtd-main.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/mtd-ordermaker/common/css/mtd-desk.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/mtd-ordermaker/mtd-img-selector/css/mtd-img-selector.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/mtd-ordermaker/mtd-checkbox/css/mtd-checkbox.css" asp-append-version="true" />
+    
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/mtd-ordermaker/main/css/mtd-main.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/mtd-ordermaker/main/css/mtd-app.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/mtd-ordermaker/common/css/mtd-desk.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/mtd-ordermaker/mtd-img-selector/css/mtd-img-selector.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/mtd-ordermaker/mtd-checkbox/css/mtd-checkbox.css" asp-append-version="true" />
 
-    <link rel="stylesheet" href="~/lib/fontawesome/css/fontawesome.min.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/fontawesome/css/solid.min.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/fontawesome/css/regular.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/fontawesome/css/fontawesome.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/fontawesome/css/solid.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/fontawesome/css/regular.min.css" asp-append-version="true" />
+    </environment>
+
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/lib/mtd-ordermaker/main/css/mtd-main.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/mtd-ordermaker/common/css/mtd-desk.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/mtd-ordermaker/mtd-img-selector/css/mtd-img-selector.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/mtd-ordermaker/mtd-checkbox/css/mtd-checkbox.css" asp-append-version="true" />
+
+        <link rel="stylesheet" href="~/lib/fontawesome/css/fontawesome.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/fontawesome/css/solid.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/fontawesome/css/regular.min.css" asp-append-version="true" />
+    </environment>
+
 
 
     @RenderSection("Head", required: false)
 </head>
-<body style="height: 100vh;">
+<body class="mdc-typography">
     @*<partial name="_CookieConsentPartial" />*@
-    <aside class="mdc-drawer mdc-drawer--modal">
-        <div class="mdc-drawer__content">
-            <div style="padding-top: 16px; padding-bottom: 16px;">
-                <div style="display:flex; flex-direction: column; align-items: center">
-                    <div>
-                        @{
-                            string pathImgMenu = "/lib/mtd-ordermaker/images/logo-mtd.png";
-                            var imgMenu = await configHandler.GetImageFromConfig(configHandler.CodeImgMenu);
-                            if (imgMenu != string.Empty) { pathImgMenu = imgMenu; }
-                        }
-                        <img src="@pathImgMenu" width="235" />
-                    </div>
-                    <div style="display: flex; flex-direction: column; margin-top: 16px; align-items: center">
-                        <div style="background-color: lightgray;   width: 52px; height: 52px; border-radius: 50%; text-align: center">
-                            <i class="material-icons" style="font-size: 48px; color: white">person</i>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    <div class="drawer-frame-root">
+
+        @await Html.PartialAsync("./_layoutAside.cshtml")
+        <div class="mdc-drawer-scrim"></div>
+
+        <div class="drawer-frame-app-content">
+            @await Html.PartialAsync("./_layoutHeader")
+            <div id="drawer-main-content">
+
+                @await Html.PartialAsync("./_layoutMainModal.cshtml")
+
+                <div class="mdc-top-app-bar--fixed-adjust"></div>
+
+                <div class="mtd-main-informer-header">
+
+                    <div class="mtd-main-informer-title">
+                        <div>
+                            <span class="mtd-main-informer-title--first">@ViewBag.Title</span>
+                            <br />
+                            @ViewBag.SecondTitle
                         </div>
-                        <div style="color: gray; text-align: center">
-                            <div>
-                                @userName
-                            </div>
-                            <div>
-                                @userEmail
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr />
-            <nav class="mdc-list" tabindex="0">
-                <a id="menu-desk" class="mdc-list-item" href="/" aria-selected="true">
-                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">dashboard</i>
-                    <span class="mdc-list-item__text">@Localizer["Desktop"]</span>
-                </a>
-                <a id="menu-account" class="mdc-list-item" href="/Identity/Account/Manage" aria-selected="true">
-                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">person_outline</i>
-                    <span class="mdc-list-item__text">@Localizer["Account"]</span>
-                </a>
 
-                @if (@isAdmin)
-                {
-                    <a id="menu-config" class="mdc-list-item" href="/Config" aria-selected="true">
-                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">settings</i>
-                        <span class="mdc-list-item__text">@Localizer["Configurator"]</span>
-                    </a>
-                    <a id="menu-users" class="mdc-list-item" href="/Identity/Users" aria-selected="true">
-                        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">supervisor_account</i>
-                        <span class="mdc-list-item__text">@Localizer["Users"]</span>
-                    </a>
-                }
-
-                <hr style="display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0; " />
-
-                <a id="menu-feedback" class="mdc-list-item" href="/Support/Feedback" aria-selected="true">
-                    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">announcement</i>
-                    <span class="mdc-list-item__text">@Localizer["Send feedback"]</span>
-                </a>
-
-            </nav>
-        </div>
-    </aside>
-    <div class="mdc-drawer-scrim"></div>
-    <div class="mdc-drawer-app-content">
-        <header class="mdc-top-app-bar app-bar mdc-elevation--z4 mdc-top-app-bar--fixed" id="app-bar" style="background-color: @ViewBag.ColorBar">
-            <div class="mdc-top-app-bar__row">
-                <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-                    @if (SignInManager.IsSignedIn(User))
-                    {
-                        <button class="mdc-icon-button material-icons mdc-top-app-bar__navigation-icon" style="color: @ViewBag.ColorIcon">menu</button>
-                    }
-                    <span class="mdc-top-app-bar__title" style="padding-left: 8px">
-                        @{
-                            string pathAppBar = "/lib/mtd-ordermaker/images/logo-mtd-white.png";
-                            var imgAppBar = await configHandler.GetImageFromConfig(configHandler.CodeImgAppBar);
-                            if (imgAppBar != string.Empty) { pathAppBar = imgAppBar; }
-                        }
-                        <img src="@pathAppBar" height="32" />
-                    </span>
-                </section>
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
-                        @if (CPQLink.Length > 0)
+                        @if (IsSectionDefined("Action"))
                         {
-                            <div class="toolbar mdc-menu-surface--anchor">
-                                <button id="main-apps-button" class="mdc-icon-button material-icons mdc-top-app-bar__action-item" aria-label="apps" alt="apps" style="color: @ViewBag.ColorIcon">apps</button>
-                                <div id="main-apps-menu" class="mdc-menu-surface" style="margin-top: 50px; margin-right: 8px;">
-                                    <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" style="cursor: pointer">
-                                        <li mtd-data-href="@CPQLink" class="mdc-list-item" role="menuitem">
-                                            <span class="mdc-list-item__graphic" aria-hidden="true">
-                                                <img src="~/lib/mtd-ordermaker/images/mini-icon-cpq.png" width="24" height="24">
-                                            </span>
-                                            <span class="mdc-list-item__text">CPQ Manager</span>
-                                        </li>
+                            <div class="mdc-menu-surface--anchor">
+                                <button id="main-action-button" class="mdc-button mdc-button--raised mdc-theme--secondary-bg">
+                                    <div class="mdc-button__ripple"></div>
+                                    <span class="mdc-button__label">@Localizer["Actions"]</span>
+                                    <i class="mdc-button__icon fas fa-caret-down" aria-hidden="true"></i>
+                                </button>
+                                <div id="main-action-menu" class="mdc-menu mdc-menu-surface">
+                                    <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+                                        @RenderSection("Action")
                                     </ul>
                                 </div>
                             </div>
                         }
+                    </div>
 
-                        <div class="toolbar mdc-menu-surface--anchor">
-                            <button id="main-user-button" class="mdc-icon-button material-icons mdc-top-app-bar__action-item" aria-label="person" alt="person" style="color: @ViewBag.ColorIcon">person</button>
-                            <div id="main-user-menu" class="mdc-menu-surface" style="margin-top: 50px; margin-right: 8px;">
-                                <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" style="cursor: pointer">
-                                    <li mtd-data-href="/Identity/Account/Manage" class="mdc-list-item" role="menuitem">
-                                        <span class="material-icons mdc-list-item__graphic" aria-hidden="true">perm_identity</span>
-                                        <span class="mdc-list-item__text">@Localizer["Profile"]</span>
-                                    </li>
-                                    <li mtd-data-href="/Identity/Account/Manage/ChangePassword" class="mdc-list-item" role="menuitem">
-                                        <span class="material-icons mdc-list-item__graphic" aria-hidden="true">lock</span>
-                                        <span class="mdc-list-item__text">@Localizer["Password"]</span>
-                                    </li>
-                                    <li role="separator" class="mdc-list-divider"></li>
-                                    <li class="mdc-list-item" role="menuitem" onclick="document.getElementById('form-logout').submit()">
-                                        <form id="form-logout" style="display: none" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post"></form>
-                                        <span class="material-icons mdc-list-item__graphic" aria-hidden="true">exit_to_app</span>
-                                        <span mtd-data-clicker mtd-data-location="/" class="mdc-list-item__text">@Localizer["Logout"]</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </section>
-                }
-            </div>
-        </header>
-        <main role="main" class="mtd-main-content" id="main-content">
-            <div id="mainModal" style="display: none;">
-                <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate" style="z-index: 4; top: 64px;  position: absolute; --mdc-theme-primary: red; ">
-                    <div class="mdc-linear-progress__buffering-dots"></div>
-                    <div class="mdc-linear-progress__buffer"></div>
-                    <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
-                        <span class="mdc-linear-progress__bar-inner"></span>
-                    </div>
-                    <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
-                        <span class="mdc-linear-progress__bar-inner"></span>
-                    </div>
-                </div>
-                <div class="mtd-main-modal"></div>
-            </div>
-            <div class="mdc-top-app-bar--fixed-adjust">
-                <div class="mtd-main-informer">
-                    @if (SignInManager.IsSignedIn(User))
+                    @if (IsSectionDefined("Breadcrumb"))
                     {
-                        <div class="mtd-main-informer-content">
-                            <div style="display: flex; align-items: center">
-                                <div class="mtd-main-informer-title" style="flex-grow: 1">
-                                    @ViewData["Title"]
-                                </div>
-                                <div class="mtd-main-informer-action">
-                                    @if (IsSectionDefined("Action"))
-                                    {
-                                        <div class="mdc-menu-surface--anchor">
-                                            <button id="main-action-button" class="mdc-button mdc-button--raised">
-                                                <i class="material-icons mdc-button__icon" aria-hidden="true">apps</i>
-                                                <span class="mdc-button__label">@Localizer["Actions"]</span>
-                                            </button>
-                                            <div id="main-action-menu" class="mdc-menu mdc-menu-surface">
-                                                <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
-                                                    @RenderSection("Action")
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    }
-
-                                </div>
-                            </div>
-                            <div class="mtd-main-informer-name">
-                                @ViewData["SecondTitle"]
-                            </div>
-                            <ul class="mtd-main-informer-breadcrumb">
-                                @if (IsSectionDefined("Breadcrumb"))
-                                {
-                                    @RenderSection("Breadcrumb")
-                                }
-                            </ul>
-                        </div>
+                        <ul class="mtd-main-informer-breadcrumb">
+                            @RenderSection("Breadcrumb")
+                        </ul>
                     }
                 </div>
-                <div class="mtd-main-body">
-                    @RenderBody()
-                </div>
-                @*<footer>
-                        <div class="mtd-main-footer">
-                            <div style="flex-grow:1">
-                                &copy; @DateTime.Now.Year.ToString() - <a href="http://ordermaker.org">OrderMaker</a> All rights reserved.
-                            </div>
-                            <div style="padding-right: 16px;">
-                                <p style="color:#7b7b7b" class="text-right">@Localizer["web application version"]: @System.Reflection.Assembly.GetEntryAssembly().GetName().Version</p>
-                            </div>
-                        </div>
-                    </footer>*@
+                @RenderBody()
             </div>
-        </main>
+        </div>
     </div>
 
     <div id="main-snack" class="mdc-snackbar">
@@ -326,15 +161,32 @@
         <div class="mdc-dialog__scrim"></div>
     </div>
 
-    @*<script src="~/lib/google/js/material-components-web.js" asp-append-version="true"></script>*@
-    <script src="https://unpkg.com/material-components-web@6.0.0/dist/material-components-web.min.js"></script>
-    <script src="~/lib/mtd-ordermaker/main/js/mtd-main.js" asp-append-version="true"></script>
-    <script src="~/lib/mtd-ordermaker/mtd-img-selector/js/mtd-img-selector.js" asp-append-version="true"></script>
-    <script src="~/lib/mtd-ordermaker/mtd-checkbox/js/mtd-checkbox.js" asp-append-version="true"></script>
-    <script src="~/lib/fontawesome/js/fontawesome.min.js" asp-append-version="true"></script>
-    <script src="~/lib/fontawesome/js/solid.min.js" asp-append-version="true"></script>
-    <script src="~/lib/fontawesome/js/regular.min.js" asp-append-version="true"></script>
+    <environment include="Development">
+        @*<script src="~/lib/google/js/material-components-web.js" asp-append-version="true"></script>*@
+        <script src="https://unpkg.com/material-components-web@6.0.0/dist/material-components-web.min.js"></script>
+        <script src="~/lib/mtd-ordermaker/main/js/mtd-main.js" asp-append-version="true"></script>
 
-    @RenderSection("Scripts", required: false)
+        <script src="~/lib/mtd-ordermaker/main/js/mtd-app.js" asp-append-version="true"></script>
+
+        <script src="~/lib/mtd-ordermaker/main/js/mtd-select-list.js" asp-append-version="true"></script>
+        <script src="~/lib/mtd-ordermaker/main/js/mtd-text-field.js" asp-append-version="true"></script>
+        <script src="~/lib/mtd-ordermaker/mtd-img-selector/js/mtd-img-selector.js" asp-append-version="true"></script>
+        <script src="~/lib/mtd-ordermaker/mtd-checkbox/js/mtd-checkbox.js" asp-append-version="true"></script>
+        <script src="~/lib/fontawesome/js/fontawesome.min.js" asp-append-version="true"></script>
+        <script src="~/lib/fontawesome/js/solid.min.js" asp-append-version="true"></script>
+        <script src="~/lib/fontawesome/js/regular.min.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://unpkg.com/material-components-web@6.0.0/dist/material-components-web.min.js"></script>
+        <script src="~/lib/mtd-ordermaker/main/js/mtd-main.min.js" asp-append-version="true"></script>
+        <script src="~/lib/mtd-ordermaker/mtd-img-selector/js/mtd-img-selector.js" asp-append-version="true"></script>
+        <script src="~/lib/mtd-ordermaker/mtd-checkbox/js/mtd-checkbox.js" asp-append-version="true"></script>
+        <script src="~/lib/fontawesome/js/fontawesome.min.js" asp-append-version="true"></script>
+        <script src="~/lib/fontawesome/js/solid.min.js" asp-append-version="true"></script>
+        <script src="~/lib/fontawesome/js/regular.min.js" asp-append-version="true"></script>
+    </environment>
+
+
+        @RenderSection("Scripts", required: false)
 </body>
 </html>

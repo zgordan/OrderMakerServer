@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
-using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Entity;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

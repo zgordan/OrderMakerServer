@@ -20,112 +20,112 @@
 @model Models.Index.ColumnsModelView
 
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> Localizer
 
-<div id="indexFilterColumn" class="mdc-elevation--z16" style="position: absolute; margin: 8px;  width: 90%; display: none; z-index:1; background-color: white;">
-    <div style="text-transform:uppercase; background-color: navy; color: white; margin-bottom:16px;" class="mdc-elevation--z2">
-        <div style="padding: 16px">
-            @Localizer["List columns"]
-        </div>
-    </div>
-    <div style="padding: 8px;">
-        <div style="display: flex; padding: 8px; border: 1px solid lightgray; position:relative">
-            <span style="position: absolute; background-color: white; top: -12px">@Localizer["Service fields"]</span>
-            <div class="mdc-form-field">
-                <div class="mdc-checkbox">
-                    <input type="checkbox"
-                           class="mdc-checkbox__native-control"
-                           id="show-number" checked="@Model.ShowNumber" />
-                    <div class="mdc-checkbox__background">
-                        <svg class="mdc-checkbox__checkmark"
-                             viewBox="0 0 24 24">
-                            <path class="mdc-checkbox__checkmark-path"
-                                  fill="none"
-                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                        </svg>
-                        <div class="mdc-checkbox__mixedmark"></div>
-                    </div>
+    <div id="indexFilterColumn" class="mdc-elevation--z12">
+        <div class="index-form-title">
+            <div style="display: flex;">
+                <div style="flex-grow: 1; padding: 8px; align-self: center">
+                    @Localizer["List columns"]
                 </div>
-                <label for="show-number">@Localizer["ID Number"]</label>
-            </div>
-            <div class="mdc-form-field">
-                <div class="mdc-checkbox">
-                    <input type="checkbox"
-                           class="mdc-checkbox__native-control"
-                           id="show-date" checked="@Model.ShowDate" />
-                    <div class="mdc-checkbox__background">
-                        <svg class="mdc-checkbox__checkmark"
-                             viewBox="0 0 24 24">
-                            <path class="mdc-checkbox__checkmark-path"
-                                  fill="none"
-                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                        </svg>
-                        <div class="mdc-checkbox__mixedmark"></div>
-                    </div>
+                <div>
+                    <button id="indexButtonColClose" class="mdc-icon-button material-icons index-form-close">close</button>
                 </div>
-                <label for="show-date">@Localizer["Date of creation"]</label>
             </div>
         </div>
-
-    </div>
-    <div style="padding: 8px">
-        <div id="indexSelectPart" class="mdc-select mdc-select--outlined" style="width: 100%; border-bottom: 1px solid gray;">
-            <i class="mdc-select__dropdown-icon"></i>
-            <select class="mdc-select__native-control">
-                <option value="all">--- @Localizer["All Parts"] ---</option>
-                @foreach (var part in Model.MtdFormParts)
-                {
-                    <option value="@part.Id">@part.Name</option>
-                }
-            </select>
-            <label class="mdc-floating-label">@Localizer["Part"]</label>
-            <div class="mdc-line-ripple"></div>
-        </div>
-        <div style="max-height: 350px; overflow-y:auto;">
-            <ul id="indexListColumn" class="mdc-list">
-
-                @{string partId = ""; if (Model.MtdFormParts.FirstOrDefault() != null) { partId = Model.MtdFormParts.FirstOrDefault().Id; }}
-
-                @foreach (var field in Model.MtdFormPartFields)
-                {
-                    bool isChecked = Model.MtdFilterColumns.Where(x => x.MtdFormPartField == field.Id).Any();
-                    <li id="@field.Id-licol" class="mdc-list-item" draggable="true" role="checkbox" aria-checked=@isChecked.ToString().ToLower()
-                        data-value="@field.Id"
-                        data-part="@field.MtdFormPart">
-                        <span class="mdc-list-item__graphic">
-                            <div class="mdc-checkbox">
-                                <input type="checkbox"
-                                       class="mdc-checkbox__native-control"
-                                       id="@field.Id-lc" />
-                                <div class="mdc-checkbox__background">
-                                    <svg class="mdc-checkbox__checkmark"
-                                         viewBox="0 0 24 24">
-                                        <path class="mdc-checkbox__checkmark-path"
-                                              fill="none"
-                                              d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                    </svg>
-                                    <div class="mdc-checkbox__mixedmark"></div>
-                                </div>
-                            </div>
-                        </span>
-                        <label class="mdc-list-item__text" for="@field.Id-lc">@field.Name</label>
-                        <div style="position: absolute; right: 16px; cursor: all-scroll">
-                            <i class="material-icons" style="color:gray">drag_handle</i>
+        <div style="padding: 8px;">
+            <div style="display: flex; padding: 8px; border: 1px solid lightgray; position:relative">
+                <span style="position: absolute; background-color: white; top: -12px; padding: 0 8px 0 8px;">@Localizer["Service fields"]</span>
+                <div class="mdc-form-field">
+                    <div class="mdc-checkbox">
+                        <input type="checkbox"
+                               class="mdc-checkbox__native-control"
+                               id="show-number" checked="@Model.ShowNumber" />
+                        <div class="mdc-checkbox__background">
+                            <svg class="mdc-checkbox__checkmark"
+                                 viewBox="0 0 24 24">
+                                <path class="mdc-checkbox__checkmark-path"
+                                      fill="none"
+                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                            </svg>
+                            <div class="mdc-checkbox__mixedmark"></div>
                         </div>
-                    </li>
-                }
-            </ul>
-        </div>
-        <form id="indexFormColumn" method="post" action="/api/index/filter/columns/add" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
-            @Html.AntiForgeryToken()
-            <input type="text" id="indexDataColumnIdForm" name="indexDataColumnIdForm" value="@Model.IdForm" hidden />
-            <input type="text" id="indexDataColumnList" name="indexDataColumnList" value="@Model.IdForm" hidden />
-            <input type="text" id="indexDataColumnNumber" name="indexDataColumnNumber" value="@Model.ShowNumber" hidden />
-            <input type="text" id="indexDataColumnDate" name="indexDataColumnDate" value="@Model.ShowDate" hidden />
-            <div style="text-align:right; padding-top:8px; border-top: 1px solid gray">
-                <button id="indexButtonColCancel" class="mdc-button" type="button">@Localizer["Cancel"]</button>
-                <button id="indexButtonColApply" type="button" class="mdc-button" mtdfilter="@Model.IdForm">@Localizer["Apply"]</button>
+                    </div>
+                    <label for="show-number">@Localizer["ID Number"]</label>
+                    <div class="mdc-checkbox">
+                        <input type="checkbox"
+                               class="mdc-checkbox__native-control"
+                               id="show-date" checked="@Model.ShowDate" />
+                        <div class="mdc-checkbox__background">
+                            <svg class="mdc-checkbox__checkmark"
+                                 viewBox="0 0 24 24">
+                                <path class="mdc-checkbox__checkmark-path"
+                                      fill="none"
+                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                            </svg>
+                            <div class="mdc-checkbox__mixedmark"></div>
+                        </div>
+                    </div>
+                    <label for="show-date">@Localizer["Date of creation"]</label>
+                </div>
             </div>
-        </form>
+        </div>
+        <div style="padding: 8px;">
+            <div style="padding: 8px; border: 1px solid lightgray; position: relative">
+                <span style="position: absolute; background-color: white; top: -12px; padding: 0 8px 0 8px;">@Localizer["Custom fields"]</span>
+                <div style="max-height: 450px; overflow-y:auto;">
+                    <ul id="indexListColumn" class="mdc-list mtd-density-list" role="group" aria-label="List with checkbox items">
+                 
+                        @foreach (var field in Model.ColumnItems)
+                        {
+                            
+                            <li id="@field.FieldId-licol" class="mdc-list-item" draggable="true" role="checkbox" aria-checked="@field.IsChecked.ToString().ToLower()"
+                                data-value="@field.FieldId"
+                                data-part="@field.PartId" onclick="OnClickFilterColumn(event)">
+                                <span class="mdc-list-item__graphic">
+                                    <div class="mdc-checkbox mdc-checkbox--disabled">
+                                        <input type="checkbox"
+                                               class="mdc-checkbox__native-control"
+                                               id="@field.FieldId-lc" @if (field.IsChecked) {<text>checked</text> }  />
+                                        <div class="mdc-checkbox__background">
+                                            <svg class="mdc-checkbox__checkmark"
+                                                 viewBox="0 0 24 24">
+                                                <path class="mdc-checkbox__checkmark-path"
+                                                      fill="none"
+                                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                            </svg>
+                                            <div class="mdc-checkbox__mixedmark"></div>
+                                        </div>
+                                    </div>
+                                </span>
+                            <label class="mdc-list-item__text" for="@field-lc">@field.PartName: @field.FieldName</label>
+                                <div style="position: absolute; right: 16px; cursor: all-scroll">
+                                    <i class="material-icons" style="color:gray">drag_handle</i>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>                        
+        </div>
+        <div style="padding: 0px 8px 8px 8px">
+            <form id="indexFormColumn" method="post" action="/api/index/filter/columns/add" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
+                @Html.AntiForgeryToken()
+                <input type="text" name="form-id" value="@Model.FormId" hidden />
+                <input type="text" id="indexDataColumnList" name="indexDataColumnList" value="@Model.FormId" hidden />
+                <input type="text" id="indexDataColumnNumber" name="indexDataColumnNumber" value="@Model.ShowNumber" hidden />
+                <input type="text" id="indexDataColumnDate" name="indexDataColumnDate" value="@Model.ShowDate" hidden />
+
+                <div style="text-align:left; padding:12px 0 8px 0;">
+                    <button id="indexButtonColApply" type="button" class="mdc-button mdc-button--raised">
+                        <div class="mdc-button__ripple"></div>
+                        <span class="mdc-button__label">@Localizer["Apply"]</span>
+                    </button>
+                    <button id="indexButtonColCancel" class="mdc-button" type="button">
+                        <div class="mdc-button__ripple"></div>
+                        <span class="mdc-button__label">@Localizer["Cancel"]</span>                        
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>

@@ -4,8 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-Mtd.OrderMaker.Server-37BF32C5-192C-49FD-9796-64BBBCB87F61</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <AssemblyVersion>1.2.1.6</AssemblyVersion>
-    <FileVersion>1.2.1.5</FileVersion>
+    <AssemblyVersion>1.2.2.1</AssemblyVersion>
+    <FileVersion>1.2.2.1</FileVersion>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>http://ordermaker.org</PackageProjectUrl>
@@ -18,7 +18,7 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
 </Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <RepositoryUrl>https://github.com/olegbruev/OrderMakerServer</RepositoryUrl>
-    <PackageReleaseNotes>Release 1.2.1.beta.6 Temp</PackageReleaseNotes>
+    <PackageReleaseNotes>Release 1.2.2.beta.1 Temp</PackageReleaseNotes>
     <PackageIconUrl>http://ordermaker.org/favicon.ico</PackageIconUrl>
     <ApplicationIcon>form.ico</ApplicationIcon>
     <Version>1.2.1</Version>
@@ -76,11 +76,27 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
     <Compile Remove="Migrations\20200423133952_Singnature.cs" />
     <Compile Remove="Migrations\20200423133952_Singnature.Designer.cs" />
     <Compile Remove="Migrations\20200423134540_Singnature.cs" />
-    <Compile Remove="Migrations\20200423134540_Singnature.Designer.cs" />    
+    <Compile Remove="Migrations\20200423134540_Singnature.Designer.cs" />
+    <Compile Remove="Migrations\20200601204655_UpdateScriptPolicy.cs" />
+    <Compile Remove="Migrations\20200601204655_UpdateScriptPolicy.Designer.cs" />
+    <Compile Remove="Migrations\20200601205931_UpdateScriptPolicy.cs" />
+    <Compile Remove="Migrations\20200601205931_UpdateScriptPolicy.Designer.cs" />
+    <Compile Remove="Migrations\20200601211612_UpdateScriptPolicy.cs" />
+    <Compile Remove="Migrations\20200601211612_UpdateScriptPolicy.Designer.cs" />
+    <Compile Remove="Migrations\20200601212234_UpdateScriptPolicy.cs" />
+    <Compile Remove="Migrations\20200601212234_UpdateScriptPolicy.Designer.cs" />
+    <Compile Remove="Migrations\20200601214110_UpdateScriptPolicy.cs" />
+    <Compile Remove="Migrations\20200601214110_UpdateScriptPolicy.Designer.cs" />    
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="bundleconfig.json" />
+    <Content Remove="wwwroot\lib\mtd-ordermaker\index\js\mtd-index.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\lib\mtd-ordermaker\index\js\mtd-index.min.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\lib\mtd-ordermaker\main\css\mtd-main.min.css" />
   </ItemGroup>
 
 
@@ -1727,6 +1743,7 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
     <None Include="wwwroot\lib\jquery\dist\jquery.js" />
     <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
     <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+    <None Include="wwwroot\lib\mtd-ordermaker\index\js\mtd-index.min.js" />
     <None Include="wwwroot\lib\mtd-ordermaker\store\less\mtd-store-edit.less" />    
     <Content Update="appsettings.json" CopyToPublishDirectory="Never" />    
     <Content Update="wwwroot\lib\mtd-ordermaker\emailform\blank.html">
@@ -1743,8 +1760,6 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
   <ItemGroup>
     <Folder Include="wwwroot\lib\google\sass\" />
     <Folder Include="wwwroot\lib\mtd-ordermaker\common\css\" />
-    <Folder Include="wwwroot\lib\mtd-ordermaker\desktop\css\" />
-    <Folder Include="wwwroot\lib\mtd-ordermaker\desktop\js\" />
     <Folder Include="wwwroot\lib\mtd-ordermaker\filechoose\css\" />
     <Folder Include="wwwroot\lib\mtd-ordermaker\identity\css\" />
     <Folder Include="wwwroot\lib\mtd-ordermaker\index\css\" />
@@ -1756,9 +1771,9 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
 
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptTarget>ES2015</TypeScriptTarget>
     <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
-    <TypeScriptModuleKind />
+    <TypeScriptModuleKind>ES6</TypeScriptModuleKind>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
     <TypeScriptRemoveComments>False</TypeScriptRemoveComments>

@@ -17,11 +17,11 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 *@
 
-@model Models.Store.DataSet
+@model Models.Store.Warehouse
 
 <div class="mtd-store-edit-col-wrap">
     @foreach (var field in Model.Fields)
     {
-        @await Component.InvokeAsync("StoreStackEditor", new { field = field, dataSet = Model })
+        @await Component.InvokeAsync("StoreStackEditor", new { field = field, warehouse = Model })
     }
 </div>

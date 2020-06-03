@@ -18,12 +18,15 @@
 */
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
-using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.Services;
+using Org.BouncyCastle.Asn1.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,12 +40,12 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
     public class DataController : ControllerBase
     {
         private readonly OrderMakerContext _context;
-        private readonly UserManager<WebAppUser> _userManager;
+        private readonly UserHandler _userHandler;
 
-        public DataController(OrderMakerContext context, UserManager<WebAppUser> userManager)
+        public DataController(OrderMakerContext context, UserHandler userHandler)
         {
             _context = context;
-            _userManager = userManager;
+            _userHandler = userHandler;
         }
 
         [HttpPost("search/text")]
@@ -50,8 +53,8 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
         public async Task<IActionResult> PostSearchTextAsync()
         {
             string form = Request.Form["indexForm"];
-            string value = Request.Form["indexSearchText"];
-            WebAppUser user = await _userManager.GetUserAsync(User);
+            string value = Request.Form["search-text"];
+            WebAppUser user = await _userHandler.GetUserAsync(User);
             MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == form);
             bool old = true;
             if (filter == null)
@@ -91,7 +94,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
             string form = Request.Form["formId"];
             string value = Request.Form["searchNumber"];
 
-            WebAppUser user = await _userManager.GetUserAsync(User);
+            WebAppUser user = await _userHandler.GetUserAsync(User);
             MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id & x.MtdForm == form);
             bool old = true;
             if (filter == null)
@@ -121,13 +124,13 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
             return Ok();
         }
 
-        [HttpPost("{idForm}/pagesize/{number}")]
-        public async Task<IActionResult> PostPageSize(string idForm, int number)
+        [HttpPost("{formId}/pagesize/{number}")]
+        public async Task<IActionResult> PostPageSize(string formId, int number)
         {
             int temp = number;
             if (temp > 50) temp = 50;
-            var user = await _userManager.GetUserAsync(User);
-            MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == idForm);
+            var user = await _userHandler.GetUserAsync(User);
+            MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == formId);
             if (filter == null)
             {
                 filter = new MtdFilter { SearchNumber = "", SearchText = "" };
@@ -149,12 +152,12 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
              * 1 -  First Page; 2 - back; 3 - forward;
              */
 
-            string idForm = Request.Form["formId"];
+            string formId = Request.Form["formId"];
             string formValue = Request.Form["formValue"];
             int number = int.Parse(formValue);
 
-            var user = await _userManager.GetUserAsync(User);
-            MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == idForm);
+            var user = await _userHandler.GetUserAsync(User);
+            MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == formId);
             if (filter == null)
             {
                 filter = new MtdFilter { SearchNumber = "", SearchText = "" };
@@ -183,7 +186,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
         public async Task<IActionResult> PostFilterAddAsync()
         {
             string valueField = Request.Form["indexInputField"];
-            string idForm = Request.Form["indexInputForm"];
+            string formId = Request.Form["form-id"];
             string valueFilter = Request.Form["indexInputFilter"];
             string valueTerm = Request.Form["indexInputTerm"];
             string valueFieldList = Request.Form[$"{valueField}-inputlist"];
@@ -192,15 +195,15 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
             if (valueFilter != null) { result = valueFilter; }
             if (valueFieldList != null) { result = valueFieldList; }
 
-            WebAppUser user = await _userManager.GetUserAsync(User);
-            MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == idForm);
+            WebAppUser user = await _userHandler.GetUserAsync(User);
+            MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == formId);
 
             if (filter == null)
             {
                 filter = new MtdFilter
                 {
                     IdUser = user.Id,
-                    MtdForm = idForm,
+                    MtdForm = formId,
                     SearchNumber = "",
                     SearchText = "",
                     Page = 1,
@@ -311,17 +314,20 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostFilterRemoveAllAsync()
         {
-            string strID = Request.Form["idFilter"];
+            var form = await Request.ReadFormAsync();
+            string strID = form["filter-id"];
+            string formId = form["form-id"];
             bool isOk = int.TryParse(strID,out int idFilter);
             if (!isOk) { return NotFound(); }
 
             IList<MtdFilterField> mtdFilterFields = await _context.MtdFilterField.Where(x => x.MtdFilter == idFilter).ToListAsync();
-            IList<MtdFilterScript> mtdFilterScripts = await _context.MtdFilterScript
-                .Where(x => x.MtdFilter == idFilter)
-                .Select(x => new MtdFilterScript { Id = x.Id, MtdFilter = x.MtdFilter, Name = x.Name, Description = x.Description, Script = x.Script, Apply = 0 })
-                .ToListAsync();           
-            MtdFilterDate mtdFilterDate = await _context.MtdFilterDate.Where(x => x.Id == idFilter).FirstOrDefaultAsync();
-            
+            WebAppUser user = await _userHandler.GetUserAsync(HttpContext.User);
+            IList<MtdFilterScript> filterScripts = await _userHandler.GetFilterScripsAsync(user,formId);
+
+            IList<MtdFilterScript> mtdFilterScripts = filterScripts                
+                .Select(x => new MtdFilterScript { Id = x.Id, Name = x.Name, Script = x.Script, Apply = 0 })
+                .ToList();           
+            MtdFilterDate mtdFilterDate = await _context.MtdFilterDate.Where(x => x.Id == idFilter).FirstOrDefaultAsync();            
             try
             {
                 _context.MtdFilterField.RemoveRange(mtdFilterFields);
@@ -344,22 +350,22 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
         public async Task<IActionResult> PostFilterColumnsAsync()
         {
 
-            string idForm = Request.Form["indexDataColumnIdForm"];
+            string formId = Request.Form["form-id"];
             string data = Request.Form["indexDataColumnList"];
             string showNumber = Request.Form["indexDataColumnNumber"];
             string showDate = Request.Form["indexDataColumnDate"];
 
             List<string> fieldIds = new List<string>();
             if (data != null && data.Length > 0) fieldIds = data.Split(",").ToList();
-            WebAppUser user = await _userManager.GetUserAsync(User);
-            MtdFilter filter = await _context.MtdFilter.Include(m => m.MtdFilterColumn).FirstOrDefaultAsync(x => x.IdUser == user.Id & x.MtdForm == idForm);
+            WebAppUser user = await _userHandler.GetUserAsync(User);
+            MtdFilter filter = await _context.MtdFilter.Include(m => m.MtdFilterColumn).FirstOrDefaultAsync(x => x.IdUser == user.Id & x.MtdForm == formId);
 
             if (filter == null)
             {
                 filter = new MtdFilter
                 {
                     IdUser = user.Id,
-                    MtdForm = idForm,
+                    MtdForm = formId,
                     SearchNumber = "",
                     SearchText = "",
                     Page = 1,
@@ -401,9 +407,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
             }
             catch (Exception ex) { throw ex.InnerException; }
 
-
             return Ok();
-
         }
 
 
@@ -411,15 +415,15 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostWaitListSetAsync()
         {
-            string idForm = Request.Form["id-form-waitlist"];
-            WebAppUser user = await _userManager.GetUserAsync(HttpContext.User);
-            MtdFilter mtdFilter = await _context.MtdFilter.Where(x => x.IdUser == user.Id && x.MtdForm == idForm).FirstOrDefaultAsync();
+            string formId = Request.Form["id-form-waitlist"];
+            WebAppUser user = await _userHandler.GetUserAsync(HttpContext.User);
+            MtdFilter mtdFilter = await _context.MtdFilter.Where(x => x.IdUser == user.Id && x.MtdForm == formId).FirstOrDefaultAsync();
             if (mtdFilter == null)
             {
                 mtdFilter = new MtdFilter
                 {
                     IdUser = user.Id,
-                    MtdForm = idForm,
+                    MtdForm = formId,
                     PageSize = 10,
                     SearchText = "",
                     SearchNumber = "",
@@ -455,5 +459,6 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
             return Ok();
 
         }
+
     }
 }

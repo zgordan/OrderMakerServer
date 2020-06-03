@@ -26,7 +26,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
-using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Services;
 
 namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Approval

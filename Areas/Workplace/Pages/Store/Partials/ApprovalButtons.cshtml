@@ -1,7 +1,7 @@
 ﻿
 @model Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store.DetailsModel
 @namespace Mtd.OrderMaker.Server.Components.Store
-@using Mtd.OrderMaker.Server.DataHandler.Approval
+@using Mtd.OrderMaker.Server.EntityHandler.Approval
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 
@@ -13,9 +13,9 @@
 }
 
 <div class="mtd-index-header-buttons" style="padding-top: 6px;">
-    <div class="mtd-desk-hint-ibutton">
+    <div class="mtd-button-hint">
         <button @idAccept class="mdc-icon-button material-icons">thumb_up</button>
-        <div class="mtd-desk-hint-ibutton_info">
+        <div class="mtd-button-hint_info">
             @if (Model.IsFirstStage)
             {
                 <span>@Localizer["Start approval"]</span>
@@ -27,26 +27,26 @@
 
         </div>
     </div>
-    <div class="mtd-desk-hint-ibutton">
+    <div class="mtd-button-hint">
         <button id="return-button" class="mdc-icon-button" @disabled>
             <i class="fas fa-reply" style="padding-bottom: 6px;"></i>
         </button>
-        <div class="mtd-desk-hint-ibutton_info">
+        <div class="mtd-button-hint_info">
             <span>@Localizer["Document return"]</span>
         </div>
     </div>
-    <div class="mtd-desk-hint-ibutton">
+    <div class="mtd-button-hint">
         <button id="reject-button" class="mdc-icon-button material-icons" @disabled>thumb_down</button>
-        <div class="mtd-desk-hint-ibutton_info">
+        <div class="mtd-button-hint_info">
             <span>@Localizer["Reject"]</span>
         </div>
     </div>
 
-    <div class="mtd-desk-hint-ibutton">
+    <div class="mtd-button-hint">
         <button id="request-button" class="mdc-icon-button" @disabledRequest>
             <i class="fas fa-share-square" style="padding-bottom: 6px;"></i>
         </button>
-        <div class="mtd-desk-hint-ibutton_info">
+        <div class="mtd-button-hint_info">
             <span>@Localizer["Signature request"]</span>
         </div>
     </div>

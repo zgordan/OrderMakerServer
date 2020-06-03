@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Entity;
 
-namespace Mtd.OrderMaker.Server.Data.Migrations
+namespace Mtd.OrderMaker.Server.Entity.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
     [Migration("20190411145226_CustomUserRole")]

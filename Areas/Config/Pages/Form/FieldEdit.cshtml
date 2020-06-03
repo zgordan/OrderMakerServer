@@ -35,13 +35,13 @@
     <li><a href="/config">@Localizer["Configurator"]</a></li>
     <li><a href="/config/form">@Localizer["Forms"]</a></li>
     <li><a href="/config/form/edit?id=@Model.MtdForm.Id">@Localizer["Form editor"]</a></li>
-    <li><a href="/config/form/fields?idForm=@Model.MtdForm.Id&idPart=@Model.MtdFormPartField.MtdFormPart">@Localizer["Fields editor"]</a></li>
+    <li><a href="/config/form/fields?formId=@Model.MtdForm.Id&idPart=@Model.MtdFormPartField.MtdFormPart">@Localizer["Fields editor"]</a></li>
     <li>@ViewBag.Title</li>
 }
 
 @section Action {
 
-    <li mtd-data-href="/config/form/parts?idForm=@Model.MtdForm.Id" class="mdc-list-item" role="menuitem">
+    <li mtd-data-href="/config/form/parts?formId=@Model.MtdForm.Id" class="mdc-list-item" role="menuitem">
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">line_weight</span>
         <span class="mdc-list-item__text">@Localizer["Edit parts"]</span>
     </li>
@@ -160,7 +160,7 @@
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/config/form/field/delete'>
     @Html.AntiForgeryToken()
     <input id="config-delete-id" name="fieldId" type="hidden" value="@Model.MtdFormPartField.Id" />
-    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/config/form/fields?idForm=@Model.MtdForm.Id" mtd-data-message="@Localizer["Field"] @Model.MtdFormPartField.Name @Localizer["has been removed"]." type="hidden" />
+    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/config/form/fields?formId=@Model.MtdForm.Id" mtd-data-message="@Localizer["Field"] @Model.MtdFormPartField.Name @Localizer["has been removed"]." type="hidden" />
 </form>
 
 <div id="dialog-field-delete" class="mdc-dialog"

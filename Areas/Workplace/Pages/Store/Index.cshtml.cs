@@ -25,7 +25,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
-using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Services;
 
 namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
@@ -63,75 +63,9 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                 return NotFound();
             }
             
-            ViewData["IdForm"] = indexForm;
+            ViewData["FormId"] = indexForm;
             return Page();
         }
 
-
-        private async void CloneStore(string idStore)
-        {
-
-            var q = from n in _context.MtdStoreStack.Where(x => x.MtdStore == idStore)
-                    group n by n.MtdFormPartField into g
-                    select new { idField = g.Key, idStack = g.FirstOrDefault(x => x.Id == g.Max(m => m.Id)).Id };
-
-            List<long> ids = await q.Select(x => x.idStack).ToListAsync();
-
-
-            IList<MtdStoreStack> stack = await _context.MtdStoreStack
-               .Include(x => x.MtdStoreStackDate)
-               .Include(x => x.MtdStoreStackText)
-               .Include(x => x.MtdStoreStackInt)
-               .Include(x => x.MtdStoreStackDecimal)
-               .Include(x => x.MtdStoreStackFile)
-               .Include(x => x.MtdStoreLink)
-               .Where(x => ids.Contains(x.Id))
-               .ToListAsync();
-
-            string idForm = await _context.MtdStore.Where(s => s.Id == idStore).Select(x => x.MtdForm).FirstOrDefaultAsync();
-            int maxSeq = await _context.MtdStore.Where(x => x.MtdForm == idForm).MaxAsync(s => s.Sequence);
-            maxSeq++;
-
-            MtdStore mtdStore = new MtdStore()
-            {
-                Sequence = maxSeq,
-                MtdForm = idForm
-            };
-
-
-            foreach (MtdStoreStack storeStack in stack)
-            {
-
-                MtdStoreStack newStack = new MtdStoreStack()
-                {
-                    MtdStore = storeStack.MtdStore,
-                    MtdFormPartField = storeStack.MtdFormPartField,
-                    MtdStoreStackDate = storeStack.MtdStoreStackDate != null ? new MtdStoreStackDate { Register = storeStack.MtdStoreStackDate.Register } : null,
-                    MtdStoreStackText = storeStack.MtdStoreStackText != null ? new MtdStoreStackText { Register = storeStack.MtdStoreStackText.Register } : null,
-                    MtdStoreStackInt = storeStack.MtdStoreStackInt != null ? new MtdStoreStackInt { Register = storeStack.MtdStoreStackInt.Register } : null,
-                    MtdStoreStackDecimal = storeStack.MtdStoreStackDecimal != null ? new MtdStoreStackDecimal { Register = storeStack.MtdStoreStackDecimal.Register } : null,
-
-                    MtdStoreStackFile = storeStack.MtdStoreStackFile != null ? new MtdStoreStackFile
-                    {
-                        Register = storeStack.MtdStoreStackFile.Register,
-                        FileName = storeStack.MtdStoreStackFile.FileName,
-                        FileSize = storeStack.MtdStoreStackFile.FileSize,
-                        FileType = storeStack.MtdStoreStackFile.FileType
-
-                    } : null,
-
-                    MtdStoreLink = storeStack.MtdStoreLink,
-
-                };
-
-                mtdStore.MtdStoreStack.Add(newStack);
-
-            }
-
-            _context.MtdStore.Add(mtdStore);
-            await _context.SaveChangesAsync();
-
-
-        }
     }
 }

@@ -19,13 +19,14 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
-using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Entity;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -38,7 +39,7 @@ namespace Mtd.OrderMaker.Server.Services
 {
     public enum RightsType
     {
-        View, Create, Edit, Delete, ViewOwn, EditOwn, DeleteOwn, ViewGroup, EditGroup, DeleteGroup, SetOwn, Reviewer, SetDate
+        ViewAll, Create, Edit, Delete, ViewOwn, EditOwn, DeleteOwn, ViewGroup, EditGroup, DeleteGroup, SetOwn, Reviewer, SetDate
     };
 
     public class PolicyCache
@@ -57,7 +58,7 @@ namespace Mtd.OrderMaker.Server.Services
         private readonly OrderMakerContext _context;
         private readonly SignInManager<WebAppUser> _signInManager;
 
-        public static readonly string PolicyKey = "PolicyCache";        
+        public static readonly string PolicyKey = "PolicyCache";
 
         public UserHandler(PolicyCache cache, OrderMakerContext context,
             IUserStore<WebAppUser> store,
@@ -77,8 +78,9 @@ namespace Mtd.OrderMaker.Server.Services
         public async Task<IList<MtdPolicy>> CacheRefresh()
         {
             IList<MtdPolicy> mtdPolicies = await _context.MtdPolicy
-                 .Include(x => x.MtdPolicyForms)                 
-                 .Include(x => x.MtdPolicyParts)                 
+                 .Include(x => x.MtdPolicyForms)
+                 .Include(x => x.MtdPolicyParts)
+                 .Include(x => x.MtdPolicyScripts)
                  .ToListAsync();
 
             _cache.Cache.Set(PolicyKey, mtdPolicies);
@@ -91,8 +93,9 @@ namespace Mtd.OrderMaker.Server.Services
             if (!_cache.Cache.TryGetValue(PolicyKey, out IList<MtdPolicy> mtdPolicies))
             {
                 mtdPolicies = await _context.MtdPolicy
-                .Include(x => x.MtdPolicyForms)                
+                .Include(x => x.MtdPolicyForms)
                 .Include(x => x.MtdPolicyParts)
+                .Include(x => x.MtdPolicyScripts)
                 .ToListAsync();
 
                 _cache.Cache.Set(PolicyKey, mtdPolicies);
@@ -124,13 +127,13 @@ namespace Mtd.OrderMaker.Server.Services
             return formIds;
         }
 
-        public async Task<MtdPolicy> GetPolicyForUser (WebAppUser user)
-        {            
+        public async Task<MtdPolicy> GetPolicyForUserAsync(WebAppUser user)
+        {
             string policyId = await GetPolicyIdAsync(user);
             if (policyId == null) return null;
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             if (mtdPolicy == null) return null;
-            return mtdPolicy.Where(x=>x.Id == policyId).FirstOrDefault();            
+            return mtdPolicy.Where(x => x.Id == policyId).FirstOrDefault();
         }
 
         public async Task<WebAppUser> GetOwnerAsync(string idStore)
@@ -156,7 +159,7 @@ namespace Mtd.OrderMaker.Server.Services
         }
 
         public async Task<bool> InGroup(WebAppUser user, string idStore)
-        {            
+        {
             string ownerId = await _context.MtdStoreOwner.Where(x => x.Id == idStore).Select(x => x.UserId).FirstOrDefaultAsync();
             WebAppUser userOwner = new WebAppUser { Id = ownerId };
             IList<Claim> ownerClaims = await GetClaimsAsync(userOwner);
@@ -177,23 +180,23 @@ namespace Mtd.OrderMaker.Server.Services
             return result;
         }
 
-        public async Task<bool> IsCreator(WebAppUser user, string idForm)
+        public async Task<bool> IsCreator(WebAppUser user, string formId)
         {
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             string policyId = await GetPolicyIdAsync(user);
             if (policyId == null) return false;
-            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == idForm && x.MtdPolicy == policyId).FirstOrDefault();
+            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == formId && x.MtdPolicy == policyId).FirstOrDefault();
             if (policyForms == null) return false;
 
-            return policyForms.Create == 1 ? true : false;
+            return policyForms.Create == 1;
         }
 
-        public async Task<bool> IsViewer(WebAppUser user, string idForm, string idStore = null)
+        public async Task<bool> IsViewer(WebAppUser user, string formId, string idStore = null)
         {
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             string policyId = await GetPolicyIdAsync(user);
             if (policyId == null) return false;
-            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == idForm && x.MtdPolicy == policyId).FirstOrDefault();
+            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == formId && x.MtdPolicy == policyId).FirstOrDefault();
             if (policyForms == null) return false;
 
             if (policyForms.ViewAll == 1) { return true; }
@@ -210,12 +213,12 @@ namespace Mtd.OrderMaker.Server.Services
 
         }
 
-        public async Task<bool> IsEditor(WebAppUser user, string idForm, string idStore = null)
+        public async Task<bool> IsEditor(WebAppUser user, string formId, string idStore = null)
         {
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             string policyId = await GetPolicyIdAsync(user);
             if (policyId == null) return false;
-            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == idForm && x.MtdPolicy == policyId).FirstOrDefault();
+            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == formId && x.MtdPolicy == policyId).FirstOrDefault();
             if (policyForms == null) return false;
 
             if (policyForms.EditAll == 1) { return true; }
@@ -231,12 +234,12 @@ namespace Mtd.OrderMaker.Server.Services
             return false;
         }
 
-        public async Task<bool> IsEraser(WebAppUser user, string idForm, string idStore = null)
+        public async Task<bool> IsEraser(WebAppUser user, string formId, string idStore = null)
         {
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             string policyId = await GetPolicyIdAsync(user);
             if (policyId == null) return false;
-            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == idForm && x.MtdPolicy == policyId).FirstOrDefault();
+            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == formId && x.MtdPolicy == policyId).FirstOrDefault();
             if (policyForms == null) return false;
 
             if (policyForms.DeleteAll == 1) { return true; }
@@ -252,38 +255,38 @@ namespace Mtd.OrderMaker.Server.Services
             return false;
         }
 
-        public async Task<bool> IsInstallerOwner(WebAppUser user, string idForm)
+        public async Task<bool> IsInstallerOwner(WebAppUser user, string formId)
         {
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             string policyId = await GetPolicyIdAsync(user);
             if (policyId == null) return false;
-            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == idForm && x.MtdPolicy == policyId).FirstOrDefault();
+            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == formId && x.MtdPolicy == policyId).FirstOrDefault();
             if (policyForms == null) return false;
 
-            return policyForms.ChangeOwner == 1 ? true : false;
+            return policyForms.ChangeOwner == 1;
 
         }
 
-        public async Task<bool> IsReviewer(WebAppUser user, string idForm)
+        public async Task<bool> IsReviewer(WebAppUser user, string formId)
         {
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             string policyId = await GetPolicyIdAsync(user);
             if (policyId == null) return false;
-            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == idForm && x.MtdPolicy == policyId).FirstOrDefault();
+            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == formId && x.MtdPolicy == policyId).FirstOrDefault();
             if (policyForms == null) return false;
 
-            return policyForms.Reviewer == 1 ? true : false;
+            return policyForms.Reviewer == 1;
         }
 
-        public async Task<bool> IsCreatorPartAsync(WebAppUser user, string idPart)
+        public async Task<bool> IsCreatorPartAsync(WebAppUser user, string partId)
         {
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             string policyId = await GetPolicyIdAsync(user);
             if (policyId == null) return false;
-            MtdPolicyParts policyParts = mtdPolicy.SelectMany(x => x.MtdPolicyParts).Where(x => x.MtdFormPart == idPart && x.MtdPolicy == policyId).FirstOrDefault();
+            MtdPolicyParts policyParts = mtdPolicy.SelectMany(x => x.MtdPolicyParts).Where(x => x.MtdFormPart == partId && x.MtdPolicy == policyId).FirstOrDefault();
             if (policyParts == null) return false;
 
-            return policyParts.Create == 1 ? true : false;
+            return policyParts.Create == 1;
         }
 
         public async Task<bool> IsEditorPartAsync(WebAppUser user, string idPart)
@@ -294,7 +297,7 @@ namespace Mtd.OrderMaker.Server.Services
             MtdPolicyParts policyParts = mtdPolicy.SelectMany(x => x.MtdPolicyParts).Where(x => x.MtdFormPart == idPart && x.MtdPolicy == policyId).FirstOrDefault();
             if (policyParts == null) return false;
 
-            return policyParts.Edit == 1 ? true : false;
+            return policyParts.Edit == 1;
         }
 
         public async Task<bool> IsViewerPartAsync(WebAppUser user, string idPart)
@@ -305,19 +308,26 @@ namespace Mtd.OrderMaker.Server.Services
             MtdPolicyParts policyParts = mtdPolicy.SelectMany(x => x.MtdPolicyParts).Where(x => x.MtdFormPart == idPart && x.MtdPolicy == policyId).FirstOrDefault();
             if (policyParts == null) return false;
 
-            return policyParts.View == 1 ? true : false;
+            return policyParts.View == 1;
         }
 
-        public async Task<List<string>> GetAllowPartsForView(WebAppUser user, string idForm)
+        public async Task<List<MtdFormPart>> GetAllowPartsForView(WebAppUser user, string formId)
         {
-            List<string> result = new List<string>();
+            List<MtdFormPart> result = new List<MtdFormPart>();
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
-            string policyId = await GetPolicyIdAsync(user);
-            if (policyId == null) return result;
-            IList<string> partIds = await _context.MtdFormPart.Where(x => x.MtdForm == idForm).Select(x=>x.Id).ToListAsync();
-            result = mtdPolicy.Where(x=>x.Id == policyId).SelectMany(x => x.MtdPolicyParts).Where(x => partIds.Contains(x.MtdFormPart) && x.View == 1).Select(x => x.MtdFormPart).ToList();                 
-            return result;
+            MtdPolicy userPolicy = await GetPolicyForUserAsync(user);
+            if (userPolicy == null) return result;
+            
+            IList<MtdFormPart> parts = await _context.MtdFormPart.Where(x => x.MtdForm == formId).ToListAsync();
+            List<string> partIds = parts.Select(x => x.Id).ToList();
+            List<string> allowPartsIds = userPolicy.MtdPolicyParts
+                .Where(x => partIds.Contains(x.MtdFormPart) && x.View == 1)
+                .Select(x=>x.MtdFormPart)
+                .ToList();
+
+            return parts.Where(x => allowPartsIds.Contains(x.Id)).OrderBy(x => x.Sequence).ToList();
         }
+
 
         public async Task<List<WebAppUser>> GetUsersInGroupsAsync(WebAppUser webAppUser)
         {
@@ -340,17 +350,17 @@ namespace Mtd.OrderMaker.Server.Services
             }
 
             return webAppUsers;
-       
+
         }
 
-        public async Task<List<WebAppUser>> GetUsersForViewingForm(string idForm, string idStore = null)
+        public async Task<List<WebAppUser>> GetUsersForViewingForm(string formId, string storeId = null)
         {
             List<WebAppUser> usersAll = await this.Users.ToListAsync();
             List<WebAppUser> usersAccess = new List<WebAppUser>();
 
-            foreach(WebAppUser user in usersAll)
+            foreach (WebAppUser user in usersAll)
             {
-                bool viewer = await IsViewer(user, idForm, idStore);
+                bool viewer = await IsViewer(user, formId, storeId);
                 if (viewer)
                 {
                     usersAccess.Add(user);
@@ -358,15 +368,26 @@ namespace Mtd.OrderMaker.Server.Services
             }
 
             return usersAccess;
-
         }
 
-        public async Task<bool> GetFormPolicyAsync(WebAppUser user, string idForm, RightsType rightsType)
+        public async Task<List<MtdFilterScript>> GetFilterScripsAsync (WebAppUser user, string formId, sbyte apply = -1)
+        {            
+            string policyId = await GetPolicyIdAsync(user);
+            IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
+
+            MtdPolicy policy = mtdPolicy.Where(x => x.Id == policyId).FirstOrDefault();
+            List<int> filterIds = policy.MtdPolicyScripts.Select(x => x.MtdFilterScriptId).ToList();
+            var query = _context.MtdFilterScript.Where(x => filterIds.Contains(x.Id) && x.MtdFormId == formId);
+            if (apply > 0) { query = query.Where(q => q.Apply == apply); }
+            return  await  query.ToListAsync();
+        }
+
+        public async Task<bool> GetFormPolicyAsync(WebAppUser user, string formId, RightsType rightsType)
         {
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             string policyId = await GetPolicyIdAsync(user);
             if (policyId == null) return false;
-            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == idForm && x.MtdPolicy == policyId).FirstOrDefault();
+            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == formId && x.MtdPolicy == policyId).FirstOrDefault();
             if (policyForms == null) return false;
 
             bool result = false;
@@ -375,70 +396,70 @@ namespace Mtd.OrderMaker.Server.Services
             {
                 case RightsType.Create:
                     {
-                        result = policyForms.Create == 1 ? true : false;
+                        result = policyForms.Create == 1;
                         break;
                     }
 
                 case RightsType.Delete:
                     {
-                        result = policyForms.DeleteAll == 1 ? true : false;
+                        result = policyForms.DeleteAll == 1;
                         break;
                     }
 
                 case RightsType.DeleteGroup:
                     {
-                        result = policyForms.DeleteGroup == 1 ? true : false;
+                        result = policyForms.DeleteGroup == 1;
                         break;
                     }
                 case RightsType.DeleteOwn:
                     {
-                        result = policyForms.DeleteOwn == 1 ? true : false;
+                        result = policyForms.DeleteOwn == 1;
                         break;
                     }
                 case RightsType.Edit:
                     {
-                        result = policyForms.EditAll == 1 ? true : false;
+                        result = policyForms.EditAll == 1;
                         break;
                     }
                 case RightsType.EditGroup:
                     {
-                        result = policyForms.EditGroup == 1 ? true : false;
+                        result = policyForms.EditGroup == 1;
                         break;
                     }
                 case RightsType.EditOwn:
                     {
-                        result = policyForms.EditOwn == 1 ? true : false;
+                        result = policyForms.EditOwn == 1;
                         break;
                     }
                 case RightsType.Reviewer:
                     {
-                        result = policyForms.Reviewer == 1 ? true : false;
+                        result = policyForms.Reviewer == 1;
                         break;
                     }
 
                 case RightsType.SetOwn:
                     {
-                        result = policyForms.ChangeOwner == 1 ? true : false;
+                        result = policyForms.ChangeOwner == 1;
                         break;
                     }
-                case RightsType.View:
+                case RightsType.ViewAll:
                     {
-                        result = policyForms.ViewAll == 1 ? true : false;
+                        result = policyForms.ViewAll == 1;
                         break;
                     }
                 case RightsType.ViewGroup:
                     {
-                        result = policyForms.ViewGroup == 1 ? true : false;
+                        result = policyForms.ViewGroup == 1;
                         break;
                     }
                 case RightsType.ViewOwn:
                     {
-                        result = policyForms.ViewOwn == 1 ? true : false;
+                        result = policyForms.ViewOwn == 1;
                         break;
                     }
                 case RightsType.SetDate:
                     {
-                        result = policyForms.ChangeDate == 1 ? true : false;
+                        result = policyForms.ChangeDate == 1;
                         break;
                     }
                 default:
@@ -469,7 +490,7 @@ namespace Mtd.OrderMaker.Server.Services
 
             return user;
         }
-     
+
 
         public string GeneratePassword()
         {
@@ -488,10 +509,10 @@ namespace Mtd.OrderMaker.Server.Services
 
             while (password.Length < length)
             {
-                getCode:
+            getCode:
                 int code = random.Next(33, 126);
                 if (exceptions.Where(x => exceptions.Contains(code)).Any()) { goto getCode; }
-                char c = (char) code;
+                char c = (char)code;
 
                 password.Append(c);
 
@@ -514,7 +535,7 @@ namespace Mtd.OrderMaker.Server.Services
             if (uppercase)
                 password.Append((char)random.Next(65, 91));
 
-            
+
             return password.ToString();
         }
 

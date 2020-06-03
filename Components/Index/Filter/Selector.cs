@@ -20,8 +20,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyModel;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
-using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
 using Mtd.OrderMaker.Server.Models.Index;
 using Mtd.OrderMaker.Server.Services;
 using System;
@@ -31,12 +33,14 @@ using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Components.Index.Filter
 {
+    public enum ServiceFilter { DateCreated, DocumentOwner }
 
     [ViewComponent(Name = "IndexFilterSelector")]
     public class Selector : ViewComponent
     {
         private readonly OrderMakerContext _context;
         private readonly UserHandler _userHandler;
+        private List<MTDSelectListItem> ServiceItems => GetServiceItems();
 
         public Selector(OrderMakerContext orderMakerContext, UserHandler userHandler)
         {
@@ -44,21 +48,59 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
             _userHandler = userHandler;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string idForm)
+        public async Task<IViewComponentResult> InvokeAsync(string formId)
         {
             WebAppUser user = await _userHandler.GetUserAsync(HttpContext.User);
-            List<string> partIds = await _userHandler.GetAllowPartsForView(user, idForm);
+            
+            MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == formId);
 
-            MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == idForm);
+            List<MTDSelectListItem> customItems = await GetCustomFieldsAsync(user, formId, filter);
 
+            IList<MtdSysTerm> mtdSysTerms = await _context.MtdSysTerm.ToListAsync();
+            List<MTDSelectListItem> terms = new List<MTDSelectListItem>();
+            mtdSysTerms.ToList().ForEach((term =>
+            {
+                terms.Add(new MTDSelectListItem { Id = term.Id.ToString(), Value = $"{term.Name} ({term.Sign})", Localized = true });
+            }));
+
+            List<MTDSelectListItem> userList = await GetUserItems(user, formId);
+
+            IList<MtdFilterScript> scripts = await _userHandler.GetFilterScripsAsync(user,formId,0);            
+            List<MTDSelectListItem> scriptItems = new List<MTDSelectListItem>();
+            
+            foreach (var script in scripts)
+            {
+                scriptItems.Add(new MTDSelectListItem { Id = script.Id.ToString(), Value = script.Name });
+            }
+                                     
+
+            SelectorModelView selector = new SelectorModelView()
+            {
+                FormId = formId,
+                ScriptItems = scriptItems,
+                UsersItems = userList,
+                CustomItems = customItems,
+                TermItems = terms,
+                ServiceItems = this.ServiceItems
+            };
+
+            return View("Default", selector);
+        }
+
+        
+        private async Task<List<MTDSelectListItem>> GetCustomFieldsAsync(WebAppUser user, string formId, MtdFilter mtdFilter)
+        {
+            List<MtdFormPart> parts = await _userHandler.GetAllowPartsForView(user, formId);
+            List<string> partIds = parts.Select(x => x.Id).ToList();
+            
             var query = _context.MtdFormPartField.Include(m => m.MtdFormPartNavigation)
-                    .Where(x => x.MtdFormPartNavigation.MtdForm == idForm && x.Active == 1 && partIds.Contains(x.MtdFormPart))
-                    .OrderBy(x => x.MtdFormPartNavigation.Sequence).ThenBy(x => x.Sequence);
+                .Where(x => x.MtdFormPartNavigation.MtdForm == formId && x.Active == 1 && partIds.Contains(x.MtdFormPart))
+                .OrderBy(x => x.MtdFormPartNavigation.Sequence).ThenBy(x => x.Sequence);
 
             IList<MtdFormPartField> mtdFields;
-            if (filter != null)
+            if (mtdFilter != null)
             {
-                List<string> fieldIds = await _context.MtdFilterField.Where(x => x.MtdFilter == filter.Id)
+                List<string> fieldIds = await _context.MtdFilterField.Where(x => x.MtdFilter == mtdFilter.Id)
                     .Select(x => x.MtdFormPartField).ToListAsync();
                 mtdFields = await query.Where(x => !fieldIds.Contains(x.Id)).ToListAsync();
             }
@@ -67,47 +109,65 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
                 mtdFields = await query.ToListAsync();
             }
 
-            IList<MtdSysTerm> mtdSysTerms = await _context.MtdSysTerm.ToListAsync();
-            List<SelectorList> storeList = new List<SelectorList>();
-            foreach (var field in mtdFields.Where(x => x.MtdSysType == 11).ToList())
+            List<MTDSelectListItem> customItems = new List<MTDSelectListItem>();
+            int[] exclude = { 7, 8, 13 };
+            List<MtdFormPartField> customFields = mtdFields.Where(x => !exclude.Contains(x.MtdSysType)).ToList();
+
+            foreach (var item in customFields)
             {
-                string idFormForList = await _context.MtdFormList.Where(x => x.Id == field.Id).Select(x => x.MtdForm).FirstOrDefaultAsync();
-                MtdFormPartField fieldForList = await _context.MtdFormPartField.Include(m => m.MtdFormPartNavigation)
-                        .Where(x => x.MtdFormPartNavigation.MtdForm == idFormForList && x.MtdSysType == 1)
-                        .OrderBy(o => o.MtdFormPartNavigation.Sequence).ThenBy(o => o.Sequence).FirstOrDefaultAsync();
-
-                if (idFormForList != null)
+                customItems.Add(new MTDSelectListItem
                 {
-                    List<SelecorStore> selecorStores = await _context.MtdStoreStack
-                .Include(x => x.MtdStoreStackText).Where(x => x.MtdFormPartField == fieldForList.Id)
-                .Select(x => new SelecorStore { IdStore = x.MtdStore, Result = x.MtdStoreStackText.Register })
-                .OrderBy(x => x.Result)
-                .ToListAsync();
-
-                    SelectorList selectorList = new SelectorList
-                    {
-                        FieldAim = field,
-                        FieldOut = fieldForList,
-                        Store = selecorStores
-                    };
-
-                    storeList.Add(selectorList);
-                }
-
-
+                    Id = item.Id,
+                    Value = $"{item.MtdFormPartNavigation.Name}: {item.Name}",
+                    Attributes = $" data-type={@item.MtdSysType} "
+                });
             }
 
-            IList<MtdFilterScript> scripts = await _context.MtdFilterScript.Where(x => x.MtdFilter == filter.Id && x.Apply == 0).ToListAsync();
+            return customItems;
+        }
 
-            SelectorModelView selector = new SelectorModelView()
+        private async Task<List<MTDSelectListItem>> GetUserItems(WebAppUser user, string formId)
+        {
+            List<MTDSelectListItem> userList = new List<MTDSelectListItem>();
+
+            List<WebAppUser> appUsers = new List<WebAppUser>();
+
+            bool isViewAll = await _userHandler.GetFormPolicyAsync(user, formId, RightsType.ViewAll);
+            if (isViewAll)
             {
-                IdForm = idForm,
-                MtdFormPartFields = mtdFields,
-                MtdSysTerms = mtdSysTerms,
-                StoreList = storeList,
-                MtdFilterScripts = scripts
-            };
-            return View("Default", selector);
+                appUsers = await _userHandler.Users.ToListAsync();
+            }
+            else
+            {
+                appUsers = await _userHandler.GetUsersInGroupsAsync(user);
+            }
+
+            appUsers = appUsers.OrderBy(x => x.Title).ToList();
+
+            foreach (var appUser in appUsers)
+            {
+                userList.Add(new MTDSelectListItem { Id = appUser.Id, Value = appUser.Title });
+            }
+
+            return userList;
+
+        }
+
+        private List<MTDSelectListItem> GetServiceItems()
+        {
+            return new List<MTDSelectListItem>
+                    {
+                        new MTDSelectListItem {
+                            Id=ServiceFilter.DateCreated.ToString(),
+                            Value="Date Created",
+                            Localized = true
+                        },
+                        new MTDSelectListItem {
+                            Id=ServiceFilter.DocumentOwner.ToString(),
+                            Value="Document owner",
+                            Localized = true
+                        }
+                    };
         }
     }
 }

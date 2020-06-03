@@ -25,7 +25,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Entity;
 
 namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
 {
@@ -44,21 +44,21 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
         public string CurrentPartId { get; set; }
         public IList<MtdFormPartField> MtdFormPartFields {get;set;}
 
-        public async Task<IActionResult> OnGetAsync(string idForm, string idPart)
+        public async Task<IActionResult> OnGetAsync(string formId, string partId)
         {
             
 
             MtdForm = await _context.MtdForm                
                 .Include(m => m.MtdFormHeader)
                 .Include(m => m.MtdFormPart)                
-                .Where(x => x.Id == idForm).FirstOrDefaultAsync();
+                .Where(x => x.Id == formId).FirstOrDefaultAsync();
 
             if (MtdForm == null)
             {
                 return NotFound();
             }
 
-            CurrentPartId = idPart ?? MtdForm.MtdFormPart.OrderBy(x => x.Sequence).Select(x=>x.Id).FirstOrDefault();
+            CurrentPartId = partId ?? MtdForm.MtdFormPart.OrderBy(x => x.Sequence).Select(x=>x.Id).FirstOrDefault();
 
             //   IList<string> partIds = MtdForm.MtdFormPart.Select(x => x.Id).ToList();
 

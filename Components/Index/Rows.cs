@@ -21,10 +21,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
-using Mtd.OrderMaker.Server.Data;
-using Mtd.OrderMaker.Server.DataHandler.Approval;
-using Mtd.OrderMaker.Server.DataHandler.Filter;
-using Mtd.OrderMaker.Server.DataHandler.Stack;
+using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.EntityHandler.Approval;
+using Mtd.OrderMaker.Server.EntityHandler.Filter;
+using Mtd.OrderMaker.Server.EntityHandler.Stack;
 using Mtd.OrderMaker.Server.Models.Index;
 using Mtd.OrderMaker.Server.Services;
 using System;
@@ -49,56 +49,61 @@ namespace Mtd.OrderMaker.Server.Components.Index
             _userHandler = userHandler;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string idForm)
+        public async Task<IViewComponentResult> InvokeAsync(string formId)
         {
             var user = await _userHandler.GetUserAsync(HttpContext.User);
-            List<string> partIds = await _userHandler.GetAllowPartsForView(user, idForm);
-                                
-            FilterHandler handlerFilter = new FilterHandler(_context, idForm, user, _userHandler);
+            IList<MtdFormPart> parts = await _userHandler.GetAllowPartsForView(user, formId);
+            List<string> partIds = parts.Select(x => x.Id).ToList(); 
+
+            FilterHandler handlerFilter = new FilterHandler(_context, formId, user, _userHandler);
             Incomer incomer = await handlerFilter.GetIncomerDataAsync();
-            TypeQuery typeQuery = await handlerFilter.GetTypeQueryAsync();
+            TypeQuery typeQuery = await handlerFilter.GetTypeQueryAsync(user);
             OutFlow outFlow = await handlerFilter.GetStackFlowAsync(incomer, typeQuery);
             IList<MtdStore> mtdStore = outFlow.MtdStores;
 
-            decimal count = (decimal) outFlow.Count / incomer.PageSize;
+            decimal count = (decimal)outFlow.Count / incomer.PageSize;
             pageCount = Convert.ToInt32(Math.Ceiling(count));
             pageCount = pageCount == 0 ? 1 : pageCount;
 
             IList<string> storeIds = mtdStore.Select(s => s.Id).ToList();
-            IList<string> fieldIds =  fieldIds = incomer.FieldForColumn.Select(x => x.Id).ToList();
+            IList<string> fieldIds = fieldIds = incomer.FieldForColumn.Select(x => x.Id).ToList();
 
             IList<string> allowFiieldIds = await _context.MtdFormPartField.Where(x => partIds.Contains(x.MtdFormPart)).Select(x => x.Id).ToListAsync();
-            fieldIds = allowFiieldIds.Where(x=>fieldIds.Contains(x)).ToList();
+            fieldIds = allowFiieldIds.Where(x => fieldIds.Contains(x)).ToList();
 
             StackHandler handlerStack = new StackHandler(_context);
             IList<MtdStoreStack> mtdStoreStack = await handlerStack.GetStackAsync(storeIds, fieldIds);
 
-            IList<MtdStoreApproval> mtdStoreApprovals = await _context.MtdStoreApproval.Where(x => storeIds.Contains(x.Id)).ToListAsync();           
+            IList<MtdStoreApproval> mtdStoreApprovals = await _context.MtdStoreApproval.Where(x => storeIds.Contains(x.Id)).ToListAsync();
             List<ApprovalStore> approvalStores = await ApprovalHandler.GetStoreStatusAsync(_context, storeIds, user);
-            
-            MtdApproval mtdApproval = await _context.MtdApproval.Where(x => x.MtdForm == idForm).FirstOrDefaultAsync();
+
+            MtdApproval mtdApproval = await _context.MtdApproval.Where(x => x.MtdForm == formId).FirstOrDefaultAsync();
+
+            string searchText = "";
+            MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == formId);
+            var mtdFormList = await ApprovalHandler.GetWaitStoreIds(_context, user, formId);
+            int pending = mtdFormList.Count();
 
             RowsModelView rowsModel = new RowsModelView
             {
-                IdForm = idForm,
+                FormId = formId,
                 SearchNumber = incomer.SearchNumber,
                 PageCount = pageCount,
                 MtdFormPartFields = incomer.FieldForColumn.Where(x => fieldIds.Contains(x.Id)).ToList(),
                 MtdStores = mtdStore,
                 MtdStoreStack = mtdStoreStack,
-                WaitList = incomer.WaitList == 1 ? true : false,
+                WaitList = incomer.WaitList == 1,
                 ShowDate = await handlerFilter.IsShowDate(),
                 ShowNumber = await handlerFilter.IsShowNumber(),
                 ApprovalStores = approvalStores,
                 MtdApproval = mtdApproval,
-                StoreIds = string.Join("&", storeIds)                                         
+                StoreIds = string.Join("&", storeIds),
+                SearchText = filter == null ? string.Empty : filter.SearchText,
+                Pending = pending,
+                IsCreator = await _userHandler.IsCreator(user, formId)
             };
 
             return View("Default", rowsModel);
         }
-
     }
-
-
-
 }

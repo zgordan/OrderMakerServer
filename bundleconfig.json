@@ -2,7 +2,30 @@
   {
     "outputFileName": "wwwroot/lib/mtd-ordermaker/main/js/mtd-main.min.js",
     "inputFiles": [
-      "wwwroot/lib/mtd-ordermaker/main/js/mtd-main.js"
+      "wwwroot/lib/mtd-ordermaker/main/js/mtd-main.js",
+      "wwwroot/lib/mtd-ordermaker/main/js/mtd-select-list.js",
+      "wwwroot/lib/mtd-ordermaker/main/js/mtd-text-field.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/mtd-ordermaker/index/js/mtd-index.min.js",
+    "inputFiles": [
+      "wwwroot/lib/mtd-ordermaker/index/js/mtd-index.js",
+      "wwwroot/lib/mtd-ordermaker/index/js/mtd-index-filters.js",
+      "wwwroot/lib/mtd-ordermaker/index/js/mtd-index-columns.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/mtd-ordermaker/index/css/mtd-index.min.css",
+    "inputFiles": [
+      "wwwroot/lib/mtd-ordermaker/index/css/mtd-index.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/mtd-ordermaker/main/css/mtd-main.min.css",
+    "inputFiles": [
+      "wwwroot/lib/mtd-ordermaker/main/css/mtd-main.css",
+      "wwwroot/lib/mtd-ordermaker/main/css/mtd-app.css"
     ]
   }
 ]

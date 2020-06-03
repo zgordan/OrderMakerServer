@@ -33,8 +33,8 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Mtd.Cpq.Manager.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
-using Mtd.OrderMaker.Server.Data;
-using Mtd.OrderMaker.Server.DataConfig;
+using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.AppConfig;
 using Mtd.OrderMaker.Server.Extensions;
 using Mtd.OrderMaker.Server.Services;
 
@@ -50,7 +50,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
         private readonly IEmailSenderBlank _emailSender;
         private readonly OrderMakerContext _context;
         private readonly IStringLocalizer<SharedResource> _localizer;
-        private readonly Mtd.OrderMaker.Server.Data.IdentityDbContext identity; 
+        private readonly Mtd.OrderMaker.Server.Entity.IdentityDbContext identity; 
 
 
         public UsersController(

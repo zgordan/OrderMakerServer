@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Mtd.Cpq.Manager.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 
-namespace Mtd.OrderMaker.Server.Data
+namespace Mtd.OrderMaker.Server.Entity
 {
     public class IdentityDbContext : IdentityDbContext<WebAppUser, WebAppRole, string>
     {

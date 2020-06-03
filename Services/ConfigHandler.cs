@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
-using Mtd.OrderMaker.Server.Data;
-using Mtd.OrderMaker.Server.DataConfig;
+using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.AppConfig;
 using System;
 using System.Collections.Generic;
 using System.Linq;

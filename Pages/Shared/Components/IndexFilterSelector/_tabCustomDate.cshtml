@@ -1,0 +1,12 @@
+﻿
+@await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+    {
+        Id = "index-filter-custom-date-value",
+        Label = "Date value",
+        Value = DateTime.Now.Date.ToShortDateString(),
+        LabelLocalized = true,
+        IconLeading = "far fa-calendar-alt",
+        Name = "periodStart",
+        Class = " mtd-data-datepicker ",
+        MTDTexFieldView = MTDTextFieldViews.Outlined
+    })

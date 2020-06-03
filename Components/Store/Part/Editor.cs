@@ -18,7 +18,7 @@
 */
 
 using Microsoft.AspNetCore.Mvc;
-using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Models.Store;
 using System.Linq;
 
@@ -28,9 +28,9 @@ namespace Mtd.OrderMaker.Server.Components.Store.Part
     [ViewComponent (Name = "StorePartEditor")]
     public class Editor : ViewComponent
     {
-        public IViewComponentResult Invoke(MtdFormPart part, DataSet model)
+        public IViewComponentResult Invoke(MtdFormPart part, Warehouse model)
         {
-            DataSet dataSet = new DataSet()
+            Warehouse warehouse = new Warehouse()
             {               
                 Store = model.Store,
                 Parts = model.Parts.Where(x => x.Id == part.Id).ToList(),
@@ -40,7 +40,7 @@ namespace Mtd.OrderMaker.Server.Components.Store.Part
 
             string viewName = part.MtdSysStyle == 5 ? "Columns" : "Rows";
                                    
-            return View(viewName,dataSet);
+            return View(viewName,warehouse);
         }
     }
 }

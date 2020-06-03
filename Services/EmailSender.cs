@@ -19,7 +19,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
-using Mtd.OrderMaker.Server.DataConfig;
+using Mtd.OrderMaker.Server.AppConfig;
 using System;
 using System.Collections.Generic;
 using System.IO;

@@ -32,7 +32,7 @@ namespace Mtd.OrderMaker.Server.Models.Index
 
     public class DisplayModelView
     {
-        public string IdForm { get; set; }
+        public string FormId { get; set; }
         public int IdFilter { get; set; }
         public List<DisplayData> DisplayDatas { get; set; }
         

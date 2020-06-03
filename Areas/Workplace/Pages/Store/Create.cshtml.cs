@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Services;
 
 namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
@@ -41,23 +41,23 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
         public MtdStore MtdStore { get; set; }
         public MtdForm MtdForm { get; set; }
 
-        public async Task<IActionResult> OnGet(string idForm, string idStoreParent)
+        public async Task<IActionResult> OnGet(string formId, string idStoreParent)
         {
 
-            if (idForm == null)
+            if (formId == null)
             {
                 return NotFound();
             }
 
             var user = await _userHandler.GetUserAsync(HttpContext.User);
-            bool isCreator = await _userHandler.IsCreator(user, idForm);
+            bool isCreator = await _userHandler.IsCreator(user, formId);
 
             if (!isCreator)
             {
                 return Forbid();
             }
 
-            MtdForm = await _context.MtdForm.FindAsync(idForm);
+            MtdForm = await _context.MtdForm.FindAsync(formId);
 
             MtdStore mtdStoreParent = await _context.MtdStore.FirstOrDefaultAsync(x => x.Id == idStoreParent);
 

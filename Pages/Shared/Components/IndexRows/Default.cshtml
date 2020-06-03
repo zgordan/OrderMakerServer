@@ -20,9 +20,9 @@
 @model Models.Index.RowsModelView
 @inject Server.Services.UserHandler userHandler;
 
-@using Mtd.OrderMaker.Server.DataHandler.Approval
+@using Mtd.OrderMaker.Server.EntityHandler.Approval
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> Localizer
 
 @{
     int colSpan = Model.MtdFormPartFields.Count + 2;
@@ -31,27 +31,42 @@
 
 <input id="nav-store-ids" type="hidden" value="@Model.StoreIds" />
 
-<div class="mtd-index-rows" style="display:flex; position:relative">
-    <div class="mdc-elevation--z8" style="margin: 0 auto; left: 50%;">
+<div style="display: flex; position:relative">
+    <div id="indexCreator" class="mtd-index-header-creator">
+        <button id="index-create-button" mtd-data-href="/workplace/store/create?formId=@Model.FormId" class="mdc-fab mdc-fab--extended">
+            <div class="mdc-fab__ripple"></div>
+            <span class="material-icons mdc-fab__icon">add</span>
+            <span class="mdc-fab__label">Create</span>
+        </button>
+        <button id="index-create-button-mini" mtd-data-href="/workplace/store/create?formId=@Model.FormId" class="mdc-fab">
+            <div class="mdc-fab__ripple"></div>
+            <span class="material-icons mdc-fab__icon">add</span>
+        </button>
+    </div>
+
+    <div class="mtd-index-header-search">
+        <form mtd-data-form method="post" action="/api/index/search/text" enctype="multipart/form-data" autocomplete='off'>
+            @Html.AntiForgeryToken()
+            <input asp-for="@Model.FormId" name="indexForm" value="@Model.FormId" id="indexForm" hidden />
+            @await Html.PartialAsync("./_inputSearch.cshtml")
+        </form>
+    </div>
+    @await Html.PartialAsync("./_buttons.cshtml")
+</div>
+
+<div class="mtd-index-rows">
+    <div class="mdc-elevation--z2" style="margin: 0 auto; left: 50%;">
         <table>
             <thead>
                 <tr>
                     <th @if (!Model.ShowNumber) { <text> hidden</text>}>
                         <form mtd-data-form method="post" action="/api/index/search/number" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
                             @Html.AntiForgeryToken()
-                            <input name="formId" asp-for="@Model.IdForm" type="hidden" />
-                            <div class="mdc-text-field mdc-text-field--outlined">
-                                <input mtd-data-input type="text" id="indexSearchNumber" name="searchNumber" class="mdc-text-field__input " autocomplete="off" asp-for="@Model.SearchNumber" />
-                                <div class="mdc-notched-outline">
-                                    <div class="mdc-notched-outline__leading"></div>
-                                    <div class="mdc-notched-outline__notch">
-                                        <label for="indexSearchNumber" class="mdc-floating-label @{if (@Model.SearchNumber.Length > 0) { <text>mdc-floating-label--float-above</text>} }">@Localizer["ID Number"]</label>
-                                    </div>
-                                    <div class="mdc-notched-outline__trailing"></div>
-                                </div>
-                            </div>
+                            <input name="formId" asp-for="@Model.FormId" type="hidden" />
+                            @await Html.PartialAsync("./_buttonSearch.cshtml")
                         </form>
                     </th>
+
                     <th @if (!Model.ShowDate) { <text> hidden</text>}>
                         @Localizer["Date of creation"]
                     </th>
@@ -219,7 +234,7 @@
 
                         @foreach (var field in Model.MtdFormPartFields)
                         {
-                            <td>
+                            <td>                                
                                 <div style="padding: 2px;">
                                     @await Component.InvokeAsync("IndexCell", new { stack = Model.MtdStoreStack, idStore = store.Id, idField = field.Id, idType = field.MtdSysType })
                                 </div>
@@ -230,12 +245,17 @@
                 }
             </tbody>
         </table>
+
+
         @if (Model.MtdStores.Count == 0 && Model.WaitList)
         {
             <div style="font-weight: bold; text-align: center; color: gray">
                 <p>@Localizer["There are no documents requiring approval."]</p>
             </div>
         }
+
+        @await Component.InvokeAsync("IndexFooter", new { formId = Model.FormId, pageCount = Model.PageCount })
+
     </div>
 </div>
-@await Component.InvokeAsync("IndexFooter", new { idForm = Model.IdForm, pageCount = Model.PageCount })
+

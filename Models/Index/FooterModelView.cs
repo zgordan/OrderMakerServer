@@ -21,7 +21,7 @@ namespace Mtd.OrderMaker.Server.Models.Index
 {
     public class FooterModelView
     {
-        public string IdForm { get; set; }
+        public string FormId { get; set; }
         public int PageSize { get; set; }
         public int Page { get; set; }
         public int PageCount { get; set; }

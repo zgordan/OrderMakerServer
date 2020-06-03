@@ -22,7 +22,7 @@ namespace Mtd.OrderMaker.Server.Models.Index
 {
     public class HeaderModelView
     {
-        public string IdForm { get; set; }
+        public string FormId { get; set; }
         public string SearchText { get; set; }
         public bool WaitList { get; set; }
         public int Pending { get; set; }

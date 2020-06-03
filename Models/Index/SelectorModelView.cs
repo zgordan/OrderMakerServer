@@ -17,7 +17,9 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
-using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Areas.Identity.Data;
+using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
 using System.Collections.Generic;
 
 
@@ -25,10 +27,11 @@ namespace Mtd.OrderMaker.Server.Models.Index
 {
     public class SelectorModelView
     {
-        public string IdForm { get; set; }
-        public IList<MtdSysTerm> MtdSysTerms { get; set; }
-        public IList<MtdFormPartField> MtdFormPartFields { get; set; }
-        public List<SelectorList> StoreList {get;set;}       
-        public IList<MtdFilterScript> MtdFilterScripts { get; set; }
+        public string FormId { get; set; }        
+        public List<MTDSelectListItem> ScriptItems { get; set; }
+        public List<MTDSelectListItem> ServiceItems { get; set; }
+        public List<MTDSelectListItem> CustomItems { get; set; }
+        public List<MTDSelectListItem> TermItems { get; set; }
+        public List<MTDSelectListItem> UsersItems { get; set; }
     }
 }

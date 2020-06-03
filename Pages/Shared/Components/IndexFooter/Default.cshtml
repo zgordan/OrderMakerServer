@@ -20,16 +20,50 @@
 @model Models.Index.FooterModelView
 
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<ISharedResource> Localizer
 
 <div class="mtd-index-footer">
+
+    <form mtd-data-form method="post" action="/api/index/pagemove" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
+        @Html.AntiForgeryToken()
+        <input name="formId" value="@Model.FormId" type="hidden" />
+        <input mtd-data-result name="formValue" type="hidden" />
+        <div class="mtd-index-footer-pages">
+            @if (Model.Page > 1)
+            {
+            <div class="mtd-index-footer-button">
+                <a mtd-data-clicker="1" href="#">
+                    <i class="fas fa-angle-double-left fa-lg"></i>
+                </a>
+                @*<button class="mdc-icon-button material-icons" mtd-data-clicker="1" type="button">favorite</button>*@
+            </div>
+                <div class="mtd-index-footer-button">
+                    <a mtd-data-clicker="2" href="#">
+                        <i class="fas fa-angle-left fa-lg"></i>
+                    </a>
+                </div>
+            }
+
+            <div>
+                @Localizer["Page"] @Model.Page @Localizer["of"] @Model.PageCount
+            </div>
+
+            @if (Model.Page < Model.PageCount)
+            {
+                <div class="mtd-index-footer-button">
+                    <a mtd-data-clicker="3" href="#"><i class="fas fa-angle-right fa-lg"></i></a>
+                </div>
+            }
+        </div>
+    </form>
+
     <div class="mtd-index-footer-pageSize">
         <div style="white-space:nowrap">@Localizer["Page size"]:</div>
         <div class="mdc-menu-surface--anchor">
-            <div mtd-data-page="@Model.IdForm" class="mdc-ripple-surface mdc-ripple-surface--accent ">
+            <div mtd-data-page="@Model.FormId" class="mdc-ripple-surface mdc-ripple-surface--accent">
                 <div class="mtd-index-footer-sizeButton">@Model.PageSize</div>
             </div>
-            <div id="indexPageMenu" class="mdc-menu mdc-menu-surface" style="min-width: 64px; max-width: 64px;">
+            <div id="indexPageMenu" class="mdc-menu mdc-menu-surface">
                 <ul id="indexMenuSize" class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
                     <li class="mdc-list-item" role="menuitem" data-value="10">
                         <span class="mdc-list-item__text" data-value="10">10</span>
@@ -53,39 +87,6 @@
             </div>
         </div>
     </div>
-
-    <form mtd-data-form method="post" action="/api/index/pagemove" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
-        @Html.AntiForgeryToken()
-        <input name="formId" value="@Model.IdForm" type="hidden" />
-        <input mtd-data-result name="formValue" type="hidden" />
-
-        <div style="width: 100%">
-            <div style="float: right">
-                <div style="display: flex; align-items:center;">
-                    @if (Model.Page > 1)
-                    {
-                        <div class="mtd-index-footer-back">
-                            <a mtd-data-clicker="1" href="#"><span class="mtd-index-footer-icon mtd-index-footer-icon-step-backward"></span></a>
-                        </div>
-                        <div class="mtd-index-footer-left">
-                            <a mtd-data-clicker="2" href="#"><span class="mtd-index-footer-icon  mtd-index-footer-icon-left"></span></a>
-                        </div>
-                    }
-                        <div class="mtd-index-footer-pages">
-                            @Localizer["Page"] @Model.Page @Localizer["of"] @Model.PageCount
-                        </div>
-                        @if (Model.Page < Model.PageCount)
-                        {
-                            <div class="mtd-index-footer-right">
-                                <a mtd-data-clicker="3" href="#"><span class="mtd-index-footer-icon  mtd-index-footer-icon-right"></span></a>
-                            </div>
-                        }
-
-                    </div>
-            </div>
-        </div>
-    </form>
-
 
 </div>
 

@@ -20,8 +20,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Mtd.OrderMaker.Server.Data;
-using Mtd.OrderMaker.Server.DataHandler.Approval;
+using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.EntityHandler.Approval;
 using Mtd.OrderMaker.Server.Models.Store;
 using System;
 using System.Collections.Generic;
@@ -40,10 +40,10 @@ namespace Mtd.OrderMaker.Server.Components.Store.Stack
             _context = orderMakerContext;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(MtdFormPartField field, DataSet dataSet)
+        public async Task<IViewComponentResult> InvokeAsync(MtdFormPartField field, Warehouse warehouse)
         {
 
-            MtdStoreStack mtdStoreStack = dataSet.Stack.Where(x => x.MtdFormPartField == field.Id).FirstOrDefault();
+            MtdStoreStack mtdStoreStack = warehouse.Stack.Where(x => x.MtdFormPartField == field.Id).FirstOrDefault();
 
             if (mtdStoreStack == null)
             {
@@ -51,7 +51,7 @@ namespace Mtd.OrderMaker.Server.Components.Store.Stack
                 {
                     MtdFormPartField = field.Id,
                     MtdFormPartFieldNavigation = field,
-                    MtdStore = dataSet.Store.Id
+                    MtdStore = warehouse.Store.Id
                 };
             }
 
@@ -79,7 +79,7 @@ namespace Mtd.OrderMaker.Server.Components.Store.Stack
 
             ViewData["TypeStyle"] = field.MtdFormPartNavigation.MtdSysStyle == 5 ? "Columns" : "Rows";
 
-            string viewName = GetViewName(field.MtdSysType, dataSet.Parts.FirstOrDefault().MtdSysStyle, mtdStoreStack, field);
+            string viewName = GetViewName(field.MtdSysType, warehouse.Parts.FirstOrDefault().MtdSysStyle, mtdStoreStack, field);
 
             return View(viewName, mtdStoreStack);
         }

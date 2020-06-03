@@ -21,7 +21,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
-using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Models.Index;
 using Mtd.OrderMaker.Server.Services;
 using System.Collections.Generic;
@@ -42,28 +42,28 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
             _userHandler = userHandler;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string idForm)
+        public async Task<IViewComponentResult> InvokeAsync(string formId)
         {
             List<DisplayData> displayDatas = new List<DisplayData>();
             var user = await _userHandler.GetUserAsync(HttpContext.User);
 
-            List<string> partIds = await _userHandler.GetAllowPartsForView(user, idForm);
+            List<MtdFormPart> parts = await _userHandler.GetAllowPartsForView(user, formId);
+            List<string> partIds = parts.Select(x => x.Id).ToList();
 
-            MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == idForm);
+            MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == formId);
             if (filter != null)
             {
 
                 if (filter.WaitList == 1)
                 {
-                    DisplayModelView display= new DisplayModelView
+                    DisplayModelView display = new DisplayModelView
                     {
-                        IdForm = idForm,
+                        FormId = formId,
                         IdFilter = filter == null ? -1 : filter.Id,
                         DisplayDatas = displayDatas
                     };
 
                     return View("Default", display);
-
                 }
 
                 List<MtdFilterField> mtdFilterFields = await _context.MtdFilterField
@@ -120,8 +120,7 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
                     };
                     displayDatas.Add(displayDate);
                 }
-
-                IList<MtdFilterScript> scripts = await _context.MtdFilterScript.Where(x => x.MtdFilter == filter.Id & x.Apply == 1).ToListAsync();
+                IList<MtdFilterScript> scripts = await _userHandler.GetFilterScripsAsync(user, formId, 1);               
                 if (scripts != null && scripts.Count > 0)
                 {
                     foreach (var fs in scripts)
@@ -141,7 +140,7 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
 
             DisplayModelView displayModelView = new DisplayModelView
             {
-                IdForm = idForm,
+                FormId = formId,
                 IdFilter = filter == null ? -1 : filter.Id,
                 DisplayDatas = displayDatas
             };

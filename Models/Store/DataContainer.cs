@@ -20,7 +20,7 @@ namespace Mtd.OrderMaker.Server.Models.Store
 {
     public class DataContainer
     {
-        public DataSet Owner { get; set; }
-        public DataSet Parent { get; set; }
+        public Warehouse Owner { get; set; }
+        public Warehouse Parent { get; set; }
     }
 }

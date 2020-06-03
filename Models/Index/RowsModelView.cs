@@ -17,15 +17,15 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
-using Mtd.OrderMaker.Server.Data;
-using Mtd.OrderMaker.Server.DataHandler.Approval;
+using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.EntityHandler.Approval;
 using System.Collections.Generic;
 
 namespace Mtd.OrderMaker.Server.Models.Index
 {
     public class RowsModelView
     {
-        public string IdForm { get; set; }
+        public string FormId { get; set; }
         public string SearchNumber { get; set; }
         public int PageCount { get; set; }
         public IList<MtdStore> MtdStores { get; set; }
@@ -37,5 +37,9 @@ namespace Mtd.OrderMaker.Server.Models.Index
         public List<ApprovalStore> ApprovalStores { get; set; }
         public MtdApproval MtdApproval { get; set; }
         public string StoreIds { get; set; }
+
+        public string SearchText { get; set; }
+        public int Pending { get; set; }
+        public bool IsCreator { get; set; }
     }
 }

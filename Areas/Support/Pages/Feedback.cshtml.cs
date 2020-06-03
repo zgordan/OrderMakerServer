@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
-using Mtd.OrderMaker.Server.DataConfig;
+using Mtd.OrderMaker.Server.AppConfig;
 using Mtd.OrderMaker.Server.Services;
 
 namespace Mtd.OrderMaker.Server.Areas.Support.Pages

@@ -1,0 +1,10 @@
+﻿@import "@material/list";
+@import "@material/elevation";
+@import "@material/density";
+
+@import "mtd-button-hint.scss";
+
+.mtd-density-list {
+   // font-size: small;
+    @include single-line-density(-3);
+}

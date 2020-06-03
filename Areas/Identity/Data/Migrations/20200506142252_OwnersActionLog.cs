@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Mtd.OrderMaker.Server.Data.Migrations
+namespace Mtd.OrderMaker.Server.Entity.Migrations
 {
     public partial class OwnersActionLog : Migration
     {

@@ -41,7 +41,7 @@
 
 @section Action {
 
-    <li mtd-data-href="/config/form/parts?idForm=@Model.MtdForm.Id" class="mdc-list-item" role="menuitem">
+    <li mtd-data-href="/config/form/parts?formId=@Model.MtdForm.Id" class="mdc-list-item" role="menuitem">
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">line_weight</span>
         <span class="mdc-list-item__text">@Localizer["Edit parts"]</span>
     </li>
@@ -71,7 +71,7 @@
     </div>
 
     <form id="configPartSelector" method="get">
-        <input type="hidden" asp-for="MtdForm.Id" name="idForm" />
+        <input type="hidden" asp-for="MtdForm.Id" name="form-id" />
         <input id="configCurrentPart" type="hidden" asp-for="CurrentPartId" name="idPart" />
     </form>
 

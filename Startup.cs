@@ -23,10 +23,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Entity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Mtd.OrderMaker.Server.DataConfig;
+using Mtd.OrderMaker.Server.AppConfig;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Mtd.OrderMaker.Server.Services;
 using System;
@@ -113,10 +113,6 @@ namespace Mtd.OrderMaker.Server
                         options.DataAnnotationLocalizerProvider = (type, factory) =>
                         factory.Create(typeof(SharedResource));
                     })
-                //.AddRazorOptions(options =>
-                //    {
-                //        options.ViewLocationFormats.Add("/{0}.cshtml");
-                //    })
                 .AddRazorPagesOptions(options =>
                     {
                         options.Conventions.AuthorizeFolder("/");

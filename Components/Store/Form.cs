@@ -20,8 +20,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
-using Mtd.OrderMaker.Server.Data;
-using Mtd.OrderMaker.Server.DataHandler.Approval;
+using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.EntityHandler.Approval;
 using Mtd.OrderMaker.Server.Models.Store;
 using Mtd.OrderMaker.Server.Services;
 using System.Collections.Generic;
@@ -44,11 +44,11 @@ namespace Mtd.OrderMaker.Server.Components.Store
             _userHandler = userHandler;
         }
 
-        private async Task<IList<MtdFormPart>> GetPartsAsync(string idForm)
+        private async Task<IList<MtdFormPart>> GetPartsAsync(string formId)
         {
             IList<MtdFormPart> result = await _context.MtdFormPart
                 .Include(m => m.MtdFormPartHeader)
-                .Where(x => x.MtdForm == idForm)
+                .Where(x => x.MtdForm == formId)
                 .OrderBy(s => s.Sequence)
                 .ToListAsync();
 
@@ -66,7 +66,7 @@ namespace Mtd.OrderMaker.Server.Components.Store
                 .ToListAsync();
         }
 
-        private async Task<DataSet> CreateDataSetAsync(MtdStore store, FormType type = FormType.Details)
+        private async Task<Warehouse> CreateWarehouseAsync(MtdStore store, FormType type = FormType.Details)
         {
             if (store == null) return null;
             WebAppUser webAppUser = await _userHandler.GetUserAsync(HttpContext.User);
@@ -163,7 +163,7 @@ namespace Mtd.OrderMaker.Server.Components.Store
             }
 
 
-            DataSet result = new DataSet()
+            Warehouse result = new Warehouse()
             {
                 Store = mtdStore,
                 Parts = mtdFormParts,
@@ -202,7 +202,7 @@ namespace Mtd.OrderMaker.Server.Components.Store
 
                 IList<MtdFormPartField> mtdFormPartFields = await GetFieldsAsync(mtdFormParts);
 
-                DataSet dataSetForCreate = new DataSet()
+                Warehouse warehouse = new Warehouse()
                 {
                     Store = store,
                     Parts = mtdFormParts,
@@ -210,13 +210,13 @@ namespace Mtd.OrderMaker.Server.Components.Store
                     Stack = new List<MtdStoreStack>()
                 };
 
-                return View("Create", dataSetForCreate);
+                return View("Create", warehouse);
             }
 
             DataContainer dataContainer = new DataContainer
             {
-                Owner = await CreateDataSetAsync(store, type),
-                Parent = await CreateDataSetAsync(store.ParentNavigation)
+                Owner = await CreateWarehouseAsync(store, type),
+                Parent = await CreateWarehouseAsync(store.ParentNavigation)
             };
 
             return View(type.ToString(), dataContainer);

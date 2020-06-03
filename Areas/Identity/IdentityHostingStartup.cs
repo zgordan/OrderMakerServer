@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Entity;
 
 [assembly: HostingStartup(typeof(Mtd.OrderMaker.Server.Areas.Identity.IdentityHostingStartup))]
 namespace Mtd.OrderMaker.Server.Areas.Identity

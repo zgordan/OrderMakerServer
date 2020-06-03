@@ -18,7 +18,7 @@
 */
 
 using Microsoft.AspNetCore.Mvc;
-using Mtd.OrderMaker.Server.Data;
+using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Models.Store;
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,28 +35,30 @@ namespace Mtd.OrderMaker.Server.Components.Store.Stack
             _context = orderMakerContext;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(MtdFormPartField field, DataSet dataSet)
+        public async Task<IViewComponentResult> InvokeAsync(MtdFormPartField field, Warehouse warehouse)
         {
 
-            MtdStoreStack mtdStoreStack = await GetMtdStoreStackAsync(field, dataSet);
+            MtdStoreStack mtdStoreStack = await GetMtdStoreStackAsync(field, warehouse);
             if (mtdStoreStack == null) { mtdStoreStack = new MtdStoreStack(); }
-            string viewName = await GetViewNameAsync(field.MtdSysType,dataSet.Parts.FirstOrDefault().MtdSysStyle);
+            string viewName = await GetViewNameAsync(field.MtdSysType, warehouse.Parts.FirstOrDefault().MtdSysStyle);
 
-            ViewData["typeStyle"] = field.MtdFormPartNavigation.MtdSysStyle == 5 ? "Columns" : "Rows" ;
+            ViewData["typeStyle"] = field.MtdFormPartNavigation.MtdSysStyle == 5 ? "Columns" : "Rows";
 
             return View(viewName, mtdStoreStack);
         }
 
 
-        private MtdStoreStack GetMtdStoreStack(MtdFormPartField field, DataSet dataSet) {
-            return dataSet.Stack.Where(x => x.MtdFormPartField == field.Id).FirstOrDefault();
+        private MtdStoreStack GetMtdStoreStack(MtdFormPartField field, Warehouse wh)
+        {
+            return wh.Stack.Where(x => x.MtdFormPartField == field.Id).FirstOrDefault();
         }
 
-        private async Task<MtdStoreStack> GetMtdStoreStackAsync(MtdFormPartField field, DataSet dataSet) {
-            return  await Task.Run(() => GetMtdStoreStack(field,dataSet));
+        private async Task<MtdStoreStack> GetMtdStoreStackAsync(MtdFormPartField field, Warehouse wh)
+        {
+            return await Task.Run(() => GetMtdStoreStack(field, wh));
         }
 
-        private string GetViewName(int type, int style )
+        private string GetViewName(int type, int style)
         {
             string viewName;
             switch (type)
@@ -73,11 +75,12 @@ namespace Mtd.OrderMaker.Server.Components.Store.Stack
                 case 13: { viewName = "Link"; break; }
                 default: { viewName = "Text"; break; }
             };
-                       
+
             return viewName;
         }
 
-        private async Task<string> GetViewNameAsync(int type, int style) {
+        private async Task<string> GetViewNameAsync(int type, int style)
+        {
             return await Task.Run(() => GetViewName(type, style));
         }
 

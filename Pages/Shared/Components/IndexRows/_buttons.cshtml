@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+    <div class="mtd-index-header-buttons">
+        @if (!Model.WaitList)
+        {
+           
+            <div class="mtd-button-hint">
+                <button id="index-filter-button" class="mdc-icon-button material-icons mdc-theme--secondary">
+                    @*<i class="fas fa-filter fa-sm"></i>*@ filter_list
+                </button>
+                <div class="mtd-button-hint_info">
+                    <span>@Localizer["Add filter"]</span>
+                </div>
+            </div>
+        }
+
+        <div>
+            <div class="mtd-button-hint">
+                <button id="indexButtonColumnEdit" class="mdc-icon-button material-icons mdc-theme--secondary">
+                    @*<i class="fas fa-columns"></i>*@ table_chart
+                </button>
+                <div class="mtd-button-hint_info">
+                    <span>@Localizer["List columns"]</span>
+                </div>
+            </div>
+
+        </div>
+        <div>
+            <form mtd-data-form method="post" action="/api/index/waitlist/set" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
+                @Html.AntiForgeryToken()
+                <input mtd-data-clicker type="hidden" id="id-form-waitlist" name="id-form-waitlist" value="@Model.FormId" />
+                @if (Model.Pending > 0)
+                {
+                    <div style="position: absolute; text-align: center; min-width: 1.5em; background-color: red; font-size: 0.7em; color: white; padding: 3px; top: -5px; margin-left: 24px; border-radius: 100%">
+                        @Model.Pending
+                    </div>
+                }
+
+                <div class="mtd-button-hint">
+                    <button mtd-data-clicker id="approval-list"
+                            class="mdc-icon-button mdc-theme--primary"
+                            aria-label="Approval Wait List"
+                            aria-hidden="true"
+                            aria-pressed="false"
+                            type="button">
+                        <i class="material-icons mdc-icon-button__icon @if (Model.WaitList) {<text>mdc-icon-button__icon--on</text>}">notification_important</i>
+                        <i class="material-icons mdc-icon-button__icon
+                   @if (!Model.WaitList) {<text>mdc-icon-button__icon--on</text>}" style="color:red;">notification_important</i>
+                    </button>
+                    <div class="mtd-button-hint_info">
+                        <span>@Localizer["Wait list"]</span>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>

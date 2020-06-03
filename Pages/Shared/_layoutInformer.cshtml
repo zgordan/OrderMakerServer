@@ -1,0 +1,56 @@
+﻿@using Mtd.OrderMaker.Server.Areas.Identity.Data
+@inject SignInManager<WebAppUser> SignInManager
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+<div id="mainModal" style="display: none;">
+    <div role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate" style="z-index: 4; top: 64px;  position: absolute; --mdc-theme-primary: red; ">
+        <div class="mdc-linear-progress__buffering-dots"></div>
+        <div class="mdc-linear-progress__buffer"></div>
+        <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+            <span class="mdc-linear-progress__bar-inner"></span>
+        </div>
+        <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+            <span class="mdc-linear-progress__bar-inner"></span>
+        </div>
+    </div>
+    <div class="mtd-main-modal"></div>
+</div>
+<div class="mtd-main-informer">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div class="mtd-main-informer-content">
+            <div style="display: flex; align-items: center">
+                <div class="mtd-main-informer-title" style="flex-grow: 1">
+                    @ViewData["Title"]
+                </div>
+                <div class="mtd-main-informer-action">
+                    @if (IsSectionDefined("Action"))
+                    {
+                        <div class="mdc-menu-surface--anchor">
+                            <button id="main-action-button" class="mdc-button mdc-button--raised">
+                                <i class="material-icons mdc-button__icon" aria-hidden="true">apps</i>
+                                <span class="mdc-button__label">@Localizer["Actions"]</span>
+                            </button>
+                            <div id="main-action-menu" class="mdc-menu mdc-menu-surface">
+                                <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+                                    @RenderSection("Action")
+                                </ul>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+            <div class="mtd-main-informer-name">
+                @ViewData["SecondTitle"]
+            </div>
+            <ul class="mtd-main-informer-breadcrumb">
+                @if (IsSectionDefined("Breadcrumb"))
+                {
+                    @RenderSection("Breadcrumb")
+                }
+            </ul>
+        </div>
+    }
+</div>

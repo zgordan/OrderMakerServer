@@ -31,8 +31,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
-using Mtd.OrderMaker.Server.Data;
-using Mtd.OrderMaker.Server.DataConfig;
+using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.AppConfig;
 using Mtd.OrderMaker.Server.Services;
 
 namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts

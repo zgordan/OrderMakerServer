@@ -33,7 +33,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
-using Mtd.OrderMaker.Server.DataConfig;
+using Mtd.OrderMaker.Server.AppConfig;
 
 namespace Mtd.OrderMaker.Server.Pages
 {

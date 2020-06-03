@@ -253,12 +253,6 @@ const DetectMobile = () => {
     rippleFor('.mdc-button');
     rippleFor('.mdc-card__primary-action');
 
-    const textFields = document.querySelectorAll('.mdc-text-field');
-    textFields.forEach((item) => {
-        const textField = new mdc.textField.MDCTextField(item);
-        const fond = new mdc.textField.MDCTextFieldFoundation(textField);
-    });
-
     const toggleButtons = document.querySelectorAll('.mdc-icon-button');
     toggleButtons.forEach((item) => {
         new mdc.iconButton.MDCIconButtonToggle(item);
@@ -269,7 +263,7 @@ const DetectMobile = () => {
     const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
 
     const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.getElementById('app-bar'));
-    topAppBar.setScrollTarget(document.getElementById('main-content'));
+    topAppBar.setScrollTarget(document.getElementById('drawer-main-content'));
     topAppBar.listen('MDCTopAppBar:nav', () => {
         drawer.open = !drawer.open;
     });
@@ -306,7 +300,7 @@ const DetectMobile = () => {
 
         mainUserMenu.setFixedPosition(true);
         mainUserButton.addEventListener('click', () => {
-            mainUserMenu.open = !mainUserMenu.open;
+            mainUserMenu.open();
         });
     }
 
@@ -316,16 +310,8 @@ const DetectMobile = () => {
 
         mainUserMenu.setFixedPosition(true);
         mainAppsButton.addEventListener('click', () => {
-            mainUserMenu.open = !mainUserMenu.open;
+            mainUserMenu.open();
         });
     }
-
-    const selectLists = document.querySelectorAll(".mdc-select");
-    if (selectLists) {
-        selectLists.forEach((item) => {
-           const selector = new mdc.select.MDCSelect(item);
-        });
-    }
-    
 
 })();

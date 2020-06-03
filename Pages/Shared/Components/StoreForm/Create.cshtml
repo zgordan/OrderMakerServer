@@ -16,7 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 *@
-@model Models.Store.DataSet
+@model Models.Store.Warehouse
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 @inject Services.UserHandler userHandler
@@ -127,7 +127,7 @@
         @Html.AntiForgeryToken()
         <input id="store-parent-id" value="@Model.Store.Parent" type="hidden" name="store-parent-id" />
         <input id="store-create-clicker" mtd-data-clicker mtd-data-location="/workplace/store/details?id=@idStore" type="hidden" />
-        <input type="hidden" name="idForm" value="@Model.Store.MtdForm" />
+        <input type="hidden" name="form-id" value="@Model.Store.MtdForm" />
         <input type="hidden" name="store-id" value="@idStore" />
 
         <div>
