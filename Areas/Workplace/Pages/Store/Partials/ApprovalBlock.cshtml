@@ -1,0 +1,50 @@
+﻿@model DetailsModel
+@namespace Mtd.OrderMaker.Server.Components.Store
+@using Mtd.OrderMaker.Server.EntityHandler.Approval
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> Localizer
+@if (Model.IsApprover)
+    {    
+        <div style="text-align: center; padding-top: 18px; color: cornflowerblue;">
+            <div style="text-align: right; position: relative;">
+                @*<div style="position: absolute; right: 16px;">
+            <i class="material-icons" aria-hidden="true" style="vertical-align: middle; color: red">notification_important</i>
+            <span style="color: red;">@Localizer["Approval is required"]</span>
+        </div>*@
+
+                @if (Model.IsFirstStage)
+                {
+                    @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/ApprovalStart.cshtml")
+                }
+
+                @if (Model.IsSign && !Model.IsFirstStage)
+                {
+                    @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/ApprovalButtonsSign.cshtml")
+                }
+
+                @if (!Model.IsSign && !Model.IsFirstStage)
+                {
+                    @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/ApprovalButtons.cshtml")
+                }
+
+            </div>
+        </div>
+
+        @if (Model.IsSign)
+        {
+            @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogConfirmSign.cshtml")
+            @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogReturnSign.cshtml")
+            @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogRejectSign.cshtml")
+        }
+        else
+        {
+            @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogStart.cshtml")
+            @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogReject.cshtml")
+            @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogReturn.cshtml")
+            @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogConfirm.cshtml")
+        }
+
+
+        @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogRequest.cshtml")
+
+    }

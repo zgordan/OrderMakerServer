@@ -19,7 +19,7 @@
 
 @model Models.Store.DataContainer
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> Localizer
 @inject Services.UserHandler userHandler
 @{
     var user = await userHandler.GetUserAsync(User);

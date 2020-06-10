@@ -17,15 +17,17 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 *@
 @page
-@model Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store.DetailsModel
+@model DetailsModel
 @namespace Mtd.OrderMaker.Server.Components.Store
 @using Mtd.OrderMaker.Server.EntityHandler.Approval
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+
+@inject IHtmlLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["Form view"];
     ViewData["SecondTitle"] = Model.MtdForm.Name;
     string viewOwner = "Unknown";
+
 
     if (Model.StoreOwner != null)
     {
@@ -34,10 +36,14 @@
     ViewData["Owner"] = viewOwner;
 }
 @section Head{
-    <link rel="stylesheet" href="~/lib/mtd-ordermaker/store/css/mtd-store-view.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/mtd-ordermaker/ui/css/mtd-ui-material.css" />
-    <link rel="stylesheet" href="~/lib/mtd-ordermaker/index/css/mtd-index.css" />
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/mtd-ordermaker/store/css/mtd-store-view.css" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="~/lib/mtd-ordermaker/store/css/mtd-store-view.min.css" asp-append-version="true" />
+    </environment>
 }
+
 @section Breadcrumb {
     <li><a href="/">@Localizer["Desktop"]</a></li>
     <li><a style="cursor:pointer" mtd-data-href="/workplace/store/index?indexForm=@Model.MtdForm.Id">@Localizer["List data"]</a></li>
@@ -58,7 +64,7 @@
     </li>
     @if (Model.IsInstallerOwner)
     {
-        <li id="setowner" class="mdc-list-item" role="menuitem">
+        <li mtd-dialog-button="dialog-owner" class="mdc-list-item" role="menuitem">
             <span class="mdc-list-item__graphic material-icons" aria-hidden="true">assignment_ind</span>
             <span class="mdc-list-item__text">@Localizer["Set owner"]</span>
         </li>
@@ -122,156 +128,53 @@
     </div>
 </form>
 
-<div class="mtd-desk">   
-    
-    <div id="nav-div" style="position: absolute; z-index: 2; margin-top: -28px; margin-left: -5px;">
-        <input type="hidden" id="nav-current-id" value="@Model.MtdStore.Id" />
-        <div id="nav-div-main">
-            <button id="nav-button-main" class="mdc-fab" aria-label="Favorite">
-                <div class="mdc-fab__ripple"></div>
-                <span class="mdc-fab__icon material-icons">menu_open</span>
-                <span class="mdc-fab__icon material-icons mtd-main-display-none">close</span>
-            </button>
+<div class="mtd-desk">
+    <div class="mtd-desk-panel">
+        <div>
+            @await Html.PartialAsync("./Partials/DetailsNavButtons")
         </div>
-        <div id="nav-div-list" style="padding-left: 8px; padding-top: 12px; height: 48px">
-            <button id="nav-button-list" class="mdc-fab mdc-fab--mini mdc-fab--exited" aria-label="List" 
-                    mtd-data-href="/workplace/store/index?indexForm=@Model.MtdForm.Id">
-                <div class="mdc-fab__ripple"></div>
-                <span class="mdc-fab__icon material-icons">list</span>
-                <span class="mdc-fab__label mtd-main-display-none">@Localizer["List"]</span>
-            </button>
-        </div>
-        <div id="nav-div-back" style="padding-left: 8px; padding-top: 12px; height: 48px">
-            <button id="nav-button-back" class="mdc-fab mdc-fab--mini mdc-fab--exited" aria-label="Back">
-                <div class="mdc-fab__ripple"></div>
-                <span class="mdc-fab__icon material-icons">arrow_back</span>
-                <span class="mdc-fab__label mtd-main-display-none">@Localizer["Back"]</span>
-            </button>
-        </div>
-        <div id="nav-div-next" style="padding-left: 8px; padding-top: 12px; height: 48px">
-            <button id="nav-button-next" class="mdc-fab mdc-fab--mini mdc-fab--exited" aria-label="Next">
-                <div class="mdc-fab__ripple"></div>
-                <span class="mdc-fab__icon material-icons">arrow_forward</span>
-                <span class="mdc-fab__label mtd-main-display-none">@Localizer["Next"]</span>
-            </button>
+        <div style="flex-grow:1">
+            @await Html.PartialAsync("./Partials/ApprovalBlock")
         </div>
     </div>
-    <div id="nav-modal" class="mtd-main-display-none"  style="position: absolute; background-color:white; height: 100%; width:100%; z-index: 1; opacity: 0.5;  top: 8px;"></div>
-    
-        @if (Model.IsApprover)
-        {
 
-            <div style="background-color: white; text-align: center; padding: 4px; height: 56px; color: cornflowerblue">
-                <div style="padding-bottom: 4px; text-align: right; position: relative;">
-                    <div style="padding: 12px; position: absolute; right: 0; background-color: white; border-radius: 50%; top: -28px; min-width: 230px
-                        -webkit-box-shadow: 0px -8px 5px 0px rgba(105,105,105,1);
-                        -moz-box-shadow: 0px -8px 5px 0px rgba(105,105,105,1);
-                        box-shadow: 0px -3px 2px 0px rgba(105,105,105,1);">
-                        <i class="material-icons" aria-hidden="true" style="vertical-align: middle; color: red">notification_important</i>
-                        <span style="color: red;">@Localizer["Approval is required"]</span>
+    <div class="mtd-desk-blocks">
+        <div class="mtd-desk-block">
+            <div class="mtd-desk-block-content  mtd-desk-block--border">
+                <div class="mtd-desk-block-title">
+                    <div class="mtd-desk-block-title-icon">
+                        <i class="material-icons" aria-hidden="true">print</i>
                     </div>
-
-                    @if (Model.IsSign)
-                    {
-                        @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/ApprovalButtonsSign.cshtml")
-                    }
-                    else
-                    {
-                        @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/ApprovalButtons.cshtml")
-                    }
-
-                </div>
-            </div>
-
-            @if (Model.IsSign)
-            {
-                @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogConfirmSign.cshtml")
-                @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogReturnSign.cshtml")
-                @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogRejectSign.cshtml")
-            }
-            else
-            {
-                @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogStart.cshtml")
-                @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogReject.cshtml")
-                @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogReturn.cshtml")
-                @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogConfirm.cshtml")
-            }
-
-
-            @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogRequest.cshtml")
-
-        }
-
-        <div class="mtd-desk-blocks">
-            <div class="mtd-desk-block">
-                <div class="mtd-desk-block-content  mtd-desk-block--border">
-                    <div class="mtd-desk-block-title">
-                        <div class="mtd-desk-block-title-icon">
-                            <i class="material-icons" aria-hidden="true">print</i>
-                        </div>
-                        <div class="mtd-desk-block-title-label">
-                            @Localizer["Print form view"]
-                        </div>
-                        <div class="mtd-desk-block-title-button">
-                            <button onclick="clickBlockToogle(this)"
-                                    class="mdc-icon-button"
-                                    aria-label="Add to favorites"
-                                    aria-hidden="true"
-                                    aria-pressed="false"
-                                    data="block-view">
-                                <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">add_box</i>
-                                <i class="material-icons mdc-icon-button__icon">indeterminate_check_box</i>
-                            </button>
-                        </div>
+                    <div class="mtd-desk-block-title-label">
+                        @Localizer["Print form view"]
                     </div>
-                    @await Component.InvokeAsync("StoreForm", new { store = Model.MtdStore, type = FormType.Details })
+                    <div class="mtd-desk-block-title-button">
+                        <button onclick="clickBlockToogle(this)"
+                                class="mdc-icon-button"
+                                aria-label="Add to favorites"
+                                aria-hidden="true"
+                                aria-pressed="false"
+                                data="block-view">
+                            <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">add_box</i>
+                            <i class="material-icons mdc-icon-button__icon">indeterminate_check_box</i>
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div class="mtd-desk-block">
-
-                @await Html.PartialAsync("./Partials/DetailsInfo")
-                @await Html.PartialAsync("./Partials/DetailsHistory")
-
+                @await Component.InvokeAsync("StoreForm", new { store = Model.MtdStore, type = FormType.Details })
             </div>
         </div>
+        <div class="mtd-desk-block mtd-desk-block--pull">
+
+            @await Html.PartialAsync("./Partials/DetailsInfo")
+            @await Html.PartialAsync("./Partials/DetailsHistory")
+
+        </div>
+    </div>
 </div>
+
 @if (Model.IsInstallerOwner)
 {
-    <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/setowner'>
-        @Html.AntiForgeryToken()
-        <input id="setowner-id-store" name="setowner-id-store" value="@Model.MtdStore.Id" type="hidden" />
-        <div id="dialog-setowner" class="mdc-dialog"
-             role="alertdialog"
-             aria-modal="true"
-             aria-labelledby="my-dialog-title"
-             aria-describedby="my-dialog-content">
-            <div class="mdc-dialog__container">
-                <div class="mdc-dialog__surface">
-                    <h2 class="mdc-dialog__title" id="delete-form-title">
-                        @Localizer["Set owner for document"]
-                    </h2>
-                    <div class="mdc-dialog__content" id="delete-dialog-content">
-                        @Localizer["Select user and click 'Save' button"]
-                        <div class="mdc-select" style="width: 100%; margin-top: 8px;">
-                            <i class="mdc-select__dropdown-icon"></i>
-                            <select class="mdc-select__native-control" asp-items="ViewBag.UsersList" name="setowner-id-user"></select>
-                            <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Users list"]</label>
-                            <div class="mdc-line-ripple"></div>
-                        </div>
-                    </div>
-                    <footer class="mdc-dialog__actions">
-                        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
-                            <span class="mdc-button__label">@Localizer["Cancel"]</span>
-                        </button>
-                        <button type="button" mtd-data-clicker class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
-                            <span class="mdc-button__label">@Localizer["Save"]</span>
-                        </button>
-                    </footer>
-                </div>
-            </div>
-            <div class="mdc-dialog__scrim"></div>
-        </div>
-    </form>
+    @await Html.PartialAsync("./Partials/DialogOwner")
 }
 
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/delete'>
@@ -279,6 +182,7 @@
     <input id="store-delete-id" name="store-delete-id" type="hidden" value="@Model.MtdStore.Id" />
     <input id="deleteClicker" mtd-data-clicker mtd-data-location="/workplace/store?indexform=@Model.MtdStore.MtdForm" mtd-data-message="@Localizer["The document was deleted"]." type="hidden" />
 </form>
+
 <div id="dialog-store-delete" class="mdc-dialog"
      role="alertdialog"
      aria-modal="true"
@@ -306,8 +210,13 @@
 </div>
 
 @section Scripts{
-    <script src="~/lib/mtd-ordermaker/store/js/mtd-store-view.js" asp-append-version="true"></script>
-    <script src="~/lib/mtd-ordermaker/store/js/mtd-store-nav.js" asp-append-version="true"></script>
+    <environment include="Development">
+        <script src="~/lib/mtd-ordermaker/store/js/mtd-store-view.js" asp-append-version="true"></script>
+        <script src="~/lib/mtd-ordermaker/store/js/mtd-store-nav.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/lib/mtd-ordermaker/store/js/mtd-store-view.min.js" asp-append-version="true"></script>
+    </environment>
 }
 
 

@@ -19,7 +19,7 @@
 
 @model MtdStoreStack
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> Localizer
 
 @{
     var local = Localizer["MM/dd/yyyy"];

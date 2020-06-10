@@ -1,7 +1,7 @@
 ﻿@page
 @model AccessDeniedModel
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> Localizer
 
 @{
     ViewData["Title"] = Localizer["Access denied"];

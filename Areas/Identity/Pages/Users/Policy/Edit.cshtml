@@ -19,7 +19,7 @@
 @page
 @model EditModel
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["Policy editor"];
     ViewData["SecondTitle"] = Localizer["Editing access level"];

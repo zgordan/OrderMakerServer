@@ -12,7 +12,7 @@
   padding: 4px;
   background-color: gray;
   color: white;
-  z-index: 1;
+  z-index: 2;
   border-radius: 4px;
   /* @alternate */
   box-shadow: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
@@ -20,6 +20,372 @@
 
 .mtd-button-hint:hover .mtd-button-hint_info {
   visibility: visible;
+}
+
+.mtd-desk-blocks {
+  display: flex;
+  justify-content: center;
+  padding: 0 8px 0 8px;
+}
+@media (max-width: 1020px) {
+  .mtd-desk-blocks {
+    flex-wrap: wrap;
+  }
+}
+
+.mtd-desk-block {
+  width: 797px;
+  padding: 2px;
+}
+@media (min-width: 1919px) {
+  .mtd-desk-block {
+    max-width: 797px;
+  }
+}
+@media (max-width: 1366px) {
+  .mtd-desk-block {
+    max-width: 670px;
+    font-size: 14px;
+  }
+}
+@media (max-width: 1150px) {
+  .mtd-desk-block {
+    max-width: 512px;
+    font-size: 13px;
+  }
+}
+@media (max-width: 1020px) {
+  .mtd-desk-block {
+    max-width: 797px;
+    font-size: 14px;
+    width: 100%;
+  }
+}
+
+.mtd-desk-block--pull {
+  width: 100%;
+}
+
+.mtd-desk-block-title {
+  padding: 6px;
+  background-color: lightgray;
+  display: flex;
+}
+@media (max-width: 1020px) {
+  .mtd-desk-block-title {
+    padding: 2px;
+  }
+}
+
+.mtd-desk-block-title-icon {
+  align-self: center;
+  padding-left: 4px;
+  color: gray;
+}
+
+.mtd-desk-block-title-label {
+  flex-grow: 1;
+  align-self: center;
+  padding-left: 4px;
+  padding-right: 4px;
+  font-weight: bold;
+  color: gray;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mtd-desk-block-title-button {
+  color: #454545;
+  display: none;
+}
+@media (max-width: 1020px) {
+  .mtd-desk-block-title-button {
+    display: block;
+  }
+}
+
+.mtd-desk-block-content {
+  padding: 4px;
+  margin-bottom: 4px;
+  overflow: hidden;
+  overflow-x: auto;
+  /*white-space:nowrap;*/
+}
+
+.mtd-desk-block-content--colapsed {
+  display: none;
+}
+
+.mtd-desk-block-body {
+  overflow: hidden;
+  overflow-x: auto;
+  /*white-space: nowrap;*/
+}
+
+.mtd-desk-block-content table tr td:first-child {
+  text-transform: uppercase;
+  color: gray;
+  font-size: 0.8em;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+.mtd-desk-block-content table tr td {
+  padding: 4px;
+}
+
+.mtd-desk-block--border {
+  border: 1px solid lightgray;
+}
+
+.mtd-desk-draggable-item {
+  border-bottom: 1px solid lightgray;
+}
+
+.mtd-desk-draggable-item:first-child {
+  border-top: 1px solid lightgray;
+}
+
+.mtd-desk-draggable-bedit {
+  position: absolute;
+  right: 48px;
+  color: cornflowerblue;
+  cursor: pointer;
+  background-color: white;
+}
+@media (max-width: 410px) {
+  .mtd-desk-draggable-bedit {
+    right: 8px;
+  }
+}
+
+.mtd-desk-draggable-bdrag {
+  position: absolute;
+  right: 16px;
+  cursor: all-scroll;
+}
+@media (max-width: 410px) {
+  .mtd-desk-draggable-bdrag {
+    display: none;
+  }
+}
+
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+
+.mtd-desk-draggable-item.over {
+  border-top: 2px solid blue;
+}
+
+.mtd-desk {
+  background-color: white;
+  position: relative;
+  padding-top: 24px;
+}
+
+.mtd-desk-panel {
+  height: 64px;
+  margin-top: -56px;
+  background-color: transparent;
+  display: flex;
+  border-radius: 50%;
+  background-color: white;
+  -webkit-box-shadow: 0px -2px 1px 0px #ccc;
+  -moz-box-shadow: 0px -2px 1px 0px #ccc;
+  box-shadow: 0px -2px 1px 0px #ccc;
+  margin-bottom: 12px;
+}
+
+.mtd-desk-savebar {
+  text-align: center;
+  position: sticky;
+  position: -webkit-sticky;
+  position: -moz-sticky;
+  position: -ms-sticky;
+  position: -o-sticky;
+  z-index: 2;
+  height: 42px;
+  width: 100%;
+  top: 65px;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  -ms-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  -o-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  -webkit-transition: all 0.25s ease-in-out;
+  -moz-transition: all 0.25s ease-in-out;
+  -ms-transition: all 0.25s ease-in-out;
+  -o-transition: all 0.25s ease-in-out;
+  transition: all 0.25s ease-in-out;
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  background-color: white;
+  background: white;
+  background: -moz-radial-gradient(center, ellipse cover, white 0%, #e5e5e5 100%);
+  background: -webkit-radial-gradient(center, ellipse cover, white 0%, #e5e5e5 100%);
+  background: radial-gradient(ellipse at center, white 0%, #e5e5e5 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#ffffff", endColorstr="#e5e5e5",GradientType=1 );
+  margin-bottom: 24px;
+}
+
+.mtd-desk-savebar button {
+  margin-top: 12px;
+}
+
+.mtd-desk-fields {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.mtd-desk-field {
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+  margin: 4px;
+  padding: 8px;
+}
+
+.mtd-desk-field label {
+  font-size: medium;
+  color: gray;
+}
+
+.mtd-desk-field--space {
+  padding-bottom: 48px;
+}
+
+.mtd-desk-field--border {
+  border-radius: 4px;
+  border: 1px solid lightgray;
+}
+
+.mtd-desk-creator {
+  position: absolute;
+  top: -2em;
+  left: -0.8em;
+  z-index: 1;
+}
+
+.mtd-desk-bedit {
+  position: absolute;
+  right: 8px;
+  color: cornflowerblue;
+  cursor: pointer;
+}
+
+.mtd-desk-field {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 350px;
+  width: 95%;
+}
+
+.mtd-dialog-hidden {
+  display: none;
+}
+
+.mtd-dialog {
+  position: absolute;
+  animation-name: mtd-dialog-action;
+  animation-duration: 0.2s;
+  animation-delay: 0.1s;
+  animation-fill-mode: backwards;
+  margin-left: auto;
+  margin-right: auto;
+  left: 8px;
+  right: 8px;
+  width: 100%;
+  z-index: 8;
+}
+
+.mtd-dialog-container {
+  margin-right: 16px;
+  background-color: white;
+  /* @alternate */
+  box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12);
+}
+
+.mtd-dialog-title {
+  background: linear-gradient(90deg, #e4e4e4 0%, #ebe9e9 47%, white 81%);
+  text-transform: uppercase;
+  color: gray;
+  margin-bottom: 8px;
+  font-weight: bold;
+  display: flex;
+  padding: 2px;
+}
+
+.mtd-dialog-title div:first-child {
+  flex-grow: 1;
+  align-self: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding-left: 6px;
+}
+
+.mtd-dialog-content {
+  padding: 0 8px 8px 8px;
+}
+
+.mtd-dialog-info {
+  padding: 8px 0 8px 0;
+  margin: 8px 0 8px 0;
+}
+
+.mtd-dialog-info--border {
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  padding: 8px 0 8px 0;
+}
+
+.mtd-dialog-buttons {
+  padding: 16px 0 16px 0;
+}
+
+.mtd-dialog-space {
+  height: 16px;
+}
+
+@keyframes mtd-dialog-action {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.mdc-text-field {
+  width: 100%;
+}
+
+.mdc-text-field--filled {
+  background-color: transparent !important;
+}
+
+.mdc-select--required .mdc-floating-label::after {
+  content: "";
+}
+
+.mdc-select--w100 {
+  width: 100%;
+}
+
+.mdc-text-field__input:required ~ .mdc-floating-label::after, .mdc-text-field__input:required ~ .mdc-notched-outline .mdc-floating-label::after {
+  content: "";
+  margin-left: 0;
 }
 
 .mtd-density-list .mdc-list-item {

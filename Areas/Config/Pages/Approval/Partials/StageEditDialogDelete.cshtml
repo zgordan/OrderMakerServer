@@ -1,6 +1,6 @@
 ﻿@model StageEditModel
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> Localizer
 
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/config/approval/stage/delete'>
     @Html.AntiForgeryToken()

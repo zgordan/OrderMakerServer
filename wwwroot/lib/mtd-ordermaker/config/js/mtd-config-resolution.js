@@ -107,7 +107,6 @@ function updateList(guid) {
     note.style.color = document.getElementById(`${guid}-resolution-color`).value; 
 }
 
-(() => {
+//Start
     dialogResolution = new mdc.dialog.MDCDialog(document.getElementById('dialog-resolution'));
     dialogDelete = new mdc.dialog.MDCDialog(document.getElementById('dialog-resolution-delete'));
-})();

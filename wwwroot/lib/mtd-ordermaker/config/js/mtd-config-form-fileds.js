@@ -82,11 +82,11 @@ function addDnDHandlers(elem) {
 
 
 
-(() => {
+//Start
     const selectPart = new mdc.select.MDCSelect(document.getElementById("configSelectPart"));
 
     selectPart.listen('MDCSelect:change', (e) => {
-        ActionShowModal();
+        ActionShowModal(true);
         const form = document.getElementById("configPartSelector");
         const curr = document.getElementById("configCurrentPart");
         curr.value = selectPart.value;
@@ -95,5 +95,3 @@ function addDnDHandlers(elem) {
 
     var cols = document.querySelectorAll('#configListFields .mdc-list-item');
     [].forEach.call(cols, addDnDHandlers);
-
-})();

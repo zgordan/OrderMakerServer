@@ -1,13 +1,31 @@
-﻿class ExctensionForm {
+﻿
+class ServiceForm {
+
+    constructor() {
+
+        this.locale = document.getElementById("index-locale-for-date");
+        this.dateStart = new MTDTextField("index-filter-date-start");
+        this.dateFinish = new MTDTextField("index-filter-date-finish");
+        this.period = document.getElementById("index-filter-service-period");
+        this.owners = document.getElementById("index-filter-service-owners");
+
+        this.select = new MTDSelectList("index-filter-service-list");
+        this.ownersList = new MTDSelectList("index-filter-service-owners-list");
+    }
+
+}
+
+class ExctensionForm {
     constructor() {
 
         this.selectScript = new MTDSelectList("index-filter-extension-list");
+        this.scriptId = document.getElementById("index-filter-extension-script");
     }
 }
 
-
 class CustomForm {
     constructor() {
+
         this.resultId = document.getElementById("index-filter-custom-result-id");
         this.resultType = document.getElementById("index-filter-custom-result-type");
         this.resultAction = document.getElementById("index-filter-custom-result-action");
@@ -29,7 +47,7 @@ const IndexFilterShowTab = (tabShow) => {
 
     const tabs = ['custom', 'service', 'extension'];
     tabs.forEach((tabName) => {
-        const div = document.getElementById(`index-filter-${tabName}`);        
+        const div = document.getElementById(`index-filter-${tabName}`);
         div.style.display = tabName === tabShow ? "block" : "none";
     });
 }
@@ -45,20 +63,31 @@ const ShowCustomFieldTypes = (fiedShow) => {
 
 const Service = () => {
 
-    new MTDTextField("index-filter-date-start");
-    new MTDTextField("index-filter-date-finish");
+    const sf = new ServiceForm();
 
-    const period = document.getElementById("index-filter-service-period");
-    const owners = document.getElementById("index-filter-service-owners");
-
-    const select = new MTDSelectList("index-filter-service-list");
-    const ownersList = new MTDSelectList("index-filter-service-owners-list");
-
-    select.selector.listen('MDCSelect:change', () => {
-        period.classList.toggle("mtd-main-display-none");
-        owners.classList.toggle("mtd-main-display-none");
+    sf.select.selector.listen('MDCSelect:change', () => {
+        sf.period.classList.toggle("mtd-main-display-none");
+        sf.owners.classList.toggle("mtd-main-display-none");
     });
 
+    const dtp = new LocaleDTP();
+
+    $(sf.dateStart.input).datetimepicker({
+        timepicker: false,
+        locale: dtp.locale,
+        mask: dtp.mask,
+        format: dtp.format,
+        defaultDate: new Date(),
+    });
+
+
+    $(sf.dateFinish.input).datetimepicker({
+        timepicker: false,
+        locale: dtp.locale,
+        mask: dtp.mask,
+        format: dtp.format,
+        defaultDate: new Date(),
+    });
 }
 
 const GetCustomPartForType = (dataType) => {
@@ -119,35 +148,8 @@ const Custom = () => {
 
     const cf = new CustomForm();
 
-    const li = cf.selectFields.div.querySelector(`[data-value='${cf.selectFields.selector.value}']`);
-    const fieldShow = GetCustomPartForType(li);
-    ShowCustomFieldTypes(fieldShow);
-
-    cf.selectFields.selector.listen('MDCSelect:change', () => {
-
-        const li = cf.selectFields.div.querySelector(`[data-value='${cf.selectFields.selector.value}']`);
-        if (!li) return;
-
-        const dataType = li.getAttribute("data-type");
-        const fieldShow = GetCustomPartForType(dataType);
-
-        if (dataType === '11') { RequestFieldList(cf.selectFields.selector.value, cf.selectValue); }
-        cf.selectAction.div.classList.remove("mtd-main-display-none");
-        const separ = document.getElementById("custom-separ");
-        separ.classList.remove("mtd-main-display-none");
-        if (dataType === "12" || dataType === '11') { cf.selectAction.div.classList.add("mtd-main-display-none"); separ.classList.add("mtd-main-display-none"); }
-        ShowCustomFieldTypes(fieldShow);
-
-        cf.resultType.value = dataType;
-        cf.resultId.value = cf.selectFields.selector.value;
-        cf.textValue.textField.value = "";
-        cf.intValue.textField.value = "";
-        cf.boolValue.selector.value = "0";
-        cf.dateValue.textField.value = "";
-
-        cf.resultValue.value = "";
-
-    });
+    cf.resultAction.value = cf.selectAction.selector.value;
+    cf.resultId.value = cf.selectFields.selector.value;
 
     cf.selectAction.selector.listen('MDCSelect:change', () => {
         cf.resultAction.value = cf.selectAction.selector.value;
@@ -164,46 +166,85 @@ const Custom = () => {
     cf.textValue.input.addEventListener("input", () => {
         cf.resultValue.value = cf.textValue.textField.value;
     });
-    //cf.intValue = new MTDTextField("index-filter-custom-int-value");
-    //cf.boolValue = new MTDSelectList("index-filter-custom-bool-value");
-    //cf.dateValue = new MTDTextField("index-filter-custom-date-value");
+
+    cf.intValue.input.addEventListener("input", () => {
+        cf.resultValue.value = cf.intValue.textField.value;
+    });
+
+    const dtp = new LocaleDTP();
+
+    $(cf.dateValue.input).datetimepicker({
+        timepicker: false,
+        locale: dtp.locale,
+        mask: dtp.mask,
+        format: dtp.format,
+        defaultDate: new Date(),
+        //value: new Date(),
+        onSelectDate: function ($dtp, current, input) {
+            cf.resultValue.value = cf.dateValue.textField.value;
+        },
+    });
+
+
+    const li = cf.selectFields.div.querySelector(`[data-value='${cf.selectFields.selector.value}']`);
+    const fieldShow = GetCustomPartForType(li);
+    ShowCustomFieldTypes(fieldShow);
+
+    cf.selectFields.selector.listen('MDCSelect:change', () => {
+
+        const li = cf.selectFields.div.querySelector(`[data-value='${cf.selectFields.selector.value}']`);
+        if (!li) return;
+
+        const dataType = li.getAttribute("data-type");
+        const fieldShow = GetCustomPartForType(dataType);
+
+        cf.resultType.value = dataType;
+        cf.resultId.value = cf.selectFields.selector.value;
+        cf.textValue.textField.value = "";
+        cf.intValue.textField.value = "";
+        cf.boolValue.selector.value = "1";
+        cf.dateValue.textField.value = "";
+
+        cf.resultValue.value = "";
+
+        if (dataType === '11') { RequestFieldList(cf.selectFields.selector.value, cf.selectValue); }
+
+        cf.selectAction.div.classList.remove("mtd-main-display-none");
+        const separ = document.getElementById("custom-separ");
+        separ.classList.remove("mtd-main-display-none");
+
+        if (dataType === "12" || dataType === '11') {
+            cf.selectAction.div.classList.add("mtd-main-display-none");
+            separ.classList.add("mtd-main-display-none");
+        }
+
+        if (dataType === "12") {
+            cf.resultValue.value = "1";
+        }
+
+        if (dataType === '2' || dataType === "3") { cf.resultValue.value = "10"; }
+
+        ShowCustomFieldTypes(fieldShow);
+
+    });
 
 }
 
 const Extension = () => {
 
     const ef = new ExctensionForm();
+    ef.scriptId.value = ef.selectScript.selector.value;
+
+    ef.selectScript.selector.listen('MDCSelect:change', () => {
+        ef.scriptId.value = ef.selectScript.selector.value;
+    });
 }
 
-const WindowHandler = () => {
+//Start
+const tabBar = document.getElementById('index-filter-tabs');
+new mdc.tabBar.MDCTabBar(tabBar);
 
-    const indexFilterWindow = document.getElementById("index-filter-window");
-    const indexFilterButton = document.getElementById("index-filter-button");
+Service();
+Custom();
+Extension();
 
-    if (indexFilterButton) {
-        indexFilterButton.addEventListener('click', () => {
-            indexFilterWindow.style.display = "block";
-            IndexShowModal(true, false);
-        });
-    }
-
-    const tabBar = document.getElementById('index-filter-tabs');
-    new mdc.tabBar.MDCTabBar(tabBar);
-}
-
-
-
-const IndexFilterClose = () => {
-    const indexFilterWindow = document.getElementById("index-filter-window");
-    indexFilterWindow.style.display = "none";
-    IndexShowModal(false, false);
-}
-
-(() => {
-
-    WindowHandler();
-    Service();
-    Custom();
-    Extension();
-
-})();

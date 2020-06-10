@@ -53,7 +53,7 @@ const ClickEventRow = (row) => {
 }
 
 
-(() => {
+//Start
 
     const dialog = new mdc.dialog.MDCDialog(document.getElementById('dialog-users-delete'));
     document.querySelectorAll('a[mtd-data-row-delete]').forEach((item) => {
@@ -82,5 +82,3 @@ const ClickEventRow = (row) => {
         });
 
     });
-
-})();

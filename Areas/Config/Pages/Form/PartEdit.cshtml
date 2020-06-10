@@ -21,7 +21,7 @@
 @model PartEditModel
 
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> Localizer
 
 @{
     ViewData["Title"] = Localizer["Part editor"];
@@ -31,7 +31,6 @@
 @section Head {
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/config/css/mtd-config-form-part.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/filechoose/css/mtd-file-choose.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/mtd-ordermaker/common/css/mtd-desk.css" asp-append-version="true" />
 }
 
 @section Breadcrumb {

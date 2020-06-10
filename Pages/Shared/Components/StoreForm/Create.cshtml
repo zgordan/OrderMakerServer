@@ -18,7 +18,7 @@
 *@
 @model Models.Store.Warehouse
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> Localizer
 @inject Services.UserHandler userHandler
 @{
     string action = $"/api/store/create";
@@ -29,13 +29,15 @@
 <div class="mtd-store-style-blank mdc-elevation--z2">
     <div class="mtd-store-edit-bar" style="text-align: right">
         <div class="mtd-store-edit-control" style="position:absolute">
-            <a id="store-create-button" class="mdc-fab mdc-fab--extended" aria-label="Create">
+            <button id="store-create-button" class="mdc-fab mdc-fab--extended" aria-label="Create" type="button">
+                <div class="mdc-fab__ripple"></div>
                 <span class="material-icons mdc-fab__icon">save</span>
                 <span class="mdc-fab__label">@Localizer["Save"]</span>
-            </a>
+            </button>
         </div>
         <div>
             <button mtd-data-href="/workplace/store/index?indexForm=@Model.Store.MtdFormNavigation.Id" class="mdc-button" type="button">
+                <div class="mdc-button__ripple"></div>
                 <span class="mdc-button__label">@Localizer["Cancel"]</span>
                 <i class="material-icons mdc-button__icon" aria-hidden="true">cancel</i>
             </button>

@@ -18,7 +18,7 @@
 *@
 @model EditModel
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> Localizer
 @{
     ViewData["IsConfirm"] = Model.Input.IsConfirm ? "green" : "red";
 }

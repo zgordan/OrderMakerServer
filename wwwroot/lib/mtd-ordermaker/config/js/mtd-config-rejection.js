@@ -103,7 +103,6 @@ function updateRejectionList(guid) {
     note.style.color = document.getElementById(`${guid}-rejection-color`).value; 
 }
 
-(() => {
+//Start
     dialogRejection = new mdc.dialog.MDCDialog(document.getElementById('dialog-rejection'));
     dialogRejectionDelete = new mdc.dialog.MDCDialog(document.getElementById('dialog-rejection-delete'));
-})();

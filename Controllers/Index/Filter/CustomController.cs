@@ -64,5 +64,36 @@ namespace Mtd.OrderMaker.Server.Controllers.Index.Filter
             return Ok(new JsonResult(data));
         }
 
+        [HttpPost("add")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> PostFilterAddAsync()
+        {
+            var form = await Request.ReadFormAsync();
+
+            string formId = form["form-id"];
+            string fieldId = form["field-id"];
+            string fieldType = form["field-type"];
+            string fieldAction = form["field-action"];
+            string fieldValue = form["field-value"];
+            string dateFormat = form["date-format"];
+
+            MtdFilter filter = await userHandler.GetFilterAsync(User, formId);
+
+            bool isOk = int.TryParse (fieldAction, out int term);
+            if (!isOk) { return BadRequest("Error: Bad request."); }
+
+            MtdFilterField field = new MtdFilterField { MtdFilter = filter.Id, MtdFormPartField = fieldId, MtdTerm = term, Value = fieldValue, ValueExtra = fieldType == "5" ? dateFormat : null };
+            try
+            {
+                await context.MtdFilterField.AddAsync(field);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex) { throw ex.InnerException; }
+
+
+
+            return Ok();
+        }
+
     }
 }

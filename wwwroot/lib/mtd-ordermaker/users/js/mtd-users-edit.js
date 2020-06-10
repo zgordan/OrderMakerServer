@@ -17,7 +17,7 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
-(() => {
+//Start
 
     const dialog = new mdc.dialog.MDCDialog(document.getElementById('dialog-users-delete'));
     document.getElementById('users-open-dialog').addEventListener('click', () => {
@@ -76,5 +76,3 @@
         cpqEditGroup.checked = false;
         cpqEditOwn.checked = true;
     });
-
-})();

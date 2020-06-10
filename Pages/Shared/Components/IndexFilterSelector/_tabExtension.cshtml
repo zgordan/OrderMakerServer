@@ -7,18 +7,18 @@
         @await Html.PartialAsync("./_tabExtensionList.cshtml")
     </div>
     <div class="index-filter-content-tab-second--hole"></div>
-    <form id="index-filter-extend-form" method="post" action="/api/index/filter/add" enctype="multipart/form-data" autocomplete='off'>
+    <form mtd-data-form  method="post" action="/api/filter/extension/add" enctype="multipart/form-data" autocomplete='off'>
         @Html.AntiForgeryToken()
         
         <input type="hidden" name="form-id" value="@Model.FormId"  />
-        <input type="hidden" name="script-id" />
+        <input id="index-filter-extension-script" type="hidden" name="script-id" />
 
         <div class="index-filter-content-tab-foot">
-            <button mtd-data-clicker class="mdc-button mdc-button--raised" type="button">
+            <button mtd-dialog-cancel mtd-data-clicker class="mdc-button mdc-button--raised" type="button">
                 <div class="mdc-button__ripple"></div>
                 <span class="mdc-button__label">@Localizer["Apply"]</span>
             </button>
-            <button class="mdc-button" type="button" onclick="IndexFilterClose()">
+            <button mtd-dialog-cancel class="mdc-button" type="button">
                 <div class="mdc-button__ripple"></div>
                 <span class="mdc-button__label">@Localizer["Cancel"]</span>
             </button>

@@ -19,8 +19,7 @@ const runMemoResize = () => {
     });
 }
 
-
-(() => {    
+//Start
 
     const selector = '.mdc-card__primary-action';    
     const ripples = [].map.call(document.querySelectorAll(selector), function (el) {
@@ -29,5 +28,4 @@ const runMemoResize = () => {
 
     runMemoResize();
 
-})();
 

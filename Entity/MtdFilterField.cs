@@ -25,6 +25,7 @@ namespace Mtd.OrderMaker.Server.Entity
         public int MtdFilter { get; set; }
         public string MtdFormPartField { get; set; }
         public string Value { get; set; }
+        public string ValueExtra { get; set; }
         public int MtdTerm { get; set; }
 
         public virtual MtdFilter MtdFilterNavigation { get; set; }

@@ -41,5 +41,7 @@ namespace Mtd.OrderMaker.Server.Models.Index
         public string SearchText { get; set; }
         public int Pending { get; set; }
         public bool IsCreator { get; set; }
+
+        public int PageSize { get; set; }
     }
 }

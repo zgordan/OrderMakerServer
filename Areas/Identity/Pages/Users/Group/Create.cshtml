@@ -20,7 +20,7 @@
 @page
 @model Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Group.CreateModel
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> Localizer
 
 @{
     ViewData["Title"] = Localizer["New group"];

@@ -1,6 +1,6 @@
 ﻿@model DetailsModel
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> Localizer
 
 
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/approval/response/-1'>
@@ -18,7 +18,7 @@
                 </h2>
                 <div class="mdc-dialog__content" id="reject-sign-dialog-content">
                     <hr />
-                     @Localizer["A negative answer response to a user’s request will be recorded in the list of approval history"].
+                     @Localizer["A negative answer response to a user’s request will be recorded in the list of approval history."]
                     <hr />
                     <div style="padding-top: 18px; width: 100%">
                         <label class="mdc-text-field mdc-text-field--textarea" style="width:100%">
@@ -40,7 +40,7 @@
                         <span class="mdc-button__label">@Localizer["Cancel"]</span>
                     </button>
                     <button type="button" id="clicker-reject-sign" mtd-data-clicker mtd-data-message="@Localizer["Responce sent"]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" style="color:green">
-                        <span class="mdc-button__label">@Localizer["Reply"]</span>
+                        <span class="mdc-button__label">@Localizer["Apply"]</span>
                     </button>
                 </footer>
             </div>

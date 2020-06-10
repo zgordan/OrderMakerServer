@@ -32,19 +32,21 @@
         </div>
     </div>
 
-    <form mtd-data-form asp-action="~/api/filter/custom/add/field" method="post">
+    <form mtd-data-form action="~/api/filter/custom/add" method="post" autocomplete="off">
         @Html.AntiForgeryToken()
-        <input type="hidden" value="@Model.FormId"  name="form-id"/>
+        <input type="hidden" value="@Model.FormId" name="form-id" />
         <input type="hidden" id="index-filter-custom-result-id" name="field-id" />
         <input type="hidden" id="index-filter-custom-result-type" name="field-type" />
         <input type="hidden" id="index-filter-custom-result-action" name="field-action" />
         <input type="hidden" id="index-filter-custom-result-value" name="field-value" />
+        <input type="hidden" id="index-filter-custom-date-locale" name="date-format" value="@Localizer["MM/dd/yyyy"]" />
+
         <div class="index-filter-content-tab-foot">
-            <button mtd-data-clicker class="mdc-button mdc-button--raised" type="button">
+            <button mtd-dialog-cancel mtd-data-clicker class="mdc-button mdc-button--raised" type="button">
                 <div class="mdc-button__ripple"></div>
                 <span class="mdc-button__label">@Localizer["Apply"]</span>
             </button>
-            <button class="mdc-button" type="button" onclick="IndexFilterClose()">
+            <button mtd-dialog-cancel class="mdc-button" type="button">
                 <div class="mdc-button__ripple"></div>
                 <span class="mdc-button__label">@Localizer["Cancel"]</span>
             </button>

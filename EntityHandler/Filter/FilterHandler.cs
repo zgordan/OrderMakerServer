@@ -24,6 +24,7 @@ using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Services;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -48,19 +49,27 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
             queryMtdStore = _context.MtdStore;
         }
 
-        public async Task<MtdFilter> GetFilterAsync()
+        private async Task<MtdFilter> GetFilterAsync()
         {
 
             if (register == null)
-            {
+            {                
                 register = await _context.MtdFilter
+                    .Include(x => x.MtdFilterOwner)
                     .Include(x => x.MtdFilterDate)
                     .Include(m => m.MtdFilterColumn)
                     .FirstOrDefaultAsync(x => x.IdUser == _user.Id && x.MtdForm == FormId);
 
                 if (register != null && register.MtdFilterDate != null)
                 {
-                    queryMtdStore = queryMtdStore.Where(x => x.Timecr.Date >= register.MtdFilterDate.DateStart.Date & x.Timecr.Date <= register.MtdFilterDate.DateEnd.Date);
+                    queryMtdStore = queryMtdStore
+                        .Where(x => x.Timecr.Date >= register.MtdFilterDate.DateStart.Date && x.Timecr.Date <= register.MtdFilterDate.DateEnd.Date);
+                }
+
+                if (register != null && register.MtdFilterOwner != null)
+                {
+                    queryMtdStore = queryMtdStore
+                        .Where(x => x.MtdStoreOwner.UserId == register.MtdFilterOwner.OwnerId);
                 }
             }
             return register;

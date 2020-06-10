@@ -1,6 +1,6 @@
 ﻿@model DetailsModel
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> Localizer
 
 
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/approval/response/0'>
@@ -40,7 +40,7 @@
                         <span class="mdc-button__label">@Localizer["Cancel"]</span>
                     </button>
                     <button type="button" id="clicker-return-sign" mtd-data-clicker mtd-data-message="@Localizer["Answer sent"]." class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" style="color:green">
-                        <span class="mdc-button__label">@Localizer["Reply"]</span>
+                        <span class="mdc-button__label">@Localizer["Apply"]</span>
                     </button>
                 </footer>
             </div>

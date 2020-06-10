@@ -1,4 +1,4 @@
-﻿(() => {
+﻿//Start
 
     const fieldType = new mdc.select.MDCSelect(document.getElementById("fieldType"));
     const fieldForm = new mdc.select.MDCSelect(document.getElementById("fieldForm"));
@@ -12,5 +12,3 @@
             fieldWrapper.style.display = "";
         }
     });
-
-})();

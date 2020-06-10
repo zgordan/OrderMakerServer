@@ -31,27 +31,48 @@
 
 <input id="nav-store-ids" type="hidden" value="@Model.StoreIds" />
 
-<div style="display: flex; position:relative">
-    <div id="indexCreator" class="mtd-index-header-creator">
-        <button id="index-create-button" mtd-data-href="/workplace/store/create?formId=@Model.FormId" class="mdc-fab mdc-fab--extended">
-            <div class="mdc-fab__ripple"></div>
-            <span class="material-icons mdc-fab__icon">add</span>
-            <span class="mdc-fab__label">Create</span>
-        </button>
-        <button id="index-create-button-mini" mtd-data-href="/workplace/store/create?formId=@Model.FormId" class="mdc-fab">
-            <div class="mdc-fab__ripple"></div>
-            <span class="material-icons mdc-fab__icon">add</span>
-        </button>
+<div class="mtd-desk">
+    <div class="mtd-desk-panel">
+
+        @if (Model.IsCreator)
+        {
+            <div id="indexCreator" class="mtd-index-header-creator">
+                <button id="index-create-button" mtd-data-href="/workplace/store/create?formId=@Model.FormId" class="mdc-fab mdc-fab--extended">
+                    <div class="mdc-fab__ripple"></div>
+                    <span class="material-icons mdc-fab__icon">add</span>
+                    <span class="mdc-fab__label">Create</span>
+                </button>
+                <button id="index-create-button-mini" mtd-data-href="/workplace/store/create?formId=@Model.FormId" class="mdc-fab">
+                    <div class="mdc-fab__ripple"></div>
+                    <span class="material-icons mdc-fab__icon">add</span>
+                </button>
+            </div>
+        }
+
+        <div style="flex-grow: 1; padding-top: 38px;">
+            @await Html.PartialAsync("./_buttons.cshtml")
+        </div>
+
     </div>
 
-    <div class="mtd-index-header-search">
-        <form mtd-data-form method="post" action="/api/index/search/text" enctype="multipart/form-data" autocomplete='off'>
-            @Html.AntiForgeryToken()
-            <input asp-for="@Model.FormId" name="indexForm" value="@Model.FormId" id="indexForm" hidden />
-            @await Html.PartialAsync("./_inputSearch.cshtml")
-        </form>
-    </div>
-    @await Html.PartialAsync("./_buttons.cshtml")
+    @if (!Model.WaitList)
+    {
+        <div class="mtd-index-header" style="display: flex; position:relative">
+            <div class="mtd-index-header-search">
+                <form mtd-data-form method="post" action="/api/index/search/text" enctype="multipart/form-data" autocomplete='off'>
+                    @Html.AntiForgeryToken()
+                    <input asp-for="@Model.FormId" name="indexForm" value="@Model.FormId" id="indexForm" hidden />
+                    @await Html.PartialAsync("./_inputSearch.cshtml")
+                </form>
+            </div>
+        </div>
+    }
+
+
+    @await Component.InvokeAsync("IndexFilterDisplay", new { formId = Model.FormId })
+    @await Component.InvokeAsync("IndexFilterSelector", new { formId = Model.FormId })
+    @await Component.InvokeAsync("IndexFilterColumns", new { formId = Model.FormId })
+
 </div>
 
 <div class="mtd-index-rows">
@@ -60,11 +81,14 @@
             <thead>
                 <tr>
                     <th @if (!Model.ShowNumber) { <text> hidden</text>}>
-                        <form mtd-data-form method="post" action="/api/index/search/number" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
-                            @Html.AntiForgeryToken()
-                            <input name="formId" asp-for="@Model.FormId" type="hidden" />
-                            @await Html.PartialAsync("./_buttonSearch.cshtml")
-                        </form>
+                        @if (!Model.WaitList)
+                        {
+                            <form mtd-data-form method="post" action="/api/index/search/number" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
+                                @Html.AntiForgeryToken()
+                                <input name="formId" asp-for="@Model.FormId" type="hidden" />
+                                @await Html.PartialAsync("./_numberSearch.cshtml")
+                            </form>
+                        }
                     </th>
 
                     <th @if (!Model.ShowDate) { <text> hidden</text>}>
@@ -234,7 +258,7 @@
 
                         @foreach (var field in Model.MtdFormPartFields)
                         {
-                            <td>                                
+                            <td>
                                 <div style="padding: 2px;">
                                     @await Component.InvokeAsync("IndexCell", new { stack = Model.MtdStoreStack, idStore = store.Id, idField = field.Id, idType = field.MtdSysType })
                                 </div>
@@ -254,8 +278,10 @@
             </div>
         }
 
-        @await Component.InvokeAsync("IndexFooter", new { formId = Model.FormId, pageCount = Model.PageCount })
-
     </div>
 </div>
 
+@if (Model.MtdStores.Count >= Model.PageSize)
+{
+    @await Component.InvokeAsync("IndexFooter", new { formId = Model.FormId, pageCount = Model.PageCount })
+}

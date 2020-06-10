@@ -9,7 +9,7 @@
 
 .mtd-store-style-print {
     .mtd-store-style-blank;
-     width: 100%;
+    width: 100%;
 }
 
 .mtd-store-style-badge {
@@ -17,52 +17,81 @@
 }
 
 .mtd-store-style-badge > img {
-    max-width: 270px;
+
+    @media (min-width: 1919px) {
+        max-width: 250px;
+    }
+
+    @media (max-width: 1366px) {
+        max-width: 230px;
+    }
+
+    @media (max-width: 1020px) {
+        max-width: 210px;
+    }
+
+    @media (max-width: 768px) {
+        max-width: 190px;
+    }
 }
 
 .mtd-store-style-header {
-    display: flex;    
+    display: flex;
     padding: 8px;
-
 }
 
 .mtd-store-style-title {
     flex-grow: 1;
-    font-size: x-large;
     font-weight: bold;
     text-transform: uppercase;
     color: black;
     text-shadow: 1px 1px 2px gray;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
 
-
-    @media (max-width: 415px) {
-        font-size: large;
+    @media (min-width: 1919px) {
+        font-size: 24px;
     }
 
-    @media (max-width: 350px) {
-        font-size: medium;
+    @media (max-width: 1366px) {
+        font-size: 22px;
+    }
+
+    @media (max-width: 1020px) {
+        font-size: 20px;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 18px;
     }
 }
 
 .mtd-store-style-attribute {
-    //min-width: 9em;
-    line-height: 0.8em;
+    line-height: 0.6em;
     align-self: center;
     text-transform: uppercase;
     color: navy;
     text-align: right;
+    white-space: nowrap;
 
-    @media (max-width: 415px) {
-        min-width: 8em;
+    @media (min-width: 1919px) {
+        font-size: 19px;
     }
 
-    @media (max-width: 350px) {
-        min-width: 7em;
+    @media (max-width: 1366px) {
+        font-size: 18px;
+    }
+
+    @media (max-width: 1020px) {
+        font-size: 17px;
+    }
+
+    @media (max-width: 768px) {
+        font-size: 16px;
     }
 }
 
 .mtd-store-style-number {
-    font-size: large;
     font-weight: bold;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -70,26 +99,10 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-
-    @media (max-width: 550px) {
-        font-size: medium;
-    }
-
-    @media (max-width: 350px) {
-        font-size: small;
-    }
 }
 
 .mtd-store-style-date {
-    font-size: medium;
-
-    @media (max-width: 550px) {
-        font-size: small;
-    }
-
-    @media (max-width: 350px) {
-        font-size: smaller;
-    }
+    font-weight: normal;
 }
 
 .mtd-store-style-part {
@@ -116,7 +129,7 @@
 }
 
 .mtd-store-style-based {
-    position:relative;
+    position: relative;
     padding: 8px;
     margin-top: 8px;
     margin-bottom: 8px;
@@ -126,4 +139,3 @@
     font-weight: 400;
     font-size: small;
 }
-

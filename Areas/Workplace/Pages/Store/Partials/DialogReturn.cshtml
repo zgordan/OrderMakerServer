@@ -1,67 +1,70 @@
 ﻿@model DetailsModel
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> Localizer
 
-
-
-    <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/approval/reject/1'>
-        @Html.AntiForgeryToken()
-        <input type="hidden" name="id-store" value="@Model.MtdStore.Id" />
-        <input type="checkbox" name="checkbox-complete" style="display: none" />
-        <select class="mdc-select__native-control" asp-items="ViewBag.ListRejection" name="id-rejection" style="display: none"></select>
-
-        <div id="dialog-return" class="mdc-dialog"
-             role="alertdialog"
-             aria-modal="true"
-             aria-labelledby="dialog-return-title"
-             aria-describedby="dialog-return-content">
-            <div class="mdc-dialog__container">
-                <div class="mdc-dialog__surface">
-                    <h2 class="mdc-dialog__title" id="return-form-title">
-                        @Localizer["Document return"]
-                    </h2>
-                    <div class="mdc-dialog__content" id="return-dialog-content">
-                        <hr />
-                        @Localizer["This operation does not complete the approval process and returns the document to the user for correction of errors"].
-                        <hr />
-
-                        <div style="padding-top: 18px;">
-                            @Localizer["Select a stage from the list"]:
-                        </div>
-
-                        <div id="stage-selector" class="mdc-select" style="width: 100%; margin-top: 8px;">
-                            <i class="mdc-select__dropdown-icon"></i>
-                            <select id="next-stage" class="mdc-select__native-control" asp-items="ViewBag.Stages" name="next-stage"></select>
-                            <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Stages"]</label>
-                            <div class="mdc-line-ripple"></div>
-                        </div>
-
-                        <div style="padding-top: 18px; width: 100%">
-                            <label class="mdc-text-field mdc-text-field--textarea" style="width:100%">
-                                <div class="mdc-text-field-character-counter">0 / 250</div>
-                                <textarea class="mdc-text-field__input" aria-labelledby="comment-reject-id" name="comment-reject-id" rows="3" cols="40"
-                                          maxlength="250" placeholder="@Localizer["Create a comment if necessary"]"></textarea>
-                                <div class="mdc-notched-outline">
-                                    <div class="mdc-notched-outline__leading"></div>
-                                    <div class="mdc-notched-outline__notch">
-                                        <span class="mdc-floating-label" id="comment-reject-id">@Localizer["Comment"]</span>
-                                    </div>
-                                    <div class="mdc-notched-outline__trailing"></div>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <footer class="mdc-dialog__actions">
-                        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
-                            <span class="mdc-button__label">@Localizer["Cancel"]</span>
-                        </button>
-                        <button type="button" mtd-data-clicker mtd-data-message="@Localizer["Document is returned"]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" style="color:red">
-                            <span class="mdc-button__label">@Localizer["Return"]</span>
-                        </button>
-                    </footer>
-                </div>
+<div id="dialog-return" class="mtd-dialog mtd-dialog-hidden">
+    <div class="mtd-dialog-container">
+        <div class="mtd-dialog-title">
+            <div>
+                @Localizer["Document return"]
             </div>
-            <div class="mdc-dialog__scrim"></div>
+            <div>
+                <button mtd-dialog-cancel class="mdc-icon-button material-icons">close</button>
+            </div>
         </div>
-    </form>
+        <div class="mtd-dialog-content">
+            <form mtd-data-form method="post" autocomplete='off' action='/api/store/approval/reject/1'>
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id-store" value="@Model.MtdStore.Id" />
+                <input type="checkbox" name="checkbox-complete" style="display: none" />
+                <div class="mtd-dialog-info--border">
+                    @Localizer["This operation does not complete the approval process and returns the document to the user for correction of errors."]
+                </div>
+                    <div class="mtd-dialog-space"></div>
+
+                    @Localizer["Select a stage from the list"]:
+
+                    <div class="mtd-dialog-space"></div>
+
+                    @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
+               {
+                    Id = "select-stage",
+                    Name = "next-stage",
+                    Label = "Stage approval",
+                    LabelLocalized = true,
+                    Items = Model.Stages,
+                    ValueId = Model.Stages.Select(x => x.Id).FirstOrDefault(),
+                    MTDSelectListView = MTDSelectListViews.Outlined
+               })
+                
+
+                <div class="mtd-dialog-space"></div>
+
+                @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+           {
+               Id = "comment-return",
+               Name = "comment-reject-id",
+               Label = "Comment",
+               LabelLocalized = true,
+               Placeholder = "Create a comment if necessary",
+               PlaceholderLocalized = true,
+               Cols = 40,
+               Rows = 3,
+               MaxLength = 250,
+               MTDTexFieldView = MTDTextFieldViews.TextArea,
+           })
+
+                <div class="mtd-dialog-buttons">
+                    <button mtd-dialog-cancel mtd-data-clicker class="mdc-button mdc-button--raised" type="button" mtd-data-message="@Localizer["Document is returned."]">
+                        <div class="mdc-button__ripple"></div>
+                        <span class="mdc-button__label">@Localizer["Apply"]</span>
+                    </button>
+                    <button mtd-dialog-cancel class="mdc-button" type="button">
+                        <div class="mdc-button__ripple"></div>
+                        <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

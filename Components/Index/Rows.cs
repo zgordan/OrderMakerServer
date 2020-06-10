@@ -100,7 +100,9 @@ namespace Mtd.OrderMaker.Server.Components.Index
                 StoreIds = string.Join("&", storeIds),
                 SearchText = filter == null ? string.Empty : filter.SearchText,
                 Pending = pending,
-                IsCreator = await _userHandler.IsCreator(user, formId)
+                IsCreator = await _userHandler.IsCreator(user, formId),
+                PageSize = filter.PageSize
+                
             };
 
             return View("Default", rowsModel);

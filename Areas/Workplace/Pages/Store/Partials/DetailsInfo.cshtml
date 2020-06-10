@@ -2,7 +2,7 @@
 @namespace Mtd.OrderMaker.Server.Components.Store
 @using Mtd.OrderMaker.Server.EntityHandler.Approval
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> Localizer
 
 <div class="mtd-desk-block-content mtd-desk-block--border">
     <div class="mtd-desk-block-title">
@@ -55,7 +55,9 @@
                                         </div>
                                         <div>
                                             @if (Model.MtdApproval.ImgRejectedText == null)
-                                            {@Localizer["Rejected"]} else {@Model.MtdApproval.ImgRejectedText}
+                                            {@Localizer["Rejected"]}
+                                        else
+                                        {@Model.MtdApproval.ImgRejectedText}
                                         </div>
                                     </div>
                                 </td>
@@ -89,7 +91,7 @@
                                         else
                                         {@Model.MtdApproval.ImgApprovedText}
                                         </div>
-                                    </div>                                    
+                                    </div>
                                 </td>
                             </tr>
                             break;
@@ -152,7 +154,7 @@
                                             {@Localizer["Not started"]}
                                         else
                                         {@Model.MtdApproval.ImgStartText}
-                                        </div>                                        
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
@@ -199,7 +201,7 @@
                                     <div class="mtd-store-view-status">
                                         <div>
                                             @if (Model.MtdApproval.ImgRequired == null)
-                                            {<i style="vertical-align:middle; font-size: 28px" class="material-icons">notification_important</i>}
+                                            {<i style="vertical-align:middle; font-size: 28px; color: red" class="material-icons">notification_important</i>}
                                             else
                                             {
                                                 var modelRequired = new
@@ -212,7 +214,7 @@
                                                 @await Component.InvokeAsync("MTDImgViewer", modelRequired);
                                             }
                                         </div>
-                                        <div>
+                                        <div style="color: red">
                                             @if (Model.MtdApproval.ImgRequiredText == null)
                                             {@Localizer["Approval is required"]}
                                         else

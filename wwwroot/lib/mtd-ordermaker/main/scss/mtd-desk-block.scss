@@ -1,19 +1,50 @@
 ﻿.mtd-desk-blocks {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
+    padding: 0 8px 0 8px;
+
+    @media (max-width: 1020px) {
+        flex-wrap: wrap;
+    }
 }
 
 .mtd-desk-block {
+    width: 797px;
+    padding: 2px;
+
+    @media (min-width: 1919px) {
+        max-width: 797px;
+    }
+
+    @media (max-width: 1366px) {
+        max-width: 670px;
+        font-size: 14px;
+    }
+
+    @media (max-width: 1150px) {
+        max-width: 512px;
+        font-size: 13px;
+    }
+
+    @media (max-width: 1020px) {
+        max-width: 797px;
+        font-size: 14px;
+        width: 100%;
+    }
+}
+
+.mtd-desk-block--pull {
     width: 100%;
-    max-width: 797px;
-    margin: 2px;
 }
 
 .mtd-desk-block-title {
-    padding: 2px;
+    padding: 6px;
     background-color: lightgray;
-    display: flex;    
+    display: flex;
+
+    @media (max-width: 1020px) {
+        padding: 2px;
+    }
 }
 
 .mtd-desk-block-title-icon {
@@ -25,7 +56,7 @@
 .mtd-desk-block-title-label {
     flex-grow: 1;
     align-self: center;
-    padding-bottom: 6px;
+//    padding-bottom: 6px;
     padding-left: 4px;
     padding-right: 4px;
     font-weight: bold;
@@ -37,6 +68,10 @@
 
 .mtd-desk-block-title-button {
     color: #454545;
+    display: none;
+    @media (max-width: 1020px) {
+        display: block;
+    }
 }
 
 .mtd-desk-block-content {

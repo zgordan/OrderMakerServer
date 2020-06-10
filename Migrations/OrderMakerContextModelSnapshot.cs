@@ -535,6 +535,10 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasColumnName("value")
                         .HasColumnType("varchar(256)");
 
+                    b.Property<string>("ValueExtra")
+                        .HasColumnName("value_extra")
+                        .HasColumnType("varchar(256)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Id")

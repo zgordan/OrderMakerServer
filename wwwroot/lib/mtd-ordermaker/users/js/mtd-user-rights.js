@@ -120,7 +120,7 @@ const handlerEventChecked = () => {
     });
 }
 
-(() => {
+//Start
 
     handlerCreate();
     handlerOpenClose();
@@ -132,4 +132,3 @@ const handlerEventChecked = () => {
     });
     
    
-})();

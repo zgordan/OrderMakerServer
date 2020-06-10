@@ -1,0 +1,20 @@
+﻿.mdc-text-field{
+    width: 100%;
+}
+
+.mdc-text-field--filled{
+    background-color: transparent !important;
+}
+
+.mdc-select--required .mdc-floating-label::after {
+    content: "";
+}
+
+.mdc-select--w100 {
+    width: 100%;
+}
+
+.mdc-text-field__input:required ~ .mdc-floating-label::after, .mdc-text-field__input:required ~ .mdc-notched-outline .mdc-floating-label::after {
+    content: "";
+    margin-left: 0;
+}

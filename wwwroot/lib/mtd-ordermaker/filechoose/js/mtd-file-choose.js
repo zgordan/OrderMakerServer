@@ -17,7 +17,7 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
-(() => {
+//Start
 
     document.querySelectorAll("div[mtd-file-upload]").forEach((block) => {
         const id = block.getAttribute("mtd-file-upload");
@@ -46,5 +46,3 @@
         });
         
     });
-
-})();

@@ -82,8 +82,6 @@ function addDnDHandlers(elem) {
 
 
 
-(() => {
+//Start
     var cols = document.querySelectorAll('#configListParts .mdc-list-item');
     [].forEach.call(cols, addDnDHandlers);
-
-})();

@@ -20,19 +20,19 @@
 @model Models.Index.DisplayModelView
 
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> Localizer
 
 @if (Model.DisplayDatas.Count > 0)
 {
-    <div style="display: flex; border-bottom: 1px solid gray;">
-        <div style="background-color:gainsboro;   width: 100%; padding:  4px; align-items:center; overflow:hidden; overflow-x:auto;">
+    <div style="display: flex; border-bottom: 1px solid #ccc; align-items: center; background-color: whitesmoke">
+        <div style=" width: 100%; padding:  4px; align-items:center; overflow:hidden; overflow-x:auto;">
             <form mtd-data-form method="post" action="/api/index/filter/remove" autocomplete="off" enctype="multipart/form-data">
                 @Html.AntiForgeryToken()
                 <input mtd-data-result type="hidden" name="idField" />
-                <div style="background-color:gainsboro; display: flex; align-items:center; ">
+                <div style="display: flex; align-items: center; ">
                     @foreach (var item in Model.DisplayDatas)
                     {
-                        <div id="@item.Id-display" style="display: flex; font-size: 12px; background-color: gray; color: white; padding: 1px 8px 1px 8px; border-radius: 8px; margin-left:2px; margin-right:2px;">
+                        <div id="@item.Id-display" class="mdc-elevation--z1" style="display: flex; font-size: 12px; background-color: gray; color: white; padding: 1px 8px 1px 8px; border-radius: 8px; margin-left:2px; margin-right:2px;">
                             <input id="@item.Id-inputdisplay" value="" hidden />
                             <div>
                                 <div style="white-space: nowrap; overflow:hidden; text-overflow:ellipsis">
@@ -53,11 +53,20 @@
             </form>
         </div>
 
-        <div style="width: 104px; background-color: white;padding: 2px; align-self: center;">
+        <div  style=" padding: 2px 18px 2px 4px; 18px; padding-left: 4px;">
             <form mtd-data-form method="post" action="/api/index/filter/removeall" enctype="multipart/form-data">
                 @Html.AntiForgeryToken()
-                <input type="hidden" name="idFilter" value="@Model.IdFilter" />
-                <button mtd-data-clicker type="button" class="mdc-button">@Localizer["Clear"]</button>
+                <input type="hidden" name="filter-id" value="@Model.IdFilter" />
+                <input type="hidden" name="form-id" value="@Model.FormId" />
+                <div class="mtd-button-hint">
+                    <button mtd-data-clicker class="mdc-icon-button mdc-theme--secondary" type="button">
+                        <i class="far fa-window-close"></i>
+                    </button>
+                    <div class="mtd-button-hint_info">
+                        <span>@Localizer["Clear all"]</span>
+                    </div>
+                </div>
+                
             </form>
         </div>
     </div>

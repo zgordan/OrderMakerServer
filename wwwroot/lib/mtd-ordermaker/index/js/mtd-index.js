@@ -30,18 +30,21 @@ const IndexShowModal = (show = true, indicator = true) => {
 
 const ListenerPageMenu = () => {
 
-    const indexPageMenu = new mdc.menu.MDCMenu(document.getElementById('indexPageMenu'));
+    const divMenu = document.getElementById('indexPageMenu')
+    if (!divMenu) { return false; }
+    const indexPageMenu = new mdc.menu.MDCMenu(divMenu);
     const pb = document.querySelector('[mtd-data-page]');
     const formId = pb.attributes.getNamedItem('mtd-data-page').nodeValue;
     pb.addEventListener('click', () => {
         indexPageMenu.open = true;
     });
 
+
     const ms = document.getElementById("indexMenuSize");
     ms.addEventListener('click', (e) => {
         const pages = e.target.getAttribute("data-value");
         document.body.scrollTop = document.documentElement.scrollTop = 0;
-        IndexShowModal();
+        ActionShowModal(true);
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("POST", `/api/index/${formId}/pagesize/${pages}`, true);
 
@@ -55,17 +58,14 @@ const ListenerPageMenu = () => {
     });
 }
 
+//Start
 
-(() => {
+ListenerPageMenu();
 
-    ListenerPageMenu();
+const storeIds = document.getElementById("nav-store-ids");
+if (storeIds) {
+    sessionStorage.setItem("storeIds", storeIds.value);
+}
 
-    const storeIds = document.getElementById("nav-store-ids");
-    if (storeIds) {
-        sessionStorage.setItem("storeIds", storeIds.value);
-    }
-
-    new MTDTextField("search-text");
-    new MTDTextField("search-number");
-
-})();
+new MTDTextField("search-text");
+new MTDTextField("search-number");

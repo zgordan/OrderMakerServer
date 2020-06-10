@@ -40,8 +40,6 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account.Manage
 
         [BindProperty]
         public string UserName { get; set; }
-        [BindProperty]
-        public bool IsEmailConfirmed { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -51,6 +49,9 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
+            [Required]            
+            public string Password { get; set; }
+
             [Required]
             [DataType(DataType.Text)]
             [Display(Name = "Full name")]
@@ -86,7 +87,7 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account.Manage
                 PhoneNumber = phoneNumber
             };
 
-            IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+            //IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
 
             return Page();
         }
@@ -101,8 +102,15 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return BadRequest($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
+
+            bool check = await _userManager.CheckPasswordAsync(user, Input.Password);
+            if (!check) {
+                return BadRequest(_localizer["Wrong password!"]);
+            }
+
+            user.EmailConfirmed = true;
 
             if (Input.UserTitle != user.Title)
             {
@@ -119,6 +127,7 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account.Manage
                     throw new InvalidOperationException($"Unexpected error occurred setting email for user with ID '{userId}'.");
                 }
             }
+           
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
@@ -138,6 +147,7 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account.Manage
             return RedirectToPage();
         }
 
+        /*NOT USED*/
         public async Task<IActionResult> OnPostSendVerificationEmailAsync()
         {
             if (!ModelState.IsValid)

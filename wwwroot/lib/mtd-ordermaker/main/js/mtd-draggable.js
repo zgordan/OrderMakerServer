@@ -20,7 +20,7 @@
 let dragSrcEl = null;
 let dragVaule = false;
 
-handleDragStart = e => {    
+const handleDragStart = e => {
     dragVaule = e.target.attributes.getNamedItem('aria-checked').nodeValue;
     dragSrcEl = e.target;
     e.dataTransfer.setDragImage(new Image(), 0, 0);
@@ -28,7 +28,7 @@ handleDragStart = e => {
     e.dataTransfer.setData('text/html', e.target.outerHTML);
 }
 
-handleDragOver = e => {
+const handleDragOver = e => {
 
     if (e.preventDefault) {
         e.preventDefault();
@@ -39,11 +39,15 @@ handleDragOver = e => {
     return false;
 }
 
-handleDragLeave = e => {
+const handleDragEnter = (e) => {
+    // over item
+}
+
+const handleDragLeave = e => {
     e.target.classList.remove('over');
 };
 
-handleDrop = e => {
+const handleDrop = e => {
 
     if (e.stopPropagation) {
         e.stopPropagation();
@@ -51,16 +55,21 @@ handleDrop = e => {
 
     if (dragSrcEl != e.target) {
 
-        
+
         e.target.parentNode.removeChild(dragSrcEl);
         var dropHTML = e.dataTransfer.getData('text/html');
         e.target.insertAdjacentHTML('beforebegin', dropHTML);
         var dropElem = e.target.previousSibling;
-        dropElem.className = "mtd-desk-draggable-item mdc-list-item";
+        //dropElem.className = "mtd-desk-draggable-item mdc-list-item";
+        dropElem.className = "mdc-list-item";
         new mdc.ripple.MDCRipple(dropElem);
         addDnDHandlers(dropElem);
         if (dragVaule === "true") {
-            dropElem.click();
+            //dropElem.click();
+            const id = dropElem.getAttribute("data-value");
+            const input = document.getElementById(`${id}-lc`);
+            dropElem.setAttribute("aria-checked", "true");
+            input.checked = true;
         }
 
     }
@@ -68,24 +77,42 @@ handleDrop = e => {
     return false;
 }
 
-handleDragEnd = e => {
+const handleDragEnd = e => {
     e.target.classList.remove('over');
+    dragSrcEl = null;
 
-    let strData = "";
-    const list = document.getElementById("drgList");
-    const clicker = document.getElementById("drgSequence");
-    const data = document.getElementById("drgData");
+    //let strData = "";
+    //const list = document.getElementById("drgList");
+    //const clicker = document.getElementById("drgSequence");
+    //const data = document.getElementById("drgData");
 
-    list.querySelectorAll('[data-value]').forEach((item) => {
-        const d = item.getAttribute("data-value");
-        strData += `${d}&`;
-    });
+    //list.querySelectorAll('[data-value]').forEach((item) => {
+    //    const d = item.getAttribute("data-value");
+    //    strData += `${d}&`;
+    //});
 
-    data.value = strData;
-    clicker.click();
+    //data.value = strData;
+    //clicker.click();
+
 }
 
-addDnDHandlers = elem => {
+const OnClickFilterColumn = (e) => {
+
+    if (dragSrcEl) {
+        return false;
+    }
+
+    const li = e.currentTarget;
+    const id = li.getAttribute("data-value");
+    const aria = li.getAttribute("aria-checked");
+    const input = document.getElementById(`${id}-lc`);
+    li.setAttribute("aria-checked", aria === "true" ? 'false' : 'true');
+    input.checked = !input.checked;
+
+}
+
+const addDnDHandlers = elem => {
+
     elem.addEventListener('dragstart', handleDragStart, false);
     elem.addEventListener('dragover', handleDragOver, false);
     elem.addEventListener('dragleave', handleDragLeave, false);
@@ -93,7 +120,6 @@ addDnDHandlers = elem => {
     elem.addEventListener('dragend', handleDragEnd, false);
 }
 
-(() => {
-    const cols = document.querySelectorAll('#drgList .mtd-desk-draggable-item');
-    [].forEach.call(cols, addDnDHandlers);
-})();
+//Start
+const cols = document.querySelectorAll('[mtd-draggable] .mdc-list-item');
+[].forEach.call(cols, addDnDHandlers);

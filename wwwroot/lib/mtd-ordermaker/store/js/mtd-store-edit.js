@@ -24,7 +24,7 @@ function pad(num, size) {
 }
 
 const ListenerCreate = (e) => {
-   
+
     const spn = document.getElementById("store-parent-input");
     if (!spn) {
         const storeCreateButton = document.getElementById("store-create-button");
@@ -51,7 +51,7 @@ const ListenerCreate = (e) => {
         const formData = CreateFormData(form);
         xmlHttp.open("post", action, true);
         xmlHttp.onreadystatechange = function (e) {
-            if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {                
+            if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
                 setTimeout(() => {
                     if (this.responseText) {
                         iconCheck.style.display = "";
@@ -114,93 +114,94 @@ const ListenerForParent = () => {
 }
 
 
-(() => {
-    ListenerCreate();
-    ListenerForParent();
+//Start
 
-    const tagName = "mtdSelector";
-    const items = document.querySelectorAll(`div[${tagName}]`);
-    items.forEach((item) => {
+ListenerCreate();
+ListenerForParent();
 
-        const id = item.attributes.getNamedItem(tagName).nodeValue;
-        const input = document.getElementById(id);
-        const href = document.getElementById(`${id}-href`);
-        const select = document.getElementById(`${id}-select`);
-        const strike = document.getElementById(`${id}-strike`);
+const tagName = "mtdSelector";
+const items = document.querySelectorAll(`div[${tagName}]`);
+items.forEach((item) => {
 
-        const actionDelete = document.getElementById(`${id}-action-delete`);
-        const actionUndo = document.getElementById(`${id}-action-undo`);
-        const fixDelete = document.getElementById(`${id}-delete`);
+    const id = item.attributes.getNamedItem(tagName).nodeValue;
+    const input = document.getElementById(id);
+    const href = document.getElementById(`${id}-href`);
+    const select = document.getElementById(`${id}-select`);
+    const strike = document.getElementById(`${id}-strike`);
 
-        const isFile = href.firstElementChild.textContent;
-        if (isFile) actionDelete.hidden = false;
+    const actionDelete = document.getElementById(`${id}-action-delete`);
+    const actionUndo = document.getElementById(`${id}-action-undo`);
+    const fixDelete = document.getElementById(`${id}-delete`);
 
-        item.addEventListener("click", () => {
-            input.click();
-        });
+    const isFile = href.firstElementChild.textContent;
+    if (isFile) actionDelete.hidden = false;
 
-        input.addEventListener("change", (event) => {
-            select.innerHTML = event.target.files[0].name;
-            href.hidden = true; select.hidden = false; strike.hidden = true;
-            actionDelete.hidden = false;
-            actionUndo.hidden = true;
-            fixDelete.checked = false;
-        });
+    item.addEventListener("click", () => {
+        input.click();
+    });
 
-        actionDelete.addEventListener("click", () => {
+    input.addEventListener("change", (event) => {
+        select.innerHTML = event.target.files[0].name;
+        href.hidden = true; select.hidden = false; strike.hidden = true;
+        actionDelete.hidden = false;
+        actionUndo.hidden = true;
+        fixDelete.checked = false;
+    });
 
-            if (input.value) {
-                href.hidden = false; select.hidden = true; strike.hidden = true;
-                input.value = null;
-                if (!isFile) {
-                    actionDelete.hidden = true;
-                }
-            } else {
-                href.hidden = true; select.hidden = true; strike.hidden = false;
-                actionDelete.hidden = true;
-                actionUndo.hidden = false;
-                fixDelete.checked = true;
-            }
-        });
+    actionDelete.addEventListener("click", () => {
 
-        actionUndo.addEventListener("click", () => {
+        if (input.value) {
             href.hidden = false; select.hidden = true; strike.hidden = true;
-            actionDelete.hidden = false;
-            actionUndo.hidden = true;
-            fixDelete.checked = false;
-        });
-
-    });
-
-    document.querySelectorAll('select[datalink]').forEach((datalink) => {
-        const id = datalink.attributes.getNamedItem("datalink").nodeValue;
-        const input = document.getElementById(`${id}-datalink`);
-
-        const dlv = datalink.options[datalink.selectedIndex];
-        if (dlv) {
-            input.value = dlv.textContent;
-            datalink.addEventListener('change', (e) => {
-                document.getElementById(`${id}-datalink`).value = e.target.options[e.target.selectedIndex].textContent;
-            });
+            input.value = null;
+            if (!isFile) {
+                actionDelete.hidden = true;
+            }
+        } else {
+            href.hidden = true; select.hidden = true; strike.hidden = false;
+            actionDelete.hidden = true;
+            actionUndo.hidden = false;
+            fixDelete.checked = true;
         }
-        
     });
 
-    const dialog = document.getElementById('dialog-info');
-    if (dialog) {
-        const dialogInfo = new mdc.dialog.MDCDialog(dialog);
-        const dialogInfoContent = document.getElementById('dialog-info-content');
-        const dialogInfoTitle = document.getElementById('dialog-info-title');
-        document.querySelectorAll('[mtd-info]').forEach((item) => {
-            item.addEventListener('click', (e) => {
-                const note = item.getAttribute('mtd-info');
-                dialogInfoTitle.innerHTML = e.target.textContent;
-                dialogInfoContent.innerHTML = note;
-                dialogInfo.open();
+    actionUndo.addEventListener("click", () => {
+        href.hidden = false; select.hidden = true; strike.hidden = true;
+        actionDelete.hidden = false;
+        actionUndo.hidden = true;
+        fixDelete.checked = false;
+    });
 
-            });
+});
+
+document.querySelectorAll('select[datalink]').forEach((datalink) => {
+    const id = datalink.attributes.getNamedItem("datalink").nodeValue;
+    const input = document.getElementById(`${id}-datalink`);
+
+    const dlv = datalink.options[datalink.selectedIndex];
+    if (dlv) {
+        input.value = dlv.textContent;
+        datalink.addEventListener('change', (e) => {
+            document.getElementById(`${id}-datalink`).value = e.target.options[e.target.selectedIndex].textContent;
         });
     }
+
+});
+
+const dialog = document.getElementById('dialog-info');
+if (dialog) {
+    const dialogInfo = new mdc.dialog.MDCDialog(dialog);
+    const dialogInfoContent = document.getElementById('dialog-info-content');
+    const dialogInfoTitle = document.getElementById('dialog-info-title');
+    document.querySelectorAll('[mtd-info]').forEach((item) => {
+        item.addEventListener('click', (e) => {
+            const note = item.getAttribute('mtd-info');
+            dialogInfoTitle.innerHTML = e.target.textContent;
+            dialogInfoContent.innerHTML = note;
+            dialogInfo.open();
+
+        });
+    });
+}
 
     //document.addEventListener("keydown", (e) => {
     //    if (e.keyCode == 13) {
@@ -208,5 +209,4 @@ const ListenerForParent = () => {
     //        return false;
     //    }
     //});
-    
-})();
+

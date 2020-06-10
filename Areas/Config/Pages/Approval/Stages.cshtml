@@ -20,7 +20,7 @@
 @page
 @model StagesModel
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> Localizer
 
 @{
     ViewData["Title"] = Localizer["Stages list"];
@@ -106,6 +106,3 @@
     <input name="IdApproval" type="hidden" value="@Model.MtdApproval.Id" />
 </form>
 
-@section Scripts {
-    <script src="~/lib/mtd-ordermaker/common/js/mtd-draggable.js" asp-append-version="true"></script>
-}

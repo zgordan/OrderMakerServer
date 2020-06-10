@@ -45,6 +45,11 @@ namespace Mtd.OrderMaker.Server.Components.Controls
             {
                 model.HelperText = Localizer[$"{model.HelperText}"];
             }
+
+            if (model.HelperError != null && model.HelperErrorLocalizer)
+            {
+                model.HelperError = Localizer[$"{model.HelperError}"];
+            }
         }
     }
 }

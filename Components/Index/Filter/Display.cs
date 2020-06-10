@@ -20,6 +20,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using Microsoft.Extensions.Localization;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Models.Index;
@@ -35,11 +37,13 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
     {
         private readonly OrderMakerContext _context;
         private readonly UserHandler _userHandler;
+        private readonly IStringLocalizer<SharedResource> localizer;
 
-        public Display(OrderMakerContext orderMakerContext, UserHandler userHandler)
+        public Display(OrderMakerContext orderMakerContext, UserHandler userHandler, IStringLocalizer<SharedResource> localizer)
         {
             _context = orderMakerContext;
             _userHandler = userHandler;
+            this.localizer = localizer;
         }
 
         public async Task<IViewComponentResult> InvokeAsync(string formId)
@@ -71,9 +75,9 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
                     .Include(m => m.MtdFormPartFieldNavigation)
                     .Where(x => x.MtdFilter == filter.Id)
                     .ToListAsync();
-                foreach (var field in mtdFilterFields)
-                {
 
+                foreach (var field in mtdFilterFields)
+                {                    
                     DisplayData displayData = new DisplayData
                     {
                         Id = field.Id,
@@ -85,6 +89,10 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
                     if (field.MtdFormPartFieldNavigation.MtdSysType != 11)
                     {
                         displayData.Value = field.Value;
+                        if (field.MtdFormPartFieldNavigation.MtdSysType == 12)
+                        {
+                            displayData.Value = field.Value.Equals("1") ? localizer["ON"] : localizer["OFF"];
+                        }
                     }
                     else
                     {
@@ -120,6 +128,21 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
                     };
                     displayDatas.Add(displayDate);
                 }
+
+                MtdFilterOwner mtdFilterOwner = await _context.MtdFilterOwner.FindAsync(filter.Id);
+                if (mtdFilterOwner != null)
+                {
+                    WebAppUser userOwner = await _userHandler.FindByIdAsync(mtdFilterOwner.OwnerId);
+                    DisplayData displayDate = new DisplayData()
+                    {
+                        Id = filter.Id,
+                        Header = "Owner",
+                        Value = $"{userOwner.Title}",
+                        Type = "-owner"
+                    };
+                    displayDatas.Add(displayDate);
+                }
+
                 IList<MtdFilterScript> scripts = await _userHandler.GetFilterScripsAsync(user, formId, 1);               
                 if (scripts != null && scripts.Count > 0)
                 {

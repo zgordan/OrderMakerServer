@@ -3,7 +3,7 @@
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 */
 
-(() => {
+//Start
 
     document.querySelectorAll("div[mtd-img-selector]").forEach((block) => {
         const id = block.getAttribute("mtd-img-selector");
@@ -32,5 +32,3 @@
         });
         
     });
-
-})();

@@ -181,88 +181,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
             return Ok();
         }
 
-        [HttpPost("filter/add")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> PostFilterAddAsync()
-        {
-            string valueField = Request.Form["indexInputField"];
-            string formId = Request.Form["form-id"];
-            string valueFilter = Request.Form["indexInputFilter"];
-            string valueTerm = Request.Form["indexInputTerm"];
-            string valueFieldList = Request.Form[$"{valueField}-inputlist"];
-
-            string result = "";
-            if (valueFilter != null) { result = valueFilter; }
-            if (valueFieldList != null) { result = valueFieldList; }
-
-            WebAppUser user = await _userHandler.GetUserAsync(User);
-            MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == formId);
-
-            if (filter == null)
-            {
-                filter = new MtdFilter
-                {
-                    IdUser = user.Id,
-                    MtdForm = formId,
-                    SearchNumber = "",
-                    SearchText = "",
-                    Page = 1,
-                    PageSize = 10
-                };
-                await _context.MtdFilter.AddAsync(filter);
-                await _context.SaveChangesAsync();
-            }
-
-            if (valueField != "period")
-            {
-                await SaveFilterField(valueField, valueTerm, result, filter);
-
-            } else
-            {
-                string dateStart = Request.Form["periodStart"];
-                string dateFinish = Request.Form["periodFinish"];
-
-                bool isOkDateStart = DateTime.TryParse(dateStart, out DateTime dateTimeStart);
-                bool isOkDateFinish = DateTime.TryParse(dateFinish, out DateTime dateTimeFinish);
-
-                if (isOkDateStart && isOkDateFinish)
-                {
-                    MtdFilterDate mtdFilterDate = new MtdFilterDate
-                    {
-                        Id = filter.Id,
-                        DateStart = dateTimeStart,
-                        DateEnd = dateTimeFinish
-                    };
-
-                    bool isExists = await _context.MtdFilterDate.Where(x=>x.Id == filter.Id).AnyAsync();
-                 
-                    if (isExists)
-                    {
-                        _context.MtdFilterDate.Update(mtdFilterDate);                        
-                    } else
-                    {
-                        await _context.MtdFilterDate.AddAsync(mtdFilterDate);
-                    }
-
-                    await _context.SaveChangesAsync();
-                }
-            }            
-            return Ok();
-        }
-
-        private async Task SaveFilterField(StringValues valueField, StringValues valueTerm, string result, MtdFilter filter)
-        {
-            var term = int.Parse(valueTerm);
-            MtdFilterField field = new MtdFilterField { MtdFilter = filter.Id, MtdFormPartField = valueField, MtdTerm = term, Value = result };
-
-            try
-            {
-                await _context.MtdFilterField.AddAsync(field);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex) { throw ex.InnerException; }
-        }
-
+       
         [HttpPost("filter/remove")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostFilterRemoveAsync()
@@ -296,6 +215,20 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
                 catch (Exception ex) { throw ex.InnerException; }
             }
 
+            if (strID.Contains("-owner"))
+            {
+                strID = strID.Replace("-owner", "");
+                bool ok = int.TryParse(strID, out int filterId);
+                if (!ok) return Ok();
+                MtdFilterOwner filterOwner = new MtdFilterOwner { Id = filterId };
+                try
+                {
+                    _context.MtdFilterOwner.Remove(filterOwner);
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception ex) { throw ex.InnerException; }
+            }
+
             if (strID.Contains("-script")) {
                 strID = strID.Replace("-script", "");
                 bool ok = int.TryParse(strID, out int idFilter);
@@ -314,31 +247,44 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostFilterRemoveAllAsync()
         {
-            var form = await Request.ReadFormAsync();
-            string strID = form["filter-id"];
-            string formId = form["form-id"];
-            bool isOk = int.TryParse(strID,out int idFilter);
+            //var form = await Request.ReadFormAsync();
+            string strID = Request.Form["filter-id"];
+            string formId = Request.Form["form-id"];
+            bool isOk = int.TryParse(strID,out int filterId);
             if (!isOk) { return NotFound(); }
 
-            IList<MtdFilterField> mtdFilterFields = await _context.MtdFilterField.Where(x => x.MtdFilter == idFilter).ToListAsync();
+            IList<MtdFilterField> mtdFilterFields = await _context.MtdFilterField.Where(x => x.MtdFilter == filterId).ToListAsync();
             WebAppUser user = await _userHandler.GetUserAsync(HttpContext.User);
-            IList<MtdFilterScript> filterScripts = await _userHandler.GetFilterScripsAsync(user,formId);
+            IList<MtdFilterScript> filterScripts = await _userHandler.GetFilterScripsAsync(user,formId);            
+            
+            if (filterScripts != null)
+            {
+                filterScripts.ToList().ForEach((item) => { item.Apply = 0; });
+                _context.MtdFilterScript.UpdateRange(filterScripts);
+            }
+          
+            
+            MtdFilterDate mtdFilterDate = await _context.MtdFilterDate.Where(x => x.Id == filterId).FirstOrDefaultAsync();
+            if (mtdFilterDate != null)
+            {
+                _context.MtdFilterDate.Remove(mtdFilterDate);
+            }
 
-            IList<MtdFilterScript> mtdFilterScripts = filterScripts                
-                .Select(x => new MtdFilterScript { Id = x.Id, Name = x.Name, Script = x.Script, Apply = 0 })
-                .ToList();           
-            MtdFilterDate mtdFilterDate = await _context.MtdFilterDate.Where(x => x.Id == idFilter).FirstOrDefaultAsync();            
+            MtdFilterOwner mtdFilterOwner = await _context.MtdFilterOwner.FindAsync(filterId);
+            if (mtdFilterOwner != null)
+            {
+                _context.MtdFilterOwner.Remove(mtdFilterOwner);
+            }
+
             try
             {
-                _context.MtdFilterField.RemoveRange(mtdFilterFields);
-                _context.MtdFilterScript.UpdateRange(mtdFilterScripts);
-                if (mtdFilterDate != null)
-                {
-                    _context.MtdFilterDate.Remove(mtdFilterDate);
-                }                
+                _context.MtdFilterField.RemoveRange(mtdFilterFields);                                 
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex) { throw ex.InnerException; }
+            catch (Exception ex) {
+
+                return BadRequest(ex.Message);
+            }
 
 
             return Ok();
@@ -444,21 +390,6 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
 
         }
 
-        [HttpPost("filter/script")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> PostFilterScriptAsync()
-        {
-            string valueField = Request.Form["script-selector"];
-            bool isOk = int.TryParse(valueField, out int id);
-            if (!isOk) { return NotFound(); }
-            MtdFilterScript mtdFilterScript = await _context.MtdFilterScript.FindAsync(id);
-            mtdFilterScript.Apply = 1;
-            _context.MtdFilterScript.Update(mtdFilterScript);
-            await _context.SaveChangesAsync();
-
-            return Ok();
-
-        }
 
     }
 }

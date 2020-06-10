@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Razor.Language.Intermediate;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace Mtd.OrderMaker.Server.Models.Controls.MTDTextField
         public string RDAttribute { get; set; }
         public string IdLabel { get; set; }
         public string IdHelper { get; set; }
+        public string IdHelperError { get; set; }
         public string IdInput { get; set; }
         public bool Counter { get; set; }
 
@@ -20,6 +22,8 @@ namespace Mtd.OrderMaker.Server.Models.Controls.MTDTextField
             this.Disabled = tags.Disabled;
             this.HelperText = tags.HelperText;
             this.HelperTextLocalizer = tags.HelperTextLocalizer;
+            this.HelperError = tags.HelperError;
+            this.HelperErrorLocalizer = tags.HelperErrorLocalizer;
             this.IconLeading = tags.IconLeading;
             this.IconLeadingScript = tags.IconLeadingScript;
             this.IconTrailing = tags.IconTrailing;
@@ -32,11 +36,11 @@ namespace Mtd.OrderMaker.Server.Models.Controls.MTDTextField
             this.Required = tags.Required;
             this.Type = tags.Type ?? "text";
             this.Value = tags.Value;
-            this.Attributes = tags.Attributes;
             this.Class = tags.Class ?? string.Empty;
 
             this.IdLabel = $"{Id}-label";
             this.IdHelper = $"{Id}-helper";
+            this.IdHelperError = $"{Id}-helper-error";
             this.IdInput = $"{Id}-input";            
             this.RDAttribute = tags.Required ? "required" : string.Empty;
             if (tags.Disabled) { RDAttribute = "disabled"; }
@@ -47,6 +51,11 @@ namespace Mtd.OrderMaker.Server.Models.Controls.MTDTextField
             this.MTDTexFieldView = tags.MTDTexFieldView;
             this.Cols = tags.Cols == 0 ? 40 : tags.Cols;
             this.Rows = tags.Rows == 0 ? 8 : tags.Rows;
+
+            this.MtdInputClicker = tags.MtdInputClicker;
+            this.Pattern = tags.Pattern;
+            this.MtdDataMessage = tags.MtdDataMessage;
+                
                        
         }
                 

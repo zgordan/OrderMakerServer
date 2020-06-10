@@ -10,20 +10,25 @@
     {
         mainClass += "mdc-text-field--disabled ";
     }
+
 }
 
 <label id="@Model.Id" class="@mainClass">
 
     @await Html.PartialAsync("./_iconLeading.cshtml")
     
-    <input id="@Model.IdInput" class="mdc-text-field__input @Model.Class" type="@Model.Type" aria-labelledby="@Model.IdLabel"
+    <input id="@Model.IdInput" class="mdc-text-field__input @Model.Class" type="@Model.Type" aria-labelledby="@Model.IdLabel" 
            name="@Model.Name"
            value="@Model.Value"
            aria-controls="@Model.IdHelper"
            aria-describedby="@Model.IdHelper"
            placeholder="@Model.Placeholder"
-           maxlength="@Model.MaxLength"
-           @Model.RDAttribute @Model.Attributes>
+           maxlength="@Model.MaxLength"           
+           pattern="@Model.Pattern"
+           mtd-data-message="@Model.MtdDataMessage"
+           @if (Model.MtdInputClicker) { <text> mtd-input-clicker </text>}
+           @Model.RDAttribute
+           >
 
     @await Html.PartialAsync("./_label.cshtml")
 

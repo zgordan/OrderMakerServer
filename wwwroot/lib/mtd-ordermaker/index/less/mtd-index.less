@@ -1,12 +1,8 @@
 ﻿@import "index-rows.less";
-@import "index-header.less";
 @import "index-filter.less";
 @import "index-footer.less";
 @import "index-columns.less";
 
-.mtd-index-card {
-    position: relative;
-}
 
 .mtd-index-modal {
     background-color: white;
@@ -27,27 +23,6 @@ input[type=number]::-webkit-outer-spin-button {
 
 :not(.mdc-list--non-interactive) > :not(.mdc-list-item--disabled).mdc-list-item:hover::before {
     filter: opacity(100%);
-}
-
-
-.index-form-title {
-    background: linear-gradient(90deg, rgba(228,228,228,1) 0%, rgba(235,233,233,1) 47%, rgba(255,255,255,1) 81%);
-    text-transform: uppercase;
-    color: gray;
-    margin-bottom: 16px;
-    font-weight: bold;
-}
-
-.index-form-close {
-    color: navy;
-}
-
-.index-form {
-    position: absolute;
-    width: 100%;
-    display: none;
-    z-index: 1;
-    background-color: white;
 }
 
 

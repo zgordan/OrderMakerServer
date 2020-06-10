@@ -22,7 +22,7 @@
 @namespace Mtd.OrderMaker.Server.Components.Store
 
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> Localizer
 
 @{
     ViewData["Title"] = Localizer["Editor"];
@@ -43,9 +43,11 @@
     <li>@ViewBag.Title</li>
 }
 
-
-<div class="mtd-main-center">
-    @await Component.InvokeAsync("StoreForm", new { store = Model.MtdStore, type = FormType.Edit })
+<div class="mtd-desk">
+    <div class="mtd-desk-panel"></div>
+    <div class="mtd-main-center">
+        @await Component.InvokeAsync("StoreForm", new { store = Model.MtdStore, type = FormType.Edit })
+    </div>
 </div>
 @section Scripts {
 

@@ -23,7 +23,9 @@
            aria-describedby="@Model.IdHelper"
            placeholder="@Model.Placeholder"
            maxlength="@Model.MaxLength"
-           @Model.RDAttribute @Model.Attributes>
+           pattern="@Model.Pattern"
+           @if (Model.MtdInputClicker) { <text> mtd-input-clicker </text>}
+           @Model.RDAttribute>
 
     @await Html.PartialAsync("./_iconTrailing.cshtml")
 

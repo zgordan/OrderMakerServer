@@ -14,13 +14,16 @@
 
 <label id="@Model.Id" class="@mainClass">
 
-    <textarea class="mdc-text-field__input @Model.Class" rows="@Model.Rows" cols="@Model.Cols"
+    <textarea id="@Model.IdInput" class="mdc-text-field__input @Model.Class" rows="@Model.Rows" cols="@Model.Cols"
               aria-labelledby="@Model.IdLabel"
               name="@Model.Name"
               aria-controls="@Model.IdHelper"
               aria-describedby="@Model.IdHelper"
               placeholder="@Model.Placeholder"
-              maxlength="@Model.MaxLength" @Model.RDAttribute @Model.Attributes >@Model.Value</textarea>
+              maxlength="@Model.MaxLength"
+              pattern="@Model.Pattern"
+              @if (Model.MtdInputClicker) { <text> mtd-input-clicker </text> }
+              @Model.RDAttribute>@Model.Value</textarea>
 
     <span class="mdc-notched-outline">
         <span class="mdc-notched-outline__leading"></span>

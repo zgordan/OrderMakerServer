@@ -17,6 +17,14 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
+class LocaleDTP {
+    constructor() {
+        this.lang = document.getElementById("index-dtp-locale-lang").value;
+        this.mask = document.getElementById("index-dtp-locale-mask").value;
+        this.format = document.getElementById("index-dtp-locale-format").value;
+    }
+}
+
 const snackbar = new mdc.snackbar.MDCSnackbar(document.getElementById('main-snack'));
 
 const MainShowSnackBar = (message, error = false) => {
@@ -25,6 +33,8 @@ const MainShowSnackBar = (message, error = false) => {
     snackbar.labelText = message;
     if (error) {
         snackbar.timeoutMs = 10000;
+        const surface = div.querySelector(".mdc-snackbar__surface");
+        surface.style.backgroundColor = "darkred";
     }
     snackbar.open();
 }
@@ -49,12 +59,12 @@ const ListenerForDataHref = () => {
     const items = document.querySelectorAll('[mtd-data-href]');
     items.forEach((item) => {
         item.addEventListener('click', () => {
-            ActionShowModal();
+            ActionShowModal(true);
             const href = item.getAttribute('mtd-data-href');
             const target = item.getAttribute('mtd_data_href-target');
             if (target) {
                 window.open(href, target);
-                ActionShowModal(false);
+                ActionShowModal();
             } else {
                 window.location.href = href;
             }
@@ -94,38 +104,52 @@ const CheckRequired = (form) => {
     return counter;
 }
 
+const ListenerClickerBy = () => {
+
+    const clickers = document.querySelectorAll('[mtd-data-clicker-by]');
+
+    clickers.forEach((clicker) => {
+        const targetId = clicker.getAttribute('mtd-data-clicker-by');
+        clicker.addEventListener("click", () => {
+            document.getElementById(targetId).click();
+        })
+    });
+}
+
 const ListenerForPostData = () => {
 
     const forms = document.querySelectorAll("form[mtd-data-form]");
     forms.forEach((form) => {
 
         const result = form.querySelector('input[mtd-data-result]');
-        const action = form.getAttribute('action');
+        let action = form.getAttribute('action');
+        if (!action) { action = ""}
         const clickers = form.querySelectorAll('[mtd-data-clicker]');
-        const inputs = form.querySelectorAll('input[mtd-data-input]');
+        const inputs = form.querySelectorAll('input[mtd-input-clicker]');
 
         clickers.forEach((clicker) => {
+
             const value = clicker.getAttribute('mtd-data-clicker');
             const location = clicker.getAttribute('mtd-data-location');
             const message = clicker.getAttribute('mtd-data-message');
 
             clicker.addEventListener('click', () => {
 
-                const check = CheckRequired(form);
-                if (check > 0) {
-                    const dialog = new mdc.dialog.MDCDialog(document.getElementById('dialog-main-info'));
-                    dialog.open();
+                const validate = form.reportValidity();
+                if (!validate) {
                     return false;
                 }
 
-                ActionShowModal();
+
+                ActionShowModal(true);
                 if (value) { result.value = value; }
 
                 const formData = CreateFormData(form);
 
                 const xmlHttp = new XMLHttpRequest();
+                xmlHttp.responseType = 'json';
                 xmlHttp.open("post", action, true);
-                xmlHttp.send(formData);
+                xmlHttp.send(formData);               
                 xmlHttp.onreadystatechange = function () {
 
                     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
@@ -139,12 +163,12 @@ const ListenerForPostData = () => {
                         }
                     }
 
-                    if (xmlHttp.status == 400) {
-                        setTimeout(() => { ActionShowModal(false); MainShowSnackBar(xmlHttp.responseText, true);}, 1000);                                                                        
+                    if (xmlHttp.status == 400) {                                               
+                        setTimeout(() => { ActionShowModal(); MainShowSnackBar(xmlHttp.response.value, true); }, 1000);
                     }
 
                     if (xmlHttp.status == 500) {
-                        setTimeout(() => { ActionShowModal(false); MainShowSnackBar("500 Internal Server Error", true); }, 1000);
+                        setTimeout(() => { ActionShowModal(); MainShowSnackBar("500 Internal Server Error", true); }, 1000);
                     }
                 }
             });
@@ -156,15 +180,13 @@ const ListenerForPostData = () => {
             input.addEventListener('keydown', (e) => {
                 if (e.keyCode === 13) {
 
-                    const check = CheckRequired();
-                    if (check > 0) {
-                        return false;
-                    }
+                    form.reportValidity();
 
                     e.preventDefault();
-                    ActionShowModal();
+                    ActionShowModal(true);
                     var xmlHttp = new XMLHttpRequest();
-                    xmlHttp.open("POST", form.getAttribute("action"), true);
+                    xmlHttp.responseType = 'json';
+                    xmlHttp.open("POST", action, true);
 
                     var formData = CreateFormData(form);
 
@@ -183,11 +205,11 @@ const ListenerForPostData = () => {
                         }
 
                         if (xmlHttp.status == 400) {
-                            setTimeout(() => { ActionShowModal(false); MainShowSnackBar(xmlHttp.responseText, true); }, 1000);  
+                            setTimeout(() => { ActionShowModal(); MainShowSnackBar(xmlHttp.response.value, true); }, 1000);
                         }
 
                         if (xmlHttp.status == 500) {
-                            setTimeout(() => { ActionShowModal(false); MainShowSnackBar("500 Internal Server Error", true); }, 1000);
+                            setTimeout(() => { ActionShowModal(); MainShowSnackBar("500 Internal Server Error", true); }, 1000);
                         }
                     }
                 }
@@ -197,8 +219,8 @@ const ListenerForPostData = () => {
     });
 }
 
-const ActionShowModal = (show = true) => {
-    const style = show == true ? 'block' : 'none';
+const ActionShowModal = (show) => {
+    const style = show ? 'block' : 'none';
     document.getElementById('mainModal').style.display = style;
 }
 
@@ -228,90 +250,88 @@ const DetectMobile = () => {
 }
 
 
-(() => {
+//Start
+DetectMobile();
 
-    DetectMobile();
+if (sessionStorage.getItem("Message")) {
 
-    if (sessionStorage.getItem("Message")) {
+    MainShowSnackBar(sessionStorage.getItem("Message"));
+    sessionStorage.removeItem("Message");
+}
 
-        MainShowSnackBar(sessionStorage.getItem("Message"));
-        sessionStorage.removeItem("Message");
-    }
+if (sessionStorage.getItem("ErrorMessage")) {
 
-    if (sessionStorage.getItem("ErrorMessage")) {
+    MainShowSnackBar(sessionStorage.getItem("ErrorMessage"), true);
+    sessionStorage.removeItem("ErrorMessage");
+}
 
-        MainShowSnackBar(sessionStorage.getItem("ErrorMessage"), true);
-        sessionStorage.removeItem("ErrorMessage");
-    }
+ListenerForAction();
 
-    ListenerForAction();
+rippleFor('.mdc-checkbox');
+rippleFor('.mdc-icon-button');
+rippleFor('.mdc-list-item');
+rippleFor('.mdc-fab');
+rippleFor('.mdc-button');
+rippleFor('.mdc-card__primary-action');
 
-    rippleFor('.mdc-checkbox');
-    rippleFor('.mdc-icon-button');
-    rippleFor('.mdc-list-item');
-    rippleFor('.mdc-fab');
-    rippleFor('.mdc-button');
-    rippleFor('.mdc-card__primary-action');
+const toggleButtons = document.querySelectorAll('.mdc-icon-button');
+toggleButtons.forEach((item) => {
+    new mdc.iconButton.MDCIconButtonToggle(item);
+});
 
-    const toggleButtons = document.querySelectorAll('.mdc-icon-button');
-    toggleButtons.forEach((item) => {
-        new mdc.iconButton.MDCIconButtonToggle(item);
+
+
+const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+
+const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.getElementById('app-bar'));
+//topAppBar.setScrollTarget(document.getElementById('drawer-main-content'));
+topAppBar.listen('MDCTopAppBar:nav', () => {
+    drawer.open = !drawer.open;
+});
+
+let checked = 0;
+const url = window.location.href.toLowerCase();
+
+if (url.includes("/identity/users")) {
+    checked++;
+    document.getElementById("menu-users").classList.add("mdc-list-item--activated");
+}
+
+if (url.includes("/config")) {
+    checked++;
+    document.getElementById("menu-config").classList.add("mdc-list-item--activated");
+}
+
+if (url.includes("/identity/account/manage")) {
+    checked++;
+    document.getElementById("menu-account").classList.add("mdc-list-item--activated");
+}
+
+if (checked === 0) {
+    document.getElementById("menu-desk").classList.add("mdc-list-item--activated");
+}
+
+
+ListenerForDataHref();
+ListenerForPostData();
+ListenerClickerBy();
+
+const mainUserButton = document.getElementById('main-user-button');
+if (mainUserButton) {
+    const mainUserMenu = new mdc.menuSurface.MDCMenuSurface(document.getElementById('main-user-menu'));
+
+    mainUserMenu.setFixedPosition(true);
+    mainUserButton.addEventListener('click', () => {
+        mainUserMenu.open();
     });
+}
 
+const mainAppsButton = document.getElementById('main-apps-button');
+if (mainAppsButton) {
+    const mainUserMenu = new mdc.menuSurface.MDCMenuSurface(document.getElementById('main-apps-menu'));
 
-
-    const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
-
-    const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.getElementById('app-bar'));
-    topAppBar.setScrollTarget(document.getElementById('drawer-main-content'));
-    topAppBar.listen('MDCTopAppBar:nav', () => {
-        drawer.open = !drawer.open;
+    mainUserMenu.setFixedPosition(true);
+    mainAppsButton.addEventListener('click', () => {
+        mainUserMenu.open();
     });
-
-    let checked = 0;
-    const url = window.location.href.toLowerCase();
-
-    if (url.includes("/identity/users")) {
-        checked++;
-        document.getElementById("menu-users").classList.add("mdc-list-item--activated");
-    }
-
-    if (url.includes("/config")) {
-        checked++;
-        document.getElementById("menu-config").classList.add("mdc-list-item--activated");
-    }
-
-    if (url.includes("/identity/account/manage")) {
-        checked++;
-        document.getElementById("menu-account").classList.add("mdc-list-item--activated");
-    }
-
-    if (checked === 0) {
-        document.getElementById("menu-desk").classList.add("mdc-list-item--activated");
-    }
-
-
-    ListenerForDataHref();
-    ListenerForPostData();
-
-    const mainUserButton = document.getElementById('main-user-button');
-    if (mainUserButton) {
-        const mainUserMenu = new mdc.menuSurface.MDCMenuSurface(document.getElementById('main-user-menu'));
-
-        mainUserMenu.setFixedPosition(true);
-        mainUserButton.addEventListener('click', () => {
-            mainUserMenu.open();
-        });
-    }
-
-    const mainAppsButton = document.getElementById('main-apps-button');
-    if (mainAppsButton) {
-        const mainUserMenu = new mdc.menuSurface.MDCMenuSurface(document.getElementById('main-apps-menu'));
-
-        mainUserMenu.setFixedPosition(true);
-        mainAppsButton.addEventListener('click', () => {
-            mainUserMenu.open();
-        });
-    }
-
-})();
+}

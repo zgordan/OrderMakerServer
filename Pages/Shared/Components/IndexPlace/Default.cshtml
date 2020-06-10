@@ -19,24 +19,11 @@
 
 @model Models.Index.PlaceModelView;
 
-    <div class="mtd-index-card">
-        <div id="indexProgress" role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate" style="display:none">
-            <div class="mdc-linear-progress__buffering-dots"></div>
-            <div class="mdc-linear-progress__buffer"></div>
-            <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
-                <span class="mdc-linear-progress__bar-inner"></span>
-            </div>
-            <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
-                <span class="mdc-linear-progress__bar-inner"></span>
-            </div>
-        </div>
-        <div id="indexModal" class="mtd-index-modal" style="display: none;"></div>
-        
-        @await Component.InvokeAsync("IndexFilterSelector", new { formId = Model.FormId })
-        @await Component.InvokeAsync("IndexFilterColumns", new { formId = Model.FormId })
-        @await Component.InvokeAsync("IndexFilterDisplay", new { formId = Model.FormId })
-        @await Component.InvokeAsync("IndexRows", new { formId = Model.FormId })
 
-    </div>
+    @await Component.InvokeAsync("IndexRows", new { formId = Model.FormId })
+
+
+
+
 
 

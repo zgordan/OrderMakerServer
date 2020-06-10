@@ -23,8 +23,25 @@
 .mtd-store-style-badge {
   width: 100%;
 }
-.mtd-store-style-badge > img {
-  max-width: 270px;
+@media (min-width: 1919px) {
+  .mtd-store-style-badge > img {
+    max-width: 250px;
+  }
+}
+@media (max-width: 1366px) {
+  .mtd-store-style-badge > img {
+    max-width: 230px;
+  }
+}
+@media (max-width: 1020px) {
+  .mtd-store-style-badge > img {
+    max-width: 210px;
+  }
+}
+@media (max-width: 768px) {
+  .mtd-store-style-badge > img {
+    max-width: 190px;
+  }
 }
 .mtd-store-style-header {
   display: flex;
@@ -32,41 +49,62 @@
 }
 .mtd-store-style-title {
   flex-grow: 1;
-  font-size: x-large;
   font-weight: bold;
   text-transform: uppercase;
   color: black;
   text-shadow: 1px 1px 2px gray;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
-@media (max-width: 415px) {
+@media (min-width: 1919px) {
   .mtd-store-style-title {
-    font-size: large;
+    font-size: 24px;
   }
 }
-@media (max-width: 350px) {
+@media (max-width: 1366px) {
   .mtd-store-style-title {
-    font-size: medium;
+    font-size: 22px;
+  }
+}
+@media (max-width: 1020px) {
+  .mtd-store-style-title {
+    font-size: 20px;
+  }
+}
+@media (max-width: 768px) {
+  .mtd-store-style-title {
+    font-size: 18px;
   }
 }
 .mtd-store-style-attribute {
-  line-height: 0.8em;
+  line-height: 0.6em;
   align-self: center;
   text-transform: uppercase;
   color: navy;
   text-align: right;
+  white-space: nowrap;
 }
-@media (max-width: 415px) {
+@media (min-width: 1919px) {
   .mtd-store-style-attribute {
-    min-width: 8em;
+    font-size: 19px;
   }
 }
-@media (max-width: 350px) {
+@media (max-width: 1366px) {
   .mtd-store-style-attribute {
-    min-width: 7em;
+    font-size: 18px;
+  }
+}
+@media (max-width: 1020px) {
+  .mtd-store-style-attribute {
+    font-size: 17px;
+  }
+}
+@media (max-width: 768px) {
+  .mtd-store-style-attribute {
+    font-size: 16px;
   }
 }
 .mtd-store-style-number {
-  font-size: large;
   font-weight: bold;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -75,28 +113,8 @@
   -ms-user-select: none;
   user-select: none;
 }
-@media (max-width: 550px) {
-  .mtd-store-style-number {
-    font-size: medium;
-  }
-}
-@media (max-width: 350px) {
-  .mtd-store-style-number {
-    font-size: small;
-  }
-}
 .mtd-store-style-date {
-  font-size: medium;
-}
-@media (max-width: 550px) {
-  .mtd-store-style-date {
-    font-size: small;
-  }
-}
-@media (max-width: 350px) {
-  .mtd-store-style-date {
-    font-size: smaller;
-  }
+  font-weight: normal;
 }
 .mtd-store-style-part {
   padding: 4px 4px 4px 0px;

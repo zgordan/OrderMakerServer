@@ -32,6 +32,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -370,14 +371,48 @@ namespace Mtd.OrderMaker.Server.Services
             return usersAccess;
         }
 
+        public async Task<MtdFilter> GetFilterAsync(ClaimsPrincipal principal, string formId)
+        {
+            WebAppUser user = await GetUserAsync(principal);
+            MtdFilter filter = await _context.MtdFilter.AsNoTracking().FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == formId);
+
+            if (filter == null)
+            {
+                filter = new MtdFilter
+                {
+                    IdUser = user.Id,
+                    MtdForm = formId,
+                    SearchNumber = "",
+                    SearchText = "",
+                    Page = 1,
+                    PageSize = 10,
+                    WaitList = 0, ShowDate = 1, ShowNumber = 1
+                };
+                await _context.MtdFilter.AddAsync(filter);
+                await _context.SaveChangesAsync();
+            }
+
+            return filter;
+        }
+
+        public async Task<bool> IsFilterAccessingAsync(ClaimsPrincipal user, int scriptId)
+        {
+            WebAppUser userApp = await GetUserAsync(user);
+            string policyId = await GetPolicyIdAsync(userApp);
+            IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
+            MtdPolicy policy = mtdPolicy.Where(x => x.Id == policyId).FirstOrDefault();
+            return policy.MtdPolicyScripts.Where(x => x.MtdFilterScriptId == scriptId).Any();            
+        }
+        
         public async Task<List<MtdFilterScript>> GetFilterScripsAsync (WebAppUser user, string formId, sbyte apply = -1)
         {            
             string policyId = await GetPolicyIdAsync(user);
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
 
             MtdPolicy policy = mtdPolicy.Where(x => x.Id == policyId).FirstOrDefault();
+
             List<int> filterIds = policy.MtdPolicyScripts.Select(x => x.MtdFilterScriptId).ToList();
-            var query = _context.MtdFilterScript.Where(x => filterIds.Contains(x.Id) && x.MtdFormId == formId);
+            var query = _context.MtdFilterScript.AsNoTracking().Where(x => filterIds.Contains(x.Id) && x.MtdFormId == formId);
             if (apply > 0) { query = query.Where(q => q.Apply == apply); }
             return  await  query.ToListAsync();
         }

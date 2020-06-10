@@ -1,6 +1,6 @@
 ﻿@model EditModel
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@inject IHtmlLocalizer<SharedResource> Localizer
 
 
 <div class="mtd-users-wrap" @if (!Model.CpqModule) {<text>style="display:none"</text> } >

@@ -28,6 +28,7 @@ using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store.Models;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.EntityHandler.Approval;
+using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
 using Mtd.OrderMaker.Server.Models.LogDocument;
 using Mtd.OrderMaker.Server.Models.Store;
 using Mtd.OrderMaker.Server.Services;
@@ -63,8 +64,12 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
 
         public List<ApprovalLog> ApprovalHistory  { get; set; }
 
-        public List<MtdApprovalResolution> ListResolutions { get; set; }
-        public List<MtdApprovalRejection> ListRejections { get; set; }
+        public List<MTDSelectListItem> ListResolutions { get; set; }
+        public List<MTDSelectListItem> ListRejections { get; set; }
+
+        public List<MTDSelectListItem> UsersList { get; set; }
+        public List<MTDSelectListItem> Stages { get; set; }
+        public List<MTDSelectListItem> UsersRequest { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -118,10 +123,14 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
             IsApprover = await approvalHandler.IsApproverAsync(user);
             IsFirstStage = await approvalHandler.IsFirstStageAsync();
 
+            
+            UsersList = new List<MTDSelectListItem>();
+
             if (IsInstallerOwner)
             {
                 List<WebAppUser> webAppUsers = new List<WebAppUser>();
                 bool isViewAll = await _userHandler.GetFormPolicyAsync(user, MtdStore.MtdForm, RightsType.ViewAll);
+                
                 if (isViewAll)
                 {
                     webAppUsers = await _userHandler.Users.ToListAsync();
@@ -131,12 +140,21 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                     webAppUsers = await _userHandler.GetUsersInGroupsAsync(user);
                 }
 
-                ViewData["UsersList"] = new SelectList(webAppUsers.OrderBy(x=>x.Title), "Id", "Title");
+                
+                webAppUsers.OrderBy(x => x.Title).ToList().ForEach((item) => {
+                    UsersList.Add(new MTDSelectListItem { 
+                         Id = item.Id, Value = item.Title
+                    });
+                });
+             
             }
 
+            UsersRequest = new List<MTDSelectListItem>();
             if (IsApprover && !IsFirstStage)
             {
+                
                 List<WebAppUser> usersRequest = await _userHandler.GetUsersForViewingForm(MtdStore.MtdForm,MtdStore.Id);
+
                 MtdApprovalStage stage =  await approvalHandler.GetCurrentStageAsync();
                 List<string> userIds = await approvalHandler.GetUsersWaitSignAsync();
                 IList<MtdApprovalStage> mas = await approvalHandler.GetStagesAsync();
@@ -146,13 +164,19 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                     && !userInStagesIds.Contains(x.Id) 
                     && x.Id != user.Id 
                     && x.Id != stage.UserId).ToList();
-                
-                ViewData["UsersRequest"] = new SelectList(usersRequest.OrderBy(x => x.Title), "Id", "Title");
 
+                usersRequest.OrderBy(x => x.Title).ToList().ForEach((item) =>
+                {
+                    UsersRequest.Add(new MTDSelectListItem { Id = item.Id, Value = item.Title });
+                });                
             }
-                                              
+
+            Stages = new List<MTDSelectListItem>();
             IList<MtdApprovalStage> stages = await approvalHandler.GetStagesDownAsync();
-            ViewData["Stages"] = new SelectList(stages.OrderByDescending(x => x.Stage), "Id", "Name");
+            stages.OrderBy(x=>x.Stage).ToList().ForEach((stage) => {
+                Stages.Add( new MTDSelectListItem { Id=stage.Id.ToString(), Value = stage.Name });
+            });
+            
             MtdApproval = await approvalHandler.GetApproval();
             List<string> partIds = await approvalHandler.GetWilBeBlockedPartsIds();
             BlockParts = new List<MtdFormPart>();
@@ -196,20 +220,38 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                 ApprovalHistory.Add(temp);
             }
 
+            await FilListResolutions(approvalHandler);
+
+            return Page();
+        }
+
+        private async Task FilListResolutions(ApprovalHandler approvalHandler)
+        {
+
             MtdApprovalStage currentStage = await approvalHandler.GetCurrentStageAsync();
             if (currentStage != null)
             {
-                ListRejections = await _context.MtdApprovalRejection
+                List<MtdApprovalRejection> listRejections = await _context.MtdApprovalRejection
                     .Where(x => x.MtdApprovalStageId == currentStage.Id).OrderBy(x => x.Sequence).ToListAsync();
-                ViewData["ListRejection"] = new SelectList(ListRejections, "Id", "Name");
+                ListRejections = new List<MTDSelectListItem>();
+                listRejections.ForEach((item) => {
+                    ListRejections.Add(new MTDSelectListItem
+                    {
+                         Id = item.Id, Value = item.Name
+                    });
+                });
 
-                ListResolutions = await _context.MtdApprovalResolution
+                List<MtdApprovalResolution> listResolution = await _context.MtdApprovalResolution
                     .Where(x => x.MtdApprovalStageId == currentStage.Id).OrderBy(x => x.Sequence).ToListAsync();
-                ViewData["ListResolution"] = new SelectList(ListResolutions, "Id", "Name");
+                ListResolutions = new List<MTDSelectListItem>();
+                listResolution.ForEach((item) => {
+                    ListResolutions.Add(new MTDSelectListItem
+                    {
+                        Id = item.Id,
+                        Value = item.Name
+                    });
+                });
             }
-
-
-            return Page();
         }
 
 

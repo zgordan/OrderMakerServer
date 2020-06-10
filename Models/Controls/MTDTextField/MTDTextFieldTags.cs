@@ -23,6 +23,8 @@ namespace Mtd.OrderMaker.Server.Models.Controls.MTDTextField
         public bool Disabled { get; set; }
         public string HelperText { get; set; }
         public bool HelperTextLocalizer { get; set; }
+        public string HelperError { get; set; }
+        public bool HelperErrorLocalizer { get; set; }
         public string Type { get; set; }
         public int MaxLength { get; set; }
         public string Class { get; set; }
@@ -31,6 +33,8 @@ namespace Mtd.OrderMaker.Server.Models.Controls.MTDTextField
         public int Rows { get; set; }
         public int Cols { get; set; }
 
-        public string Attributes { get; set; }
+        public string Pattern { get; set; }
+        public bool MtdInputClicker { get; set; }
+        public string MtdDataMessage { get; set; }
     }
 }

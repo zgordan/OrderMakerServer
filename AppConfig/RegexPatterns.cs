@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Mtd.OrderMaker.Server.AppConfig
+{
+    public static class RegexPatterns
+    {
+        public static string Email => "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
+        public static string Phone => "[+][0-9]{1}\\s[0-9]{3}\\s[0-9]{3}\\s[0-9]{4}";
+    }
+}

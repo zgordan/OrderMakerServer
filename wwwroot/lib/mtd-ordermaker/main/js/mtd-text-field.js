@@ -1,8 +1,25 @@
 ﻿class MTDTextField {
 
-    constructor(id) {
+    constructor(id) {        
         this.base = document.getElementById(id);
-        this.textField = new mdc.textField.MDCTextField(this.base);
-        this.input = document.getElementById(`${id}-input`)
+        if (this.base) {
+            
+            this.textField = new mdc.textField.MDCTextField(this.base);
+            this.input = document.getElementById(`${id}-input`);
+
+            this.input.addEventListener("invalid", () => {
+                this.input.setCustomValidity(" ");
+                this.textField.valid = false;                              
+            });
+
+            this.input.addEventListener("change", () => {
+                this.input.setCustomValidity("");
+            });
+
+            this.input.addEventListener("input", () => {
+                this.input.setCustomValidity("");                
+            });
+
+        }        
     }
 }

@@ -23,6 +23,7 @@ using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -119,20 +120,23 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
                         case 2:
                         case 12:
                             {
-                                int valueInt = int.Parse(item.Value);
+                                bool isOk = int.TryParse(item.Value, out int valueInt);
+                                if (!isOk) { valueInt = 0; }
                                 storeIds = await FindStoreIdsForInt(field, valueInt, item.MtdTerm, storeIds);
                                 break;
                             }
                         case 3:
                             {
-                                decimal valueDecimal = decimal.Parse(item.Value);
+                                bool isOk = decimal.TryParse(item.Value, out decimal valueDecimal);
+                                if (!isOk) { valueDecimal = 0; }
                                 storeIds = await FindStoreIdsForDecimal(field, valueDecimal, item.MtdTerm, storeIds);
                                 break;
                             }
                         case 5:
                             {
-                                bool ok = DateTime.TryParse(item.Value, out DateTime dateTime);
-                                if (ok)
+                                //bool ok = DateTime.TryParse(item.Value, out DateTime dateTime);
+                                bool isOk = DateTime.TryParseExact(item.Value, item.ValueExtra, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTime);
+                                if (isOk)
                                 {
                                     storeIds = await FindStoreIdsForDate(field, dateTime.Date, item.MtdTerm, storeIds);
                                 }
@@ -140,7 +144,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
                             }
                         case 6:
                             {
-                                bool ok = DateTime.TryParse(item.Value, out DateTime dateTime);
+                                bool ok = DateTime.TryParse(item.Value, out DateTime dateTime);                                
                                 if (ok)
                                 {
                                     storeIds = await FindStoreIdsForDateTime(field, dateTime, item.MtdTerm, storeIds);

@@ -640,6 +640,10 @@ namespace Mtd.OrderMaker.Server.Entity
                     .HasColumnName("value")
                     .HasColumnType("varchar(256)");
 
+                entity.Property(e => e.ValueExtra)
+                    .HasColumnName("value_extra")
+                    .HasColumnType("varchar(256)");
+
                 entity.HasOne(d => d.MtdFilterNavigation)
                     .WithMany(p => p.MtdFilterField)
                     .HasForeignKey(d => d.MtdFilter)

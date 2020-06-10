@@ -43,14 +43,12 @@
     <link href="https://unpkg.com/material-components-web@6.0.0/dist/material-components-web.min.css" rel="stylesheet" />
 
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    
+
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/mtd-ordermaker/main/css/mtd-main.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/lib/mtd-ordermaker/main/css/mtd-app.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/lib/mtd-ordermaker/common/css/mtd-desk.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/lib/mtd-ordermaker/mtd-img-selector/css/mtd-img-selector.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/lib/mtd-ordermaker/mtd-checkbox/css/mtd-checkbox.css" asp-append-version="true" />
-
         <link rel="stylesheet" href="~/lib/fontawesome/css/fontawesome.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/lib/fontawesome/css/solid.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/lib/fontawesome/css/regular.min.css" asp-append-version="true" />
@@ -58,15 +56,12 @@
 
     <environment exclude="Development">
         <link rel="stylesheet" href="~/lib/mtd-ordermaker/main/css/mtd-main.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/lib/mtd-ordermaker/common/css/mtd-desk.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/lib/mtd-ordermaker/mtd-img-selector/css/mtd-img-selector.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/lib/mtd-ordermaker/mtd-checkbox/css/mtd-checkbox.css" asp-append-version="true" />
-
+        <link rel="stylesheet" href="~/lib/mtd-ordermaker/mtd-img-selector/css/mtd-img-selector.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/mtd-ordermaker/mtd-checkbox/css/mtd-checkbox.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/lib/fontawesome/css/fontawesome.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/lib/fontawesome/css/solid.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/lib/fontawesome/css/regular.min.css" asp-append-version="true" />
     </environment>
-
 
 
     @RenderSection("Head", required: false)
@@ -75,12 +70,13 @@
     @*<partial name="_CookieConsentPartial" />*@
     <noscript>You need to enable JavaScript to run this app.</noscript>
 
+
     <div class="drawer-frame-root">
 
         @await Html.PartialAsync("./_layoutAside.cshtml")
-        <div class="mdc-drawer-scrim"></div>
+        <div id="main-scrim" class="mdc-drawer-scrim"></div>
 
-        <div class="drawer-frame-app-content">
+        <div id="drawer-frame-app-content" class="drawer-frame-app-content">
             @await Html.PartialAsync("./_layoutHeader")
             <div id="drawer-main-content">
 
@@ -89,26 +85,26 @@
                 <div class="mdc-top-app-bar--fixed-adjust"></div>
 
                 <div class="mtd-main-informer-header">
-
                     <div class="mtd-main-informer-title">
                         <div>
-                            <span class="mtd-main-informer-title--first">@ViewBag.Title</span>
-                            <br />
-                            @ViewBag.SecondTitle
+                            <div class="mtd-main-informer-title--first">@ViewBag.Title</div>
+                            <div class="mtd-main-informer-title--second">@ViewBag.SecondTitle</div>
                         </div>
 
                         @if (IsSectionDefined("Action"))
                         {
-                            <div class="mdc-menu-surface--anchor">
-                                <button id="main-action-button" class="mdc-button mdc-button--raised mdc-theme--secondary-bg">
-                                    <div class="mdc-button__ripple"></div>
-                                    <span class="mdc-button__label">@Localizer["Actions"]</span>
-                                    <i class="mdc-button__icon fas fa-caret-down" aria-hidden="true"></i>
-                                </button>
-                                <div id="main-action-menu" class="mdc-menu mdc-menu-surface">
-                                    <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
-                                        @RenderSection("Action")
-                                    </ul>
+                            <div>
+                                <div class="mdc-menu-surface--anchor">
+                                    <button id="main-action-button" class="mdc-button mdc-button--raised mdc-theme--secondary-bg">
+                                        <div class="mdc-button__ripple"></div>
+                                        <span class="mdc-button__label">@Localizer["Actions"]</span>
+                                        <i class="mdc-button__icon fas fa-caret-down" aria-hidden="true"></i>
+                                    </button>
+                                    <div id="main-action-menu" class="mdc-menu mdc-menu-surface">
+                                        <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical">
+                                            @RenderSection("Action")
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         }
@@ -138,55 +134,44 @@
         </div>
     </div>
 
-    <div id="dialog-main-info" class="mdc-dialog"
-         role="alertdialog"
-         aria-modal="true"
-         aria-labelledby="dialog-main-info-title"
-         aria-describedby="dialog-main-info-content">
-        <div class="mdc-dialog__container">
-            <div class="mdc-dialog__surface">
-                <h2 class="mdc-dialog__title" id="dialog-main-info-title">
-                    Обязательные поля не заполнены!
-                </h2>
-                <div class="mdc-dialog__content" id="dialog-main-info-content">
-                    Заполните обязательные поля отмеченные красным цветом.
-                </div>
-                <footer class="mdc-dialog__actions">
-                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
-                        <span class="mdc-button__label">Ok</span>
-                    </button>
-                </footer>
-            </div>
-        </div>
-        <div class="mdc-dialog__scrim"></div>
-    </div>
+
+    <input type="hidden" id="index-dtp-locale-lang" value="@Localizer["en"]" />
+    <input type="hidden" id="index-dtp-locale-mask" value="@Localizer["19/39/9999"]" />
+    <input type="hidden" id="index-dtp-locale-format" value="@Localizer["m/d/Y"]" />
 
     <environment include="Development">
         @*<script src="~/lib/google/js/material-components-web.js" asp-append-version="true"></script>*@
         <script src="https://unpkg.com/material-components-web@6.0.0/dist/material-components-web.min.js"></script>
-        <script src="~/lib/mtd-ordermaker/main/js/mtd-main.js" asp-append-version="true"></script>
 
-        <script src="~/lib/mtd-ordermaker/main/js/mtd-app.js" asp-append-version="true"></script>
-
-        <script src="~/lib/mtd-ordermaker/main/js/mtd-select-list.js" asp-append-version="true"></script>
-        <script src="~/lib/mtd-ordermaker/main/js/mtd-text-field.js" asp-append-version="true"></script>
-        <script src="~/lib/mtd-ordermaker/mtd-img-selector/js/mtd-img-selector.js" asp-append-version="true"></script>
-        <script src="~/lib/mtd-ordermaker/mtd-checkbox/js/mtd-checkbox.js" asp-append-version="true"></script>
         <script src="~/lib/fontawesome/js/fontawesome.min.js" asp-append-version="true"></script>
         <script src="~/lib/fontawesome/js/solid.min.js" asp-append-version="true"></script>
         <script src="~/lib/fontawesome/js/regular.min.js" asp-append-version="true"></script>
+
+
+        <script src="~/lib/mtd-ordermaker/main/js/mtd-main.js" asp-append-version="true"></script>
+        <script src="~/lib/mtd-ordermaker/main/js/mtd-draggable.js" asp-append-version="true"></script>
+        <script src="~/lib/mtd-ordermaker/main/js/mtd-select-list.js" asp-append-version="true"></script>
+        <script src="~/lib/mtd-ordermaker/main/js/mtd-text-field.js" asp-append-version="true"></script>
+        <script src="~/lib/mtd-ordermaker/main/js/mtd-dialog.js" asp-append-version="true"></script>
+
+        <script src="~/lib/mtd-ordermaker/mtd-img-selector/js/mtd-img-selector.js" asp-append-version="true"></script>
+        <script src="~/lib/mtd-ordermaker/mtd-checkbox/js/mtd-checkbox.js" asp-append-version="true"></script>
+
     </environment>
     <environment exclude="Development">
         <script src="https://unpkg.com/material-components-web@6.0.0/dist/material-components-web.min.js"></script>
-        <script src="~/lib/mtd-ordermaker/main/js/mtd-main.min.js" asp-append-version="true"></script>
-        <script src="~/lib/mtd-ordermaker/mtd-img-selector/js/mtd-img-selector.js" asp-append-version="true"></script>
-        <script src="~/lib/mtd-ordermaker/mtd-checkbox/js/mtd-checkbox.js" asp-append-version="true"></script>
         <script src="~/lib/fontawesome/js/fontawesome.min.js" asp-append-version="true"></script>
         <script src="~/lib/fontawesome/js/solid.min.js" asp-append-version="true"></script>
         <script src="~/lib/fontawesome/js/regular.min.js" asp-append-version="true"></script>
+
+        @*<script src="~/lib/mtd-ordermaker/main/js/mtd-app.js" asp-append-version="true"></script>*@
+        <script src="~/lib/mtd-ordermaker/main/js/mtd-main.min.js" asp-append-version="true"></script>
+        <script src="~/lib/mtd-ordermaker/mtd-img-selector/js/mtd-img-selector.min.js" asp-append-version="true"></script>
+        <script src="~/lib/mtd-ordermaker/mtd-checkbox/js/mtd-checkbox.min.js" asp-append-version="true"></script>
+
     </environment>
 
 
-        @RenderSection("Scripts", required: false)
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
