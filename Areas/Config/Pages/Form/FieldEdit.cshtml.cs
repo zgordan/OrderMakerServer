@@ -26,6 +26,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
+using Org.BouncyCastle.Bcpg;
 
 namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
 {
@@ -44,6 +46,9 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
 
         public string FieldTypeName { get; set; }
         public string NameFormSelector { get; set; }
+
+        public List<MTDSelectListItem> PartItems { get; set; }
+        public List<MTDSelectListItem> TriggerItems { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -69,8 +74,22 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
                 NameFormSelector = selfForm.Name;
             }
 
-            ViewData["Parts"] = new SelectList(parts, "Id", "Name", selfPart.Id);
-            ViewData["Triggers"] = new SelectList(triggers, "Id", "Name", MtdFormPartField.MtdSysTrigger);
+            PartItems = new List<MTDSelectListItem>();
+            parts.ToList().ForEach((item) =>
+            {
+                bool selected = selfPart.Id == item.Id;
+                PartItems.Add(new MTDSelectListItem { Id = item.Id, Value = item.Name, Selectded = selected });
+            });
+
+            //ViewData["Parts"] = new SelectList(parts, "Id", "Name", selfPart.Id);
+
+            TriggerItems = new List<MTDSelectListItem>();
+            triggers.ToList().ForEach((item) => {
+                bool selected = MtdFormPartField.MtdSysTrigger == item.Id;
+                TriggerItems.Add(new MTDSelectListItem { Id = item.Id, Value=item.Name, Selectded=selected });
+            });
+
+           ///ViewData["Triggers"] = new SelectList(triggers, "Id", "Name", MtdFormPartField.MtdSysTrigger);
 
             return Page();
         }

@@ -22,46 +22,20 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHtmlLocalizer<SharedResource> Localizer
 
-<div class="mtd-desk-fields">
-    <div class="mtd-desk-field mtd-desk-field--border @if (Model.MtdFormPart.MtdFormPartHeader == null) {<text>mtd-desk-field--space</text>}">
-        <span style="font-size: medium; color: gray">@Localizer["Image for section"]</span>
-        <div style="display: flex; margin-top: 8px;">
-            @if (Model.MtdFormPart.MtdFormPartHeader != null)
-            {
-                var base64 = Convert.ToBase64String(Model.MtdFormPart.MtdFormPartHeader.Image);
-                var imgSrc = String.Format("data:{0};base64,{1}", Model.MtdFormPart.MtdFormPartHeader.ImageType, base64);
+    <div class="mtd-desk-fields">
 
-                <div style="max-width: 48px; overflow:hidden">
-                    <img src="@imgSrc" height="48" />
-                </div>
-            }
-
+        <div class="mtd-desk-field mtd-desk-field--border" style="padding-bottom: 28px">
+            <label>@Localizer["Visibility"]</label>
             @{
-                string shadow1 = "mdc-elevation--z2";
-                if (Model.MtdFormPart.MtdFormPartHeader == null) { shadow1 = ""; }
+                bool boolTitle = Model.MtdFormPart.Title == 1 ? true : false;
+                bool boolChild = Model.MtdFormPart.Child == 1 ? true : false;
             }
 
-            <div mtd-file-upload="header" class="mtd-file-upload @shadow1">
-                <div class="mtd-file-select">
-                    <div class="mtd-file-select-button" id="header-file-upload-title">@Localizer["Select file"]</div>
-                    <div class="mtd-file-select-title" id="header-file-upload-result" mtd-file-upload-text="@Localizer["File not selected..."]">
-                        @Localizer["File not selected..."]
-                    </div>
-                    <input type="file" id="header-file-upload-input" name="header-file-upload-input">
-                </div>
-                <div class="mtd-file-select-cancel">
-                    <button id="header-file-upload-cancel" class="mdc-icon-button material-icons" type="button">close</button>
-                </div>
-            </div>
-        </div>
-        @if (Model.MtdFormPart.MtdFormPartHeader != null)
-        {
             <div class="mdc-form-field">
                 <div class="mdc-checkbox">
-                    <input type="checkbox"
+                    <input type="checkbox" @if (boolTitle) { <text> checked</text>}
                            class="mdc-checkbox__native-control"
-                           id="header-delete"
-                           name="header-delete" />
+                           id="checkbox-1" name="partTitle" />
                     <div class="mdc-checkbox__background">
                         <svg class="mdc-checkbox__checkmark"
                              viewBox="0 0 24 24">
@@ -72,52 +46,96 @@
                         <div class="mdc-checkbox__mixedmark"></div>
                     </div>
                 </div>
-                <label for="header-delete">@Localizer["Delete image"]</label>
+                <label for="checkbox-1">@Localizer["Title"]</label>
             </div>
-        }
-    </div>
 
-    <div class="mtd-desk-field mtd-desk-field--border" style="padding-bottom: 28px">
-        <label>@Localizer["Visibility"]</label>
-        @{
-            bool boolTitle = Model.MtdFormPart.Title == 1 ? true : false;
-            bool boolChild = Model.MtdFormPart.Child == 1 ? true : false;
-        }
-
-        <div class="mdc-form-field">
-            <div class="mdc-checkbox">
-                <input type="checkbox" @if (boolTitle) { <text>checked</text>} 
-                       class="mdc-checkbox__native-control"
-                       id="checkbox-1" name="partTitle" />
-                <div class="mdc-checkbox__background">
-                    <svg class="mdc-checkbox__checkmark"
-                         viewBox="0 0 24 24">
-                        <path class="mdc-checkbox__checkmark-path"
-                              fill="none"
-                              d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                    </svg>
-                    <div class="mdc-checkbox__mixedmark"></div>
+            <div class="mdc-form-field">
+                <div class="mdc-checkbox">
+                    <input type="checkbox" @if (boolChild) { <text> checked</text>}
+                           class="mdc-checkbox__native-control"
+                           id="checkbox-2" name="partChild" />
+                    <div class="mdc-checkbox__background">
+                        <svg class="mdc-checkbox__checkmark"
+                             viewBox="0 0 24 24">
+                            <path class="mdc-checkbox__checkmark-path"
+                                  fill="none"
+                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                        </svg>
+                        <div class="mdc-checkbox__mixedmark"></div>
+                    </div>
                 </div>
+                <label for="checkbox-2">@Localizer["On child forms"]</label>
             </div>
-            <label for="checkbox-1">@Localizer["Title"]</label>
         </div>
 
-        <div class="mdc-form-field">
-            <div class="mdc-checkbox">
-                <input type="checkbox" @if (boolChild) { <text>checked</text>} 
-                       class="mdc-checkbox__native-control"
-                       id="checkbox-2" name="partChild" />
-                <div class="mdc-checkbox__background">
-                    <svg class="mdc-checkbox__checkmark"
-                         viewBox="0 0 24 24">
-                        <path class="mdc-checkbox__checkmark-path"
-                              fill="none"
-                              d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                    </svg>
-                    <div class="mdc-checkbox__mixedmark"></div>
+
+        <div class="mtd-desk-field mtd-desk-field--border @if (Model.MtdFormPart.MtdFormPartHeader == null) {<text>mtd-desk-field--space</text>}">
+            <span style="font-size: medium; color: gray">@Localizer["Image for section"]</span>
+            <div style="display: flex; margin-top: 8px;">
+                @if (Model.MtdFormPart.MtdFormPartHeader != null)
+                {
+                    var base64 = Convert.ToBase64String(Model.MtdFormPart.MtdFormPartHeader.Image);
+                    var imgSrc = String.Format("data:{0};base64,{1}", Model.MtdFormPart.MtdFormPartHeader.ImageType, base64);
+
+                    <div style="max-width: 48px; overflow:hidden">
+                        <img src="@imgSrc" height="48" />
+                    </div>
+                }
+
+                @{
+                    string shadow1 = "mdc-elevation--z2";
+                    if (Model.MtdFormPart.MtdFormPartHeader == null) { shadow1 = ""; }
+                }
+
+                <div mtd-file-upload="header" class="mtd-file-upload @shadow1">
+                    <div class="mtd-file-select">
+                        <div class="mtd-file-select-button" id="header-file-upload-title">@Localizer["Select file"]</div>
+                        <div class="mtd-file-select-title" id="header-file-upload-result" mtd-file-upload-text="@Localizer["File not selected..."]">
+                            @Localizer["File not selected..."]
+                        </div>
+                        <input type="file" id="header-file-upload-input" name="header-file-upload-input">
+                    </div>
+                    <div class="mtd-file-select-cancel">
+                        <button id="header-file-upload-cancel" class="mdc-icon-button material-icons" type="button">close</button>
+                    </div>
                 </div>
             </div>
-            <label for="checkbox-2">@Localizer["On child forms"]</label>
+            @if (Model.MtdFormPart.MtdFormPartHeader != null)
+            {
+                <div class="mdc-form-field">
+                    <div class="mdc-checkbox">
+                        <input type="checkbox"
+                               class="mdc-checkbox__native-control"
+                               id="header-delete"
+                               name="header-delete" />
+                        <div class="mdc-checkbox__background">
+                            <svg class="mdc-checkbox__checkmark"
+                                 viewBox="0 0 24 24">
+                                <path class="mdc-checkbox__checkmark-path"
+                                      fill="none"
+                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                            </svg>
+                            <div class="mdc-checkbox__mixedmark"></div>
+                        </div>
+                    </div>
+                    <label for="header-delete">@Localizer["Delete image"]</label>
+                </div>
+            }
         </div>
+
+        <div class="mtd-desk-field mtd-desk-field--border">
+
+            @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
+               {
+                   Id = "select-style",
+                   Name = "partStyle",
+                   Items = Model.Styles,
+                   Label = "Part style",
+                   LabelLocalized = true,
+                   ValueId = Model.MtdFormPart.MtdSysStyle.ToString(),
+                   MTDSelectListView = MTDSelectListViews.Default
+               })
+
+        </div>
+
     </div>
-</div>

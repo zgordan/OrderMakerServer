@@ -3,7 +3,7 @@
 @foreach (var entry in Model.Items)
 {
  
-    if (entry.Id == Model.ValueId)
+    if (entry.Id == Model.ValueId || entry.Selectded)
     {
 
         <li @entry.Attributes class="mdc-list-item mdc-list-item--selected" data-value="@entry.Id" aria-selected="true" role="option">

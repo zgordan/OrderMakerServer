@@ -47,16 +47,20 @@
     </li>
 }
 
-
-<div class="mdc-elevation--z2 mtd-config-form-parts">
-
-    <div id="partsCreator">
-        <a mtd-data-href="/config/form/partcreate?formId=@Model.MtdForm.Id" class="mdc-fab mdc-fab--extended" aria-label="Create">
-            <span class="material-icons mdc-fab__icon">add</span>
-            <span class="mdc-fab__label">@Localizer["Create"]</span>
-        </a>
+<div class="mtd-desk">
+    <div class="mtd-desk-panel">
+        <div style="padding-left: 16px">
+            <button mtd-data-href="/config/form/partcreate?formId=@Model.MtdForm.Id" class="mdc-fab mdc-fab--extended" aria-label="Create">
+                <div class="mdc-fab__ripple"></div>
+                <span class="material-icons mdc-fab__icon">add</span>
+                <span class="mdc-fab__label">@Localizer["Create"]</span>
+            </button>
+        </div>
     </div>
+</div>
 
+
+<div class="mtd-config-form-parts">
     <div class="mtd-config-form-parts__title">
         <div class="mtd-config-form-parts__header">
             @if (Model.MtdForm.MtdFormHeader != null)
@@ -70,20 +74,22 @@
             <span>@Model.MtdForm.Name</span>
         </div>
     </div>
+    
     <hr />
-    <form mtd-data-form method="post" action="/api/config/form/part/sequence">
+    
+    <form mtd-data-form="sequence" method="post" action="/api/config/form/part/sequence">
         @Html.AntiForgeryToken()
-        <input id="fieldSeqData" name="fieldSeqData" type="hidden" />
+        <input mtd-data-sequence name="fieldSeqData" type="hidden" />
         <input name="fieldPart" type="hidden" value="@Model.CurrentPartId" />
         <input name="fieldForm" type="hidden" value="@Model.MtdForm.Id" />
-        <input id="configListSeq" mtd-data-clicker type="hidden" />
+        <input mtd-data-clicker type="hidden" />
     </form>
 
-    <div class="mtd-config-form-parts__list">
-        <ul id="configListParts" class="mdc-list">
+    <div mtd-draggable class="mtd-config-form-parts__list">
+        <ul class="mdc-list">
             @foreach (var part in Model.MtdForm.MtdFormPart.OrderBy(x => x.Sequence))
             {
-                <li mtd-data-href="/config/form/partedit?id=@part.Id" id="@part.Id-licol" class="mdt-config-form-parts__item mdc-list-item" draggable="true" role="button" aria-checked="false"
+                <li mtd-data-href="/config/form/partedit?id=@part.Id" id="@part.Id-licol" class="mdc-list-item" draggable="true" role="button" aria-checked="false"
                     data-value="@part.Id">
                     <label class="mdc-list-item__text" for="@part.Id-lc">@part.Name</label>
                     <div class="mtd-config-form-parts__bdrag">
@@ -104,9 +110,3 @@
         </ul>
     </div>
 </div>
-
-
-
-@section Scripts{
-    <script src="~/lib/mtd-ordermaker/config/js/mtd-config-form-parts.js" asp-append-version="true"></script>
-}

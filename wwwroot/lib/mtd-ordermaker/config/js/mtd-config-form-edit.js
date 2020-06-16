@@ -4,3 +4,7 @@
     document.querySelector('[mtd-data-delete]').addEventListener('click', () => {
         dialog.open();
     });
+
+
+new MTDTextField("form-name");
+new MTDTextField("form-note");

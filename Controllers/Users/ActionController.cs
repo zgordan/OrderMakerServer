@@ -70,7 +70,9 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                        }
             };
 
-            await _emailSender.SendEmailBlankAsync(blankEmail);
+                        
+            bool isOk = await _emailSender.SendEmailBlankAsync(blankEmail);
+            if (!isOk) { return BadRequest(_localizer["Error sending email."]); }
 
             user.EmailConfirmed = false;
             await _userManager.UpdateAsync(user);
@@ -112,7 +114,8 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                        }
             };
 
-            await _emailSender.SendEmailBlankAsync(blankEmail);
+            bool isOk = await _emailSender.SendEmailBlankAsync(blankEmail);
+            if (!isOk) { return BadRequest(_localizer["Error sending email."]); }
 
             return Ok();
         }
@@ -158,7 +161,8 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                        }
             };
 
-            await _emailSender.SendEmailBlankAsync(blankEmail);
+            bool isOk = await _emailSender.SendEmailBlankAsync(blankEmail);
+            if (!isOk) { return BadRequest(_localizer["Error sending email."]); }
 
             return Ok();
         }

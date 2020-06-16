@@ -51,111 +51,132 @@
     </li>
 }
 
-<div class="mdc-elevation--z2 mtd-config-form-part">
-    @if (Model.MtdForm.MtdFormHeader != null)
-    {
-        var base64 = Convert.ToBase64String(Model.MtdForm.MtdFormHeader.Image);
-        var imgSrc = String.Format("data:{0};base64,{1}", Model.MtdForm.MtdFormHeader.ImageType, base64);
-        <img src="@imgSrc" style="max-width: 260px; max-height: 72px;" />
-    }
-    <div style="text-align: right">
-        <span style="font-size: medium; text-transform:uppercase; font-weight: bold;">@Model.MtdForm.Name</span>
+<div class="mtd-desk">
+    <div class="mtd-desk-panel">
+        <div style="padding-left: 16px">
+            <button mtd-data-clicker-by="clicker-save" class="mdc-fab mdc-fab--extended" aria-label="save">
+                <div class="mdc-fab__ripple"></div>
+                <span class="material-icons mdc-fab__icon">save</span>
+                <span class="mdc-fab__label">@Localizer["Save"]</span>
+            </button>
+        </div>
     </div>
-    <hr />
-    <table style="width: 100%">
-        <tr>
-            <td>@Localizer["Field type"]</td>
-            <td><b>@Model.FieldTypeName</b></td>
-        </tr>
-        @if (Model.NameFormSelector != null)
-        {
-            <tr>
-                <td>
-                    @Localizer["List from"]
-                </td>
-                <td>
-                    <b>@Model.NameFormSelector</b>
-                </td>
-            </tr>
-        }
-    </table>
-    <hr />
-    <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/config/form/field/edit">
+
+    <div style="display: flex; flex-wrap: wrap; align-items: center; padding: 0 16px 4px 16px; border-bottom: 1px solid #ccc">
+        <div style="flex-grow:1">
+            @if (Model.MtdForm.MtdFormHeader != null)
+            {
+                var base64 = Convert.ToBase64String(Model.MtdForm.MtdFormHeader.Image);
+                var imgSrc = String.Format("data:{0};base64,{1}", Model.MtdForm.MtdFormHeader.ImageType, base64);
+                <img src="@imgSrc" style="max-width: 260px; max-height: 72px;" />
+            }
+            <div>
+                <span style="font-size: medium; text-transform:uppercase; font-weight: bold;">@Model.MtdForm.Name</span>
+            </div>
+        </div>
+        <div style="text-align: left">
+            <div>
+                <span>@Localizer["Field type:"]</span>
+                <span><strong>@Model.FieldTypeName</strong></span>
+            </div>
+            @if (Model.NameFormSelector != null)
+            {
+                <div>
+                    <span>@Localizer["List from:"]</span>
+                    <span><strong>@Model.NameFormSelector</strong></span>
+                </div>
+            }
+        </div>
+
+    </div>
+
+    <form mtd-data-form method="post" autocomplete="off" action="/api/config/form/field/edit" novalidate>
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="MtdForm.Id" name="formId" />
         <input type="hidden" asp-for="MtdFormPartField.Id" name="fieldId" />
+        <input id="clicker-save" type="hidden" mtd-data-clicker mtd-data-message="@Localizer["Changes saved."]" />
 
-        <div style="display: flex;">
-            <div style="text-align: right; padding: 4px;">
-                @await Component.InvokeAsync("MTDCheckbox", new { id = Model.MtdFormPartField.Id, Label = "Required", result = Model.MtdFormPartField.Required == 1 ? true : false })
-            </div>
-
-            <div style="text-align: right; padding: 4px;">
-                @await Component.InvokeAsync("MTDCheckbox", new { id = $"{Model.MtdFormPartField.Id}-readOnly", Label = "ReadOnly", result = Model.MtdFormPartField.ReadOnly == 1 ? true : false })
-            </div>
-        </div>
-
-        <div id="fieldType" class="mdc-select" style="width: 100%; margin-top: 8px;">
-            <i class="mdc-select__dropdown-icon"></i>
-            <select class="mdc-select__native-control" asp-for="@Model.MtdFormPartField.MtdFormPart" asp-items="ViewBag.Parts" name="fieldPart"></select>
-            <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Form part"]</label>
-            <div class="mdc-line-ripple"></div>
-        </div>
-
-        <div id="fieldTrigger" class="mdc-select" style="width: 100%; margin-top: 8px;">
-            <i class="mdc-select__dropdown-icon"></i>
-            <select class="mdc-select__native-control" asp-for="@Model.MtdFormPartField.MtdSysTrigger" asp-items="ViewBag.Triggers" name="fieldTrigger"></select>
-            <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Trigger"]</label>
-            <div class="mdc-line-ripple"></div>
-        </div>
-
-        <div id="config-form-name" class="mdc-text-field mdc-text-field--outlined" style="width: 100%; margin-top: 16px">
-            <input type="text" id="tf-outlined" mtd-required="config-form-name" class="mdc-text-field__input" asp-for="MtdFormPartField.Name" name="fieldName" required />
-            <div class="mdc-notched-outline">
-                <div class="mdc-notched-outline__leading"></div>
-                <div class="mdc-notched-outline__notch">
-                    <label for="tf-outlined" class="mdc-floating-label">@Localizer["Name"]</label>
+        <div class="mtd-desk-blocks" style="padding-top: 16px;">
+            <div class="mtd-desk-block">
+                <div class="mtd-desk-field-full">
+                    @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                   {
+                       Id = "field-name",
+                       Name = "fieldName",
+                       Label = "Name",
+                       LabelLocalized = true,
+                       Value = Model.MtdFormPartField.Name,
+                       Required = true,
+                       MTDTexFieldView = MTDTextFieldViews.Outlined
+                   })
                 </div>
-                <div class="mdc-notched-outline__trailing"></div>
-            </div>
-        </div>
-        <div class="mdc-text-field-helper-line">
-            <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true">
-                @Localizer["Required field"]
-            </div>
-        </div>
-        <div id="config-form-description" class="mdc-text-field mdc-text-field--textarea" style="width: 100%; margin-top: 16px;">
-            <textarea id="textarea" mtd-required="config-form-description" class="mdc-text-field__input" rows="3" cols="40" asp-for="MtdFormPartField.Description" name="fieldNote" required></textarea>
-            <div class="mdc-notched-outline">
-                <div class="mdc-notched-outline__leading"></div>
-                <div class="mdc-notched-outline__notch">
-                    <label for="textarea" class="mdc-floating-label">@Localizer["Description"]</label>
+                <div class="mtd-desk-field-full">
+                    @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                   {
+                       Id = "field-note",
+                       Name = "fieldNote",
+                       Label = "Description",
+                       LabelLocalized = true,
+                       Value = Model.MtdFormPartField.Description,
+                       Required = true,
+                       MTDTexFieldView = MTDTextFieldViews.TextArea,
+                       Cols = 40,
+                       Rows = 7,
+
+                   })
                 </div>
-                <div class="mdc-notched-outline__trailing"></div>
             </div>
-        </div>
-        <div class="mdc-text-field-helper-line">
-            <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true">
-                @Localizer["Required field"]
+            <div class="mtd-desk-block">
+
+                <div class="mtd-desk-field mtd-desk-field--border">
+                    <div style="display: flex;">
+                        <div style="padding: 4px;">
+                            @await Component.InvokeAsync("MTDCheckbox", new { id = Model.MtdFormPartField.Id, Label = "Required", result = Model.MtdFormPartField.Required == 1 ? true : false })
+                        </div>
+
+                        <div style="padding: 4px;">
+                            @await Component.InvokeAsync("MTDCheckbox", new { id = $"{Model.MtdFormPartField.Id}-readOnly", Label = "ReadOnly", result = Model.MtdFormPartField.ReadOnly == 1 ? true : false })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mtd-desk-field mtd-desk-field--border">
+                    @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
+                       {
+                           Id = "select-part",
+                           Name = "fieldPart",
+                           Items = Model.PartItems,
+                           Label = "Form part",
+                           LabelLocalized = true,
+                       })
+                </div>
+                <div class="mtd-desk-field mtd-desk-field--border">
+                    @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
+                       {
+                           Id = "select-trigger",
+                           Name = "fieldTrigger",
+                           Items = Model.TriggerItems,
+                           Label = "Trigger",
+                           LabelLocalized = true,
+                       })
+                </div>
+                <div class="mtd-desk-field mtd-desk-field--border">
+                    @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                   {
+                       Id = "field-default",
+                       Name = "fieldDefault",
+                       Label = "Default data",
+                       LabelLocalized = true,
+                       Value = Model.MtdFormPartField.DefaultData,
+                       MTDTexFieldView = MTDTextFieldViews.Default,
+
+                   })
+                </div>
             </div>
         </div>
 
-        <div id="config-form-default" class="mdc-text-field mdc-text-field--outlined" style="width: 100%; margin-top: 16px">
-            <input type="text" id="config-form-default-input" mtd-required="config-form-name" class="mdc-text-field__input" asp-for="MtdFormPartField.DefaultData" name="fieldDefault" />
-            <div class="mdc-notched-outline">
-                <div class="mdc-notched-outline__leading"></div>
-                <div class="mdc-notched-outline__notch">
-                    <label for="config-form-default-input" class="mdc-floating-label">@Localizer["Default data"]</label>
-                </div>
-                <div class="mdc-notched-outline__trailing"></div>
-            </div>
-        </div>
-        <div style="text-align: right; margin-top: 16px;">
-            <button mtd-data-clicker mtd-data-message="@Localizer["Changes saved"]." class="mdc-button mdc-button--raised" type="button">@Localizer["Save"]</button>
-        </div>
     </form>
 </div>
-
 
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/config/form/field/delete'>
     @Html.AntiForgeryToken()

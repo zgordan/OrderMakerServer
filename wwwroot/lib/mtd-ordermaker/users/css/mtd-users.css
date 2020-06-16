@@ -5,7 +5,8 @@
   overflow-x: auto;
 }
 .mtd-users-rows table {
-  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
 }
 .mtd-users-rows table td {
   overflow: hidden;
@@ -17,36 +18,21 @@
   text-align: left !important;
   padding: 8px;
 }
-.mtd-users-rows table th:not(:first-child) {
+.mtd-users-rows table th {
   font-weight: 100;
   color: gray;
 }
-.mtd-users-rows table th:first-child {
-  color: gray;
-  text-align: center;
-  width: 11em;
-}
-.mtd-users-rows table td,
-th:not(:first-child) {
-  padding-left: 16px;
-  padding-right: 12px;
+.mtd-users-rows table td {
+  padding: 16px;
   white-space: nowrap;
-  min-width: 145px;
 }
 .mtd-users-rows table tbody tr {
   height: 48px;
   border-top: 1px solid lightgray;
-  cursor: default;
-}
-.mtd-users-rows-selected {
-  background-color: whitesmoke !important;
+  cursor: pointer;
 }
 .mtd-users-rows table tbody tr:hover {
-  background-color: whitesmoke;
-  opacity: 1 !important;
-}
-.mtd-users-rows table td:first-child {
-  max-width: 11em;
+  background-color: rgba(100, 149, 237, 0.08);
 }
 .mtd-users-rows-actions {
   background-color: whitesmoke;

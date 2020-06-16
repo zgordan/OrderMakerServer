@@ -19,6 +19,7 @@
 @page
 @model CreateModel
 @using Microsoft.AspNetCore.Mvc.Localization
+@using Mtd.OrderMaker.Server.AppConfig
 @inject IHtmlLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["New user"];
@@ -29,7 +30,83 @@
     <li><a href="/Identity/Users/Accounts">@Localizer["Accounts"]</a></li>
     <li>@ViewData["Title"]</li>
 }
-<div class="mdc-elevation--z8" style="max-width: 450px;margin: 0 auto; left: 50%; padding: 16px 16px 64px 16px; background-color: white">
+
+<div class="mtd-desk">
+
+    <div class="mtd-desk-panel">
+        <div style="padding-left: 16px">
+            <button mtd-data-clicker-by="clicker-create" class="mdc-fab mdc-fab--extended" aria-label="Create" type="submit">
+                <div class="mdc-fab__ripple"></div>
+                <span class="material-icons mdc-fab__icon">person_add</span>
+                <span class="mdc-fab__label">@Localizer["Create"]</span>
+            </button>
+        </div>
+    </div>
+    <form mtd-data-form method="post" autocomplete="off" novalidate>
+        <input type="hidden" id="clicker-create" mtd-data-clicker mtd-data-location="/identity/users/accounts/edit?id=@Model.Input.Id"/>
+        <input type="hidden" asp-for="Input.Id"/>
+        <div class="mtd-desk-field">
+            @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+               {
+                   Id = "login-name",
+                   Name = "Input.UserName",
+                   Label = "Login name",
+                   LabelLocalized = true,
+                   Required = true,
+                   IconLeading = "fas fa-user fa-lg"
+               })
+        </div>
+        <div class="mtd-desk-field">
+            @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+               {
+                   Id = "login-title",
+                   Name = "Input.Title",
+                   Label = "Display name",
+                   LabelLocalized = true,
+                   Required = true,
+                   IconLeading = "fas fa-user-tag fa-lg"
+               })
+        </div>
+        <div class="mtd-desk-field">
+            @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+               {
+                   Id = "login-email",
+                   Name = "Input.Email",
+                   Label = "Email",
+                   LabelLocalized = true,
+                   Required = true,
+                   IconLeading = "fas fa-envelope fa-lg"
+               })
+        </div>
+
+        <div class="mtd-desk-field">
+            @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+               {
+                   Id = "login-phone",
+                   Name = "Input.PhoneNumber",
+                   Label = "Phone",
+                   LabelLocalized = true,
+                   IconLeading = "fas fa-phone fa-lg",
+                   Placeholder = "+0 000 000 0000",
+                   HelperText = "Phone number pattern: +0 000 000 0000",
+                   HelperTextLocalizer = true,
+                   Type = "tel",
+                   Pattern = RegexPatterns.Phone
+               })
+        </div>
+    </form>
+</div>
+
+@section Scripts{ 
+ <script>
+     new MTDTextField("login-name");
+     new MTDTextField("login-title");
+     new MTDTextField("login-email");
+     new MTDTextField("login-phone");
+ </script>
+}
+
+@*<div class="mdc-elevation--z8" style="max-width: 450px;margin: 0 auto; left: 50%; padding: 16px 16px 64px 16px; background-color: white">
     <div asp-validation-summary="All" class="mtd-main-danger"></div>
     <form id="newuser-form" method="post" autocomplete="off">
         <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon" style="width: 100%; margin-top: 16px;">
@@ -97,4 +174,4 @@
             <button id="update-profile-button" type="submit" class="mdc-button mdc-button--raised">@Localizer["Create"]</button>
         </div>
     </form>
-</div>
+</div>*@

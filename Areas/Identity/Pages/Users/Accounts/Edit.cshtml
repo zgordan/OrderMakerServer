@@ -27,7 +27,6 @@
 }
 @section Head {
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/users/css/mtd-users.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/mtd-ordermaker/store/css/mtd-store-edit.css" asp-append-version="true" />
 }
 @section Breadcrumb {
     <li><a href="/Identity/Users">@Localizer["Users"]</a></li>
@@ -71,98 +70,41 @@
         <span class="mdc-list-item__text">@Localizer["Delete user"]</span>
     </li>
 }
-<form mtd-data-form id="profile-form" method="post" action="/api/users/admin/profile" autocomplete="off">
-    @Html.AntiForgeryToken()
-    <div class="mtd-desk">
-        <div class="mtd-store-edit-bar" style="text-align: right">
-            <div class="mtd-store-edit-control" style="position:absolute">
-                <a mtd-data-clicker class="mdc-fab mdc-fab--extended" aria-label="Save">
-                    <span class="material-icons mdc-fab__icon">save</span>
-                    <span class="mdc-fab__label">@Localizer["Save"]</span>
-                </a>
-            </div>
-            <div>
-                <button mtd-data-href="/identity/users/accounts" class="mdc-button" type="button">
-                    <span class="mdc-button__label">@Localizer["Cancel"]</span>
-                    <i class="material-icons mdc-button__icon" aria-hidden="true">cancel</i>
-                </button>
-            </div>
-        </div>
-        <div>
-            <div class="mtd-users-edit-title" style="padding: 8px">
-                <div style="background-color: lightgray;   width: 52px; height: 52px; border-radius: 50%; text-align:center; align-self: center">
-                    <i class="material-icons" style="font-size: 48px; color: white">person</i>
-                </div>
-                <div class="mtd-users-edit-names" style="align-self: center">
-                    <div style="font-size: x-large; font-weight: bold">
-                        @Model.UserName
-                    </div>
-                </div>
-            </div>
-            <div class="mtd-users-wrap">
-                <div style="padding: 8px">
-                    @await Html.PartialAsync("_ProfielPartial.cshtml")
-                </div>
-                <div style="flex-grow: 1; padding: 24px 8px 8px 8px;">
-                    <div style="padding-bottom: 16px;">
-                        <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon" style="width: 100%;">
-                            <i class="material-icons mdc-text-field__icon">group</i>
-                            <input id="login-title-group" asp-for="Input.TitleGroup" type="text" class="mdc-text-field__input" />
-                            <div class="mdc-notched-outline">
-                                <div class="mdc-notched-outline__leading"></div>
-                                <div class="mdc-notched-outline__notch">
-                                    <label for="login-title-group" class="mdc-floating-label">@Localizer["Title group name"]</label>
-                                </div>
-                                <div class="mdc-notched-outline__trailing"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="position:relative">
-                        <div style="position: absolute; padding: 4px; top: -16px; left: 12px; background-color:white;font-weight: 500; z-index:1;">
-                            @Localizer["Groups user"]
-                        </div>
-                    </div>                    
-                    <div style="border: 1px solid lightgray; padding: 8px; height: 256px;position:relative; overflow: hidden; overflow-y: auto; ">
-                        <div style="display: flex; flex-wrap:wrap; max-width: 950px; ">
-                            @if (!Model.MtdGroups.Any())
-                            {
-                            <span style="padding: 4px;">
-                                @Localizer["No groups to select"]
-                            </span>
-                            }
-                            @foreach (var group in Model.MtdGroups)
-                            {
 
-                                bool checkGroup = Model.GroupIds.Contains(group.Id);
-
-                            <div style="margin: 4px; padding:4px; display: flex; background-color: whitesmoke; border-radius: 10px; width: 200px;  overflow:hidden;">
-                                <div class="mdc-form-field">
-                                    <div class="mdc-checkbox">
-                                        <input type="checkbox"
-                                               class="mdc-checkbox__native-control"
-                                               id="@group.Id-group" name="@group.Id-group" @if (checkGroup) { <text> checked</text>} />
-                                        <div class="mdc-checkbox__background">
-                                            <svg class="mdc-checkbox__checkmark"
-                                                 viewBox="0 0 24 24">
-                                                <path class="mdc-checkbox__checkmark-path"
-                                                      fill="none"
-                                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                            </svg>
-                                            <div class="mdc-checkbox__mixedmark"></div>
-                                        </div>
-                                    </div>
-                                    <label for="@group.Id-group">@group.Name</label>
-                                </div>
-                            </div>
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="mtd-desk">
+    <div class="mtd-desk-panel">
+        <div style="padding-left: 16px">
+            <button mtd-data-clicker-by="clicker-save" class="mdc-fab mdc-fab--extended" aria-label="Save">
+                <div class="mdc-fab__ripple"></div>
+                <span class="material-icons mdc-fab__icon">save</span>
+                <span class="mdc-fab__label">@Localizer["Save"]</span>
+            </button>
         </div>
-        @await Html.PartialAsync("_CpqRulesPartial.cshtml")
     </div>
-</form>
+
+    <div class="mtd-users-edit-title" style="padding-left: 16px">
+        <div style="background-color: lightgray;   width: 52px; height: 52px; border-radius: 50%; text-align:center; align-self: center">
+            <i class="material-icons" style="font-size: 48px; color: white">person</i>
+        </div>
+        <div class="mtd-users-edit-names" style="align-self: center">
+            <div style="font-size: x-large; font-weight: bold">
+                @Model.UserName
+            </div>
+        </div>
+    </div>
+
+    <form mtd-data-form id="profile-form" method="post" action="/api/users/admin/profile" autocomplete="off">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="UserName" value="@Model.UserName" />
+        <input type="hidden" id="clicker-save" mtd-data-clicker mtd-data-message="@Localizer["Changes saved."]" />
+        @await Html.PartialAsync("_ProfielPartial.cshtml")
+        @await Html.PartialAsync("_editGroups.cshtml")
+        @await Html.PartialAsync("_CpqRulesPartial.cshtml")
+    </form>
+
+</div>
+
+
 
 <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/users/admin/confirm/email">
     @Html.AntiForgeryToken()

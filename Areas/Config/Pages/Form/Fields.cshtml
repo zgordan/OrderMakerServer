@@ -47,15 +47,29 @@
     </li>
 }
 
-<div class="mdc-elevation--z2 mtd-config-form-fields">
+<form id="configPartSelector" method="get">
+    <input type="hidden" asp-for="MtdForm.Id" name="formId" />
+    <input id="configCurrentPart" type="hidden" asp-for="CurrentPartId" name="partId" />
+</form>
 
-    <div id="fieldsCreator">
-        <a mtd-data-href="/config/form/fieldcreate?idPart=@Model.CurrentPartId" class="mdc-fab mdc-fab--extended" aria-label="Create">
-            <span class="material-icons mdc-fab__icon">add</span>
-            <span class="mdc-fab__label">@Localizer["Create"]</span>
-        </a>
+<form mtd-data-form="sequence" method="post" action="/api/config/form/field/sequence">
+    @Html.AntiForgeryToken()
+    <input mtd-data-sequence name="fieldSeqData" type="hidden" />
+    <input name="fieldPart" type="hidden" value="@Model.CurrentPartId" />
+    <input name="fieldForm" type="hidden" value="@Model.MtdForm.Id" />
+    <input mtd-data-clicker type="hidden" />
+</form>
+
+<div class="mtd-desk">
+    <div class="mtd-desk-panel">
+        <div style="padding-left: 16px;">
+            <button mtd-data-href="/config/form/fieldcreate?idPart=@Model.CurrentPartId" class="mdc-fab mdc-fab--extended" aria-label="Create">
+                <div class="mdc-fab__ripple"></div>
+                <span class="material-icons mdc-fab__icon">add</span>
+                <span class="mdc-fab__label">@Localizer["Create"]</span>
+            </button>
+        </div>
     </div>
-
     <div class="mtd-config-form-fields__title">
         <div class="mtd-config-form-fields__header">
             @if (Model.MtdForm.MtdFormHeader != null)
@@ -69,61 +83,42 @@
             <span>@Model.MtdForm.Name</span>
         </div>
     </div>
-
-    <form id="configPartSelector" method="get">
-        <input type="hidden" asp-for="MtdForm.Id" name="form-id" />
-        <input id="configCurrentPart" type="hidden" asp-for="CurrentPartId" name="idPart" />
-    </form>
-
-    <div class="mtd-config-form-fields__parts">
-        <div class="mtd-config-form-fields__plist">
-            <div id="configSelectPart" class="mdc-select mdc-select--outlined" style="width: 100%; border-bottom: 1px solid gray;">
-                <i class="mdc-select__dropdown-icon"></i>
-                <select mtd-data-result class="mdc-select__native-control" asp-for="CurrentPartId">
-                    @foreach (var part in Model.MtdForm.MtdFormPart.OrderBy(x => x.Sequence))
-                    {
-                        <option value="@part.Id">@part.Name</option>
-                    }
-                </select>
-                <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Part"]</label>
-                <div class="mdc-line-ripple"></div>
-            </div>
-        </div>
+    <div>
+        @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
+           {
+               Id = "select-part",
+               Name = "CurrentPartId",
+               Label = "Form part",
+               LabelLocalized = true,
+               Items = Model.PartItems,
+               ValueId = Model.CurrentPartId,
+           })
     </div>
 
-    <form mtd-data-form method="post" action="/api/config/form/field/sequence">
-        @Html.AntiForgeryToken()
-        <input id="fieldSeqData" name="fieldSeqData" type="hidden" />
-        <input name="fieldPart" type="hidden" value="@Model.CurrentPartId" />
-        <input name="fieldForm" type="hidden" value="@Model.MtdForm.Id" />
-        <input id="configListSeq" mtd-data-clicker type="hidden" />
-    </form>
+    <ul mtd-draggable class="mdc-list">
+        @foreach (var field in Model.MtdFormPartFields)
+        {
+            <li mtd-data-href="/config/form/fieldedit?id=@field.Id" id="@field.Id-licol" class="mdc-list-item" draggable="true" role="button" aria-checked="false"
+                data-value="@field.Id"
+                data-part="@field.MtdFormPart">
+                <label class="mdc-list-item__text" for="@field.Id-lc">@field.Name</label>
+                <div class="mtd-config-form-fields__bdrag">
+                    <i class="material-icons" style="color:gray">drag_handle</i>
+                </div>
+                <div class="mtd-config-form-fields__bedit">
+                    <button id="add-to-favorites"
+                            class="mdc-icon-button"
+                            aria-label="Add to favorites"
+                            aria-hidden="true"
+                            aria-pressed="false"
+                            mtd-data-href="/config/form/fieldedit?id=@field.Id">
+                        <i class="material-icons mdc-icon-button__icon">edit</i>
+                    </button>
+                </div>
+            </li>
+        }
+    </ul>
 
-    <div class="mtd-config-form-fields__list">
-        <ul id="configListFields" class="mdc-list">
-            @foreach (var field in Model.MtdFormPartFields)
-            {
-                <li mtd-data-href="/config/form/fieldedit?id=@field.Id" id="@field.Id-licol" class="mdc-list-item" draggable="true" role="button" aria-checked="false"
-                    data-value="@field.Id"
-                    data-part="@field.MtdFormPart">
-                    <label class="mdc-list-item__text" for="@field.Id-lc">@field.Name</label>
-                    <div class="mtd-config-form-fields__bdrag">
-                        <i class="material-icons" style="color:gray">drag_handle</i>
-                    </div>
-                    <div class="mtd-config-form-fields__bedit">
-                        <button id="add-to-favorites"
-                                class="mdc-icon-button"
-                                aria-label="Add to favorites"
-                                aria-hidden="true"
-                                aria-pressed="false"
-                                mtd-data-href="/config/form/fieldedit?id=@field.Id">
-                            <i class="material-icons mdc-icon-button__icon">edit</i>
-                        </button>
-                    </div>
-                </li>
-            }
-        </ul>
-    </div>
 </div>
 
 

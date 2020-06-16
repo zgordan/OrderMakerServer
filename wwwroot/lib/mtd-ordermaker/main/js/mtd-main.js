@@ -60,13 +60,16 @@ const ListenerForDataHref = () => {
     items.forEach((item) => {
         item.addEventListener('click', () => {
             ActionShowModal(true);
+            
             const href = item.getAttribute('mtd-data-href');
             const target = item.getAttribute('mtd_data_href-target');
+
             if (target) {
-                window.open(href, target);
+                setTimeout(() => { window.open(href, target); }, 500);  
                 ActionShowModal();
             } else {
-                window.location.href = href;
+                setTimeout(() => { window.location.href = href; }, 500); 
+                
             }
         });
     });
@@ -180,13 +183,16 @@ const ListenerForPostData = () => {
             input.addEventListener('keydown', (e) => {
                 if (e.keyCode === 13) {
 
-                    form.reportValidity();
+                    const validate = form.reportValidity();
+                    if (!validate) {
+                        return false;
+                    }
 
                     e.preventDefault();
                     ActionShowModal(true);
                     var xmlHttp = new XMLHttpRequest();
                     xmlHttp.responseType = 'json';
-                    xmlHttp.open("POST", action, true);
+                    xmlHttp.open("post", action, true);
 
                     var formData = CreateFormData(form);
 

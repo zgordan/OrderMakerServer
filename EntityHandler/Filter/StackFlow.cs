@@ -59,18 +59,19 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
                 }
             }
 
-            bool ownOnly = await _userHandler.GetFormPolicyAsync(_user, incomer.FormId, RightsType.ViewOwn);
+            bool ownOnly = await _userHandler.CheckUserPolicyAsync(_user, incomer.FormId, RightsType.ViewOwn);
             if (ownOnly)
             {
                 IList<string> storeIds = await _context.MtdStoreOwner.Where(x => x.UserId == _user.Id).Select(x => x.Id).ToListAsync();
                 queryMtdStore = queryMtdStore.Where(x => storeIds.Contains(x.Id));
             }
 
-            bool groupView = await _userHandler.GetFormPolicyAsync(_user, FormId, RightsType.ViewGroup);
+            bool groupView = await _userHandler.CheckUserPolicyAsync(_user, FormId, RightsType.ViewGroup);
             if (groupView)
             {
-                IList<WebAppUser> appUsers = await _userHandler.GetUsersInGroupsAsync(_user);
+                IList<WebAppUser> appUsers = await _userHandler.GetUsersInGroupsOutDenyAsync(_user,FormId);
                 List<string> userIds = appUsers.Select(x => x.Id).ToList();
+
                 IList<string> storeIds = await _context.MtdStoreOwner.Where(x => userIds.Contains(x.UserId)).Select(x => x.Id).ToListAsync();
                 queryMtdStore = queryMtdStore.Where(x => storeIds.Contains(x.Id));
             }

@@ -34,6 +34,7 @@ using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.AppConfig;
 using Mtd.OrderMaker.Server.Services;
+using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
 
 namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
 {
@@ -89,8 +90,12 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
             public string Policy { get; set; }
             public string TitleGroup { get; set; }              
             public string CpqPolicyView { get; set; }
-            public string CpqPolicyEdit { get; set; }
+            public string CpqPolicyEdit { get; set; }            
         }
+
+        public List<MTDSelectListItem> Roles { get; set; }
+        public List<MTDSelectListItem> RolesCpq { get; set; }
+        public List<MTDSelectListItem> Policies { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -120,13 +125,35 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
                 TitleGroup = user.TitleGroup
             };
 
-            ViewData["Roles"] = new SelectList(roles.Where(x=>!x.NormalizedName.Contains("CPQ-")).OrderBy(x=>x.Seq), "Id", "Title", Input.Role);
-            ViewData["RolesCPQ"] = new SelectList(roles.Where(x =>x.NormalizedName.Contains("CPQ-")).OrderBy(x => x.Seq), "Id", "Title", Input.RoleCpq);
+            Roles = new List<MTDSelectListItem>();
+            roles.Where(x => !x.NormalizedName.Contains("CPQ-")).OrderBy(x => x.Seq).ToList().ForEach((item) =>
+            {
+                Roles.Add(new MTDSelectListItem { Id = item.Id, Value = item.Title });
+            });
+            
+            RolesCpq = new List<MTDSelectListItem>();
+            roles.Where(x => x.NormalizedName.Contains("CPQ-")).OrderBy(x => x.Seq).ToList().ForEach((item) =>
+            {
+                RolesCpq.Add(new MTDSelectListItem { Id = item.Id, Value = item.Title });
+            });
+
+            //ViewData["Roles"] = new SelectList(roles.Where(x=>!x.NormalizedName.Contains("CPQ-")).OrderBy(x=>x.Seq), "Id", "Title", Input.Role);
+            //ViewData["RolesCPQ"] = new SelectList(roles.Where(x =>x.NormalizedName.Contains("CPQ-")).OrderBy(x => x.Seq), "Id", "Title", Input.RoleCpq);
+
             ViewData["Users"] = new SelectList(_userManager.Users.OrderBy(x => x.Title), "Id", "Title", Input.Role);
 
             string policyID = await _userManager.GetPolicyIdAsync(user);
-            IList<MtdPolicy> mtdPolicy = await _userManager.CacheGetOrCreateAsync(); 
-            ViewData["Policies"] = new SelectList(mtdPolicy.OrderBy(x=>x.Name), "Id", "Name", policyID);
+            Input.Policy = policyID;
+            IList<MtdPolicy> mtdPolicy = await _userManager.CacheGetOrCreateAsync();
+
+            Policies = new List<MTDSelectListItem>();
+            mtdPolicy.OrderBy(x => x.Name).ToList().ForEach((item) =>
+            {
+                Policies.Add(new MTDSelectListItem { Id = item.Id, Value = item.Name });
+            });
+
+           //ViewData["Policies"] = new SelectList(mtdPolicy.OrderBy(x=>x.Name), "Id", "Name", policyID);
+
             MtdGroups = await _context.MtdGroup.OrderBy(x => x.Name).ToListAsync();
 
             IList<Claim> claims = await _userManager.GetClaimsAsync(user);

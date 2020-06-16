@@ -5,6 +5,7 @@
         if (this.base) {
             
             this.textField = new mdc.textField.MDCTextField(this.base);
+           
             this.input = document.getElementById(`${id}-input`);
 
             this.input.addEventListener("invalid", () => {
@@ -17,7 +18,7 @@
             });
 
             this.input.addEventListener("input", () => {
-                this.input.setCustomValidity("");                
+                this.input.setCustomValidity("");
             });
 
         }        

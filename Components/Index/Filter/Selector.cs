@@ -132,7 +132,7 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
 
             List<WebAppUser> appUsers = new List<WebAppUser>();
 
-            bool isViewAll = await _userHandler.GetFormPolicyAsync(user, formId, RightsType.ViewAll);
+            bool isViewAll = await _userHandler.CheckUserPolicyAsync(user, formId, RightsType.ViewAll);
             if (isViewAll)
             {
                 appUsers = await _userHandler.Users.ToListAsync();

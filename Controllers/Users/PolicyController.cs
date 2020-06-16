@@ -71,44 +71,47 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostPolicyEditAsync()
         {
-            string policyName = Request.Form["policy-name"];
-            string policyNote = Request.Form["policy-note"];
-            string policyId = Request.Form["policy-id"];
+
+            var form = await Request.ReadFormAsync();
+            string policyName = form["policy-name"];
+            string policyNote = form["policy-note"];
+            string policyId = form["policy-id"];
 
             MtdPolicy mtdPolicy = await _context.MtdPolicy.FindAsync(policyId);
             if (mtdPolicy == null) { return NotFound(); }
 
-            IList<MtdForm> forms = await _context.MtdForm.Include(x => x.MtdFormPart).ToListAsync();
+            IList<MtdForm> mtdForms = await _context.MtdForm.Include(x => x.MtdFormPart).ToListAsync();
             IList<MtdGroup> groups = await _context.MtdGroup.ToListAsync();          
 
             IList<MtdPolicyForms> mtdPolicyForms = await _context.MtdPolicyForms.Where(x => x.MtdPolicy == mtdPolicy.Id).ToListAsync();
             if (mtdPolicyForms == null) { mtdPolicyForms = new List<MtdPolicyForms>(); }
 
-            foreach (var form in forms)
+            foreach (var mtdForm in mtdForms)
             {
-                string formCreate = Request.Form[$"{form.Id}-create"];
+                string formCreate = form[$"{mtdForm.Id}-create"];
 
-                string formView = Request.Form[$"{form.Id}-view"];
-                string formViewGroup = Request.Form[$"{form.Id}-view-group"];
-                string formViewOwn = Request.Form[$"{form.Id}-view-own"];
+                string formView = form[$"{mtdForm.Id}-view"];
+                string formViewGroup = form[$"{mtdForm.Id}-view-group"];
+                string formViewOwn = form[$"{mtdForm.Id}-view-own"];
 
-                string formEdit = Request.Form[$"{form.Id}-edit"];
-                string formEditGroup = Request.Form[$"{form.Id}-edit-group"];
-                string formEditOwn = Request.Form[$"{form.Id}-edit-own"];
+                string formEdit = form[$"{mtdForm.Id}-edit"];
+                string formEditGroup = form[$"{mtdForm.Id}-edit-group"];
+                string formEditOwn = form[$"{mtdForm.Id}-edit-own"];
 
-                string formDelete = Request.Form[$"{form.Id}-delete"];
-                string formDeleteGroup = Request.Form[$"{form.Id}-delete-group"];
-                string formDeleteOwn = Request.Form[$"{form.Id}-delete-own"];
+                string formDelete = form[$"{mtdForm.Id}-delete"];
+                string formDeleteGroup = form[$"{mtdForm.Id}-delete-group"];
+                string formDeleteOwn = form[$"{mtdForm.Id}-delete-own"];
 
-                string formSetOwner = Request.Form[$"{form.Id}-set-own"];
-                string formReviewer = Request.Form[$"{form.Id}-reviewer"];
-                string formSetDate = Request.Form[$"{form.Id}-set-date"];
+                string formSetOwner = form[$"{mtdForm.Id}-set-own"];
+                string formReviewer = form[$"{mtdForm.Id}-reviewer"];
+                string formSetDate = form[$"{mtdForm.Id}-set-date"];
+                string formDenyGroup = form[$"{mtdForm.Id}-deny-group"];
 
-                MtdPolicyForms pf = mtdPolicyForms.Where(x => x.MtdForm == form.Id).FirstOrDefault();
+                MtdPolicyForms pf = mtdPolicyForms.Where(x => x.MtdForm == mtdForm.Id).FirstOrDefault();
                 bool newPf = false;
                 if (pf == null)
                 {
-                    pf = new MtdPolicyForms { MtdPolicy = mtdPolicy.Id, MtdForm = form.Id };
+                    pf = new MtdPolicyForms { MtdPolicy = mtdPolicy.Id, MtdForm = mtdForm.Id };
                     newPf = true;
                 }
 
@@ -116,6 +119,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 pf.ChangeOwner = GetSbyte(formSetOwner);
                 pf.Reviewer = GetSbyte(formReviewer);
                 pf.ChangeDate = GetSbyte(formSetDate);
+                pf.OwnDenyGroup = GetSbyte(formDenyGroup);
 
                 pf.ViewAll = GetSbyte(formView);
                 pf.ViewGroup = GetSbyte(formViewGroup);
@@ -142,7 +146,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 IList<MtdPolicyParts> mtdPolicyParts = await _context.MtdPolicyParts.Where(x => x.MtdPolicy == mtdPolicy.Id).ToListAsync();
                 if (mtdPolicyParts == null) { mtdPolicyParts = new List<MtdPolicyParts>(); }
 
-                foreach (var part in form.MtdFormPart)
+                foreach (var part in mtdForm.MtdFormPart)
                 {
                     string partCreate = Request.Form[$"{part.Id}-part-create"];
                     string partView = Request.Form[$"{part.Id}-part-view"];
@@ -206,6 +210,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 pf.ChangeOwner = 1;
                 pf.Reviewer = 1;
                 pf.ChangeDate = 1;
+                pf.OwnDenyGroup = 1;
 
                 pf.ViewAll = 1;
                 pf.ViewGroup = 0;
@@ -290,6 +295,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 pf.ChangeOwner = 0;
                 pf.Reviewer = 0;
                 pf.ChangeDate = 0;
+                pf.OwnDenyGroup = 0;
 
                 pf.ViewAll = 0;
                 pf.ViewGroup = 0;

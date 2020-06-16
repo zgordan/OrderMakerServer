@@ -19,10 +19,8 @@
 @model Models.Store.DataContainer
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHtmlLocalizer<SharedResource> Localizer
-@inject Services.UserHandler userHandler
-@{
-    var user = await userHandler.GetUserAsync(User);
-}
+
+
 <form mtd-data-form method='post' autocomplete='off' enctype='multipart/form-data' action='/api/store/save'>
     @Html.AntiForgeryToken()
     <input type="hidden" name="idStore" asp-for="@Model.Owner.Store.Id" />
@@ -62,11 +60,9 @@
                 <hr />
 
                 @if (Model.Owner.Store.MtdFormNavigation.VisibleDate == 1)
-                {
+                {         
 
-                    bool setDate = await userHandler.GetFormPolicyAsync(user, Model.Owner.Store.MtdForm, Services.RightsType.SetDate);
-
-                    if (setDate)
+                    if (Model.Owner.SetDate)
                     {
 
                         <input type="text" class="mtd-data-datepicker" value="@Model.Owner.Store.Timecr.ToShortDateString()" name="date-create" />

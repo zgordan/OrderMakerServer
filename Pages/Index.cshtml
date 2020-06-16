@@ -35,7 +35,7 @@
 <div class="mtd-desk">
     <div class="mtd-desk-panel"></div>
 
-    <form id="desktopFormText" method="get" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
+    <form id="desktopFormText" method="get" autocomplete='off' novalidate>
         @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
    {
        Id = "search-text",

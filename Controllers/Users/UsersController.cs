@@ -50,7 +50,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
         private readonly IEmailSenderBlank _emailSender;
         private readonly OrderMakerContext _context;
         private readonly IStringLocalizer<SharedResource> _localizer;
-        private readonly Mtd.OrderMaker.Server.Entity.IdentityDbContext identity; 
+        private readonly IdentityDbContext identity; 
 
 
         public UsersController(
@@ -112,14 +112,14 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
 
             if (username == null)
             {
-                return BadRequest();
+                return BadRequest("Error. User name is null.");
             }
 
             var user = await _userManager.FindByNameAsync(username);
 
             if (user == null)
             {
-                return NotFound();
+                return BadRequest("Error. User not found.");
             }
            
             string email = form["Input.Email"];

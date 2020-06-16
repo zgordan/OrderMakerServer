@@ -1,0 +1,32 @@
+﻿@model EditModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+<div class="mtd-desk-field-full">
+    @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+    {
+        Id = "form-name",
+        Name = "MtdForm.Name",
+        Value = Model.MtdForm.Name,
+        MTDTexFieldView = MTDTextFieldViews.Outlined,
+        Label = "Name",
+        LabelLocalized = true,
+        Required = true,
+
+    })
+</div>
+<div class="mtd-desk-field-full">
+    @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+{
+    Id = "form-note",
+    Name = "MtdForm.Description",
+    Value = Model.MtdForm.Description,
+    MTDTexFieldView = MTDTextFieldViews.TextArea,
+    Label = "Description",
+    LabelLocalized = true,
+    Required = true,
+    Cols = 40,
+    Rows = 4,
+    MaxLength = 500,
+})
+</div>

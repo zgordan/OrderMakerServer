@@ -23,9 +23,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
 
 namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
 {
@@ -43,11 +45,11 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
         [BindProperty]
         public string CurrentPartId { get; set; }
         public IList<MtdFormPartField> MtdFormPartFields {get;set;}
+        public List<MTDSelectListItem> PartItems { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string formId, string partId)
         {
             
-
             MtdForm = await _context.MtdForm                
                 .Include(m => m.MtdFormHeader)
                 .Include(m => m.MtdFormPart)                
@@ -58,12 +60,16 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
                 return NotFound();
             }
 
-            CurrentPartId = partId ?? MtdForm.MtdFormPart.OrderBy(x => x.Sequence).Select(x=>x.Id).FirstOrDefault();
-
-            //   IList<string> partIds = MtdForm.MtdFormPart.Select(x => x.Id).ToList();
+            
+            CurrentPartId = partId ?? MtdForm.MtdFormPart.OrderBy(x => x.Sequence).Select(x=>x.Id).FirstOrDefault();            
 
             MtdFormPartFields = await _context.MtdFormPartField                
                 .Where(x => x.MtdFormPart == CurrentPartId).OrderBy(x=>x.Sequence).ToListAsync();
+
+            PartItems = new List<MTDSelectListItem>();
+            MtdForm.MtdFormPart.OrderBy(x=>x.Sequence).GroupBy(x=>x.Id).Select(x=> new { Id=x.Key, Name=x.Select(x=>x.Name).FirstOrDefault() }).ToList().ForEach((item)=> {
+                PartItems.Add(new MTDSelectListItem { Id=item.Id, Value=item.Name});
+            });
 
             return Page();
         }

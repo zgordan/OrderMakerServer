@@ -4,3 +4,7 @@
     document.querySelector('[mtd-data-delete]').addEventListener('click', () => {
         dialog.open();
     });
+
+new MTDTextField("part-name");
+new MTDTextField("part-note");
+new MTDSelectList("select-style");

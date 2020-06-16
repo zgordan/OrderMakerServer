@@ -130,5 +130,6 @@ const handlerEventChecked = () => {
     document.getElementById('policy-open-dialog').addEventListener('click', () => {
         dialog.open();
     });
-    
-   
+
+new MTDTextField("policy-name");
+new MTDTextField("policy-note");

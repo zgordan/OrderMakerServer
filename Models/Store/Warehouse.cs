@@ -29,6 +29,7 @@ namespace Mtd.OrderMaker.Server.Models.Store
         public MtdStore Store { get; set; }
         public IList<MtdFormPart> Parts { get; set; }
         public IList<MtdFormPartField> Fields { get; set; }
-        public IList<MtdStoreStack> Stack { get; set; }        
+        public IList<MtdStoreStack> Stack { get; set; }
+        public bool SetDate { get; set; }        
     }
 }

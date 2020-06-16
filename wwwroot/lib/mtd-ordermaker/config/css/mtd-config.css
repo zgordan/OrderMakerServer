@@ -1,8 +1,13 @@
 .mtd-config-place {
   background-color: white;
-  min-height: 450px;
-  padding: 16px;
+  width: 100%;
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.mtd-config-place .mdc-card {
+  margin: 4px;
 }
 .mtd-config-param {
   text-align: center;
@@ -18,6 +23,7 @@
 .mtd-config-param-title {
   font-size: large;
   font-weight: bold;
+  align-self: stretch;
 }
 .mtd-config-param:hover {
   background-color: whitesmoke;

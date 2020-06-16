@@ -1339,6 +1339,11 @@ namespace Mtd.OrderMaker.Server.Entity
                     .HasColumnType("tinyint(4)")
                     .HasDefaultValueSql("'0'");
 
+                entity.Property(e => e.OwnDenyGroup)
+                    .HasColumnName("own_deny_group")
+                    .HasColumnType("tinyint(4)")
+                    .HasDefaultValueSql("'0'");
+
                 entity.HasOne(d => d.MtdFormNavigation)
                     .WithMany(p => p.MtdPolicyForms)
                     .HasForeignKey(d => d.MtdForm)

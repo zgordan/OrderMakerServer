@@ -161,18 +161,17 @@ namespace Mtd.OrderMaker.Server.Components.Store
                     }
                 }
             }
-
-
+            
             Warehouse result = new Warehouse()
             {
                 Store = mtdStore,
                 Parts = mtdFormParts,
                 Fields = mtdFormPartFields,
                 Stack = stack,
+                SetDate = await _userHandler.CheckUserPolicyAsync(webAppUser, store.MtdForm,RightsType.SetDate)                
             };
 
             return result;
-
         }
 
 
@@ -202,12 +201,14 @@ namespace Mtd.OrderMaker.Server.Components.Store
 
                 IList<MtdFormPartField> mtdFormPartFields = await GetFieldsAsync(mtdFormParts);
 
+
                 Warehouse warehouse = new Warehouse()
                 {
                     Store = store,
                     Parts = mtdFormParts,
                     Fields = mtdFormPartFields,
-                    Stack = new List<MtdStoreStack>()
+                    Stack = new List<MtdStoreStack>(),
+                    SetDate = await _userHandler.CheckUserPolicyAsync(webAppUser, store.MtdForm, RightsType.SetDate)
                 };
 
                 return View("Create", warehouse);

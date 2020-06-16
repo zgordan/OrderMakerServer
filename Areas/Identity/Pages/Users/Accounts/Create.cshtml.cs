@@ -40,14 +40,14 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
 {
     public partial class CreateModel : PageModel
     {
-        private readonly UserManager<WebAppUser> _userManager;
+        private readonly UserHandler _userManager;
         private readonly IEmailSenderBlank _emailSender;
         private readonly ILogger<CreateModel> _logger;
         private readonly IStringLocalizer<SharedResource> _localizer;
 
 
         public CreateModel(
-            UserManager<WebAppUser> userManager,
+            UserHandler userManager,
             IEmailSenderBlank emailSender,
             ILogger<CreateModel> logger,
             IStringLocalizer<SharedResource> localizer
@@ -72,6 +72,9 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
 
         public class InputModel
         {
+
+            public string Id { get; set; }
+
             [Required]
             [DataType(DataType.Text)]
             [Display(Name = "Full name")]
@@ -96,66 +99,64 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
 
         public void OnGet()
         {
+            Input = new InputModel { Id = Guid.NewGuid().ToString() };            
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return Page();
+            //}
+
+            string pass = _userManager.GeneratePassword();
             
-            byte[] salt = new byte[128 / 8];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(salt);
-            }
+            var user = new WebAppUser { Id = Input.Id, Title = Input.Title, UserName = Input.UserName, Email = Input.Email, 
+                EmailConfirmed = Input.SendEmail, 
+                PhoneNumber = Input.PhoneNumber };
 
-            string pass = Convert.ToBase64String(salt);
-
-            string userId = Guid.NewGuid().ToString();
-            var user = new WebAppUser { Id = userId, Title = Input.Title, UserName = Input.UserName, Email = Input.Email, EmailConfirmed = Input.SendEmail };
             var result = await _userManager.CreateAsync(user, pass);
+
             await _userManager.AddToRoleAsync(user, "Guest");
 
-            if (result.Succeeded && Input.SendEmail)
-            {
-                _logger.LogInformation("User created a new account with password.");
+            //if (result.Succeeded && Input.SendEmail)
+            //{
+            //    _logger.LogInformation("User created a new account with password.");
                 
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.Page(
-                    "/Account/ResetPassword",
-                    pageHandler: null,
-                    values: new { userId = user.Id, code },
-                    protocol: Request.Scheme);
+            //    var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            //    var callbackUrl = Url.Page(
+            //        "/Account/ResetPassword",
+            //        pageHandler: null,
+            //        values: new { userId = user.Id, code },
+            //        protocol: Request.Scheme);
 
-                BlankEmail blankEmail = new BlankEmail
-                {
-                    Email = user.Email,
-                    Subject = _localizer["Password reset"],
-                    Header = _localizer["Password reset"],
-                    Content = new List<string>()
-                       {
-                           $"{_localizer["Your login"]}: <strong>{user.UserName}</strong>",
-                           _localizer["To change your account password, follow the link below"],
-                           $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["Create account password"]}</a>"
-                       }
-                };
+            //    BlankEmail blankEmail = new BlankEmail
+            //    {
+            //        Email = user.Email,
+            //        Subject = _localizer["Password reset"],
+            //        Header = _localizer["Password reset"],
+            //        Content = new List<string>()
+            //           {
+            //               $"{_localizer["Your login"]}: <strong>{user.UserName}</strong>",
+            //               _localizer["To change your account password, follow the link below"],
+            //               $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["Create account password"]}</a>"
+            //           }
+            //    };
 
-                await _emailSender.SendEmailBlankAsync(blankEmail);
-            }
+            //    await _emailSender.SendEmailBlankAsync(blankEmail);
+            //}
 
             if (!result.Succeeded) {
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                //foreach (var error in result.Errors)
+                //{
+                //    ModelState.AddModelError(string.Empty, error.Description);
+                //}
 
-                return Page();
+                return BadRequest("Error.");
             }
 
-            return RedirectToPage("./Edit", new { id = userId});
+            return RedirectToPage("./Edit", new { id = Input.Id});
 
         }
     }

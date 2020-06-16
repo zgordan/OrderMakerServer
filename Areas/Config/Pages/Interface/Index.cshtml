@@ -38,13 +38,20 @@
 }
 
 <div class="mtd-desk">
-    <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="">
-        <div class="mtd-desk-savebar">
+    <div class="mtd-desk-panel">
+        <div style="padding-left: 16px;">
             <button mtd-data-clicker type="button" class="mdc-fab mdc-fab--extended">
+                <div class="mdc-fab__ripple"></div>
                 <span class="material-icons mdc-fab__icon">save</span>
                 <span class="mdc-fab__label">@Localizer["Save"]</span>
             </button>
         </div>
+    </div>
+
+</div>
+
+<div class="mtd-desk">
+    <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="">
 
         <div class="mtd-desk-fields">
             <div class="mtd-desk-field">

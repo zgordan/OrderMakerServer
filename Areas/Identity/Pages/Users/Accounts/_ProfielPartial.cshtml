@@ -22,75 +22,103 @@
 @{
     ViewData["IsConfirm"] = Model.Input.IsConfirm ? "green" : "red";
 }
-<div id="users-profile-form" style="display: block; max-width: 450px; margin:0 auto; left: 50%">
-    <div>
-        <div asp-validation-summary="All" class="mtd-main-danger"></div>
-        <input asp-for="UserName" type="hidden" />
-        <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon" style="width: 100%;">
-            <i class="material-icons mdc-text-field__icon">face</i>
-            <input id="login-email" asp-for="Input.Title" type="text" class="mdc-text-field__input" />
-            <div class="mdc-notched-outline">
-                <div class="mdc-notched-outline__leading"></div>
-                <div class="mdc-notched-outline__notch">
-                    <label for="login-email" class="mdc-floating-label">@Localizer["Title name"]</label>
-                </div>
-                <div class="mdc-notched-outline__trailing"></div>
-            </div>
+
+
+
+    <div class="mtd-desk-fields">
+        <div class="mtd-desk-field">
+            @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+            {
+                Id = "login-title",
+                Name = "Input.Title",
+                IconLeading = "fas fa-user fa-lg",
+                Label = "Display user name",
+                LabelLocalized = true,
+                Value = Model.Input.Title,
+                Required = true
+            })
         </div>
-        <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon mdc-text-field--with-trailing-icon" style="width: 100%; margin-top: 16px;">
-            <i class="material-icons mdc-text-field__icon">email</i>
-            <i class="material-icons mdc-text-field__icon" style="color: @ViewBag.IsConfirm">verified_user</i>
-            <input id="login-email" asp-for="Input.Email" type="text" class="mdc-text-field__input" />
-            <div class="mdc-notched-outline">
-                <div class="mdc-notched-outline__leading"></div>
-                <div class="mdc-notched-outline__notch">
-                    <label for="login-email" class="mdc-floating-label">Email</label>
-                </div>
-                <div class="mdc-notched-outline__trailing"></div>
-            </div>
+        <div class="mtd-desk-field">
+            @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+               {
+                   Id = "login-title-group",
+                   Name = "Input.TitleGroup",
+                   IconLeading = "fas fa-user-friends fa-lg",
+                   Label = "Display group name",
+                   LabelLocalized = true,
+                   Value = Model.Input.TitleGroup,
+                   Required = true
+               })
         </div>
-        @if (!Model.Input.IsConfirm)
-        {
-            <div class="mdc-form-field">
-                <div class="mdc-checkbox">
-                    <input type="checkbox" asp-for="Input.IsConfirm"
-                           class="mdc-checkbox__native-control"
-                           id="checkbox-1" />
-                    <div class="mdc-checkbox__background">
-                        <svg class="mdc-checkbox__checkmark"
-                             viewBox="0 0 24 24">
-                            <path class="mdc-checkbox__checkmark-path"
-                                  fill="none"
-                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                        </svg>
-                        <div class="mdc-checkbox__mixedmark"></div>
+        <div class="mtd-desk-field">
+            @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+               {
+                   Id = "login-email",
+                   Name = "Input.Email",
+                   IconLeading = "fas fa-envelope fa-lg",
+                   Label = "Email",
+                   LabelLocalized = true,
+                   Value = Model.Input.Email,
+                   IconTrailing = "verified_user",
+                   IconTrailingColor = ViewBag.IsConfirm
+               })
+            @if (!Model.Input.IsConfirm)
+            {
+                <div class="mdc-form-field noselect">
+                    <div class="mdc-checkbox">
+                        <input type="checkbox" asp-for="Input.IsConfirm"
+                               class="mdc-checkbox__native-control"
+                               id="checkbox-1" />
+                        <div class="mdc-checkbox__background">
+                            <svg class="mdc-checkbox__checkmark"
+                                 viewBox="0 0 24 24">
+                                <path class="mdc-checkbox__checkmark-path"
+                                      fill="none"
+                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                            </svg>
+                            <div class="mdc-checkbox__mixedmark"></div>
+                        </div>
                     </div>
+                    <label for="checkbox-1">@Localizer["Consider Email Confirmed."]</label>
                 </div>
-                <label for="checkbox-1">@Localizer["Consider email confirmed"].</label>
-            </div>
-        }
-        <div class="mdc-text-field mdc-text-field--outlined mdc-text-field--with-leading-icon" style="width: 100%; margin-top: 16px;">
-            <i class="material-icons mdc-text-field__icon">phone</i>
-            <input id="login-phone" asp-for="Input.PhoneNumber" type="text" class="mdc-text-field__input" />
-            <div class="mdc-notched-outline">
-                <div class="mdc-notched-outline__leading"></div>
-                <div class="mdc-notched-outline__notch">
-                    <label for="login-phone" class="mdc-floating-label">@Localizer["Phone"]</label>
-                </div>
-                <div class="mdc-notched-outline__trailing"></div>
-            </div>
+            }
         </div>
-        <div id="users-edit-role" class="mdc-select" style="width: 100%; margin-top: 16px;">
-            <i class="mdc-select__dropdown-icon"></i>
-            <select class="mdc-select__native-control" asp-for="Input.Role" asp-items="ViewBag.Roles"></select>
-            <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Main Role"]</label>
-            <div class="mdc-line-ripple"></div>
+        <div class="mtd-desk-field">
+            @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
+           {
+               Id = "select-role",
+               Name = "Input.Role",
+               Items = Model.Roles,
+               Label = "Role",
+               LabelLocalized = true,
+               ValueId = Model.Input.Role
+           })
         </div>
-        <div id="users-edit-policy" class="mdc-select" style="width: 100%; margin-top: 16px;">
-            <i class="mdc-select__dropdown-icon"></i>
-            <select class="mdc-select__native-control" asp-for="Input.Policy" asp-items="ViewBag.Policies"></select>
-            <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Policy"]</label>
-            <div class="mdc-line-ripple"></div>
+        <div class="mtd-desk-field">
+            @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
+           {
+               Id = "select-policy",
+               Name = "Input.Policy",
+               Items = Model.Policies,
+               Label = "Policy",
+               LabelLocalized = true,
+               ValueId = Model.Input.Policy
+           })
+        </div>
+        <div class="mtd-desk-field">
+            @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+           {
+               Id = "login-phone",
+               Name = "Input.PhoneNumber",
+               Label = "Phone",
+               LabelLocalized = true,
+               IconLeading = "fas fa-phone fa-lg",
+               Placeholder = "+0 000 000 0000",
+               HelperText = "Phone number pattern: +0 000 000 0000",
+               HelperTextLocalizer = true,
+               Type = "tel",
+               Pattern = RegexPatterns.Phone,
+               Value = Model.Input.PhoneNumber
+           })
         </div>
     </div>
-</div>

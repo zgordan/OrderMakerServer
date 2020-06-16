@@ -1,14 +1,15 @@
 ﻿//Start
 
-    const fieldType = new mdc.select.MDCSelect(document.getElementById("fieldType"));
-    const fieldForm = new mdc.select.MDCSelect(document.getElementById("fieldForm"));
-    const fieldWrapper = document.getElementById("fieldWrapper");
-    
-    fieldType.listen('MDCSelect:change', () => {    
+new MTDTextField("field-name");
+new MTDTextField("field-note");
+
+const selectType = new MTDSelectList("select-type");
+const selectForm = new MTDSelectList("select-form");
+const fieldWrapper = document.getElementById("fieldWrapper");
+
+selectType.selector.listen('MDCSelect:change', () => {    
        
-        fieldWrapper.style.display = "none";
-        if (fieldType.value === '11') {
-            console.log(fieldType.value);
+    if (selectType.selector.value === '11') {
             fieldWrapper.style.display = "";
         }
     });

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 
@@ -16,15 +17,17 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<WebAppUser> _userManager;
         private readonly SignInManager<WebAppUser> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
         public ChangePasswordModel(
             UserManager<WebAppUser> userManager,
             SignInManager<WebAppUser> signInManager,
-            ILogger<ChangePasswordModel> logger)
+            ILogger<ChangePasswordModel> logger, IStringLocalizer<SharedResource> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _localizer = localizer;
         }
 
         [BindProperty]
@@ -75,10 +78,6 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
 
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
@@ -86,20 +85,40 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
+
+            bool checkCurrent = await _userManager.CheckPasswordAsync(user, Input.OldPassword);
+            if (!checkCurrent) {
+                return BadRequest(_localizer["Invalid current password."]);
+            }
+
+
+            if (Input.NewPassword != Input.ConfirmPassword)
+            {
+                return BadRequest(_localizer["The new password and confirmation password do not match."]);
+            }
+
+
+            PasswordValidator<WebAppUser> passwordValidator = new PasswordValidator<WebAppUser>();
+            var checkPassword = await passwordValidator.ValidateAsync(_userManager, null, Input.NewPassword);
+            if (!checkPassword.Succeeded)
+            {
+                return BadRequest(_localizer["The new password is not strong enough."]);
+            }
+            
+            var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword.Trim());
             if (!changePasswordResult.Succeeded)
             {
-                foreach (var error in changePasswordResult.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-                return Page();
+                //foreach (var error in changePasswordResult.Errors)
+                //{
+                //    ModelState.AddModelError(string.Empty, error.Description);
+                //}
+                return BadRequest(_localizer["Error."]);
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            _logger.LogInformation("User changed their password successfully.");
+            //_logger.LogInformation("User changed their password successfully.");
             
-            StatusMessage = "Your password has been changed.";
+            //StatusMessage = "Your password has been changed.";
 
             return RedirectToPage("/Index");
         }

@@ -53,27 +53,61 @@
     </li>
 }
 
-<form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/config/form/part/edit">
-    @Html.AntiForgeryToken()
-    <input type="hidden" asp-for="MtdForm.Id" name="formId" />
-    <input type="hidden" asp-for="MtdFormPart.Id" name="partId" />
-    <div class="mtd-desk">
-
-        <div class="mtd-desk-savebar">
-            <button mtd-data-clicker mtd-data-message="@Localizer["Changes saved"]." type="button" class="mdc-fab mdc-fab--extended">
+<div class="mtd-desk">
+    <div class="mtd-desk-panel">
+        <div style="padding-left: 16px">
+            <button mtd-data-clicker-by="clicker-save" mtd-data-message="@Localizer["Changes saved."]" type="button" class="mdc-fab mdc-fab--extended">
+                <div class="mdc-fab__ripple"></div>
                 <span class="material-icons mdc-fab__icon">save</span>
                 <span class="mdc-fab__label">@Localizer["Save"]</span>
             </button>
         </div>
-
-        <partial name="./Partials/_PartEditHeader" />
-        <partial name="./Partials/_PartEditNameNote" />
-        <partial name="./Partials/_PartEditImgTitle" />
-        <partial name="./Partials/_PartEditStyleApprove" />
-        <partial name="./Partials/_PartEditIndex" />
-
     </div>
-</form>
+
+    <partial name="./Partials/_PartEditHeader" />
+
+    <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/config/form/part/edit">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="MtdForm.Id" name="formId" />
+        <input type="hidden" asp-for="MtdFormPart.Id" name="partId" />
+        <input type="hidden" id="clicker-save" mtd-data-clicker mtd-data-message="@Localizer["Changes saved."]" />
+        <div class="mtd-desk-blocks">
+            <div class="mtd-desk-block">
+                <div class="mtd-desk-field-full">
+                    @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+               {
+                   Id = "part-name",
+                   Name = "partName",
+                   Label = "Name",
+                   LabelLocalized = true,
+                   Required = true,
+                   MTDTexFieldView = MTDTextFieldViews.Outlined,
+                   Value = Model.MtdFormPart.Name
+               })
+                </div>
+                <div class="mtd-desk-field-full">
+                    @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+               {
+                   Id = "part-note",
+                   Name = "partNote",
+                   Label = "Description",
+                   LabelLocalized = true,
+                   Required = true,
+                   MTDTexFieldView = MTDTextFieldViews.TextArea,
+                   Cols = 40,
+                   Rows = 4,
+                   Value = Model.MtdFormPart.Description
+               })
+                </div>
+            </div>
+            <div class="mtd-desk-block">
+                <partial name="./Partials/_PartEditImgTitle" />
+            </div>
+        </div>
+        <partial name="./Partials/_PartEditSequence" />
+    </form>
+</div>
+
 
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/config/form/part/delete'>
     @Html.AntiForgeryToken()
@@ -89,7 +123,7 @@
     <div class="mdc-dialog__container">
         <div class="mdc-dialog__surface">
             <h2 class="mdc-dialog__title" id="delete-part-title">
-                @Localizer["Delete part"]?
+                @Localizer["Delete part?"]
             </h2>
             <div class="mdc-dialog__content" id="delete-dialog-content">
                 @Localizer["The partition and all data associated with it will be permanently deleted."]

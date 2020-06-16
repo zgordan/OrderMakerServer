@@ -41,6 +41,7 @@ namespace Mtd.OrderMaker.Server.Entity
         public sbyte ChangeOwner { get; set; }
         public sbyte Reviewer { get; set; }
         public sbyte ChangeDate { get; set; }
+        public sbyte OwnDenyGroup { get; set; }
 
         public virtual MtdForm MtdFormNavigation { get; set; }
         public virtual MtdPolicy MtdPolicyNavigation { get; set; }

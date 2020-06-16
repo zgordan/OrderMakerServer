@@ -19,11 +19,10 @@
 @model Models.Store.Warehouse
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHtmlLocalizer<SharedResource> Localizer
-@inject Services.UserHandler userHandler
+
 @{
     string action = $"/api/store/create";
-    string idStore = Guid.NewGuid().ToString();
-    var user = await userHandler.GetUserAsync(User);
+    string idStore = Guid.NewGuid().ToString();    
 }
 
 <div class="mtd-store-style-blank mdc-elevation--z2">
@@ -110,9 +109,8 @@
                 <span class="mtd-store-style-number" style="opacity:0.3">№ @Model.Store.Sequence.ToString("D9")</span>
                 <hr />
                 @if (Model.Store.MtdFormNavigation.VisibleDate == 1)
-                {
-                    bool setDate = await userHandler.GetFormPolicyAsync(user, Model.Store.MtdForm, Services.RightsType.SetDate);
-                    if (setDate)
+                {                   
+                    if (Model.SetDate)
                     {
 
                         <input type="text" class="mtd-data-datepicker" value="@DateTime.Now.ToShortDateString()" name="date-create" />

@@ -43,7 +43,7 @@ const handleDragEnter = (e) => {
     // over item
 }
 
-const handleDragLeave = e => {
+const handleDragLeave =(e) => {
     e.target.classList.remove('over');
 };
 
@@ -77,22 +77,30 @@ const handleDrop = e => {
     return false;
 }
 
-const handleDragEnd = e => {
+const handleDragEnd = (e) => {
     e.target.classList.remove('over');
     dragSrcEl = null;
 
-    //let strData = "";
-    //const list = document.getElementById("drgList");
-    //const clicker = document.getElementById("drgSequence");
-    //const data = document.getElementById("drgData");
+    const formSequence = document.querySelector("[mtd-data-form='sequence']");
+    if (formSequence) {
 
-    //list.querySelectorAll('[data-value]').forEach((item) => {
-    //    const d = item.getAttribute("data-value");
-    //    strData += `${d}&`;
-    //});
+        let strData = "";
+        const list = document.querySelector("[mtd-draggable]");
+        const clicker = formSequence.querySelector("[mtd-data-clicker]");
+        const data = formSequence.querySelector("[mtd-data-sequence]");
 
-    //data.value = strData;
-    //clicker.click();
+        list.querySelectorAll('[data-value]').forEach((item) => {
+            const d = item.getAttribute("data-value");
+            strData += `${d}&`;
+        });
+
+        data.value = strData;
+        clicker.click();
+
+    }
+
+
+
 
 }
 
@@ -110,6 +118,7 @@ const OnClickFilterColumn = (e) => {
     input.checked = !input.checked;
 
 }
+
 
 const addDnDHandlers = elem => {
 

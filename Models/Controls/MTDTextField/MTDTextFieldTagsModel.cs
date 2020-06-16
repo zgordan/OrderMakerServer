@@ -25,9 +25,10 @@ namespace Mtd.OrderMaker.Server.Models.Controls.MTDTextField
             this.HelperError = tags.HelperError;
             this.HelperErrorLocalizer = tags.HelperErrorLocalizer;
             this.IconLeading = tags.IconLeading;
-            this.IconLeadingScript = tags.IconLeadingScript;
+            this.IconLeadingScript = tags.IconLeadingScript;     
             this.IconTrailing = tags.IconTrailing;
             this.IconTrailingString = tags.IconTrailingString;
+            this.IconTrailingColor = tags.IconTrailingColor;
             this.Label = tags.Label;
             this.LabelLocalized = tags.LabelLocalized;
             this.Name = tags.Name;

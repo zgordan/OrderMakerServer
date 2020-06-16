@@ -32,27 +32,11 @@
 .mtd-config-form-parts__plist {
   flex-grow: 1;
 }
-#configListParts {
-  border-radius: 4px;
-  background-image: linear-gradient(to right, white, lightgray);
-}
 .mtd-config-form-parts__pact {
   width: 56px;
 }
-[draggable] {
-  -moz-user-select: none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
-  /* Required to make elements draggable in old WebKit */
-  -khtml-user-drag: element;
-  -webkit-user-drag: element;
-}
 .mdc-list-item.over {
   border-top: 2px solid blue;
-}
-.mdt-config-form-parts__item {
-  border-bottom: 1px solid lightgray;
 }
 #partsCreator {
   position: absolute;
@@ -64,9 +48,6 @@
   #partsCreator {
     left: -0.3em;
   }
-}
-#partsCreator a {
-  text-decoration: none;
 }
 .mtd-config-form-parts__bdrag {
   position: absolute;

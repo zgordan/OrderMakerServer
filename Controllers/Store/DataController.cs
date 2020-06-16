@@ -73,7 +73,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                 return Ok(403);
             }
 
-            bool setData = await _userHandler.GetFormPolicyAsync(webAppUser, mtdStore.MtdForm, RightsType.SetDate);
+            bool setData = await _userHandler.CheckUserPolicyAsync(webAppUser, mtdStore.MtdForm, RightsType.SetDate);
             if (setData)
             {
                 bool isOk = DateTime.TryParse(dateCreate, out DateTime dateTime);
@@ -185,7 +185,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
 
             MtdStore mtdStore = new MtdStore { Id = idStore, MtdForm = formId, Sequence = sequence ?? 1, Parent = parentId.Length > 0 ? parentId : null };
 
-            bool setData = await _userHandler.GetFormPolicyAsync(webAppUser, mtdStore.MtdForm, RightsType.SetDate);
+            bool setData = await _userHandler.CheckUserPolicyAsync(webAppUser, mtdStore.MtdForm, RightsType.SetDate);
             if (setData)
             {
                 bool isOk = DateTime.TryParse(dateCreate, out DateTime dateTime);
@@ -304,7 +304,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             if (!isInstallerOwner) { return Ok(403); }
 
             List<WebAppUser> webAppUsers = new List<WebAppUser>();
-            bool isViewAll = await _userHandler.GetFormPolicyAsync(currentUser, mtdStore.MtdForm, RightsType.ViewAll);
+            bool isViewAll = await _userHandler.CheckUserPolicyAsync(currentUser, mtdStore.MtdForm, RightsType.ViewAll);
             if (isViewAll)
             {
                 webAppUsers = await _userHandler.Users.ToListAsync();

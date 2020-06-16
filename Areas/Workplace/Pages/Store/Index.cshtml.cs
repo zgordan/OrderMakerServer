@@ -45,11 +45,10 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
 
         public async Task<IActionResult> OnGetAsync(string indexForm)
         {
-
             WebAppUser user = await _userHandler.GetUserAsync(HttpContext.User);
-            bool isViewer = await _userHandler.IsViewer(user, indexForm);
-            bool OwnerRight = await _userHandler.GetFormPolicyAsync(user, indexForm, RightsType.ViewOwn);
-            bool GroupRight = await _userHandler.GetFormPolicyAsync(user, indexForm, RightsType.ViewGroup);
+            bool isViewer = await _userHandler.CheckUserPolicyAsync(user, indexForm, RightsType.ViewAll);
+            bool GroupRight = await _userHandler.CheckUserPolicyAsync(user, indexForm, RightsType.ViewGroup);
+            bool OwnerRight = await _userHandler.CheckUserPolicyAsync(user, indexForm, RightsType.ViewOwn);
 
             if (!isViewer & !OwnerRight & !GroupRight)
             {

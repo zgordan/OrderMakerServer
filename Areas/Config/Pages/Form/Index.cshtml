@@ -36,36 +36,42 @@
     <li>@ViewBag.Title</li>
 }
 
-<div class="mdc-elevation--z1 mtd-config-form-place">
-    <div id="configCreator" class="mtd-config-form-creator">
-        <a mtd-data-href="/config/form/create" class="mdc-fab mdc-fab--extended" aria-label="Create">
-            <span class="material-icons mdc-fab__icon">add</span>
-            <span class="mdc-fab__label">@Localizer["Create"]</span>
-        </a>
-    </div>
-    <div class="mtd-config-form-search">
-        <form id="configFormText" method="get" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
-            <div class="mdc-text-field mdc-text-field--fullwidth mdc-text-field--with-leading-icon">
-                <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">search</i>
-                <input id="configSearchText" name="searchText" value="@Model.SearchText" class="mdc-text-field__input"
-                       type="text"
-                       placeholder="@Localizer["Search for text"]"
-                       aria-label="Search for text"
-                       autocomplete="off">
-            </div>
-        </form>
-    </div>
 
-    <form mtd-data-form method="post" action="/api/config/form/sequence">
+<div class="mtd-desk">
+    <div class="mtd-desk-panel">
+        <div style="padding-left: 16px">
+            <button mtd-data-href="/config/form/create" class="mdc-fab mdc-fab--extended" aria-label="Create">
+                <div class="mdc-fab__ripple"></div>
+                <span class="material-icons mdc-fab__icon">add</span>
+                <span class="mdc-fab__label">@Localizer["Create"]</span>
+            </button>
+        </div>
+    </div>
+    <form method="get" autocomplete='off' novalidate>
+        @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+        {
+            Id = "search-text",
+            Name = "searchText",
+            Placeholder = "Search for text",
+            PlaceholderLocalized = true,
+            IconLeading = "fas fa-search",
+            Value = Model.SearchText
+        })
+    </form>
+</div>
+
+<div class="mtd-config-form-place">
+
+    <form mtd-data-form="sequence" method="post" action="/api/config/form/sequence">
         @Html.AntiForgeryToken()
-        <input id="formSeqData" name="formSeqData" type="hidden" />
-        <input id="configListSeq" mtd-data-clicker type="hidden" />
+        <input mtd-data-sequence name="formSeqData" type="hidden" />
+        <input mtd-data-clicker type="hidden" />
     </form>
 
-    <ul id="configListForms" class="mdc-list mdc-list--two-line">
+    <ul mtd-draggable class="mdc-list mdc-list--two-line">
         @foreach (var form in Model.MtdForm.OrderBy(x => x.Sequence))
         {
-            <li mtd-data-href="/config/form/edit?id=@form.Id" class="mdt-config-form__item mdc-list-item" draggable="true" data-value="@form.Id" aria-checked="false">
+            <li mtd-data-href="/config/form/edit?id=@form.Id" class="mdc-list-item" draggable="true" data-value="@form.Id" aria-checked="false">
                 @if (form.MtdFormDesk != null)
                 {
 

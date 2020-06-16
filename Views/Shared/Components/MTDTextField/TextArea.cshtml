@@ -13,6 +13,11 @@
 }
 
 <label id="@Model.Id" class="@mainClass">
+    @if (Model.HelperText != null || Model.HelperError != null)
+    {
+        <div class="mdc-text-field-character-counter">0 / @Model.MaxLength</div>
+    }
+
 
     <textarea id="@Model.IdInput" class="mdc-text-field__input @Model.Class" rows="@Model.Rows" cols="@Model.Cols"
               aria-labelledby="@Model.IdLabel"
@@ -33,4 +38,8 @@
 </label>
 
 @await Html.PartialAsync("./_helperText.cshtml")
-@await Html.PartialAsync("./_counterLine.cshtml")
+
+@if (Model.HelperText == null && Model.HelperError == null)
+{
+    @await Html.PartialAsync("./_counterLine.cshtml")
+}

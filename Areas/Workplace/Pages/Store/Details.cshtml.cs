@@ -129,7 +129,7 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
             if (IsInstallerOwner)
             {
                 List<WebAppUser> webAppUsers = new List<WebAppUser>();
-                bool isViewAll = await _userHandler.GetFormPolicyAsync(user, MtdStore.MtdForm, RightsType.ViewAll);
+                bool isViewAll = await _userHandler.CheckUserPolicyAsync(user, MtdStore.MtdForm, RightsType.ViewAll);
                 
                 if (isViewAll)
                 {

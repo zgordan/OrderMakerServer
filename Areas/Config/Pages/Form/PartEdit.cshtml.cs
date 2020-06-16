@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
 
 namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
 {
@@ -39,7 +40,8 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
         }
 
         public MtdForm MtdForm { get; set; }
-        public MtdFormPart MtdFormPart { get; set; }       
+        public MtdFormPart MtdFormPart { get; set; }   
+        public List<MTDSelectListItem> Styles { get; set; }
         public async Task<IActionResult>  OnGetAsync(string id) {
 
             MtdFormPart = await _context.MtdFormPart.Include(m=>m.MtdFormPartHeader).FirstOrDefaultAsync(x=>x.Id == id);
@@ -51,7 +53,12 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
             
             MtdForm = await _context.MtdForm.Include(m => m.MtdFormHeader).Where(x => x.Id == MtdFormPart.MtdForm).FirstOrDefaultAsync();
             IList<MtdSysStyle> styles =  await _context.MtdSysStyle.ToListAsync();
-            ViewData["Styles"] = new SelectList(styles, "Id", "Name");
+            
+            Styles = new List<MTDSelectListItem>();
+            styles.ToList().ForEach((style) =>
+            {
+                Styles.Add(new MTDSelectListItem { Id = style.Id.ToString(), Value = style.Name, Localized = true });
+            });
 
             return Page();
         }

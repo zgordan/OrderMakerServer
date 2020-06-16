@@ -33,47 +33,57 @@
 }
 
 <div class="mtd-desk">
-    <div id="creator" class="mtd-desk-creator">
-        <a mtd-data-href="/identity/users/group/create" class="mdc-fab mdc-fab--extended" aria-label="Create">
-            <span class="material-icons mdc-fab__icon">group_add</span>
-            <span class="mdc-fab__label">@Localizer["Create"]</span>
-        </a>
+    <div class="mtd-desk-panel">
+        <div style="padding-left: 16px;">
+            <button mtd-data-href="/identity/users/group/create" class="mdc-fab mdc-fab--extended" aria-label="Create">
+                <div class="mdc-fab__ripple"></div>
+                <span class="material-icons mdc-fab__icon">group_add</span>
+                <span class="mdc-fab__label">@Localizer["Create"]</span>
+            </button>
+        </div>
     </div>
-    <div class="mtd-desk-search">
-        <form id="configFormText" method="get" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
-            <div class="mdc-text-field mdc-text-field--fullwidth mdc-text-field--with-leading-icon">
-                <i class="material-icons mdc-text-field__icon" tabindex="0" role="button">search</i>
-                <input id="search-text" name="searchText" value="@Model.SearchText" class="mdc-text-field__input"
-                       type="text"
-                       placeholder="@Localizer["Search for text"]"
-                       aria-label="Search for text"
-                       autocomplete="off">
-            </div>
-        </form>
-    </div>
+
+    <form method="get" autocomplete='off' novalidate>
+        @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+            {
+                Id = "search-text",
+                Name = "searchText",
+                Value = Model.SearchText,
+                IconLeading = "fa fa-search",
+                Placeholder = "Search for text",
+                PlaceholderLocalized = true,
+            })
+    </form>
+
     <ul id="drgList" class="mdc-list mdc-list--two-line">
         @foreach (var group in Model.MtdGroups)
         {
-        <li mtd-data-href="/identity/users/group/edit?id=@group.Id" id="@group-licol" class="mtd-desk-draggable-item mdc-list-item"
-            data-value="@group.Id" draggable="true" role="button" aria-checked="false">
-            <div style="padding: 8px;">
-                <i class="material-icons">groups</i>
-            </div>
-            <span class="mdc-list-item__text">
-                <span class="mdc-list-item__primary-text">@group.Name</span>
-                <span class="mdc-list-item__secondary-text">@group.Description</span>
-            </span>
+            <li mtd-data-href="/identity/users/group/edit?id=@group.Id" id="@group-licol" class="mdc-list-item"
+                data-value="@group.Id" draggable="true" role="button" aria-checked="false">
+                <div style="padding: 12px;">
+                    <i class="fas fa-user-friends fa-lg" style="color: gray"></i>
+                </div>
+                <span class="mdc-list-item__text">
+                    <span class="mdc-list-item__primary-text">@group.Name</span>
+                    <span class="mdc-list-item__secondary-text">@group.Description</span>
+                </span>
 
-            <div class="mtd-desk-bedit">
-                <button class="mdc-icon-button"
-                        aria-label="edit"
-                        aria-hidden="true"
-                        aria-pressed="false">
-                    <i class="material-icons mdc-icon-button__icon">edit</i>
-                </button>
-            </div>
+                <div class="mtd-desk-bedit">
+                    <button class="mdc-icon-button"
+                            aria-label="edit"
+                            aria-hidden="true"
+                            aria-pressed="false">
+                        <i class="material-icons mdc-icon-button__icon">edit</i>
+                    </button>
+                </div>
 
-        </li>
+            </li>
         }
     </ul>
 </div>
+
+@section Scripts {
+    <script>
+        new MTDTextField("search-text");
+    </script>
+} 

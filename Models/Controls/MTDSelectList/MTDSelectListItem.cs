@@ -11,5 +11,6 @@ namespace Mtd.OrderMaker.Server.Models.Controls.MTDSelectList
         public string Value { get; set; }
         public bool Localized { get; set; }
         public string Attributes { get; set; }
+        public bool Selectded { get; set; }
     }
 }

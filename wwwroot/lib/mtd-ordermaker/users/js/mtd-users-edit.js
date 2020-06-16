@@ -29,7 +29,7 @@
         dialogTransfer.open();
     });
 
-    const selectPart = new mdc.select.MDCSelect(document.getElementById("users-edit-role"));
+    //const selectPart = new mdc.select.MDCSelect(document.getElementById("users-edit-role"));
 
     const cpqViewAll = document.getElementById("cpq-view-all");
     const cpqViewGroup = document.getElementById("cpq-view-group");
@@ -76,3 +76,13 @@
         cpqEditGroup.checked = false;
         cpqEditOwn.checked = true;
     });
+
+new MTDTextField("login-title-group");
+new MTDTextField("login-title");
+new MTDTextField("login-phone")
+const email = new MTDTextField("login-email");
+const confirm = document.getElementById("email-confirm");
+
+new MTDSelectList("select-policy");
+new MTDSelectList("select-role");
+new MTDSelectList("select-role-cpq");

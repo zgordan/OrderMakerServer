@@ -19,6 +19,7 @@ namespace Mtd.OrderMaker.Server.Models.Controls.MTDTextField
         public string IconLeadingScript { get; set; }
         public string IconTrailing { get; set; }
         public string IconTrailingString { get; set; }
+        public string IconTrailingColor { get; set; }
         public bool Required { get; set; }
         public bool Disabled { get; set; }
         public string HelperText { get; set; }

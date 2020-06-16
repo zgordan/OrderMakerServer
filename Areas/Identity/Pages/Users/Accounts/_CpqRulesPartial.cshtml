@@ -3,14 +3,17 @@
 @inject IHtmlLocalizer<SharedResource> Localizer
 
 
-<div class="mtd-users-wrap" @if (!Model.CpqModule) {<text>style="display:none"</text> } >
+<div class="mtd-users-wrap" @if (!Model.CpqModule) {<text>style="display:none"</text> }>
     <div style="padding: 8px; flex-grow:1; max-width: 450px">
-        <div id="users-edit-role-cpq" class="mdc-select" style="width:100%">
-            <i class="mdc-select__dropdown-icon"></i>
-            <select class="mdc-select__native-control" asp-for="Input.RoleCpq" asp-items="ViewBag.RolesCPQ"></select>
-            <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["CPQ Role"]</label>
-            <div class="mdc-line-ripple"></div>
-        </div>
+        @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
+        {
+           Id = "select-role-cpq",
+           Name = "Input.RoleCpq",
+           Items = Model.RolesCpq,
+           Label = "CPQ Role",
+           LabelLocalized = true,
+           ValueId = Model.Input.RoleCpq
+        })
     </div>
     <div style="padding: 8px; position:relative;">
         <div style="position:absolute; background-color: white; padding:4px;top:-6px; left: 14px; font-weight: 500">CPQ Policy</div>
