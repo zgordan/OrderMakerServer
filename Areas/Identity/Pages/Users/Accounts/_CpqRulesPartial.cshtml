@@ -3,130 +3,140 @@
 @inject IHtmlLocalizer<SharedResource> Localizer
 
 
-<div class="mtd-users-wrap" @if (!Model.CpqModule) {<text>style="display:none"</text> }>
-    <div style="padding: 8px; flex-grow:1; max-width: 450px">
-        @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
-        {
-           Id = "select-role-cpq",
-           Name = "Input.RoleCpq",
-           Items = Model.RolesCpq,
-           Label = "CPQ Role",
-           LabelLocalized = true,
-           ValueId = Model.Input.RoleCpq
-        })
+
+
+<div style="padding: 8px;">
+    <div style="padding: 8px; text-align:center; background-color: whitesmoke; color: dimgray">
+        CPQ ACCESS SETTINGS
     </div>
-    <div style="padding: 8px; position:relative;">
-        <div style="position:absolute; background-color: white; padding:4px;top:-6px; left: 14px; font-weight: 500">CPQ Policy</div>
-        <div style=" border: 1px solid #ccc; display: flex; flex-wrap:wrap; padding: 8px">
-            <div class="mdc-form-field">
-                <div class="mdc-checkbox">
-                    <input type="checkbox"
-                           class="mdc-checkbox__native-control"
-                           id="cpq-view-all" name="cpq-view-all" @if (Model.Input.CpqPolicyView == "view-all") { <text> checked</text> } />
-                    <div class="mdc-checkbox__background">
-                        <svg class="mdc-checkbox__checkmark"
-                             viewBox="0 0 24 24">
-                            <path class="mdc-checkbox__checkmark-path"
-                                  fill="none"
-                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                        </svg>
-                        <div class="mdc-checkbox__mixedmark"></div>
-                    </div>
-                    <div class="mdc-checkbox__ripple"></div>
-                </div>
-                <label for="cpq-view-all">View all</label>
+    <div class="mtd-users-wrap noselect" @if (!Model.CpqModule) { <text> style="display:none" </text> }>
+        <div style="border: 1px solid lightgray; padding: 8px; position:relative; width: 100%; display: flex; align-items:center">
+            <div style="flex-grow: 1">
+                @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
+                {
+                   Id = "select-role-cpq",
+                   Name = "Input.RoleCpq",
+                   Items = Model.RolesCpq,
+                   Label = "CPQ Role",
+                   LabelLocalized = true,
+                   ValueId = Model.Input.RoleCpq
+                })
             </div>
-            <div class="mdc-form-field">
-                <div class="mdc-checkbox">
-                    <input type="checkbox"
-                           class="mdc-checkbox__native-control"
-                           id="cpq-view-group" name="cpq-view-group" @if (Model.Input.CpqPolicyView == "view-group") { <text> checked</text> } />
-                    <div class="mdc-checkbox__background">
-                        <svg class="mdc-checkbox__checkmark"
-                             viewBox="0 0 24 24">
-                            <path class="mdc-checkbox__checkmark-path"
-                                  fill="none"
-                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                        </svg>
-                        <div class="mdc-checkbox__mixedmark"></div>
+            <div style="padding: 8px; position:relative;">
+                <div style="position:absolute; background-color: white; padding:4px;top:-6px; left: 14px; font-weight: 500">CPQ Policy</div>
+                <div style=" border: 1px solid #ccc; display: flex; flex-wrap:wrap; padding: 8px">
+                    <div class="mdc-form-field">
+                        <div class="mdc-checkbox">
+                            <input type="checkbox"
+                                   class="mdc-checkbox__native-control"
+                                   id="cpq-view-all" name="cpq-view-all" @if (Model.Input.CpqPolicyView == "view-all") { <text> checked</text> } />
+                            <div class="mdc-checkbox__background">
+                                <svg class="mdc-checkbox__checkmark"
+                                     viewBox="0 0 24 24">
+                                    <path class="mdc-checkbox__checkmark-path"
+                                          fill="none"
+                                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                </svg>
+                                <div class="mdc-checkbox__mixedmark"></div>
+                            </div>
+                            <div class="mdc-checkbox__ripple"></div>
+                        </div>
+                        <label for="cpq-view-all">View all</label>
                     </div>
-                    <div class="mdc-checkbox__ripple"></div>
-                </div>
-                <label for="cpq-view-group">View group</label>
-            </div>
-            <div class="mdc-form-field">
-                <div class="mdc-checkbox">
-                    <input type="checkbox"
-                           class="mdc-checkbox__native-control"
-                           id="cpq-view-own" name="cpq-view-own" @if (Model.Input.CpqPolicyView == "view-own") { <text> checked</text> } />
-                    <div class="mdc-checkbox__background">
-                        <svg class="mdc-checkbox__checkmark"
-                             viewBox="0 0 24 24">
-                            <path class="mdc-checkbox__checkmark-path"
-                                  fill="none"
-                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                        </svg>
-                        <div class="mdc-checkbox__mixedmark"></div>
+                    <div class="mdc-form-field">
+                        <div class="mdc-checkbox">
+                            <input type="checkbox"
+                                   class="mdc-checkbox__native-control"
+                                   id="cpq-view-group" name="cpq-view-group" @if (Model.Input.CpqPolicyView == "view-group") { <text> checked</text> } />
+                            <div class="mdc-checkbox__background">
+                                <svg class="mdc-checkbox__checkmark"
+                                     viewBox="0 0 24 24">
+                                    <path class="mdc-checkbox__checkmark-path"
+                                          fill="none"
+                                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                </svg>
+                                <div class="mdc-checkbox__mixedmark"></div>
+                            </div>
+                            <div class="mdc-checkbox__ripple"></div>
+                        </div>
+                        <label for="cpq-view-group">View group</label>
                     </div>
-                    <div class="mdc-checkbox__ripple"></div>
-                </div>
-                <label for="cpq-view-own">View own</label>
-            </div>
-            <div class="mdc-form-field">
-                <div class="mdc-checkbox">
-                    <input type="checkbox"
-                           class="mdc-checkbox__native-control"
-                           id="cpq-edit-all" name="cpq-edit-all" @if (Model.Input.CpqPolicyEdit == "edit-all") { <text> checked</text> } />
-                    <div class="mdc-checkbox__background">
-                        <svg class="mdc-checkbox__checkmark"
-                             viewBox="0 0 24 24">
-                            <path class="mdc-checkbox__checkmark-path"
-                                  fill="none"
-                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                        </svg>
-                        <div class="mdc-checkbox__mixedmark"></div>
+                    <div class="mdc-form-field">
+                        <div class="mdc-checkbox">
+                            <input type="checkbox"
+                                   class="mdc-checkbox__native-control"
+                                   id="cpq-view-own" name="cpq-view-own" @if (Model.Input.CpqPolicyView == "view-own") { <text> checked</text> } />
+                            <div class="mdc-checkbox__background">
+                                <svg class="mdc-checkbox__checkmark"
+                                     viewBox="0 0 24 24">
+                                    <path class="mdc-checkbox__checkmark-path"
+                                          fill="none"
+                                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                </svg>
+                                <div class="mdc-checkbox__mixedmark"></div>
+                            </div>
+                            <div class="mdc-checkbox__ripple"></div>
+                        </div>
+                        <label for="cpq-view-own">View own</label>
                     </div>
-                    <div class="mdc-checkbox__ripple"></div>
-                </div>
-                <label for="cpq-edit-all">Edit all</label>
-            </div>
-            <div class="mdc-form-field">
-                <div class="mdc-checkbox">
-                    <input type="checkbox"
-                           class="mdc-checkbox__native-control"
-                           id="cpq-edit-group" name="cpq-edit-group" @if (Model.Input.CpqPolicyEdit == "edit-group") { <text> checked</text> } />
-                    <div class="mdc-checkbox__background">
-                        <svg class="mdc-checkbox__checkmark"
-                             viewBox="0 0 24 24">
-                            <path class="mdc-checkbox__checkmark-path"
-                                  fill="none"
-                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                        </svg>
-                        <div class="mdc-checkbox__mixedmark"></div>
+                    <div class="mdc-form-field">
+                        <div class="mdc-checkbox">
+                            <input type="checkbox"
+                                   class="mdc-checkbox__native-control"
+                                   id="cpq-edit-all" name="cpq-edit-all" @if (Model.Input.CpqPolicyEdit == "edit-all") { <text> checked</text> } />
+                            <div class="mdc-checkbox__background">
+                                <svg class="mdc-checkbox__checkmark"
+                                     viewBox="0 0 24 24">
+                                    <path class="mdc-checkbox__checkmark-path"
+                                          fill="none"
+                                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                </svg>
+                                <div class="mdc-checkbox__mixedmark"></div>
+                            </div>
+                            <div class="mdc-checkbox__ripple"></div>
+                        </div>
+                        <label for="cpq-edit-all">Edit all</label>
                     </div>
-                    <div class="mdc-checkbox__ripple"></div>
-                </div>
-                <label for="cpq-edit-group">Edit group</label>
-            </div>
-            <div class="mdc-form-field">
-                <div class="mdc-checkbox">
-                    <input type="checkbox"
-                           class="mdc-checkbox__native-control"
-                           id="cpq-edit-own" name="cpq-edit-own" @if (Model.Input.CpqPolicyEdit == "edit-own") { <text> checked</text> } />
-                    <div class="mdc-checkbox__background">
-                        <svg class="mdc-checkbox__checkmark"
-                             viewBox="0 0 24 24">
-                            <path class="mdc-checkbox__checkmark-path"
-                                  fill="none"
-                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                        </svg>
-                        <div class="mdc-checkbox__mixedmark"></div>
+                    <div class="mdc-form-field">
+                        <div class="mdc-checkbox">
+                            <input type="checkbox"
+                                   class="mdc-checkbox__native-control"
+                                   id="cpq-edit-group" name="cpq-edit-group" @if (Model.Input.CpqPolicyEdit == "edit-group") { <text> checked</text> } />
+                            <div class="mdc-checkbox__background">
+                                <svg class="mdc-checkbox__checkmark"
+                                     viewBox="0 0 24 24">
+                                    <path class="mdc-checkbox__checkmark-path"
+                                          fill="none"
+                                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                </svg>
+                                <div class="mdc-checkbox__mixedmark"></div>
+                            </div>
+                            <div class="mdc-checkbox__ripple"></div>
+                        </div>
+                        <label for="cpq-edit-group">Edit group</label>
                     </div>
-                    <div class="mdc-checkbox__ripple"></div>
+                    <div class="mdc-form-field">
+                        <div class="mdc-checkbox">
+                            <input type="checkbox"
+                                   class="mdc-checkbox__native-control"
+                                   id="cpq-edit-own" name="cpq-edit-own" @if (Model.Input.CpqPolicyEdit == "edit-own") { <text> checked</text> } />
+                            <div class="mdc-checkbox__background">
+                                <svg class="mdc-checkbox__checkmark"
+                                     viewBox="0 0 24 24">
+                                    <path class="mdc-checkbox__checkmark-path"
+                                          fill="none"
+                                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                </svg>
+                                <div class="mdc-checkbox__mixedmark"></div>
+                            </div>
+                            <div class="mdc-checkbox__ripple"></div>
+                        </div>
+                        <label for="cpq-edit-own">Edit own</label>
+                    </div>
                 </div>
-                <label for="cpq-edit-own">Edit own</label>
             </div>
+
         </div>
+
     </div>
 </div>
-

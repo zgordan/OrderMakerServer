@@ -339,14 +339,16 @@ namespace Mtd.OrderMaker.Server.Services
         {
             List<WebAppUser> result = new List<WebAppUser>();
             List<WebAppUser> users = await GetUsersInGroupsAsync(webAppUser);
-            users.ForEach(async (user) =>
+
+            foreach(WebAppUser user in users)
             {
                 bool checkDeny = await CheckUserPolicyAsync(user, formId, RightsType.OwnDenyGroup);
-                
-                if (!checkDeny || webAppUser.Id == user.Id) {
+                if (!checkDeny || webAppUser.Id == user.Id)
+                {
                     result.Add(user);
                 }
-            });
+            }
+
             return result;
         }
 

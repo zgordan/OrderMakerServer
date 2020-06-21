@@ -1,10 +1,16 @@
-/*:root {
-    --mdc-theme-primary: navy;
-    --mdc-theme-secondary: cornflowerblue;
+:root {
+  --mdc-theme-primary: navy;
+  --mdc-theme-secondary: cornflowerblue;
 }
-
-
-body {
+.identity-box {
+  max-width: 450px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 64px;
+  padding: 16px 16px 48px 16px;
+  background-color: white;
+}
+/*body {
     margin: 0;
     padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

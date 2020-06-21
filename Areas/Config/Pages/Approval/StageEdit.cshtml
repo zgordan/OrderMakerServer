@@ -25,6 +25,7 @@
 @{
     ViewData["Title"] = Localizer["Edit approval stage"];
     ViewData["SecondTitle"] = Localizer["Edit stage in the chain"];
+    ViewData["UserItems"] = Model.UserItems;
 }
 
 
@@ -41,7 +42,7 @@
     <li class="mdc-list-item" role="menuitem" mtd-data-href="/config/approval/resolutions/index?stage=@Model.MtdApprovalStage.Id">
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">thumb_up</span>
         <span class="mdc-list-item__text">@Localizer["Resolution list"]</span>
-    </li>   
+    </li>
     <li class="mdc-list-item" role="menuitem" mtd-data-href="/config/approval/rejections/index?stage=@Model.MtdApprovalStage.Id">
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">thumb_down</span>
         <span class="mdc-list-item__text">@Localizer["Rejection list"]</span>
@@ -53,41 +54,51 @@
     </li>
 }
 
-
-<form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/config/approval/stage/edit">
-    @Html.AntiForgeryToken()
-    <input type="hidden" asp-for="MtdApprovalStage.Id" name="IdStage" />
-
-    <div class="mtd-desk">
-        <div class="mtd-desk-savebar">
-            <button mtd-data-clicker mtd-data-location="/config/approval/stages?idApproval=@Model.MtdApproval.Id" mtd-data-message="@Localizer["Stage was changes"]." type="button" class="mdc-fab mdc-fab--extended">
+<div class="mtd-desk">
+    <div class="mtd-desk-panel">
+        <div style="padding-left: 16px">
+            <button mtd-data-clicker-by="clicker-save" type="button" class="mdc-fab mdc-fab--extended">
+                <div class=""></div>
                 <span class="material-icons mdc-fab__icon">save</span>
                 <span class="mdc-fab__label">@Localizer["Save"]</span>
             </button>
         </div>
-        <div style="display: flex; flex-wrap:wrap; justify-content:center">
-            <div class="mdc-elevation--z1" style="padding: 8px; margin:8px; width:100%">
-                <div>
-                    <strong>@Localizer["Fields"]</strong>
-                    <hr />
-                </div>
-                @await Html.PartialAsync("~/Areas/Config/Pages/Approval/Partials/StageEditFields.cshtml", Model.MtdApprovalStage)
-            </div>
-            <div class="mdc-elevation--z1"  style="padding: 8px; margin:8px">
-                <div style="">
-                    <strong>@Localizer["Parts of the form that will be uneditable after approval"]</strong>
-                    <hr />
-                </div>
-                @await Html.PartialAsync("~/Areas/Config/Pages/Approval/Partials/StageEditParts.cshtml", Model)
-            </div>
-        </div>
     </div>
+</div>
+
+<form mtd-data-form method="post" autocomplete="off" action="/api/config/approval/stage/edit" novalidate>
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="MtdApprovalStage.Id" name="stageId" />
+    <input type="hidden" id="clicker-save"
+           mtd-data-clicker mtd-data-location="/config/approval/stages?idApproval=@Model.MtdApproval.Id"
+           mtd-data-message="@Localizer["Stage was changes."]" />
+
+    @await Html.PartialAsync("~/Areas/Config/Pages/Approval/Partials/StageEditFields.cshtml", Model.MtdApprovalStage)
+
+        <div style="text-align: center; background-color: lightgray; color: dimgray; padding:4px;">
+            @Localizer["Parts of the form that will be uneditable after approval"]
+        </div>
+        @await Html.PartialAsync("~/Areas/Config/Pages/Approval/Partials/StageEditParts.cshtml", Model)
+
+
 </form>
 
 @await Html.PartialAsync("~/Areas/Config/Pages/Approval/Partials/StageEditDialogDelete.cshtml", Model)
 
 
+@section Scripts {
+    <script>
+        const dialog = new mdc.dialog.MDCDialog(document.getElementById('dialog-delete'));
+        if (dialog) {
+            document.querySelector('[mtd-data-delete]').addEventListener('click', () => {
+                dialog.open();
+            });
+        }
 
-@section Scripts{
-    <script src="~/lib/mtd-ordermaker/config/js/mtd-config-approval.js" asp-append-version="true"></script>
+        new MTDTextField("field-name");
+        new MTDTextField("field-note");
+        new MTDTextField("field-stage");
+        new MTDSelectList("select-user");      
+        
+    </script>
 }

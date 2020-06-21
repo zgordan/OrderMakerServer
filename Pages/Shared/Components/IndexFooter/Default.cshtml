@@ -20,7 +20,7 @@
 @model Models.Index.FooterModelView
 
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IHtmlLocalizer<ISharedResource> Localizer
+@inject IHtmlLocalizer<SharedResource> Localizer
 
 <div class="mtd-index-footer">
 
@@ -58,7 +58,7 @@
     </form>
 
     <div class="mtd-index-footer-pageSize" >
-        <div style="white-space:nowrap">@Localizer["Page size"]:</div>
+        <div style="white-space:nowrap">@Localizer["Page size:"]</div>
         <div class="mdc-menu-surface--anchor">
             <div mtd-data-page="@Model.FormId" class="mdc-ripple-surface mdc-ripple-surface--accent">
                 <div class="mtd-index-footer-sizeButton">@Model.PageSize</div>

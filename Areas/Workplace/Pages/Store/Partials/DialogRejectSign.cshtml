@@ -21,7 +21,7 @@
                      @Localizer["A negative answer response to a user’s request will be recorded in the list of approval history."]
                     <hr />
                     <div style="padding-top: 18px; width: 100%">
-                        <label class="mdc-text-field mdc-text-field--textarea" style="width:100%">
+                        <label id="d-reject" class="mdc-text-field mdc-text-field--textarea" style="width:100%">
                             <div class="mdc-text-field-character-counter">0 / 250</div>
                             <textarea class="mdc-text-field__input" aria-labelledby="comment-reject-sign-id" name="comment-request-id" rows="3" cols="40"
                                       maxlength="250" placeholder="@Localizer["Create a comment if necessary"]"></textarea>
@@ -39,7 +39,7 @@
                     <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
                         <span class="mdc-button__label">@Localizer["Cancel"]</span>
                     </button>
-                    <button type="button" id="clicker-reject-sign" mtd-data-clicker mtd-data-message="@Localizer["Responce sent"]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" style="color:green">
+                    <button type="button" id="clicker-reject-sign" mtd-data-clicker mtd-data-message="@Localizer["Responce sent."]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" style="color:green">
                         <span class="mdc-button__label">@Localizer["Apply"]</span>
                     </button>
                 </footer>

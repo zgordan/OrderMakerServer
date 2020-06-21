@@ -20,9 +20,12 @@
 @model EditModel
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHtmlLocalizer<SharedResource> Localizer
+@using  Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> SLocalizer
+
 @{
     ViewData["Title"] = Localizer["Approval editor"];
-    ViewData["SecondTitle"] = Localizer["Editing approval parameters"];
+    ViewData["SecondTitle"] = $"{SLocalizer["Form approval chain:"]} {Model.MtdApproval.MtdFormNavigation.Name}";
 }
 @section Head {
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/config/css/mtd-config-form-edit.css" asp-append-version="true" />
@@ -49,202 +52,200 @@
     </li>
 }
 
-<form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="">
-    <input type="hidden" asp-for="MtdApproval.Id" />
-    <div class="mtd-desk">
-        <div class="mtd-desk-savebar">
-            <button mtd-data-clicker mtd-data-message="@Localizer["Changes saved"]." type="button" class="mdc-fab mdc-fab--extended">
+<div class="mtd-desk">
+    <div class="mtd-desk-panel">
+        <div style="padding-left: 16px">
+            <button mtd-data-clicker-by="clicker-save" type="button" class="mdc-fab mdc-fab--extended">
+                <div class="mdc-fab__ripple"></div>
                 <span class="material-icons mdc-fab__icon">save</span>
                 <span class="mdc-fab__label">@Localizer["Save"]</span>
             </button>
         </div>
-        <div style="display: flex; flex-direction: column; align-items:center;">
-            <div style="display: flex; width: 90%; max-width: 550px; padding: 8px; border-bottom: 1px solid gray">
-                <div style="flex-grow:1">
-                    @Localizer["Approval chain for form:"]
-                </div>
-                <div>
-                    <strong>@Model.MtdApproval.MtdFormNavigation.Name</strong>
-                </div>
-            </div>
-            <div class="mdc-text-field mdc-text-field--outlined" style="width: 100%; max-width: 600px; margin-top: 16px;">
-                <input type="text" class="mdc-text-field__input" asp-for="MtdApproval.Name" required>
-                <div class="mdc-notched-outline">
-                    <div class="mdc-notched-outline__leading"></div>
-                    <div class="mdc-notched-outline__notch">
-                        <label class="mdc-floating-label">@Localizer["Name"]</label>
-                    </div>
-                    <div class="mdc-notched-outline__trailing"></div>
-                </div>
-            </div>
-            <div class="mdc-text-field-helper-line">
-                <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true">
-                    @Localizer["Required field"]
-                </div>
-            </div>
-            <div class="mdc-text-field mdc-text-field--textarea" style="width: 100%; max-width: 600px; margin-top: 16px;">
-                <textarea id="textarea" class="mdc-text-field__input" rows="3" cols="40" asp-for="MtdApproval.Description" required></textarea>
-                <div class="mdc-notched-outline">
-                    <div class="mdc-notched-outline__leading"></div>
-                    <div class="mdc-notched-outline__notch">
-                        <label for="textarea" class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Description"]</label>
-                    </div>
-                    <div class="mdc-notched-outline__trailing"></div>
-                </div>
-            </div>
-            <div class="mdc-text-field-helper-line">
-                <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true">
-                    @Localizer["Required field"]
-                </div>
-            </div>
-
-
-            <div class="mtd-desk-fields">
-                <div class="mtd-desk-field">
-                    <span>@Localizer["Start Image"]</span>
-                    @await Component.InvokeAsync("MTDImgSelector", new
-                    {
-                                    id = "img-start",
-                                    imgArray = Model.MtdApproval.ImgStart,
-                                    imgType = Model.MtdApproval.ImgStartType
-                    })
-                </div>
-                <div class="mtd-desk-field" style="padding-top: 36px">
-                    <div class="mdc-text-field mdc-text-field--outlined" style="width:100%;">
-                        <input type="text" class="mdc-text-field__input" asp-for="MtdApproval.ImgStartText">
-                        <div class="mdc-notched-outline">
-                            <div class="mdc-notched-outline__leading"></div>
-                            <div class="mdc-notched-outline__notch">
-                                <label class="mdc-floating-label">@Localizer["Start text"]</label>
-                            </div>
-                            <div class="mdc-notched-outline__trailing"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mtd-desk-fields">
-                <div class="mtd-desk-field">
-                    <span>@Localizer["Iteraction Image"]</span>
-                    @await Component.InvokeAsync("MTDImgSelector", new
-                    {
-                                    id = "img-iteraction",
-                                    imgArray = Model.MtdApproval.ImgIteraction,
-                                    imgType = Model.MtdApproval.ImgRequiredType
-                    })
-                </div>
-                <div class="mtd-desk-field" style="padding-top: 36px">
-                    <div class="mdc-text-field mdc-text-field--outlined" style="width:100%;">
-                        <input type="text" class="mdc-text-field__input" asp-for="MtdApproval.ImgIteractionText">
-                        <div class="mdc-notched-outline">
-                            <div class="mdc-notched-outline__leading"></div>
-                            <div class="mdc-notched-outline__notch">
-                                <label class="mdc-floating-label">@Localizer["Iteraction text"]</label>
-                            </div>
-                            <div class="mdc-notched-outline__trailing"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mtd-desk-fields">
-                <div class="mtd-desk-field">
-                    <span>@Localizer["Required Image"]</span>
-                    @await Component.InvokeAsync("MTDImgSelector", new
-                    {
-                                    id = "img-required",
-                                    imgArray = Model.MtdApproval.ImgRequired,
-                                    imgType = Model.MtdApproval.ImgRequiredType
-                    })
-                </div>
-                <div class="mtd-desk-field" style="padding-top: 36px">
-                    <div class="mdc-text-field mdc-text-field--outlined" style="width:100%;">
-                        <input type="text" class="mdc-text-field__input" asp-for="MtdApproval.ImgRequiredText">
-                        <div class="mdc-notched-outline">
-                            <div class="mdc-notched-outline__leading"></div>
-                            <div class="mdc-notched-outline__notch">
-                                <label class="mdc-floating-label">@Localizer["Required text"]</label>
-                            </div>
-                            <div class="mdc-notched-outline__trailing"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mtd-desk-fields">
-                <div class="mtd-desk-field">
-                    <span>@Localizer["Waiting Image"]</span>
-                    @await Component.InvokeAsync("MTDImgSelector", new
-                    {
-                                    id = "img-waiting",
-                                    imgArray = Model.MtdApproval.ImgWaiting,
-                                    imgType = Model.MtdApproval.ImgWaitingType
-                    })
-                </div>
-                <div class="mtd-desk-field" style="padding-top: 36px">
-                    <div class="mdc-text-field mdc-text-field--outlined" style="width:100%;">
-                        <input type="text" class="mdc-text-field__input" asp-for="MtdApproval.ImgWaitingText">
-                        <div class="mdc-notched-outline">
-                            <div class="mdc-notched-outline__leading"></div>
-                            <div class="mdc-notched-outline__notch">
-                                <label class="mdc-floating-label">@Localizer["Waiting text"]</label>
-                            </div>
-                            <div class="mdc-notched-outline__trailing"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mtd-desk-fields">
-                <div class="mtd-desk-field">
-                    <span>@Localizer["Approved Image"]</span>
-                    @await Component.InvokeAsync("MTDImgSelector", new
-                    {
-                                    id = "img-approved",
-                                    imgArray = Model.MtdApproval.ImgApproved,
-                                    imgType = Model.MtdApproval.ImgApprovedType
-                    })
-                </div>
-                <div class="mtd-desk-field" style="padding-top: 36px">
-                    <div class="mdc-text-field mdc-text-field--outlined" style="width:100%;">
-                        <input type="text" class="mdc-text-field__input" asp-for="MtdApproval.ImgApprovedText">
-                        <div class="mdc-notched-outline">
-                            <div class="mdc-notched-outline__leading"></div>
-                            <div class="mdc-notched-outline__notch">
-                                <label class="mdc-floating-label">@Localizer["Approved text"]</label>
-                            </div>
-                            <div class="mdc-notched-outline__trailing"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mtd-desk-fields">
-                <div class="mtd-desk-field">
-                    <span>@Localizer["Rejected Image"]</span>
-                    @await Component.InvokeAsync("MTDImgSelector", new
-                    {
-                                    id = "img-rejected",
-                                    imgArray = Model.MtdApproval.ImgRejected,
-                                    imgType = Model.MtdApproval.ImgRejectedType
-                    })
-                </div>
-                <div class="mtd-desk-field" style="padding-top: 36px">
-                    <div class="mdc-text-field mdc-text-field--outlined" style="width:100%;">
-                        <input type="text" class="mdc-text-field__input" asp-for="MtdApproval.ImgRejectedText">
-                        <div class="mdc-notched-outline">
-                            <div class="mdc-notched-outline__leading"></div>
-                            <div class="mdc-notched-outline__notch">
-                                <label class="mdc-floating-label">@Localizer["Rejected text"]</label>
-                            </div>
-                            <div class="mdc-notched-outline__trailing"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-</form>
+
+    <div class="mtd-desk-block" style="margin-left: auto; margin-right:auto; padding-bottom: 32px">
+
+        <form mtd-data-form method="post" autocomplete="off" novalidate>
+            <input type="hidden" asp-for="MtdApproval.Id" />
+            <input type="hidden" id="clicker-save" mtd-data-clicker mtd-data-message="@Localizer["Changes saved."]" />
+
+            <div class="mtd-desk-fields">
+                <div class="mtd-desk-field">
+                    @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                       {
+                           Id = "field-name",
+                           Name = "MtdApproval.Name",
+                           Required = true,
+                           Label = "Name",
+                           LabelLocalized = true,
+                           MTDTexFieldView = MTDTextFieldViews.Outlined,
+                           Value = Model.MtdApproval.Name
+                       })
+                </div>
+                <div class="mtd-desk-field-grow">
+                    @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                       {
+                           Id = "field-note",
+                           Name = "MtdApproval.Description",
+                           Required = true,
+                           Label = "Description",
+                           LabelLocalized = true,
+                           MTDTexFieldView = MTDTextFieldViews.Outlined,
+                           MaxLength = 250,
+                           Value = Model.MtdApproval.Description
+                       })
+                </div>
+            </div>
+
+            <div class="mtd-desk-fields">
+                <div class="mtd-desk-field">
+                    <span>@Localizer["Startup process image"]</span>
+                    @await Component.InvokeAsync("MTDImgSelector", new
+                    {
+                            id = "img-start",
+                            imgArray = Model.MtdApproval.ImgStart,
+                            imgType = Model.MtdApproval.ImgStartType
+                    })
+                </div>
+                <div class="mtd-desk-field-grow" style="padding-top: 32px;">
+
+                    @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                       {
+                           Id = "field-name-start",
+                           Name = "MtdApproval.ImgStartText",
+                           Label = "Startup process name",
+                           LabelLocalized = true,
+                           MTDTexFieldView = MTDTextFieldViews.Outlined,
+                           Value = Model.MtdApproval.ImgStartText
+                       })
+                </div>
+            </div>
+
+            <div class="mtd-desk-fields">
+                <div class="mtd-desk-field">
+                    <span>@Localizer["Image for Returned status"]</span>
+                    @await Component.InvokeAsync("MTDImgSelector", new
+                    {
+                            id = "img-iteraction",
+                            imgArray = Model.MtdApproval.ImgIteraction,
+                            imgType = Model.MtdApproval.ImgRequiredType
+                    })
+                </div>
+                <div class="mtd-desk-field-grow" style="padding-top: 32px;">
+
+                    @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                       {
+                           Id = "field-name-returned",
+                           Name = "MtdApproval.ImgIteractionText",
+                           Label = "Text for Returned status",
+                           LabelLocalized = true,
+                           MTDTexFieldView = MTDTextFieldViews.Outlined,
+                           Value = Model.MtdApproval.ImgIteractionText
+                       })
+                </div>
+            </div>
+
+            <div class="mtd-desk-fields">
+                <div class="mtd-desk-field">
+                    <span>@Localizer["Image for Required status"]</span>
+                    @await Component.InvokeAsync("MTDImgSelector", new
+                    {
+                            id = "img-required",
+                            imgArray = Model.MtdApproval.ImgRequired,
+                            imgType = Model.MtdApproval.ImgRequiredType
+                    })
+                </div>
+                <div class="mtd-desk-field-grow" style="padding-top: 32px;">
+
+                    @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                       {
+                           Id = "field-name-required",
+                           Name = "MtdApproval.ImgRequiredText",
+                           Label = "Text for Required status",
+                           LabelLocalized = true,
+                           MTDTexFieldView = MTDTextFieldViews.Outlined,
+                           Value = Model.MtdApproval.ImgRequiredText
+                       })
+                </div>
+            </div>
+
+            <div class="mtd-desk-fields">
+                <div class="mtd-desk-field">
+                    <span>@Localizer["Image for Waiting status"]</span>
+                    @await Component.InvokeAsync("MTDImgSelector", new
+                    {
+                        id = "img-waiting",
+                        imgArray = Model.MtdApproval.ImgWaiting,
+                        imgType = Model.MtdApproval.ImgWaitingType
+                    })
+                </div>
+                <div class="mtd-desk-field-grow" style="padding-top: 32px;">
+
+                    @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                   {
+                       Id = "field-name-waiting",
+                       Name = "MtdApproval.ImgWaitingText",
+                       Label = "Text for Waiting status",
+                       LabelLocalized = true,
+                       MTDTexFieldView = MTDTextFieldViews.Outlined,
+                       Value = Model.MtdApproval.ImgWaitingText
+                   })
+                </div>
+            </div>
+
+            <div class="mtd-desk-fields">
+                <div class="mtd-desk-field">
+                    <span>@Localizer["Image for Approved status"]</span>
+                    @await Component.InvokeAsync("MTDImgSelector", new
+                    {
+                        id = "img-approved",
+                        imgArray = Model.MtdApproval.ImgApproved,
+                        imgType = Model.MtdApproval.ImgApprovedType
+                    })
+                </div>
+                <div class="mtd-desk-field-grow" style="padding-top: 32px;">
+                    @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                   {
+                       Id = "field-name-approved",
+                       Name = "MtdApproval.ImgApprovedText",
+                       Label = "Text for Approved status",
+                       LabelLocalized = true,
+                       MTDTexFieldView = MTDTextFieldViews.Outlined,
+                       Value = Model.MtdApproval.ImgApprovedText
+                   })
+                </div>
+            </div>
+
+            <div class="mtd-desk-fields">
+                <div class="mtd-desk-field">
+                    <span>@Localizer["Image for Rejected status"]</span>
+                    @await Component.InvokeAsync("MTDImgSelector", new
+                       {
+                           id = "img-rejected",
+                           imgArray = Model.MtdApproval.ImgRejected,
+                           imgType = Model.MtdApproval.ImgRejectedType
+                       })
+                </div>
+                <div class="mtd-desk-field-grow" style="padding-top: 32px;">
+                    @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                   {
+                       Id = "field-name-rejected",
+                       Name = "MtdApproval.ImgRejectedText",
+                       Label = "Text for Rejected status",
+                       LabelLocalized = true,
+                       MTDTexFieldView = MTDTextFieldViews.Outlined,
+                       Value = Model.MtdApproval.ImgRejectedText
+                   })
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+
+
 
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/config/approval/stage/update'>
     @Html.AntiForgeryToken()

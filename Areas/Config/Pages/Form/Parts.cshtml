@@ -85,11 +85,11 @@
         <input mtd-data-clicker type="hidden" />
     </form>
 
-    <div mtd-draggable class="mtd-config-form-parts__list">
-        <ul class="mdc-list">
+    <div class="mtd-config-form-parts__list">
+        <ul mtd-data-draggable class="mdc-list">
             @foreach (var part in Model.MtdForm.MtdFormPart.OrderBy(x => x.Sequence))
             {
-                <li mtd-data-href="/config/form/partedit?id=@part.Id" id="@part.Id-licol" class="mdc-list-item" draggable="true" role="button" aria-checked="false"
+                <li mtd-data-href="/config/form/partedit?id=@part.Id" id="@part.Id-licol" class="mtd-list-item mdc-list-item" draggable="true" role="button" aria-checked="false"
                     data-value="@part.Id">
                     <label class="mdc-list-item__text" for="@part.Id-lc">@part.Name</label>
                     <div class="mtd-config-form-parts__bdrag">

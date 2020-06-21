@@ -56,6 +56,8 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account
                 };
                 return Page();
             }
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()

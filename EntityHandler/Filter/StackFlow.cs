@@ -69,7 +69,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
             bool groupView = await _userHandler.CheckUserPolicyAsync(_user, FormId, RightsType.ViewGroup);
             if (groupView)
             {
-                IList<WebAppUser> appUsers = await _userHandler.GetUsersInGroupsOutDenyAsync(_user,FormId);
+                IList<WebAppUser> appUsers = await _userHandler.GetUsersInGroupsOutDenyAsync(_user, FormId);
                 List<string> userIds = appUsers.Select(x => x.Id).ToList();
 
                 IList<string> storeIds = await _context.MtdStoreOwner.Where(x => userIds.Contains(x.UserId)).Select(x => x.Id).ToListAsync();

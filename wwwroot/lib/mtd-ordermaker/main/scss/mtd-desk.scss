@@ -33,17 +33,25 @@
 
 .mtd-desk-field {
     display: flex;
-    flex-direction: column;  
-    width: 280px;
-    margin: 4px;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 350px;
+    width: 95%;
     padding: 8px;
 }
 
+
 .mtd-desk-field-full {
-    display: flex;
-    flex-direction: column;
-    margin: 4px;
+    margin-left: auto;
+    margin-right: auto;
     padding: 8px;
+    width: 95%;
+}
+
+.mtd-desk-field-grow {
+   padding: 8px;
+   flex-grow:1;
 }
 
 .mtd-desk-field label {
@@ -60,7 +68,7 @@
 .mtd-desk-field--border {
     border-radius: 4px;
     border: 1px solid lightgray;
-    
+    margin: 4px;    
 }
 
 .mtd-desk-bedit {
@@ -70,9 +78,3 @@
     cursor: pointer;
 }
 
-.mtd-desk-field {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 350px;
-    width: 95%;
-}

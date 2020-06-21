@@ -35,102 +35,56 @@
     <li>@ViewBag.Title</li>
 }
 
-<form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/config/approval/stage/create">
-    @Html.AntiForgeryToken()
-    <input type="hidden" asp-for="MtdApproval.Id" name="IdApproval" />
-
-    <div class="mtd-desk">
-        <div class="mtd-desk-savebar">
-            <button mtd-data-clicker mtd-data-location="/config/approval/stages?idApproval=@Model.MtdApproval.Id" mtd-data-message="@Localizer["New approval chain was created"]." type="button" class="mdc-fab mdc-fab--extended">
+<div class="mtd-desk">
+    <div class="mtd-desk-panel">
+        <div style="padding-left: 16px;">
+            <button mtd-data-clicker-by="clicker-create" type="button" class="mdc-fab mdc-fab--extended">
+                <div class="mdc-fab__ripple"></div>
                 <span class="material-icons mdc-fab__icon">add</span>
                 <span class="mdc-fab__label">@Localizer["Create"]</span>
             </button>
         </div>
-
-        <div style="display: flex; flex-direction: column; align-items:center">
-            <div class="mdc-text-field mdc-text-field--outlined" style="width: 100%; max-width: 600px; margin-top: 16px;">
-                <input type="text" id="tf-outlined" mtd-required="config-form-name" class="mdc-text-field__input" name="fieldName" asp-for="MtdApprovalStage.Name" required />
-                <div class="mdc-notched-outline">
-                    <div class="mdc-notched-outline__leading"></div>
-                    <div class="mdc-notched-outline__notch">
-                        <label for="tf-outlined" class="mdc-floating-label">@Localizer["Name"]</label>
-                    </div>
-                    <div class="mdc-notched-outline__trailing"></div>
-                </div>
-            </div>
-            <div class="mdc-text-field-helper-line">
-                <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true">
-                    @Localizer["Required field"]
-                </div>
-            </div>
-            <div class="mdc-text-field mdc-text-field--textarea" style="width: 100%; max-width:600px; margin-top: 16px;">
-                <textarea id="textarea" mtd-required="config-form-description" class="mdc-text-field__input" rows="3" cols="40" name="fieldNote" asp-for="MtdApprovalStage.Description" required></textarea>
-                <div class="mdc-notched-outline">
-                    <div class="mdc-notched-outline__leading"></div>
-                    <div class="mdc-notched-outline__notch">
-                        <label for="textarea" class="mdc-floating-label">@Localizer["Description"]</label>
-                    </div>
-                    <div class="mdc-notched-outline__trailing"></div>
-                </div>
-            </div>
-            <div class="mdc-text-field-helper-line">
-                <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true">
-                    @Localizer["Required field"]
-                </div>
-            </div>
-        </div>
-
-        <div class="mtd-desk-fields">
-            <div class="mtd-desk-field mtd-desk-field">
-                <div class="mdc-text-field mdc-text-field--outlined">
-                    <input type="number" id="tf-outlined" mtd-required="config-form-name" class="mdc-text-field__input" name="fieldStage" asp-for="MtdApprovalStage.Stage" required />
-                    <div class="mdc-notched-outline">
-                        <div class="mdc-notched-outline__leading"></div>
-                        <div class="mdc-notched-outline__notch">
-                            <label for="tf-outlined" class="mdc-floating-label">@Localizer["Stage"]</label>
-                        </div>
-                        <div class="mdc-notched-outline__trailing"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="mtd-desk-field">
-                <div class="mdc-select" style="width: 100%; max-width: 600px">
-                    <i class="mdc-select__dropdown-icon"></i>
-                    <select class="mdc-select__native-control" asp-for="MtdApprovalStage.UserId" name="fieldUser" asp-items="ViewBag.Users">
-                        <option value="owner">@Localizer["Owner"]</option>
-                    </select>
-                    <label for="basedSelect" class="mdc-floating-label mdc-floating-label--float-above">@Localizer["Approver"]</label>
-                    <div class="mdc-line-ripple"></div>
-                </div>
-            </div>
-        </div>
-
-        <div style="display: flex; flex-direction: column; align-items:center; ">
-            <div class="mtd-desk-fields" style="max-width: 620px;">
-                <span style="font-weight: bold; font-size:medium; padding: 8px; text-align:center">@Localizer["Parts of the form that will be uneditable after approval"]</span>
-                @foreach (var part in Model.MtdFormParts)
-                {
-                    <div class="mtd-desk-field mtd-desk-field--border">
-                        <div class="mdc-form-field">
-                            <div class="mdc-checkbox">
-                                <input type="checkbox"
-                                       class="mdc-checkbox__native-control"
-                                       id="@part.Id" name="@part.Id" />
-                                <div class="mdc-checkbox__background">
-                                    <svg class="mdc-checkbox__checkmark"
-                                         viewBox="0 0 24 24">
-                                        <path class="mdc-checkbox__checkmark-path"
-                                              fill="none"
-                                              d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                    </svg>
-                                    <div class="mdc-checkbox__mixedmark"></div>
-                                </div>
-                            </div>
-                            <label for="@part.Id">@part.Name</label>
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
     </div>
-</form>
+
+    <form mtd-data-form method="post" autocomplete="off" action="/api/config/approval/stage/create" novalidate>
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="MtdApproval.Id" name="approvalId" />    
+        <input type="hidden" id="clicker-create" mtd-data-clicker
+               mtd-data-location="/config/approval/stages?idApproval=@Model.MtdApproval.Id"
+               mtd-data-message="@Localizer["New approval chain was created."]" />
+
+        <div class="mtd-desk-field">
+            @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+            {
+                Id = "field-name",
+                Name = "fieldName",
+                Label = "Name",
+                LabelLocalized = true,
+                Required = true,
+                MTDTexFieldView = MTDTextFieldViews.Outlined,
+            })
+        </div>
+        <div class="mtd-desk-field">
+            @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+            {
+                Id = "field-note",
+                Name = "fieldNote",
+                Label = "Description",
+                LabelLocalized = true,
+                Required = true,
+                MTDTexFieldView = MTDTextFieldViews.TextArea,
+                Cols = 40,
+                Rows = 5,
+                MaxLength = 250
+            })
+        </div>
+    </form>
+</div>
+
+
+@section Scripts{
+    <script>
+        new MTDTextField("field-name");
+        new MTDTextField("field-note");
+    </script>
+}

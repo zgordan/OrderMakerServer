@@ -65,30 +65,20 @@ namespace Mtd.OrderMaker.Server.Controllers.Config.Approval
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostStageCreateAsync()
         {
-            string approvalId = Request.Form["IdApproval"];
+            string approvalId = Request.Form["approvalId"];
             string fieldName = Request.Form["fieldName"];
             string fieldNote = Request.Form["fieldNote"];
-            string fieldUser = Request.Form["fieldUser"];
-            int.TryParse(Request.Form["fieldStage"], out int fieldStage);
+            string fieldUser = "owner";
+                 
             string blockParts = string.Empty;
+            MtdApproval mtdApproval = await _context.MtdApproval.FindAsync(approvalId ?? "");          
 
-            if (approvalId == null)
+            if (mtdApproval == null)
             {
-                return NotFound();
+                return BadRequest("Error. Approval not found.");
             }
 
-            MtdApproval mtdApproval = await _context.MtdApproval.FindAsync(approvalId);
-            IList<string> partIds = await _context.MtdFormPart.Where(x => x.MtdForm == mtdApproval.MtdForm).Select(x => x.Id).ToListAsync();
-
-            foreach (string id in partIds)
-            {
-                bool result = bool.TryParse(Request.Form[id], out bool check);
-                if (result && check)
-                {
-                    blockParts += $"{id}&";
-                }
-            }
-
+  
             MtdApprovalStage stage = new MtdApprovalStage
             {                
                 MtdApproval = approvalId,
@@ -96,7 +86,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Config.Approval
                 Description = fieldNote,
                 Name = fieldName,
                 UserId = fieldUser,
-                Stage = fieldStage,
+                Stage = 0,
 
             };
 
@@ -110,7 +100,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Config.Approval
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostStageEditAsync()
         {
-            string stageId = Request.Form["IdStage"];
+            string stageId = Request.Form["stageId"];
             string fieldName = Request.Form["fieldName"];
             string fieldNote = Request.Form["fieldNote"];
             string fieldUser = Request.Form["fieldUser"];

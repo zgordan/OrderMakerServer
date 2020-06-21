@@ -1,5 +1,5 @@
 ﻿
-new MTDTextField("pwd-current");
+const pwdCurrent = new MTDTextField("pwd-current");
 const pwdNew = new MTDTextField("pwd-new");
 const pwdConfirm = new MTDTextField("pwd-confirm");
 
@@ -18,7 +18,12 @@ const GeneratePassword = () => {
                 pwdNew.input.type = "text";
                 pwdNew.textField.value = data.value;
                 pwdConfirm.textField.value = data.value;
-                pwdConfirm.textField.focus();
+                pwdConfirm.textField.focus();            
+
+               fireEvent(pwdNew.input, "change");
+               fireEvent(pwdConfirm.input, "change");
             }
         });
 }
+
+

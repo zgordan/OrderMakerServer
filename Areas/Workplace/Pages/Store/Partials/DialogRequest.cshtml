@@ -24,7 +24,7 @@
 
                 <div class="mtd-dialog-space"></div>
 
-                @Localizer["Select a user from the list"]:
+                @Localizer["Select a user from the list:"]
 
                 <div class="mtd-dialog-space"></div>
 
@@ -88,24 +88,22 @@
                 </h2>
                 <div class="mdc-dialog__content" id="accept-dialog-content">
                     <hr />
-                    @Localizer["Make a request for the resolution of the user to whom this document is available"].
+                    @Localizer["Make a request for the resolution of the user to whom this document is available."]
                     <hr />
 
                     <div style="padding-top: 18px;">
-                        @Localizer["Select a user from the list"]:
+                        @Localizer["Select a user from the list:"]
                     </div>
 
-
                     @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
-               {
-                   Id = "select-recipient",
-                   Name = "id-user-recipient",
-                   Label = "Users list",
-                   LabelLocalized = true,
-                   Items = Model.UsersList,
-                   MTDSelectListView = MTDSelectListViews.Outlined
-
-               })
+                       {
+                           Id = "select-recipient",
+                           Name = "id-user-recipient",
+                           Label = "Users list",
+                           LabelLocalized = true,
+                           Items = Model.UsersList,
+                           MTDSelectListView = MTDSelectListViews.Outlined
+                       })
 
                     @*<div class="mdc-select" style="width: 100%; margin-top: 8px;">
                             <i class="mdc-select__dropdown-icon"></i>

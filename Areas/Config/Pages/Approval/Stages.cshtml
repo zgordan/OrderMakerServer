@@ -35,11 +35,14 @@
 }
 
 <div class="mtd-desk">
-    <div id="stagesCreator" class="mtd-desk-creator">
-        <a mtd-data-href="/config/approval/stagecreate?idApproval=@Model.MtdApproval.Id" class="mdc-fab mdc-fab--extended" aria-label="Create">
-            <span class="material-icons mdc-fab__icon">add</span>
-            <span class="mdc-fab__label">@Localizer["Create"]</span>
-        </a>
+    <div class="mtd-desk-panel">
+        <div style="padding-left: 16px;">
+            <button mtd-data-href="/config/approval/stagecreate?idApproval=@Model.MtdApproval.Id" class="mdc-fab mdc-fab--extended" aria-label="Create">
+                <div class="mdc-fab__ripple"></div>
+                <span class="material-icons mdc-fab__icon">add</span>
+                <span class="mdc-fab__label">@Localizer["Create"]</span>
+            </button>
+        </div>
     </div>
 
     <div style="padding: 24px">
@@ -51,11 +54,17 @@
         </div>
     </div>
 
-    <ul id="drgList" class="mdc-list mdc-list--two-line">
+    <form mtd-data-form="sequence" method="post" action="/api/config/approval/stage/sequence">
+        @Html.AntiForgeryToken()
+        <input mtd-data-sequence name="drgData" type="hidden" />
+        <input name="IdApproval" type="hidden" value="@Model.MtdApproval.Id" />
+        <input mtd-data-clicker type="hidden" />        
+    </form>
+
+    <ul mtd-data-draggable class="mdc-list mdc-list--two-line">
         @foreach (var stage in Model.Stages)
         {
-            <li mtd-data-href="/config/approval/stageEdit?id=@stage.Id" id="@stage.Id-licol" class="mtd-desk-draggable-item mdc-list-item"
-                data-value="@stage.Id" draggable="true" role="button" aria-checked="false">
+            <li mtd-data-href="/config/approval/stageEdit?id=@stage.Id" id="@stage.Id-licol" class="mtd-list-item mdc-list-item" data-value="@stage.Id" draggable="true" role="button" aria-checked="false">
                 <div style="padding: 8px;">
                     @{
                         int endStage = Model.Stages.Max(x => x.Stage);
@@ -99,10 +108,4 @@
     </ul>
 </div>
 
-<form mtd-data-form method="post" action="/api/config/approval/stage/sequence">
-    @Html.AntiForgeryToken()
-    <input id="drgData" name="drgData" type="hidden" />
-    <input id="drgSequence" mtd-data-clicker type="hidden" />
-    <input name="IdApproval" type="hidden" value="@Model.MtdApproval.Id" />
-</form>
 

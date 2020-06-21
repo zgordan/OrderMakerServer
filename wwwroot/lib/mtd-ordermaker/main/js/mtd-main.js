@@ -25,6 +25,52 @@ class LocaleDTP {
     }
 }
 
+function fireEvent(node, eventName) {
+
+    var doc;
+    if (node.ownerDocument) {
+        doc = node.ownerDocument;
+    } else if (node.nodeType == 9) {
+        doc = node;
+    } else {
+        throw new Error("Invalid node passed to fireEvent: " + node.id);
+    }
+
+    if (node.dispatchEvent) {
+        var eventClass = "";
+        switch (eventName) {
+            case "click":
+            case "mousedown":
+            case "mouseup":
+                eventClass = "MouseEvents";
+                break;
+
+            case "focus":
+            case "change":
+            case "blur":
+            case "select":
+                eventClass = "HTMLEvents";
+                break;
+
+            default:
+                throw "fireEvent: Couldn't find an event class for event '" + eventName + "'.";
+                break;
+        }
+        var event = doc.createEvent(eventClass);
+
+        var bubbles = eventName == "change" ? false : true;
+        event.initEvent(eventName, bubbles, true);
+
+        event.synthetic = true;
+        node.dispatchEvent(event, true);
+    } else if (node.fireEvent) {
+
+        var event = doc.createEventObject();
+        event.synthetic = true;
+        node.fireEvent("on" + eventName, event);
+    }
+};
+
 const snackbar = new mdc.snackbar.MDCSnackbar(document.getElementById('main-snack'));
 
 const MainShowSnackBar = (message, error = false) => {
@@ -92,19 +138,6 @@ const CreateFormData = (form) => {
     }
 
     return formData;
-}
-
-const CheckRequired = (form) => {
-    let counter = 0;
-    if (form) {
-        const rs = form.querySelectorAll("[required]");
-        if (rs) {
-            rs.forEach((obj) => {
-                if (!obj.value) { counter++; }
-            });
-        }
-    }
-    return counter;
 }
 
 const ListenerClickerBy = () => {

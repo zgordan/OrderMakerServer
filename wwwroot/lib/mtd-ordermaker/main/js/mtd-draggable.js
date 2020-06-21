@@ -55,7 +55,6 @@ const handleDrop = e => {
 
     if (dragSrcEl != e.target) {
 
-
         e.target.parentNode.removeChild(dragSrcEl);
         var dropHTML = e.dataTransfer.getData('text/html');
         e.target.insertAdjacentHTML('beforebegin', dropHTML);
@@ -85,7 +84,7 @@ const handleDragEnd = (e) => {
     if (formSequence) {
 
         let strData = "";
-        const list = document.querySelector("[mtd-draggable]");
+        const list = document.querySelector("[mtd-data-draggable]");
         const clicker = formSequence.querySelector("[mtd-data-clicker]");
         const data = formSequence.querySelector("[mtd-data-sequence]");
 
@@ -130,5 +129,5 @@ const addDnDHandlers = elem => {
 }
 
 //Start
-const cols = document.querySelectorAll('[mtd-draggable] .mdc-list-item');
+const cols = document.querySelectorAll('[mtd-data-draggable] .mdc-list-item');
 [].forEach.call(cols, addDnDHandlers);

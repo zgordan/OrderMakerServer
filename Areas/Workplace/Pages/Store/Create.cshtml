@@ -23,7 +23,7 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHtmlLocalizer<SharedResource> Localizer
 @{
-    ViewData["Title"] = Localizer["New form"];
+    ViewData["Title"] = Localizer["Creating document"];
     ViewData["SecondTitle"] = Model.MtdForm.Name;
 }
 @section Head{
@@ -36,6 +36,11 @@
     <li><a asp-area="Workplace" asp-page="/Store/Index" asp-route-indexForm="@Model.MtdForm.Id">@Localizer["List data"]</a></li>
     <li>@ViewBag.Title</li>
 }
+
+<div class="mtd-desk">
+    <div class="mtd-desk-panel"></div>
+</div>
+
 <div class="mtd-main-center">
     @await Component.InvokeAsync("StoreForm", new { store = Model.MtdStore, type = FormType.Create })
 </div>
@@ -61,7 +66,6 @@
     </div>
     <div class="mdc-dialog__scrim"></div>
 </div>
-
 
 
 @section Scripts {   

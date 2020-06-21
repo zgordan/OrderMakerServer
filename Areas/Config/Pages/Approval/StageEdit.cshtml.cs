@@ -27,6 +27,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
 using Mtd.OrderMaker.Server.Services;
 
 namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Approval
@@ -47,6 +48,8 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Approval
         public IList<MtdFormPart> MtdFormParts { get; set; }
         public IList<MtdApprovalResolution> Resolutions { get; set; }
         public IList<MtdApprovalRejection> Rejections { get; set; }
+
+        public List<MTDSelectListItem> UserItems { get; set; }
         public async Task<IActionResult> OnGetAsync(int id)
         {
 
@@ -60,7 +63,17 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Approval
             MtdApproval = await _context.MtdApproval.Include(x => x.MtdFormNavigation).Where(x => x.Id == MtdApprovalStage.MtdApproval).FirstOrDefaultAsync();
                         
             MtdFormParts = await _context.MtdFormPart.Where(x => x.MtdForm == MtdApproval.MtdForm).OrderBy(x => x.Sequence).ToListAsync();
-            IList<WebAppUser> webAppUsers = await _userHandler.Users.ToListAsync();
+            IList<WebAppUser> webAppUsers = await _userHandler.Users.OrderBy(x=>x.Title).ToListAsync();
+            UserItems = new List<MTDSelectListItem>
+            {
+                new MTDSelectListItem { Id = "owner", Value = "Owner", Selectded = MtdApprovalStage.UserId == "owner" }
+            };
+            webAppUsers.ToList().ForEach((item) =>
+            {
+                UserItems.Add(new MTDSelectListItem { Id = item.Id, Value = item.Title, Selectded = MtdApprovalStage.UserId == item.Id });
+            });
+
+
             ViewData["Users"] = new SelectList(webAppUsers, "Id", "Title");
 
             Resolutions = await _context.MtdApprovalResolution.Where(x=>x.MtdApprovalStageId == id).OrderBy(x => x.Sequence).ToListAsync();

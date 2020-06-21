@@ -122,7 +122,7 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
                     DisplayData displayDate = new DisplayData()
                     {
                         Id = filter.Id,
-                        Header = "Period",
+                        Header = localizer["Period"],
                         Value = $"{mtdFilterDate.DateStart.ToShortDateString()} {mtdFilterDate.DateEnd.ToShortDateString()}",
                         Type = "-date"
                     };
@@ -136,7 +136,7 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
                     DisplayData displayDate = new DisplayData()
                     {
                         Id = filter.Id,
-                        Header = "Owner",
+                        Header = localizer["Owner"],
                         Value = $"{userOwner.Title}",
                         Type = "-owner"
                     };
@@ -151,7 +151,7 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
                         DisplayData displayDate = new DisplayData()
                         {
                             Id = fs.Id,
-                            Header = "Custom filter",
+                            Header = localizer["Advanced filter"],
                             Value = fs.Name,
                             Type = "-script"
                         };

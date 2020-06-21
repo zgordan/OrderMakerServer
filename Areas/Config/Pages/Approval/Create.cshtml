@@ -26,23 +26,78 @@
     ViewData["SecondTitle"] = Localizer["Creating new approval chain"];
 }
 
-
 @section Breadcrumb {
     <li><a href="/config">@Localizer["Configurator"]</a></li>
     <li><a href="/config/approval">@Localizer["Approvals"]</a></li>
     <li>@ViewBag.Title</li>
 }
-<form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="">
-    <input type="hidden" asp-for="MtdApproval.Id" />
-    <div class="mtd-desk">
-        <div class="mtd-desk-savebar">
-            <button mtd-data-clicker mtd-data-location="/config/approval/edit?id=@Model.MtdApproval.Id" mtd-data-message="@Localizer["New approval chain was created"]." type="button" class="mdc-fab mdc-fab--extended">
+
+<div class="mtd-desk">
+    <div class="mtd-desk-panel">
+        <div style="padding-left: 16px">
+            <button mtd-data-clicker-by="clicker-create" type="button" class="mdc-fab mdc-fab--extended">
                 <span class="material-icons mdc-fab__icon">add</span>
                 <span class="mdc-fab__label">@Localizer["Create"]</span>
             </button>
         </div>
+    </div>
 
-        <div style="display: flex; flex-direction: column; align-items:center">
+    <form mtd-data-form method="post" autocomplete="off" novalidate>
+        <input type="hidden" asp-for="MtdApproval.Id" />
+        <input type="hidden" id="clicker-create"
+               mtd-data-clicker mtd-data-location="/config/approval/edit?id=@Model.MtdApproval.Id"
+               mtd-data-message="@Localizer["New approval chain was created."]" />
+
+        <div class="mtd-desk-field">
+            @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
+            {
+                Id = "select-form",
+                Name = "MtdApproval.MtdForm",
+                Label = "Form Approval Chain",
+                LabelLocalized = true,
+                Items = Model.FormItems,
+                MTDSelectListView = MTDSelectListViews.Outlined,
+                //ValueId = Model.FormItems.Select(x=>x.Id).FirstOrDefault()
+            })
+        </div>
+
+        <div class="mtd-desk-field">
+            @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+            {
+                Id = "field-name",
+                Name = "MtdApproval.Name",
+                Label = "Name",
+                LabelLocalized = true,
+                Required = true,
+                MTDTexFieldView = MTDTextFieldViews.Outlined,
+            })
+        </div>
+
+        <div class="mtd-desk-field">
+            @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+            {
+                Id = "field-note",
+                Name = "MtdApproval.Description",
+                Label = "Description",
+                LabelLocalized = true,
+                Required = true,
+                MTDTexFieldView = MTDTextFieldViews.TextArea,
+                Cols = 40,
+                Rows = 5,
+                MaxLength = 250
+            })
+        </div>
+    </form>
+</div>
+
+<form mtd-data-form method="post" autocomplete="off" novalidate>
+    <input type="hidden" asp-for="MtdApproval.Id" />
+    <input type="hidden" id="clicker-create"
+           mtd-data-clicker mtd-data-location="/config/approval/edit?id=@Model.MtdApproval.Id"
+           mtd-data-message="@Localizer["New approval chain was created."]" />
+
+
+    @*<div style="display: flex; flex-direction: column; align-items:center">
             <div id="basedSelect" class="mdc-select" style="width: 100%; max-width: 600px">
                 <i class="mdc-select__dropdown-icon"></i>
                 <select class="mdc-select__native-control" asp-for="MtdApproval.MtdForm" asp-items="ViewBag.Forms"></select>
@@ -79,9 +134,14 @@
                     @Localizer["Required field"]
                 </div>
             </div>
-        </div>
+        </div>*@
 
-
-    </div>
 </form>
 
+@section Scripts{
+    <script>
+        new MTDSelectList("select-form");
+        new MTDTextField("field-name");
+        new MTDTextField("field-note");
+    </script>
+}

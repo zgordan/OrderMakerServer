@@ -10,7 +10,7 @@
     string disabledRequest = (!Model.IsFirstStage && Model.UsersRequest.Count > 0) ? "" : "disabled";
 }
 
-<div class="mtd-index-header-buttons" style="padding-top: 6px;">
+<div class="mtd-store-view-approvals">
     <div class="mtd-button-hint">
         <button id="accept-sign-button" class="mdc-icon-button material-icons">thumb_up</button>
         <div class="mtd-button-hint_info">
@@ -40,7 +40,5 @@
             <span>@Localizer["Signature request"]</span>
         </div>
     </div>
-
-
 </div>
 

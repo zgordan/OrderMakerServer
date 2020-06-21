@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
 
 namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Approval
 {
@@ -42,7 +43,7 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Approval
         [BindProperty]
         public MtdApproval MtdApproval { get; set; }
         public IList<MtdForm> MtdForms { get; set; }
-
+        public List<MTDSelectListItem> FormItems { get; set; }
         public async Task<IActionResult> OnGetAsync()
         {
             MtdApproval = new MtdApproval
@@ -51,19 +52,20 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Approval
             };
 
             IList<string> formsIds = await _context.MtdApproval.Select(x => x.MtdForm).ToListAsync();
-            MtdForms = await _context.MtdForm.Where(x => !formsIds.Contains(x.Id)).ToListAsync();
+            MtdForms = await _context.MtdForm.Where(x => !formsIds.Contains(x.Id)).OrderBy(x=>x.Sequence).ToListAsync();
             ViewData["Forms"] = new SelectList(MtdForms.OrderBy(x => x.Sequence), "Id", "Name");
 
+            FormItems = new List<MTDSelectListItem>();
+            MtdForms.ToList().ForEach((item) =>
+            {
+                FormItems.Add(new MTDSelectListItem { Id = item.Id, Value = item.Name });
+            });
 
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
 
             _context.MtdApproval.Add(MtdApproval);
             await _context.SaveChangesAsync();

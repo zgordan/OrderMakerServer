@@ -1,0 +1,12 @@
+﻿@inject Server.Services.ConfigHandler configHandler
+
+<div style="text-align: center">
+    <span class="mdc-top-app-bar__title" style="padding-left: 8px">
+        @{
+            string pathAppBar = "/lib/mtd-ordermaker/images/logo-mtd.png";
+            var imgAppBar = await configHandler.GetImageFromConfig(configHandler.CodeImgMenu);
+            if (imgAppBar != string.Empty) { pathAppBar = imgAppBar; }
+        }
+        <img src="@pathAppBar" style="max-height: 42px" />
+    </span>
+</div>

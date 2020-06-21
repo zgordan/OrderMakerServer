@@ -68,10 +68,10 @@
         <input mtd-data-clicker type="hidden" />
     </form>
 
-    <ul mtd-draggable class="mdc-list mdc-list--two-line">
+    <ul mtd-data-draggable class="mdc-list mdc-list--two-line">
         @foreach (var form in Model.MtdForm.OrderBy(x => x.Sequence))
         {
-            <li mtd-data-href="/config/form/edit?id=@form.Id" class="mdc-list-item" draggable="true" data-value="@form.Id" aria-checked="false">
+            <li mtd-data-href="/config/form/edit?id=@form.Id" class="mtd-list-item mdc-list-item" draggable="true" data-value="@form.Id" aria-checked="false">
                 @if (form.MtdFormDesk != null)
                 {
 

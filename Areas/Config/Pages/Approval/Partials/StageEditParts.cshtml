@@ -6,7 +6,7 @@
 
 
 
-<div class="mtd-desk-fields" style="display: flex; flex-wrap:wrap; align-items:center; align-self:center">
+<div class="mtd-desk-fields noselect" style="display: flex; flex-wrap:wrap; align-items:center; align-self:center">
     @foreach (var part in Model.MtdFormParts)
     {
         bool checkPart = @Model.MtdApprovalStage.BlockParts.Contains(part.Id);

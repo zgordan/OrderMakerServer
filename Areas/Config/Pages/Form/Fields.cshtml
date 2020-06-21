@@ -95,10 +95,10 @@
            })
     </div>
 
-    <ul mtd-draggable class="mdc-list">
+    <ul mtd-data-draggable class="mdc-list">
         @foreach (var field in Model.MtdFormPartFields)
         {
-            <li mtd-data-href="/config/form/fieldedit?id=@field.Id" id="@field.Id-licol" class="mdc-list-item" draggable="true" role="button" aria-checked="false"
+            <li mtd-data-href="/config/form/fieldedit?id=@field.Id" id="@field.Id-licol" class="mtd-list-item mdc-list-item" draggable="true" role="button" aria-checked="false"
                 data-value="@field.Id"
                 data-part="@field.MtdFormPart">
                 <label class="mdc-list-item__text" for="@field.Id-lc">@field.Name</label>

@@ -74,16 +74,15 @@ const Service = () => {
 
     $(sf.dateStart.input).datetimepicker({
         timepicker: false,
-        locale: dtp.locale,
+        lang: dtp.lang,
         mask: dtp.mask,
         format: dtp.format,
         defaultDate: new Date(),
     });
-
-
+    
     $(sf.dateFinish.input).datetimepicker({
         timepicker: false,
-        locale: dtp.locale,
+        lang: dtp.lang,
         mask: dtp.mask,
         format: dtp.format,
         defaultDate: new Date(),

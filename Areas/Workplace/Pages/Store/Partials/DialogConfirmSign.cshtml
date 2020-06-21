@@ -18,10 +18,10 @@
                 </h2>
                 <div class="mdc-dialog__content" id="accept-sign-dialog-content">
                     <hr />
-                     @Localizer["A positive response to a user’s request will be recorded in the list of approval history"].
+                     @Localizer["A positive response to a user’s request will be recorded in the list of approval history."]
                     <hr />
                     <div style="padding-top: 18px; width: 100%">
-                        <label class="mdc-text-field mdc-text-field--textarea" style="width:100%">
+                        <label id="dcs" class="mdc-text-field mdc-text-field--textarea" style="width:100%">
                             <div class="mdc-text-field-character-counter">0 / 250</div>
                             <textarea class="mdc-text-field__input" aria-labelledby="comment-confirm-sign-id" name="comment-request-id" rows="3" cols="40"
                                       maxlength="250" placeholder="@Localizer["Create a comment if necessary"]"></textarea>
@@ -48,3 +48,4 @@
         <div class="mdc-dialog__scrim"></div>
     </div>
 </form>
+

@@ -40,7 +40,7 @@
                 <button id="index-create-button" mtd-data-href="/workplace/store/create?formId=@Model.FormId" class="mdc-fab mdc-fab--extended">
                     <div class="mdc-fab__ripple"></div>
                     <span class="material-icons mdc-fab__icon">add</span>
-                    <span class="mdc-fab__label">Create</span>
+                    <span class="mdc-fab__label">@Localizer["Create"]</span>
                 </button>
                 <button id="index-create-button-mini" mtd-data-href="/workplace/store/create?formId=@Model.FormId" class="mdc-fab">
                     <div class="mdc-fab__ripple"></div>
@@ -66,6 +66,9 @@
                 </form>
             </div>
         </div>
+    }
+    else { 
+        <div style="padding-bottom: 48px"></div>
     }
 
 

@@ -25,12 +25,12 @@
 
                 @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
                     {
-                    Id = "select-owner",
-                    Name = "setowner-id-user",
-                    Label = "User",
-                    LabelLocalized = true,
-                    Items = Model.UsersList,
-                    MTDSelectListView = MTDSelectListViews.Outlined
+                        Id = "select-owner",
+                        Name = "setowner-id-user",
+                        Label = "User",
+                        LabelLocalized = true,
+                        Items = Model.UsersList,
+                        MTDSelectListView = MTDSelectListViews.Outlined
                     })
 
                 <div class="mtd-dialog-buttons">

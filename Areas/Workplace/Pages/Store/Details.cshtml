@@ -180,7 +180,7 @@
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/delete'>
     @Html.AntiForgeryToken()
     <input id="store-delete-id" name="store-delete-id" type="hidden" value="@Model.MtdStore.Id" />
-    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/workplace/store?indexform=@Model.MtdStore.MtdForm" mtd-data-message="@Localizer["The document was deleted"]." type="hidden" />
+    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/workplace/store?indexform=@Model.MtdStore.MtdForm" mtd-data-message="@Localizer["The document was deleted."]" type="hidden" />
 </form>
 
 <div id="dialog-store-delete" class="mdc-dialog"
@@ -191,10 +191,10 @@
     <div class="mdc-dialog__container">
         <div class="mdc-dialog__surface">
             <h2 class="mdc-dialog__title" id="delete-dialog-title">
-                @Localizer["Delete document"]?
+                @Localizer["Delete document?"]
             </h2>
             <div class="mdc-dialog__content" id="delete-dialog-content">
-                @Localizer["The document will be permanently deleted"].
+                @Localizer["The document will be permanently deleted."]
             </div>
             <footer class="mdc-dialog__actions">
                 <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
@@ -217,6 +217,24 @@
     <environment exclude="Development">
         <script src="~/lib/mtd-ordermaker/store/js/mtd-store-view.min.js" asp-append-version="true"></script>
     </environment>
+
+    <script>
+        const dcs = document.getElementById("dcs");
+        if (dcs) {
+            new mdc.textField.MDCTextField(dcs);
+        }     
+
+        const dReturn = document.getElementById("d-return");
+        if (dReturn) {
+            new mdc.textField.MDCTextField(dReturn);
+        }    
+
+        const dReject = document.getElementById("d-reject");
+        if (dReject) {
+            new mdc.textField.MDCTextField(dReject);
+        }  
+    </script>
+
 }
 
 

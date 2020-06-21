@@ -17,6 +17,7 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
+using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
 using System;
 using System.Collections.Generic;
 
@@ -39,6 +40,8 @@ namespace Mtd.OrderMaker.Server.Entity
         public int Stage { get; set; }
         public string UserId { get; set; }
         public string BlockParts { get; set; }
+
+        public List<MTDSelectListItem> UserItems { get; set; }
 
         public virtual MtdApproval MtdApprovalNavigation { get; set; }
         public virtual ICollection<MtdApprovalResolution> MtdApprovalResolution { get; set; }

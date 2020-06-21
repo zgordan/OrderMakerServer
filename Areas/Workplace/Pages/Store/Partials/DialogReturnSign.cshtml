@@ -18,10 +18,10 @@
                 </h2>
                 <div class="mdc-dialog__content" id="return-sign-dialog-content">
                     <hr />
-                     @Localizer["A simple answer response to a user’s request will be recorded in the list of approval history"].
+                     @Localizer["A simple answer response to a user’s request will be recorded in the list of approval history."]
                     <hr />
                     <div style="padding-top: 18px; width: 100%">
-                        <label class="mdc-text-field mdc-text-field--textarea" style="width:100%">
+                        <label id="d-return" class="mdc-text-field mdc-text-field--textarea" style="width:100%">
                             <div class="mdc-text-field-character-counter">0 / 250</div>
                             <textarea required class="mdc-text-field__input" aria-labelledby="comment-return-sign-id" name="comment-request-id" rows="3" cols="40"
                                       maxlength="250" placeholder="@Localizer["In this answer option, comment is required"]"></textarea>
@@ -39,7 +39,7 @@
                     <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
                         <span class="mdc-button__label">@Localizer["Cancel"]</span>
                     </button>
-                    <button type="button" id="clicker-return-sign" mtd-data-clicker mtd-data-message="@Localizer["Answer sent"]." class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" style="color:green">
+                    <button type="button" id="clicker-return-sign" mtd-data-clicker mtd-data-message="@Localizer["Response sent."]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" style="color:green">
                         <span class="mdc-button__label">@Localizer["Apply"]</span>
                     </button>
                 </footer>
