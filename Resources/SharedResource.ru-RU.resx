@@ -663,4 +663,19 @@
   <data name="Your profile has been updated." xml:space="preserve">
     <value>Ваш профиль был обновлен.</value>
   </data>
+  <data name="A password recovery link was sent to the specified mailbox." xml:space="preserve">
+    <value>Ссылка для восстановления пароля была отправлена на указанный почтовый ящик.</value>
+  </data>
+  <data name="Locked out" xml:space="preserve">
+    <value>Заблокирован</value>
+  </data>
+  <data name="Password has been changed successfully." xml:space="preserve">
+    <value>Пароль был успешно изменен.</value>
+  </data>
+  <data name="This account has been locked out, please try again later." xml:space="preserve">
+    <value>Этот аккаунт заблокирован, повторите попытку позже.</value>
+  </data>
+  <data name="To sign in click on the link." xml:space="preserve">
+    <value>Для входа нажмите на ссылку.</value>
+  </data>
 </root>
