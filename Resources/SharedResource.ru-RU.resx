@@ -678,4 +678,7 @@
   <data name="To sign in click on the link." xml:space="preserve">
     <value>Для входа нажмите на ссылку.</value>
   </data>
+  <data name="A plus sign between words means logical AND" xml:space="preserve">
+    <value>Знак плюс между словами означает логическое "И"</value>
+  </data>
 </root>

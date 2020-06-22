@@ -40,19 +40,18 @@
 <div class="mtd-desk">
     <div class="mtd-desk-panel">
         <div style="padding-left: 16px;">
-            <button mtd-data-clicker type="button" class="mdc-fab mdc-fab--extended">
+            <button mtd-data-clicker-by="clicker-save" type="button" class="mdc-fab mdc-fab--extended">
                 <div class="mdc-fab__ripple"></div>
                 <span class="material-icons mdc-fab__icon">save</span>
                 <span class="mdc-fab__label">@Localizer["Save"]</span>
             </button>
         </div>
     </div>
-
 </div>
 
 <div class="mtd-desk">
-    <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="">
-
+    <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data">
+        <input type="hidden" id="clicker-save" mtd-data-clicker mtd-data-message="@Localizer["Changes saved."]"/>
         <div class="mtd-desk-fields">
             <div class="mtd-desk-field">
                 <label>@Localizer["Image for main menu"]</label>

@@ -61,32 +61,43 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
         public async Task<OutFlow> GetDataForTextAsync(Incomer incomer)
         {
             List<string> fieldsIds = incomer.FieldForColumn.Select(x => x.Id).ToList();
-            List<string> words = incomer.SearchText.Split(" ").Where(x=>x!="").ToList();
             IList<string> storeIds = new List<string>();
+            bool plus = incomer.SearchText.Contains("+");
 
-            /*Complex search*/
-            for (int i = 0; i < words.Count(); i++)
+            if (plus)
             {
-                IList<string> tempIds;
-
-                if (words[i] != "+")
-                {
-                    if (i > 0 && words[i - 1] == "+")
-                    {
-                        storeIds = await FindStoreIdsForText(fieldsIds, words[i], 4, storeIds);
-                    }
-                    else
-                    {
-                        tempIds = await FindStoreIdsForText(fieldsIds, words[i], 4);
-                        foreach (var id in tempIds)
-                        {
-                            if (!storeIds.Where(x => x == id).Any()) { storeIds.Add(id); }
-                        }
-                    }
-
+                List<string> words = incomer.SearchText.Split("+").Where(x => x != "").ToList();
+                for (int i = 0; i < words.Count(); i++)
+                {                                     
+                   storeIds = i==0 ? await FindStoreIdsForText(fieldsIds, words[i], 4) : await FindStoreIdsForText(fieldsIds, words[i], 4, storeIds);                                       
                 }
+                ///*Complex search*/
+                    //for (int i = 0; i < words.Count(); i++)
+                    //{
+                    //    IList<string> tempIds;
 
+                    //    if (words[i] != "+")
+                    //    {
+                    //        if (i > 0 && words[i - 1] == "+")
+                    //        {
+                    //            storeIds = await FindStoreIdsForText(fieldsIds, words[i], 4, storeIds);
+                    //        }
+                    //        else
+                    //        {
+                    //            tempIds = await FindStoreIdsForText(fieldsIds, words[i], 4);
+                    //            foreach (var id in tempIds)
+                    //            {
+                    //                if (!storeIds.Where(x => x == id).Any()) { storeIds.Add(id); }
+                    //            }
+                    //        }
+
+                    //    }
+                    //}
             }
+            else {
+                storeIds = await FindStoreIdsForText(fieldsIds, incomer.SearchText, 4);
+            }
+                   
 
             return new OutFlow
             {
