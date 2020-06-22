@@ -36,31 +36,27 @@
     <meta name="format-detection" content="telephone=no">
 
     <title>@ViewData["Title"] | OrderMaker</title>
-    @*<link rel="stylesheet" href="~/lib/google/css/material-components-web.css" asp-append-version="true" />*@
-    @*<link rel="stylesheet" href="~/lib/google/iconfont/material-icons.css" asp-append-version="true" />*@
+
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-
-    <link href="https://unpkg.com/material-components-web@6.0.0/dist/material-components-web.min.css" rel="stylesheet" />
-
+    <link rel="stylesheet" href="~/lib/google/css/material-components-web.min.css" asp-append-version="true" />
+    @*<link href="https://unpkg.com/material-components-web@6.0.0/dist/material-components-web.min.css" rel="stylesheet" />*@
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/lib/fontawesome/css/fontawesome.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/fontawesome/css/solid.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/fontawesome/css/regular.min.css" asp-append-version="true" />
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/mtd-ordermaker/main/css/mtd-main.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/lib/mtd-ordermaker/main/css/mtd-app.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/lib/mtd-ordermaker/mtd-img-selector/css/mtd-img-selector.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/lib/mtd-ordermaker/mtd-checkbox/css/mtd-checkbox.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/lib/fontawesome/css/fontawesome.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/lib/fontawesome/css/solid.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/lib/fontawesome/css/regular.min.css" asp-append-version="true" />
     </environment>
 
     <environment exclude="Development">
         <link rel="stylesheet" href="~/lib/mtd-ordermaker/main/css/mtd-main.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/lib/mtd-ordermaker/mtd-img-selector/css/mtd-img-selector.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/lib/mtd-ordermaker/mtd-checkbox/css/mtd-checkbox.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/lib/fontawesome/css/fontawesome.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/lib/fontawesome/css/solid.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/lib/fontawesome/css/regular.min.css" asp-append-version="true" />
     </environment>
 
 
@@ -134,37 +130,27 @@
         </div>
     </div>
 
-
     <input type="hidden" id="index-dtp-locale-lang" value="@Localizer["en"]" />
     <input type="hidden" id="index-dtp-locale-mask" value="@Localizer["19/39/9999"]" />
     <input type="hidden" id="index-dtp-locale-format" value="@Localizer["m/d/Y"]" />
 
+    <script src="~/lib/google/js/material-components-web.min.js" asp-append-version="true"></script>
+    @*<script src="https://unpkg.com/material-components-web@6.0.0/dist/material-components-web.min.js"></script>*@
+
+    <script src="~/lib/fontawesome/js/fontawesome.min.js" asp-append-version="true"></script>
+    <script src="~/lib/fontawesome/js/solid.min.js" asp-append-version="true"></script>
+    <script src="~/lib/fontawesome/js/regular.min.js" asp-append-version="true"></script>
+
     <environment include="Development">
-        @*<script src="~/lib/google/js/material-components-web.js" asp-append-version="true"></script>*@
-        <script src="https://unpkg.com/material-components-web@6.0.0/dist/material-components-web.min.js"></script>
-
-        <script src="~/lib/fontawesome/js/fontawesome.min.js" asp-append-version="true"></script>
-        <script src="~/lib/fontawesome/js/solid.min.js" asp-append-version="true"></script>
-        <script src="~/lib/fontawesome/js/regular.min.js" asp-append-version="true"></script>
-
-
         <script src="~/lib/mtd-ordermaker/main/js/mtd-main.js" asp-append-version="true"></script>
         <script src="~/lib/mtd-ordermaker/main/js/mtd-draggable.js" asp-append-version="true"></script>
         <script src="~/lib/mtd-ordermaker/main/js/mtd-select-list.js" asp-append-version="true"></script>
         <script src="~/lib/mtd-ordermaker/main/js/mtd-text-field.js" asp-append-version="true"></script>
         <script src="~/lib/mtd-ordermaker/main/js/mtd-dialog.js" asp-append-version="true"></script>
-
         <script src="~/lib/mtd-ordermaker/mtd-img-selector/js/mtd-img-selector.js" asp-append-version="true"></script>
         <script src="~/lib/mtd-ordermaker/mtd-checkbox/js/mtd-checkbox.js" asp-append-version="true"></script>
-
     </environment>
     <environment exclude="Development">
-        <script src="https://unpkg.com/material-components-web@6.0.0/dist/material-components-web.min.js"></script>
-        <script src="~/lib/fontawesome/js/fontawesome.min.js" asp-append-version="true"></script>
-        <script src="~/lib/fontawesome/js/solid.min.js" asp-append-version="true"></script>
-        <script src="~/lib/fontawesome/js/regular.min.js" asp-append-version="true"></script>
-
-        @*<script src="~/lib/mtd-ordermaker/main/js/mtd-app.js" asp-append-version="true"></script>*@
         <script src="~/lib/mtd-ordermaker/main/js/mtd-main.min.js" asp-append-version="true"></script>
         <script src="~/lib/mtd-ordermaker/mtd-img-selector/js/mtd-img-selector.min.js" asp-append-version="true"></script>
         <script src="~/lib/mtd-ordermaker/mtd-checkbox/js/mtd-checkbox.min.js" asp-append-version="true"></script>
