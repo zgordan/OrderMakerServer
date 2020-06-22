@@ -612,7 +612,55 @@
   <data name="User Resolution Request" xml:space="preserve">
     <value>Запрос резолюции пользователя</value>
   </data>
+  <data name="Also contain at least one character or punctuation mark: ! # @ $ % ^ &amp; * ( ) _ - +" xml:space="preserve">
+    <value>А также содержать хотя бы один символ или знак пунктуации: ! # @ $% ^ &amp; * () _ - +</value>
+  </data>
+  <data name="Change account password" xml:space="preserve">
+    <value>Изменение пароля учетной записи</value>
+  </data>
+  <data name="Change profile data" xml:space="preserve">
+    <value>Изменение данных профиля</value>
+  </data>
   <data name="Clear all" xml:space="preserve">
     <value>Очистить все</value>
+  </data>
+  <data name="Click on the icon to create a strong password." xml:space="preserve">
+    <value>Нажмите на значок, чтобы создать надежный пароль.</value>
+  </data>
+  <data name="Confirm password" xml:space="preserve">
+    <value>Подтверждение пароля</value>
+  </data>
+  <data name="Current password" xml:space="preserve">
+    <value>Действующий пароль</value>
+  </data>
+  <data name="Login name" xml:space="preserve">
+    <value>Логин</value>
+  </data>
+  <data name="Message sent. Check your Email." xml:space="preserve">
+    <value>Сообщение отправлено. Проверьте свою электронную почту.</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Телефон</value>
+  </data>
+  <data name="Phone number pattern: +0 000 000 0000" xml:space="preserve">
+    <value>Шаблон телефонного номера: +0 000 000 0000</value>
+  </data>
+  <data name="Reset password" xml:space="preserve">
+    <value>Сброс пароля</value>
+  </data>
+  <data name="Send token to create a password" xml:space="preserve">
+    <value>Отправить токен для создания пароля</value>
+  </data>
+  <data name="The password must be strong and consist of eight or more characters of the Latin alphabet, contain uppercase and lowercase letters, numbers." xml:space="preserve">
+    <value>Пароль должен быть надежным и состоять из восьми или более символов латинского алфавита, содержать прописные и строчные буквы, цифры.</value>
+  </data>
+  <data name="You must enter your password in order to change your profile." xml:space="preserve">
+    <value>Вы должны ввести свой пароль, чтобы изменить свой профиль.</value>
+  </data>
+  <data name="Your password has been changed." xml:space="preserve">
+    <value>Ваш пароль был изменен.</value>
+  </data>
+  <data name="Your profile has been updated." xml:space="preserve">
+    <value>Ваш профиль был обновлен.</value>
   </data>
 </root>
