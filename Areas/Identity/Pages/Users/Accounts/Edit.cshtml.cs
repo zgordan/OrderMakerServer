@@ -90,7 +90,9 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
             public string Policy { get; set; }
             public string TitleGroup { get; set; }              
             public string CpqPolicyView { get; set; }
-            public string CpqPolicyEdit { get; set; }            
+            public string CpqPolicyEdit { get; set; }
+            /*PRINT GROSS PRICE*/
+            public string CpqPolicyPGP { get; set; }
         }
 
         public List<MTDSelectListItem> Roles { get; set; }
@@ -168,6 +170,7 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
                 if (cpqPolicy.Contains("view-group")) { Input.CpqPolicyView = "view-group"; }
                 if (cpqPolicy.Contains("edit-all")) { Input.CpqPolicyEdit= "edit-all"; }
                 if (cpqPolicy.Contains("edit-group")) { Input.CpqPolicyEdit = "edit-group"; }
+                if (cpqPolicy.Contains("print-gross-price")) { Input.CpqPolicyPGP = "print-gross-price"; }
             }
 
             CpqModule = options.Value.CPQManagerLink.Length > 0 ? true : false; 

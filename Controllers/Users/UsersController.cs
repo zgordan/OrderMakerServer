@@ -134,6 +134,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             // string cpqViewOwn = form["cpq-view-own"];
             string cpqEditAll = form["cpq-edit-all"];
             string cpqEditGroup = form["cpq-edit-group"];
+            string cpqPrintGrossPrice = form["cpq-print-gross-price"];
 
             WebAppRole roleUser = await _roleManager.FindByIdAsync(roleId);
             WebAppRole roleCpq = await _roleManager.FindByIdAsync(roleCpqId);
@@ -199,9 +200,12 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             if (cpqViewGroup == "true") { cpqPolicy = "view-group"; }
             string cpqPolicyEdit = "edit-own";
             if (cpqEditAll == "true") { cpqPolicyEdit = "edit-all"; }
-            if (cpqEditGroup == "true") { cpqPolicyEdit = "edit-group"; }
-
+            if (cpqEditGroup == "true") { cpqPolicyEdit = "edit-group"; }            
             cpqPolicy += cpqPolicyEdit;
+            string cpqPolicyPGP = "";
+            if (cpqPrintGrossPrice == "true") { cpqPolicyPGP = "print-gross-price"; }
+            cpqPolicy += cpqPolicyPGP;
+
             Claim cpqClaim = new Claim("cpq-policy", cpqPolicy);
             await _userManager.AddClaimAsync(user, cpqClaim);
 
