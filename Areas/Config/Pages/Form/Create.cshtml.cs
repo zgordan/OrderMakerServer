@@ -27,7 +27,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Mtd.OrderMaker.Server.Entity;
-
+using Microsoft.Extensions.Options;
+using Mtd.OrderMaker.Server.AppConfig;
 
 namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
 {
@@ -35,11 +36,13 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
     {
         private readonly OrderMakerContext _context;
         private readonly IStringLocalizer<CreateModel> _localizer;
+        private readonly IOptions<LimitSettings> limits;
 
-        public CreateModel(OrderMakerContext context, IStringLocalizer<CreateModel> localizer)
+        public CreateModel(OrderMakerContext context, IStringLocalizer<CreateModel> localizer, IOptions<LimitSettings> limits)
         {
             _context = context;
             _localizer = localizer;
+            this.limits = limits;
         }
 
         [BindProperty]
@@ -66,6 +69,11 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
             {
                 return Page();
             }
+
+            int formQty = await _context.MtdForm.CountAsync();
+            int formLimit = limits.Value.Forms;
+
+            if (formQty >= formLimit) { return BadRequest(_localizer["Limit forms!"]); }
 
             var group = await _context.MtdCategoryForm.FirstOrDefaultAsync();
 

@@ -101,7 +101,8 @@ namespace Mtd.OrderMaker.Server.Components.Index
                 SearchText = filter == null ? string.Empty : filter.SearchText,
                 Pending = pending,
                 IsCreator = await _userHandler.IsCreator(user, formId),
-                PageSize = filter.PageSize
+                PageSize = filter.PageSize,
+                PageCurrent = filter.Page,
                 
             };
 

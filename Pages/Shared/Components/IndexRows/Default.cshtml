@@ -26,7 +26,7 @@
 
 @{
     int colSpan = Model.MtdFormPartFields.Count + 2;
-    var user = await userHandler.GetUserAsync(User);
+    var user = await userHandler.GetUserAsync(User);   
 }
 
 <input id="nav-store-ids" type="hidden" value="@Model.StoreIds" />
@@ -283,7 +283,7 @@
     </div>
 </div>
 
-@if (Model.MtdStores.Count >= Model.PageSize)
+@if (Model.MtdStores.Count >= Model.PageSize || Model.PageCurrent>1)
 {
     @await Component.InvokeAsync("IndexFooter", new { formId = Model.FormId, pageCount = Model.PageCount })
 }

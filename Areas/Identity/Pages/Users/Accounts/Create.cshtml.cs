@@ -35,6 +35,7 @@ using Mtd.OrderMaker.Server.AppConfig;
 using Microsoft.Extensions.Localization;
 using Mtd.OrderMaker.Server.Services;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
 {
@@ -44,19 +45,20 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
         private readonly IEmailSenderBlank _emailSender;
         private readonly ILogger<CreateModel> _logger;
         private readonly IStringLocalizer<SharedResource> _localizer;
-
+        private readonly IOptions<LimitSettings> limits;
 
         public CreateModel(
             UserHandler userManager,
             IEmailSenderBlank emailSender,
             ILogger<CreateModel> logger,
-            IStringLocalizer<SharedResource> localizer
-            )
+            IStringLocalizer<SharedResource> localizer,
+            IOptions<LimitSettings> limits)
         {
             _userManager = userManager;
             _emailSender = emailSender;
             _logger = logger;
             _localizer = localizer;
+            this.limits = limits;
         }
 
         [BindProperty]
@@ -104,10 +106,11 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
 
         public async Task<IActionResult> OnPostAsync()
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return Page();
-            //}
+
+            int userQty = _userManager.Users.Count();
+            int userLimit = limits.Value.Users;
+
+            if (userQty >= userLimit) { return BadRequest(_localizer["Limit users!"]); }
 
             string pass = _userManager.GeneratePassword();
             
@@ -119,39 +122,8 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
 
             await _userManager.AddToRoleAsync(user, "Guest");
 
-            //if (result.Succeeded && Input.SendEmail)
-            //{
-            //    _logger.LogInformation("User created a new account with password.");
-                
-            //    var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-            //    var callbackUrl = Url.Page(
-            //        "/Account/ResetPassword",
-            //        pageHandler: null,
-            //        values: new { userId = user.Id, code },
-            //        protocol: Request.Scheme);
-
-            //    BlankEmail blankEmail = new BlankEmail
-            //    {
-            //        Email = user.Email,
-            //        Subject = _localizer["Password reset"],
-            //        Header = _localizer["Password reset"],
-            //        Content = new List<string>()
-            //           {
-            //               $"{_localizer["Your login"]}: <strong>{user.UserName}</strong>",
-            //               _localizer["To change your account password, follow the link below"],
-            //               $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>{_localizer["Create account password"]}</a>"
-            //           }
-            //    };
-
-            //    await _emailSender.SendEmailBlankAsync(blankEmail);
-            //}
 
             if (!result.Succeeded) {
-
-                //foreach (var error in result.Errors)
-                //{
-                //    ModelState.AddModelError(string.Empty, error.Description);
-                //}
 
                 return BadRequest("Error.");
             }

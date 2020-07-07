@@ -128,6 +128,7 @@ namespace Mtd.OrderMaker.Server
             services.AddTransient<IEmailSenderBlank, EmailSenderBlank>();
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.Configure<ConfigSettings>(Configuration.GetSection("ConfigSettings"));
+            services.Configure<LimitSettings>(Configuration.GetSection("LimitSettings"));
 
 
             services.AddMvc(options => options.EnableEndpointRouting = false);
