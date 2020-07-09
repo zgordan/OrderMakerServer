@@ -149,11 +149,13 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
         public async Task<IActionResult> PostPageMove()
         {
             /* number
-             * 1 -  First Page; 2 - back; 3 - forward;
+             * 1 -  First Page; 2 - back; 3 - forward; 4 - Last Page 
              */
 
             string formId = Request.Form["formId"];
             string formValue = Request.Form["formValue"];
+            string pageCount = Request.Form["pageCount"];
+
             int number = int.Parse(formValue);
 
             var user = await _userHandler.GetUserAsync(User);
@@ -166,11 +168,14 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
             }
 
             int page = filter.Page;
+            bool isOk = int.TryParse(pageCount, out int pageLast);
+            if (!isOk) { pageLast = page; }
 
             switch (number)
             {
                 case 2: { if (page > 1) { page--; } break; }
                 case 3: { page++; break; }
+                case 4: { page = pageLast; break; }
                 default: { page = 1; break; }
             };
 

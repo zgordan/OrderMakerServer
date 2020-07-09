@@ -28,15 +28,16 @@
         @Html.AntiForgeryToken()
         <input name="formId" value="@Model.FormId" type="hidden" />
         <input mtd-data-result name="formValue" type="hidden" />
+        <input name="pageCount" type="hidden" value="@Model.PageCount" />
+
         <div class="mtd-index-footer-pages">
             @if (Model.Page > 1)
             {
-            <div class="mtd-index-footer-button">
-                <a mtd-data-clicker="1" href="#">
-                    <i class="fas fa-angle-double-left fa-lg"></i>
-                </a>
-                @*<button class="mdc-icon-button material-icons" mtd-data-clicker="1" type="button">favorite</button>*@
-            </div>
+                <div class="mtd-index-footer-button">
+                    <a mtd-data-clicker="1" href="#">
+                        <i class="fas fa-angle-double-left fa-lg"></i>
+                    </a>
+                </div>
                 <div class="mtd-index-footer-button">
                     <a mtd-data-clicker="2" href="#">
                         <i class="fas fa-angle-left fa-lg"></i>
@@ -53,11 +54,17 @@
                 <div class="mtd-index-footer-button">
                     <a mtd-data-clicker="3" href="#"><i class="fas fa-angle-right fa-lg"></i></a>
                 </div>
+
+                <div class="mtd-index-footer-button">
+                    <a mtd-data-clicker="4" href="#">
+                        <i class="fas fa-angle-double-right fa-lg"></i>
+                    </a>
+                </div>
             }
         </div>
     </form>
 
-    <div class="mtd-index-footer-pageSize" >
+    <div class="mtd-index-footer-pageSize">
         <div style="white-space:nowrap">@Localizer["Page size:"]</div>
         <div class="mdc-menu-surface--anchor">
             <div mtd-data-page="@Model.FormId" class="mdc-ripple-surface mdc-ripple-surface--accent">
