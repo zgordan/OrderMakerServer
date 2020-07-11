@@ -28,6 +28,7 @@ using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store.Models;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.EntityHandler.Approval;
+using Mtd.OrderMaker.Server.Extensions;
 using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
 using Mtd.OrderMaker.Server.Models.LogDocument;
 using Mtd.OrderMaker.Server.Models.Store;
@@ -50,6 +51,7 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
         public MtdForm MtdForm { get; set; }
         public ChangesHistory ChangesHistory { get; set; }
         public MtdStoreOwner StoreOwner { get; set; }
+        public  WebAppUser UserOwner { get; set; }
         public bool IsInstallerOwner { get; set; }
         public bool IsEditor { get; set; }
         public bool IsEraser { get; set; }
@@ -103,20 +105,25 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
 
             IsReviewer = await _userHandler.IsReviewer(user, MtdForm.Id);
 
+            UserOwner = new WebAppUser();
             StoreOwner = await _context.MtdStoreOwner.Where(x => x.Id == MtdStore.Id).FirstOrDefaultAsync();
+            if (StoreOwner != null) { UserOwner = await _userHandler.FindByIdAsync(StoreOwner.UserId); }
+
             ChangesHistory = new ChangesHistory();
 
 
             if (edited != null)
             {
-                ChangesHistory.LastEditedUser = edited.UserName;
+                WebAppUser userEditor = await _userHandler.FindByIdAsync(edited.UserId);                
+                ChangesHistory.LastEditedUser = userEditor == null ? edited.UserName : userEditor.GetFullName();
                 ChangesHistory.LastEditedTime = edited.TimeCh.ToString();
             }
 
             if (created != null)
             {
-                ChangesHistory.CreateByTime = created.TimeCh.ToString();
-                ChangesHistory.CreateByUser = created.UserName;
+                WebAppUser userCreator = await _userHandler.FindByIdAsync(created.UserId);
+                ChangesHistory.CreateByUser = userCreator == null ? created.UserName : userCreator.GetFullName();
+                ChangesHistory.CreateByTime = created.TimeCh.ToString();                
             }
 
             ApprovalHandler approvalHandler = new ApprovalHandler(_context, MtdStore.Id);
@@ -143,7 +150,7 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                 
                 webAppUsers.OrderBy(x => x.Title).ToList().ForEach((item) => {
                     UsersList.Add(new MTDSelectListItem { 
-                         Id = item.Id, Value = item.Title
+                         Id = item.Id, Value = item.GetFullName()
                     });
                 });
              
@@ -206,7 +213,7 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                 ApprovalLog temp = new ApprovalLog
                 {
                     Time = log.Timecr,
-                    UserName = appUser == null ? log.UserName : appUser.Title,
+                    UserName = appUser == null ? log.UserName : appUser.GetFullName(),
                     Result = log.Result,
                     ImgData = log.ImgData,
                     ImgType = log.ImgType,

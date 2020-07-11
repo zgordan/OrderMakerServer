@@ -2,6 +2,7 @@
 @namespace Mtd.OrderMaker.Server.Components.Store
 @using Mtd.OrderMaker.Server.EntityHandler.Approval
 @using Microsoft.AspNetCore.Mvc.Localization
+@using static Mtd.OrderMaker.Server.Extensions.UserExtensions
 @inject IHtmlLocalizer<SharedResource> Localizer
 
 <div class="mtd-desk-block-content mtd-desk-block--border">
@@ -27,7 +28,7 @@
     <div id="block-info" class="mtd-desk-block-body">
         <table>
             <tr><td>ID</td><td>@Model.MtdStore.Sequence.ToString("D9")</td></tr>
-            <tr><td>@Localizer["Owner"]</td><td>@Localizer[$"{ViewBag.Owner}"]</td></tr>
+            <tr><td>@Localizer["Owner"]</td><td>@Model.UserOwner.GetFullName()</td></tr>
             @if (Model.IsFormApproval)
             {
                 switch (Model.ApprovalStatus)

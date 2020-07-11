@@ -20,6 +20,7 @@
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -321,7 +322,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
                 Stage = mtdApprovalStage.Id,
                 Timecr = DateTime.Now,
                 UserId = webAppUser.Id,
-                UserName = webAppUser.Title,
+                UserName = webAppUser.GetFullName(),
             };
 
             _context.MtdStoreApproval.Update(mtdStoreApproval);
@@ -378,7 +379,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
                 Stage = currentStage.Id,
                 Timecr = DateTime.Now,
                 UserId = webAppUser.Id,
-                UserName = webAppUser.Title,
+                UserName = webAppUser.GetFullName(),
                 Comment = commentText.Length > 250 ? commentText.Substring(0, 250) : commentText
             };
 
@@ -444,7 +445,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
                 Stage = currentStage.Id,
                 Timecr = DateTime.Now,
                 UserId = webAppUser.Id,
-                UserName = webAppUser.Title,
+                UserName = webAppUser.GetFullName(),
                 Comment = commentText.Length > 250 ? commentText.Substring(0, 250) : commentText,
                 IsSign = 1,
             };
@@ -518,7 +519,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
                 Stage = currentStage.Id,
                 Timecr = DateTime.Now,
                 UserId = webAppUser.Id,
-                UserName = webAppUser.Title,
+                UserName = webAppUser.GetFullName(),
                 Comment = commentText.Length > 250 ? commentText.Substring(0, 250) : commentText
             };
 
@@ -557,7 +558,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
                 MtdStore = idStore,
                 Stage = approvalStage.Id,
                 UserId = userSender.Id,
-                UserName = userSender.Title,
+                UserName = userSender.GetFullName(),
                 Result = 0,
                 Timecr = DateTime.Now,
                 Comment = comment,

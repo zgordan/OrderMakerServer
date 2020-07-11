@@ -25,15 +25,7 @@
 @inject IHtmlLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["Form view"];
-    ViewData["SecondTitle"] = Model.MtdForm.Name;
-    string viewOwner = "Unknown";
-
-
-    if (Model.StoreOwner != null)
-    {
-        viewOwner = Model.StoreOwner.UserName;
-    }
-    ViewData["Owner"] = viewOwner;
+    ViewData["SecondTitle"] = Model.MtdForm.Name;    
 }
 @section Head{
     <environment include="Development">

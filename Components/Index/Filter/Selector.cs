@@ -23,6 +23,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyModel;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.Extensions;
 using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
 using Mtd.OrderMaker.Server.Models.Index;
 using Mtd.OrderMaker.Server.Services;
@@ -146,7 +147,7 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
 
             foreach (var appUser in appUsers)
             {
-                userList.Add(new MTDSelectListItem { Id = appUser.Id, Value = appUser.Title });
+                userList.Add(new MTDSelectListItem { Id = appUser.Id, Value = appUser.GetFullName() });
             }
 
             return userList;

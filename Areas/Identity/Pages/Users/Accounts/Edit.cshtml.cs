@@ -35,6 +35,7 @@ using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.AppConfig;
 using Mtd.OrderMaker.Server.Services;
 using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
+using Mtd.OrderMaker.Server.Extensions;
 
 namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
 {
@@ -146,7 +147,7 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
             var users = await _userManager.Users.OrderBy(x => x.Title).ToListAsync();
             users.ForEach((item) =>
             {
-                Users.Add(new MTDSelectListItem { Id = item.Id, Value = item.Title });
+                Users.Add(new MTDSelectListItem { Id = item.Id, Value = item.GetFullName() });
             });
             //ViewData["Users"] = new SelectList(_userManager.Users.OrderBy(x => x.Title), "Id", "Title", Input.Role);
 

@@ -25,6 +25,7 @@ using Microsoft.Extensions.Primitives;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.EntityHandler.Approval;
+using Mtd.OrderMaker.Server.Extensions;
 using Mtd.OrderMaker.Server.Services;
 using System;
 using System.Collections.Generic;
@@ -89,7 +90,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                 MtdStore = mtdStore.Id,
                 TimeCh = DateTime.Now,
                 UserId = webAppUser.Id,
-                UserName = webAppUser.Title
+                UserName = webAppUser.GetFullName()
             };
 
 
@@ -211,13 +212,13 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                 MtdStore = mtdStore.Id,
                 TimeCh = DateTime.Now,
                 UserId = webAppUser.Id,
-                UserName = webAppUser.Title
+                UserName = webAppUser.GetFullName()
             };
 
             mtdStore.MtdStoreOwner = new MtdStoreOwner
             {
                 UserId = webAppUser.Id,
-                UserName = webAppUser.Title,
+                UserName = webAppUser.GetFullName(),
             };
 
 
