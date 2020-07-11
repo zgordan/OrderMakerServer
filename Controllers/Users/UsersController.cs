@@ -77,9 +77,8 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             string userId = Request.Form["user-delete-id"];
             WebAppUser user = await _userManager.FindByIdAsync(userId);
 
-            if (user == null) {
-                string errorText = _localizer["ERROR! User not found."];
-                return BadRequest(errorText);
+            if (user == null) {                
+                return BadRequest(_localizer["ERROR! User not found."]);
             }
 
             bool isApprover = await _context.MtdApprovalStage.Where(x => x.UserId == user.Id).AnyAsync();
@@ -88,9 +87,8 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             bool isCpqQuoteOwner = await identity.MtdCpqProposalOwners.Where(x => x.UserId == user.Id).AnyAsync();
 
             if (isApprover || isOwner || isCpqQuoteOwner || isCpqTitlesOwner)
-            {
-                string errorText = _localizer["ERROR! There are documents owned by the user. Before deleting, transfer of documents to another user."];
-                return BadRequest(errorText);
+            {               
+                return BadRequest(_localizer["ERROR! There are documents owned by the user. Before deleting, transfer of documents to another user."]);
             }
 
             IList<MtdFilter> mtdFilters = await _context.MtdFilter.Where(x => x.IdUser == user.Id).ToListAsync();
@@ -112,14 +110,14 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
 
             if (username == null)
             {
-                return BadRequest("Error. User name is null.");
+                return BadRequest(_localizer["Error. User name is null."]);
             }
 
             var user = await _userManager.FindByNameAsync(username);
 
             if (user == null)
             {
-                return BadRequest("Error. User not found.");
+                return BadRequest(_localizer["Error. User not found."]);
             }
            
             string email = form["Input.Email"];
@@ -225,9 +223,8 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             WebAppUser userRecipient = await _userManager.FindByIdAsync(UserRecipient);
             
             if (userOwner == null || userRecipient == null)
-            {
-                string errorText = _localizer["ERROR! User not found."];
-                return BadRequest(errorText);
+            {            
+                return BadRequest(_localizer["ERROR! User not found."]);
             }
 
             IList<MtdStoreOwner> storeOwners = await _context.MtdStoreOwner.Where(x => x.UserId == userOwner.Id).ToListAsync();                

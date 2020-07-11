@@ -38,8 +38,8 @@
     <title>@ViewData["Title"] | OrderMaker</title>
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-    <link rel="stylesheet" href="~/lib/google/css/material-components-web.min.css" asp-append-version="true" />
-    @*<link href="https://unpkg.com/material-components-web@6.0.0/dist/material-components-web.min.css" rel="stylesheet" />*@
+    @*<link rel="stylesheet" href="~/lib/google/css/material-components-web.min.css" asp-append-version="true" />*@
+    <link href="https://unpkg.com/material-components-web@7.0.0/dist/material-components-web.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
     <link rel="stylesheet" href="~/lib/fontawesome/css/fontawesome.min.css" asp-append-version="true" />
@@ -112,7 +112,7 @@
                             @RenderSection("Breadcrumb")
                         </ul>
                     }
-                </div>
+                </div>             
                 @RenderBody()
             </div>
         </div>
@@ -134,8 +134,8 @@
     <input type="hidden" id="index-dtp-locale-mask" value="@Localizer["19/39/9999"]" />
     <input type="hidden" id="index-dtp-locale-format" value="@Localizer["m/d/Y"]" />
 
-    <script src="~/lib/google/js/material-components-web.min.js" asp-append-version="true"></script>
-    @*<script src="https://unpkg.com/material-components-web@6.0.0/dist/material-components-web.min.js"></script>*@
+    @*<script src="~/lib/google/js/material-components-web.min.js" asp-append-version="true"></script>*@
+    <script src="https://unpkg.com/material-components-web@7.0.0/dist/material-components-web.min.js"></script>
 
     <script src="~/lib/fontawesome/js/fontawesome.min.js" asp-append-version="true"></script>
     <script src="~/lib/fontawesome/js/solid.min.js" asp-append-version="true"></script>

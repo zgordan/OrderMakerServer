@@ -101,8 +101,8 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account.Manage
 
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
-            {
-                return BadRequest($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            {                
+                return BadRequest(_localizer[$"Unable to load user with ID '{_userManager.GetUserId(User)}'."]);
             }
 
             bool check = await _userManager.CheckPasswordAsync(user, Input.Password);

@@ -60,7 +60,7 @@
             <span class="mdc-list-item__text">@Localizer["Generating a password"]</span>
         </li>
     }
-    <li id="transfer-open-dialog" class="mdc-list-item" role="menuitem">
+    <li id="transfer-open-dialog" mtd-dialog-button="dialog-user-transfer" class="mdc-list-item" role="menuitem">
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">sync_alt</span>
         <span class="mdc-list-item__text">@Localizer["Transfer all documents"]</span>
     </li>
@@ -70,6 +70,53 @@
         <span class="mdc-list-item__text">@Localizer["Delete user"]</span>
     </li>
 }
+
+<div id="dialog-user-transfer" class="mtd-dialog mtd-dialog-hidden" style="max-width: 640px;">
+    <div class="mtd-dialog-container">
+        <div class="mtd-dialog-title">
+            <div>
+                @Localizer["Transfer of documents"]
+            </div>
+            <div>
+                <button mtd-dialog-cancel class="mdc-icon-button material-icons">close</button>
+            </div>
+        </div>
+        <div class="mtd-dialog-content">
+            <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/users/admin/transfer'>
+                @Html.AntiForgeryToken()
+                <input id="user-owner-id" name="user-owner-id" type="hidden" value="@ViewBag.userId" />
+                <div class="mtd-dialog-info--border">
+                    @Localizer["Transfer of documents to the user."]
+                </div>
+
+                <div class="mtd-dialog-space"></div>
+                @Localizer["Select a user from the list:"]
+                <div class="mtd-dialog-space"></div>
+
+                @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
+                    {
+                       Id = "user-recipient-id",
+                       Name = "user-recipient-id",
+                       Items = Model.Users,
+                       Label = "Users",
+                       LabelLocalized = true,
+                       ValueId = Model.Users.Select(x => x.Id).FirstOrDefault()
+                    })
+
+                <div class="mtd-dialog-buttons">
+                    <button mtd-dialog-cancel type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                        <div class="mdc-button__ripple"></div>
+                        <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                    </button>
+                    <button type="button" mtd-dialog-cancel mtd-data-clicker mtd-data-message="@Localizer["Transfer process completed"]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+                        <div class="mdc-button__ripple"></div>
+                        <span class="mdc-button__label" style="color: red">@Localizer["Apply"]</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <div class="mtd-desk">
     <div class="mtd-desk-panel">
@@ -103,7 +150,6 @@
     </form>
 
 </div>
-
 
 
 <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/users/admin/confirm/email">
@@ -188,7 +234,9 @@
     <div class="mdc-dialog__scrim"></div>
 </div>
 
-<form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/users/admin/transfer'>
+
+
+@*<form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/users/admin/transfer'>
     @Html.AntiForgeryToken()
     <input id="user-owner-id" name="user-owner-id" type="hidden" value="@ViewBag.userId" />
     <div id="dialog-user-transfer" class="mdc-dialog"
@@ -209,12 +257,16 @@
                         @Localizer["Select a user from the list:"]
                     </div>
 
-                    <div class="mdc-select" style="width: 100%; margin-top: 8px;">
-                        <i class="mdc-select__dropdown-icon"></i>
-                        <select class="mdc-select__native-control" asp-items="ViewBag.Users" name="user-recipient-id"></select>
-                        <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["User"]</label>
-                        <div class="mdc-line-ripple"></div>
-                    </div>
+                    @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
+                        {
+                           Id = "user-recipient-id",
+                           Name = "user-recipient-id",
+                           Items = Model.Users,
+                           Label = "Users",
+                           LabelLocalized = true,
+                           ValueId = Model.Users.Select(x => x.Id).FirstOrDefault()
+                        })
+
                 </div>
                 <footer class="mdc-dialog__actions">
                     <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
@@ -228,7 +280,7 @@
         </div>
         <div class="mdc-dialog__scrim"></div>
     </div>
-</form>
+</form>*@
 
 
 @section Scripts {

@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Services;
@@ -18,10 +19,13 @@ namespace Mtd.OrderMaker.Server.Controllers.Index.Filter
     {
         private readonly OrderMakerContext context;
         private readonly UserHandler userHandler;
-        public ExtendController(OrderMakerContext context, UserHandler userHandler)
+        private readonly IStringLocalizer<SharedResource> _localizer;
+
+        public ExtendController(OrderMakerContext context, UserHandler userHandler, IStringLocalizer<SharedResource> localizer)
         {
             this.context = context;
             this.userHandler = userHandler;
+            this._localizer = localizer;
         }
 
         [HttpPost("add")]
@@ -32,10 +36,10 @@ namespace Mtd.OrderMaker.Server.Controllers.Index.Filter
             string formId = form["form-id"];
             string scriptId = form["script-id"];
             bool isOk = int.TryParse(scriptId, out int id);
-            if (!isOk) { return BadRequest("Error: Bad request."); }
+            if (!isOk) { return BadRequest(_localizer["Error: Bad request."]); }
             
             bool available = await userHandler.IsFilterAccessingAsync(User, id);
-            if (!available) { return BadRequest("Error: Bad request."); }
+            if (!available) { return BadRequest(_localizer["Error: Bad request."]); }
             
             MtdFilterScript mtdFilterScript = await context.MtdFilterScript.FindAsync(id);
             mtdFilterScript.Apply = 1;

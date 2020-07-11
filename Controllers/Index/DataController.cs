@@ -288,7 +288,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
             }
             catch (Exception ex) {
 
-                return BadRequest(ex.Message);
+                return BadRequest(new JsonResult(ex.Message));
             }
 
 

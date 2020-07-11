@@ -104,6 +104,7 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
             Input = new InputModel { Id = Guid.NewGuid().ToString() };            
         }
 
+        
         public async Task<IActionResult> OnPostAsync()
         {
 
@@ -118,14 +119,17 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
                 EmailConfirmed = Input.SendEmail, 
                 PhoneNumber = Input.PhoneNumber };
 
-            var result = await _userManager.CreateAsync(user, pass);
+            IdentityResult result;
+            result = await _userManager.CreateAsync(user, pass);
+
 
             await _userManager.AddToRoleAsync(user, "Guest");
 
 
             if (!result.Succeeded) {
 
-                return BadRequest("Error.");
+                IdentityError text = result.Errors.FirstOrDefault() ?? new IdentityError();
+                return BadRequest(_localizer[text.Description]);
             }
 
             return RedirectToPage("./Edit", new { id = Input.Id});

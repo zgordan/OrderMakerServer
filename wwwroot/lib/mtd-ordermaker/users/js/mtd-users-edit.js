@@ -24,11 +24,6 @@
         dialog.open();
     });
 
-    const dialogTransfer = new mdc.dialog.MDCDialog(document.getElementById('dialog-user-transfer'));
-    document.getElementById('transfer-open-dialog').addEventListener('click', () => {
-        dialogTransfer.open();
-    });
-
     //const selectPart = new mdc.select.MDCSelect(document.getElementById("users-edit-role"));
 
     const cpqViewAll = document.getElementById("cpq-view-all");
@@ -86,3 +81,4 @@ const confirm = document.getElementById("email-confirm");
 new MTDSelectList("select-policy");
 new MTDSelectList("select-role");
 new MTDSelectList("select-role-cpq");
+new MTDSelectList("user-recipient-id");

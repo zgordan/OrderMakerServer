@@ -2,11 +2,12 @@
 
 @foreach (var entry in Model.Items)
 {
- 
+
     if (entry.Id == Model.ValueId || entry.Selectded)
     {
 
         <li @entry.Attributes class="mdc-list-item mdc-list-item--selected" data-value="@entry.Id" aria-selected="true" role="option">
+            <span class="mdc-list-item__ripple"></span>
             <span class="mdc-list-item__text">
                 @entry.Value
             </span>
@@ -15,6 +16,7 @@
     else
     {
         <li @entry.Attributes class="mdc-list-item" data-value="@entry.Id" role="option">
+            <span class="mdc-list-item__ripple"></span>
             <span class="mdc-list-item__text">
                 @entry.Value
             </span>

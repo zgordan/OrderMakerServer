@@ -4,7 +4,7 @@
     "anonymousAuthentication": true,
     "iis": {
       "applicationUrl": "http://localhost/",
-      "sslPort": 0
+      "sslPort": 443
     },
     "iisExpress": {
       "applicationUrl": "http://localhost:55400",
@@ -29,7 +29,8 @@
     },
     "IIS": {
       "commandName": "IIS",
-      "workingDirectory": "C:\\inetpub\\OrderMaker",
+      "workingDirectory": "E:\\_GITHUB\\Mtd.OrderMaker.Server\\bin\\Debug\\netcoreapp3.1",
+      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production"
       }

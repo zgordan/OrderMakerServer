@@ -75,7 +75,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Config.Approval
 
             if (mtdApproval == null)
             {
-                return BadRequest("Error. Approval not found.");
+                return BadRequest(new JsonResult("Error. Approval not found."));
             }
 
   

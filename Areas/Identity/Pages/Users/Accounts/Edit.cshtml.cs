@@ -98,7 +98,7 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
         public List<MTDSelectListItem> Roles { get; set; }
         public List<MTDSelectListItem> RolesCpq { get; set; }
         public List<MTDSelectListItem> Policies { get; set; }
-
+        public List<MTDSelectListItem> Users { get; set; }
         public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
@@ -142,7 +142,13 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
             //ViewData["Roles"] = new SelectList(roles.Where(x=>!x.NormalizedName.Contains("CPQ-")).OrderBy(x=>x.Seq), "Id", "Title", Input.Role);
             //ViewData["RolesCPQ"] = new SelectList(roles.Where(x =>x.NormalizedName.Contains("CPQ-")).OrderBy(x => x.Seq), "Id", "Title", Input.RoleCpq);
 
-            ViewData["Users"] = new SelectList(_userManager.Users.OrderBy(x => x.Title), "Id", "Title", Input.Role);
+            Users = new List<MTDSelectListItem>();
+            var users = await _userManager.Users.OrderBy(x => x.Title).ToListAsync();
+            users.ForEach((item) =>
+            {
+                Users.Add(new MTDSelectListItem { Id = item.Id, Value = item.Title });
+            });
+            //ViewData["Users"] = new SelectList(_userManager.Users.OrderBy(x => x.Title), "Id", "Title", Input.Role);
 
             string policyID = await _userManager.GetPolicyIdAsync(user);
             Input.Policy = policyID;

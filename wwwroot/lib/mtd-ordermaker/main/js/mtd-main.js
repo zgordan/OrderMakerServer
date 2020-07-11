@@ -199,7 +199,7 @@ const ListenerForPostData = () => {
                         }
                     }
 
-                    if (xmlHttp.status == 400) {                                               
+                    if (xmlHttp.status == 400) {
                         setTimeout(() => { ActionShowModal(); MainShowSnackBar(xmlHttp.response.value, true); }, 1000);
                     }
 

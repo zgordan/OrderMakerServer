@@ -12,8 +12,23 @@
          aria-haspopup="listbox"
          aria-labelledby="@Model.IdLabel @Model.IdSelectedText">
         <span class="mdc-select__ripple"></span>
-        <input type="text" disabled readonly class="mdc-select__selected-text"/>
-        <span class="mdc-select__dropdown-icon"></span>
+        @*<input type="text" disabled readonly class="mdc-select__selected-text" />*@
+        <span class="mdc-select__selected-text"></span>
+        <span class="mdc-select__dropdown-icon">
+            <svg class="mdc-select__dropdown-icon-graphic"
+                 viewBox="7 10 10 5">
+                <polygon class="mdc-select__dropdown-icon-inactive"
+                         stroke="none"
+                         fill-rule="evenodd"
+                         points="7 10 12 15 17 10">
+                </polygon>
+                <polygon class="mdc-select__dropdown-icon-active"
+                         stroke="none"
+                         fill-rule="evenodd"
+                         points="7 15 12 10 17 15">
+                </polygon>
+            </svg>
+        </span>
 
         @await Html.PartialAsync("./_label.cshtml")
 

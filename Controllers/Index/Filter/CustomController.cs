@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Services;
@@ -22,10 +23,13 @@ namespace Mtd.OrderMaker.Server.Controllers.Index.Filter
     {
         private readonly OrderMakerContext context;
         private readonly UserHandler userHandler;
-        public CustomController(OrderMakerContext context, UserHandler userHandler)
+        private readonly IStringLocalizer<SharedResource> _localizer;
+
+        public CustomController(OrderMakerContext context, UserHandler userHandler, IStringLocalizer<SharedResource> localizer)
         {
             this.context = context;
             this.userHandler = userHandler;
+            this._localizer = localizer;
         }
 
         [HttpPost("get/list")]
@@ -80,7 +84,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Index.Filter
             MtdFilter filter = await userHandler.GetFilterAsync(User, formId);
 
             bool isOk = int.TryParse (fieldAction, out int term);
-            if (!isOk) { return BadRequest("Error: Bad request."); }
+            if (!isOk) { return BadRequest(_localizer["Error: Bad request."]); }
 
             MtdFilterField field = new MtdFilterField { MtdFilter = filter.Id, MtdFormPartField = fieldId, MtdTerm = term, Value = fieldValue, ValueExtra = fieldType == "5" ? dateFormat : null };
             try
