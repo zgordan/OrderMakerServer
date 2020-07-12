@@ -25,7 +25,7 @@
 @inject IHtmlLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = Localizer["Form view"];
-    ViewData["SecondTitle"] = Model.MtdForm.Name;    
+    ViewData["SecondTitle"] = Model.MtdForm.Name;
 }
 @section Head{
     <environment include="Development">
@@ -61,21 +61,34 @@
             <span class="mdc-list-item__text">@Localizer["Set owner"]</span>
         </li>
     }
-    @if (Model.IsEraser)
+
+    @if (Model.IsReviewer && Model.MtdApproval != null && (Model.ApprovalStatus != ApprovalStatus.Approved && Model.ApprovalStatus != ApprovalStatus.Rejected))
     {
-        <li id="eraser" class="mdc-list-item" role="menuitem">
-            <span class="mdc-list-item__graphic material-icons" aria-hidden="true">delete</span>
-            <span class="mdc-list-item__text">@Localizer["Delete"]</span>
+        <li mtd-dialog-button="dialog-consider-approved" class="mdc-list-item" role="menuitem">
+            <span class="mdc-list-item__graphic material-icons" aria-hidden="true">assignment_turned_in</span>
+            <span class="mdc-list-item__text">@Localizer["Consider Approved"]</span>
         </li>
     }
-    @if (Model.IsReviewer && (Model.ApprovalStatus == ApprovalStatus.Approved || Model.ApprovalStatus == ApprovalStatus.Rejected))
+
+    @if (Model.IsReviewer && Model.MtdApproval != null && (Model.ApprovalStatus == ApprovalStatus.Approved || Model.ApprovalStatus == ApprovalStatus.Rejected))
     {
-        <hr />
         <li id="new-approval" class="mdc-list-item" role="menuitem">
             <span class="mdc-list-item__graphic material-icons" aria-hidden="true">sync</span>
             <span class="mdc-list-item__text">@Localizer["Restart Approval"]</span>
         </li>
     }
+
+    @if (Model.IsEraser)
+    {
+        <hr />
+        <li id="eraser" class="mdc-list-item" role="menuitem">
+            <span class="mdc-list-item__graphic material-icons" aria-hidden="true">delete</span>
+            <span class="mdc-list-item__text">@Localizer["Delete"]</span>
+        </li>
+    }
+
+
+
     @if (Model.MtdForm.InverseParentNavigation.Any())
     {
         <li role="separator" class="mdc-list-divider"></li>
@@ -119,6 +132,11 @@
         <div class="mdc-dialog__scrim"></div>
     </div>
 </form>
+
+@if (Model.IsReviewer && Model.MtdApproval != null && (Model.ApprovalStatus != ApprovalStatus.Approved && Model.ApprovalStatus != ApprovalStatus.Rejected))
+{
+    @await Html.PartialAsync("./Partials/DialogConsiderApproved")
+}
 
 <div class="mtd-desk">
     <div class="mtd-desk-panel">
@@ -169,6 +187,7 @@
     @await Html.PartialAsync("./Partials/DialogOwner")
 }
 
+
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/delete'>
     @Html.AntiForgeryToken()
     <input id="store-delete-id" name="store-delete-id" type="hidden" value="@Model.MtdStore.Id" />
@@ -214,17 +233,17 @@
         const dcs = document.getElementById("dcs");
         if (dcs) {
             new mdc.textField.MDCTextField(dcs);
-        }     
+        }
 
         const dReturn = document.getElementById("d-return");
         if (dReturn) {
             new mdc.textField.MDCTextField(dReturn);
-        }    
+        }
 
         const dReject = document.getElementById("d-reject");
         if (dReject) {
             new mdc.textField.MDCTextField(dReject);
-        }  
+        }
     </script>
 
 }

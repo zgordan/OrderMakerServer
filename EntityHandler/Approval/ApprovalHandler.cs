@@ -21,6 +21,7 @@ using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Extensions;
+using MySqlX.XDevAPI.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -587,6 +588,65 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
             {
                 return false;
             }
+
+            return true;
+        }
+
+        public async Task<bool> ActionConsiderApproved (WebAppUser webAppUser, int result, string comment = null)
+        {
+            MtdStore mtdStore = await GetStoreAsync();
+            if (mtdStore.MtdStoreApproval != null && mtdStore.MtdStoreApproval.Complete == 1) { return false; }
+
+            MtdApprovalStage currentStage = await GetCurrentStageAsync();
+            MtdApprovalStage lastStage = await GetLastStageAsync();
+
+            sbyte complete = 1;
+
+            MtdStoreApproval storeApproval = new MtdStoreApproval
+            {
+                Id = mtdStore.Id,
+                MtdApproveStage = lastStage.Id,
+                PartsApproved = lastStage.BlockParts,
+                Complete = complete,
+                Result = result,
+            };
+
+
+            if (mtdStore.MtdStoreApproval == null)
+            {
+                await _context.MtdStoreApproval.AddAsync(storeApproval);
+            }
+            else
+            {
+                _context.MtdStoreApproval.Update(storeApproval);
+            }
+
+            string commentText = comment ?? string.Empty;
+            MtdLogApproval mtdLogApproval = new MtdLogApproval()
+            {
+                MtdStore = mtdStore.Id,
+                Result = result,
+                Stage = currentStage.Id,
+                Timecr = DateTime.Now,
+                UserId = webAppUser.Id,
+                UserName = webAppUser.GetFullName(),
+                Comment = commentText.Length > 250 ? commentText.Substring(0, 250) : commentText,
+                Note = lastStage.Name
+            };
+
+
+            await _context.MtdLogApproval.AddAsync(mtdLogApproval);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex.InnerException;
+            }
+
+            ClearCache();
 
             return true;
         }

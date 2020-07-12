@@ -66,12 +66,12 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             bool isApprover = await approvalHandler.IsApproverAsync(webAppUser);
             bool isFirstStage = await approvalHandler.IsFirstStageAsync();
             if (!isApprover || !isFirstStage) { return NotFound(); }
-            
-            MtdApprovalStage stageNext = await approvalHandler.GetNextStageAsync();            
+
+            MtdApprovalStage stageNext = await approvalHandler.GetNextStageAsync();
             bool sendEmail = stageNext.UserId != webAppUser.Id ? true : false;
 
             bool isOk = await approvalHandler.ActionApprove(webAppUser, resolutionId, comment);
-            
+
             if (isOk && sendEmail)
             {
                 await SendEmailStart(approvalHandler, comment);
@@ -164,17 +164,17 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
 
             WebAppUser userSender = await _userHandler.GetUserAsync(HttpContext.User);
             WebAppUser userRecepient = await _userHandler.FindByIdAsync(recipient);
-            
+
             ApprovalHandler approvalHandler = new ApprovalHandler(_context, storeId);
             bool isApprover = await approvalHandler.IsApproverAsync(userSender);
             bool isViewer = await _userHandler.IsViewer(userRecepient, formId, storeId);
 
             bool SendEmail = false;
-            if(isViewer && isApprover)
+            if (isViewer && isApprover)
             {
-                SendEmail = await approvalHandler.ActionRequest(userSender, userRecepient, comment);                
+                SendEmail = await approvalHandler.ActionRequest(userSender, userRecepient, comment);
             }
-            
+
             if (SendEmail)
             {
                 await SendEmailRequest(approvalHandler, userRecepient, comment);
@@ -206,6 +206,42 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             if (isOk && userRecipient != null)
             {
                 await SendEmailSignAsync(approvalHandler, userRecipient, comment);
+            }
+
+            return Ok();
+        }
+
+        [HttpPost("considered")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> OnPostApproveConsideredAsync()
+        {
+            var form = await Request.ReadFormAsync();
+            string storeId = form["store-id"];
+            string formId = form["form-id"];
+            string resultValue = form["result-value"];
+            string comment = form["comment-considered"];
+            if (comment.Length == 0) { comment = null; }
+
+            WebAppUser user = await _userHandler.GetUserAsync(HttpContext.User);
+            ApprovalHandler approvalHandler = new ApprovalHandler(_context, storeId);
+            
+            bool isReviewer = await _userHandler.IsReviewer(user, formId);
+            bool isFormApproval = await approvalHandler.IsApprovalFormAsync();
+            bool isComplete = await approvalHandler.IsComplete();
+
+            if (!isReviewer || !isFormApproval || isComplete) { return BadRequest(_localizer["Error! Access denied."]); }
+
+
+            int result = resultValue == "yes" ? 1 : -1;
+            bool isOk = await approvalHandler.ActionConsiderApproved(user, result, comment);
+            if (!isOk) { return BadRequest(_localizer["Error!"]); }
+
+            if (result == 1)
+            {
+                await SendEmailApprove(approvalHandler, comment);
+            } else
+            {
+                await SendEmailReject(approvalHandler, comment);
             }
 
             return Ok();
@@ -342,7 +378,6 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
 
                 await _emailSender.SendEmailBlankAsync(blankEmail);
             }
-
             return true;
         }
 

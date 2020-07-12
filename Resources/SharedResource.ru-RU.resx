@@ -681,4 +681,25 @@
   <data name="A plus sign between words means logical AND" xml:space="preserve">
     <value>Знак плюс между словами означает логическое "И"</value>
   </data>
+  <data name="Approval Completion" xml:space="preserve">
+    <value>Завершение согласования</value>
+  </data>
+  <data name="Consider Approved" xml:space="preserve">
+    <value>Считать утвержденным</value>
+  </data>
+  <data name="Display group name" xml:space="preserve">
+    <value>Отображаемое имя группы</value>
+  </data>
+  <data name="Display user name" xml:space="preserve">
+    <value>Отображаемое имя пользователя</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="This action will complete the approval process in whatever state it is in with the resolution you selected: YES - Approve; NO - Reject." xml:space="preserve">
+    <value>Это действие завершит процесс согласования на любом этапе с выбранным Вами итогом: ДА - Утвердить; НЕТ - Отклонить.</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Да</value>
+  </data>
 </root>

@@ -104,13 +104,13 @@
                     })
 
                 <div class="mtd-dialog-buttons">
-                    <button mtd-dialog-cancel type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
-                        <div class="mdc-button__ripple"></div>
-                        <span class="mdc-button__label">@Localizer["Cancel"]</span>
-                    </button>
                     <button type="button" mtd-dialog-cancel mtd-data-clicker mtd-data-message="@Localizer["Transfer process completed"]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
                         <div class="mdc-button__ripple"></div>
                         <span class="mdc-button__label" style="color: red">@Localizer["Apply"]</span>
+                    </button>
+                    <button mtd-dialog-cancel type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                        <div class="mdc-button__ripple"></div>
+                        <span class="mdc-button__label">@Localizer["Cancel"]</span>
                     </button>
                 </div>
             </form>
@@ -234,53 +234,6 @@
     <div class="mdc-dialog__scrim"></div>
 </div>
 
-
-
-@*<form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/users/admin/transfer'>
-    @Html.AntiForgeryToken()
-    <input id="user-owner-id" name="user-owner-id" type="hidden" value="@ViewBag.userId" />
-    <div id="dialog-user-transfer" class="mdc-dialog"
-         role="alertdialog"
-         aria-modal="true"
-         aria-labelledby="transfer-dialog-title"
-         aria-describedby="transfer-dialog-content">
-        <div class="mdc-dialog__container">
-            <div class="mdc-dialog__surface">
-                <h2 class="mdc-dialog__title" id="transfer-dialog-title">
-                    @Localizer["Transfer of documents"]
-                </h2>
-                <div class="mdc-dialog__content" id="transfer-dialog-content">
-                    <hr />
-                    @Localizer["Transfer of documents to the user."]
-                    <hr />
-                    <div style="padding-top: 18px;">
-                        @Localizer["Select a user from the list:"]
-                    </div>
-
-                    @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
-                        {
-                           Id = "user-recipient-id",
-                           Name = "user-recipient-id",
-                           Items = Model.Users,
-                           Label = "Users",
-                           LabelLocalized = true,
-                           ValueId = Model.Users.Select(x => x.Id).FirstOrDefault()
-                        })
-
-                </div>
-                <footer class="mdc-dialog__actions">
-                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
-                        <span class="mdc-button__label">@Localizer["Cancel"]</span>
-                    </button>
-                    <button type="button" mtd-data-clicker mtd-data-message="@Localizer["Transfer process completed"]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
-                        <span class="mdc-button__label" style="color: red">@Localizer["Transfer"]</span>
-                    </button>
-                </footer>
-            </div>
-        </div>
-        <div class="mdc-dialog__scrim"></div>
-    </div>
-</form>*@
 
 
 @section Scripts {

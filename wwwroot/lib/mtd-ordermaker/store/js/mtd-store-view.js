@@ -25,6 +25,7 @@ const commentReject = new MTDTextField("comment-reject");
 
 const selectRecipient = new MTDSelectList("select-recipient");
 const commentRequest = new MTDTextField("comment-request");
+const commentConsidered = new MTDTextField("comment-considered");
 
 const dialogAcceptSign = document.getElementById('dialog-accept-sign');
 if (dialogAcceptSign) {

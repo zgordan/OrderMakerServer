@@ -1,7 +1,7 @@
 ﻿@model MTDTextFieldTagsModel
 
 @{
-    string mainClass = "mdc-text-field mdc-text-field--textarea ";
+    string mainClass = "mdc-text-field mdc-text-field--outlined mdc-text-field--textarea ";
     mainClass = Model.Label == null ? mainClass += "mdc-text-field--no-label " : mainClass;
     mainClass = Model.IconLeading != null ? mainClass += "mdc-text-field--with-leading-icon " : mainClass;
     mainClass = Model.IconTrailing != null ? mainClass += "mdc-text-field--with-trailing-icon " : mainClass;
