@@ -149,7 +149,7 @@
     </div>
 
     <div class="mtd-desk-blocks">
-        <div class="mtd-desk-block">
+        <div class="mtd-desk-block mtd-desk-block--pull" style="max-width: 797px;">
             <div class="mtd-desk-block-content  mtd-desk-block--border">
                 <div class="mtd-desk-block-title">
                     <div class="mtd-desk-block-title-icon">
@@ -173,7 +173,7 @@
                 @await Component.InvokeAsync("StoreForm", new { store = Model.MtdStore, type = FormType.Details })
             </div>
         </div>
-        <div class="mtd-desk-block mtd-desk-block--pull">
+        <div class="mtd-desk-block">
 
             @await Html.PartialAsync("./Partials/DetailsInfo")
             @await Html.PartialAsync("./Partials/DetailsHistory")
