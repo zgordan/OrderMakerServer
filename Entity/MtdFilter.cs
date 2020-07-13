@@ -27,6 +27,7 @@ namespace Mtd.OrderMaker.Server.Entity
         {
             MtdFilterColumn = new HashSet<MtdFilterColumn>();
             MtdFilterField = new HashSet<MtdFilterField>();
+            MtdFilterScriptApply = new HashSet<MtdFilterScriptApply>();
         }
 
         public int Id { get; set; }
@@ -45,5 +46,6 @@ namespace Mtd.OrderMaker.Server.Entity
         public virtual MtdFilterOwner MtdFilterOwner { get; set; }
         public virtual ICollection<MtdFilterColumn> MtdFilterColumn { get; set; }
         public virtual ICollection<MtdFilterField> MtdFilterField { get; set; }
+        public virtual ICollection<MtdFilterScriptApply> MtdFilterScriptApply { get; set; }
     }
 }

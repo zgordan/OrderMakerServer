@@ -393,9 +393,8 @@ namespace Mtd.OrderMaker.Server.Services
             return usersAccess;
         }
 
-        public async Task<MtdFilter> GetFilterAsync(ClaimsPrincipal principal, string formId)
+        public async Task<MtdFilter> GetFilterAsync(WebAppUser user, string formId)
         {
-            WebAppUser user = await GetUserAsync(principal);
             MtdFilter filter = await _context.MtdFilter.AsNoTracking().FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == formId);
 
             if (filter == null)
@@ -419,6 +418,12 @@ namespace Mtd.OrderMaker.Server.Services
             return filter;
         }
 
+        public async Task<MtdFilter> GetFilterAsync(ClaimsPrincipal principal, string formId)
+        {
+            WebAppUser user = await GetUserAsync(principal);
+            return await GetFilterAsync(user,formId);
+        }
+
         public async Task<bool> IsFilterAccessingAsync(ClaimsPrincipal user, int scriptId)
         {
             WebAppUser userApp = await GetUserAsync(user);
@@ -428,7 +433,7 @@ namespace Mtd.OrderMaker.Server.Services
             return policy.MtdPolicyScripts.Where(x => x.MtdFilterScriptId == scriptId).Any();
         }
 
-        public async Task<List<MtdFilterScript>> GetFilterScripsAsync(WebAppUser user, string formId, sbyte apply = -1)
+        public async Task<List<MtdFilterScript>> GetFilterScriptsAsync(WebAppUser user, string formId, sbyte apply = -1)
         {
             string policyId = await GetPolicyIdAsync(user);
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
@@ -436,8 +441,15 @@ namespace Mtd.OrderMaker.Server.Services
             MtdPolicy policy = mtdPolicy.Where(x => x.Id == policyId).FirstOrDefault();
 
             List<int> filterIds = policy.MtdPolicyScripts.Select(x => x.MtdFilterScriptId).ToList();
+
             var query = _context.MtdFilterScript.AsNoTracking().Where(x => filterIds.Contains(x.Id) && x.MtdFormId == formId);
-            if (apply > 0) { query = query.Where(q => q.Apply == apply); }
+            
+            if (apply > 0) {
+                var filter = await GetFilterAsync(user, formId);
+                IList<int> applyIds = await _context.MtdFilterScriptApply.Where(x => x.MtdFilterId == filter.Id).Select(x=>x.MtdFilterScriptId).ToListAsync(); 
+                query = query.Where(q => applyIds.Contains(q.Id)); 
+            }
+
             return await query.ToListAsync();
         }
 

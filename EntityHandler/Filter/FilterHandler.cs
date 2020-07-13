@@ -22,6 +22,7 @@ using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -53,7 +54,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
         {
 
             if (register == null)
-            {                
+            {
                 register = await _context.MtdFilter
                     .Include(x => x.MtdFilterOwner)
                     .Include(x => x.MtdFilterDate)
@@ -121,7 +122,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
                 if (mtdFilter.SearchNumber == "" && mtdFilter.SearchText != "" && filterField) { typeQuery = TypeQuery.textField; }
 
 
-                var scripts = await _userHandler.GetFilterScripsAsync(user,FormId,1);
+                var scripts = await _userHandler.GetFilterScriptsAsync(user, FormId, 1);
                 bool isScript = scripts.Any();
                 if (isScript) { typeQuery = TypeQuery.script; }
             }
@@ -183,6 +184,43 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
         {
             MtdFilter mtdFilter = await GetFilterAsync();
             return mtdFilter.ShowNumber == 1;
+        }
+
+        public async Task<bool> RemoveFilterScriptAppliedAsync()
+        {
+            MtdFilter mtdFilter = await GetFilterAsync();
+            MtdFilterScriptApply filterApplied = await _context.MtdFilterScriptApply.Where(x => x.MtdFilterId == mtdFilter.Id).FirstOrDefaultAsync();
+            if (filterApplied != null)
+            {
+                try
+                {
+                    _context.MtdFilterScriptApply.Remove(filterApplied);
+                    await _context.SaveChangesAsync();
+                }
+                catch
+                {
+                    return false;
+                }
+
+            }
+            return true;
+        }
+
+        public async Task<bool> FilterScriptApplyAsync(int scriptId)
+        {
+            MtdFilter mtdFilter = await GetFilterAsync();
+            MtdFilterScriptApply filterApplied = new MtdFilterScriptApply { Id = Guid.NewGuid().ToString(), MtdFilterId = mtdFilter.Id, MtdFilterScriptId = scriptId };
+            try
+            {
+                await _context.MtdFilterScriptApply.AddAsync(filterApplied);
+                await _context.SaveChangesAsync();
+
+            } catch
+            {
+                return false;
+            }
+            
+            return true;
         }
 
 

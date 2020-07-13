@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.EntityHandler.Filter;
 using Mtd.OrderMaker.Server.Services;
 
 namespace Mtd.OrderMaker.Server.Controllers.Index.Filter
@@ -41,10 +42,10 @@ namespace Mtd.OrderMaker.Server.Controllers.Index.Filter
             bool available = await userHandler.IsFilterAccessingAsync(User, id);
             if (!available) { return BadRequest(_localizer["Error: Bad request."]); }
             
-            MtdFilterScript mtdFilterScript = await context.MtdFilterScript.FindAsync(id);
-            mtdFilterScript.Apply = 1;
-            context.MtdFilterScript.Update(mtdFilterScript);
-            await context.SaveChangesAsync();
+            WebAppUser webAppUser = await userHandler.GetUserAsync(HttpContext.User);
+            FilterHandler filterHandler = new FilterHandler(context, formId, webAppUser, userHandler);
+            isOk = await filterHandler.FilterScriptApplyAsync(id);
+            if (!isOk) { return BadRequest(_localizer["Error: Bad request."]); }
 
             return Ok();
 

@@ -143,7 +143,7 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
                     displayDatas.Add(displayDate);
                 }
 
-                IList<MtdFilterScript> scripts = await _userHandler.GetFilterScripsAsync(user, formId, 1);               
+                IList<MtdFilterScript> scripts = await _userHandler.GetFilterScriptsAsync(user, formId, 1);               
                 if (scripts != null && scripts.Count > 0)
                 {
                     foreach (var fs in scripts)

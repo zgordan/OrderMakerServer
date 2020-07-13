@@ -66,7 +66,7 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
 
             List<MTDSelectListItem> userList = await GetUserItems(user, formId);
 
-            IList<MtdFilterScript> scripts = await _userHandler.GetFilterScripsAsync(user,formId,0);            
+            IList<MtdFilterScript> scripts = await _userHandler.GetFilterScriptsAsync(user,formId,0);            
             List<MTDSelectListItem> scriptItems = new List<MTDSelectListItem>();
             
             foreach (var script in scripts)

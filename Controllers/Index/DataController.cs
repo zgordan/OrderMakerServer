@@ -24,7 +24,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
+using Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts;
 using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.EntityHandler.Filter;
 using Mtd.OrderMaker.Server.Services;
 using Org.BouncyCastle.Asn1.Ocsp;
 using System;
@@ -186,16 +188,18 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
             return Ok();
         }
 
-       
+
         [HttpPost("filter/remove")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostFilterRemoveAsync()
         {
-            string strID = Request.Form["idField"];
+            var form = await Request.ReadFormAsync();
+            string strID = form["idField"];
+
             if (strID.Contains("-field"))
             {
                 strID = strID.Replace("-field", "");
-                bool ok = int.TryParse(strID,out int idField);
+                bool ok = int.TryParse(strID, out int idField);
                 if (!ok) return Ok();
                 MtdFilterField mtdFilterField = new MtdFilterField { Id = idField };
                 try
@@ -234,14 +238,17 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
                 catch (Exception ex) { throw ex.InnerException; }
             }
 
-            if (strID.Contains("-script")) {
+            if (strID.Contains("-script"))
+            {
+
                 strID = strID.Replace("-script", "");
                 bool ok = int.TryParse(strID, out int idFilter);
-                if (!ok) return Ok();
+                if (!ok) { return BadRequest(new JsonResult("Error: Bad request.")); }
+                WebAppUser user = await _userHandler.GetUserAsync(HttpContext.User);
                 MtdFilterScript mtdFilterScript = await _context.MtdFilterScript.FindAsync(idFilter);
-                mtdFilterScript.Apply = 0;
-                _context.MtdFilterScript.Update(mtdFilterScript);
-                await _context.SaveChangesAsync();
+                FilterHandler filterHandler = new FilterHandler(_context, mtdFilterScript.MtdFormId, user, _userHandler);
+                ok = await filterHandler.RemoveFilterScriptAppliedAsync();
+                if (!ok) { return BadRequest(new JsonResult("Error: Bad request.")); }
             }
 
             return Ok();
@@ -252,23 +259,24 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostFilterRemoveAllAsync()
         {
-            //var form = await Request.ReadFormAsync();
-            string strID = Request.Form["filter-id"];
-            string formId = Request.Form["form-id"];
-            bool isOk = int.TryParse(strID,out int filterId);
+            var form = await Request.ReadFormAsync();
+            string strID = form["filter-id"];
+            string formId = form["form-id"];
+            bool isOk = int.TryParse(strID, out int filterId);
             if (!isOk) { return NotFound(); }
 
             IList<MtdFilterField> mtdFilterFields = await _context.MtdFilterField.Where(x => x.MtdFilter == filterId).ToListAsync();
             WebAppUser user = await _userHandler.GetUserAsync(HttpContext.User);
-            IList<MtdFilterScript> filterScripts = await _userHandler.GetFilterScripsAsync(user,formId);            
-            
+            IList<MtdFilterScript> filterScripts = await _userHandler.GetFilterScriptsAsync(user, formId);
+
             if (filterScripts != null)
             {
-                filterScripts.ToList().ForEach((item) => { item.Apply = 0; });
-                _context.MtdFilterScript.UpdateRange(filterScripts);
+                FilterHandler filterHandler = new FilterHandler(_context, formId, user, _userHandler);
+                isOk = await filterHandler.RemoveFilterScriptAppliedAsync();
+                if (!isOk) { return BadRequest(new JsonResult("Error: Bad request.")); }
             }
-          
-            
+
+
             MtdFilterDate mtdFilterDate = await _context.MtdFilterDate.Where(x => x.Id == filterId).FirstOrDefaultAsync();
             if (mtdFilterDate != null)
             {
@@ -283,10 +291,11 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
 
             try
             {
-                _context.MtdFilterField.RemoveRange(mtdFilterFields);                                 
+                _context.MtdFilterField.RemoveRange(mtdFilterFields);
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
 
                 return BadRequest(new JsonResult(ex.Message));
             }

@@ -49,7 +49,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
                 return outFlow;
             }
 
-            IList<MtdFilterScript> scripts = await _userHandler.GetFilterScripsAsync(_user, incomer.FormId, 1);
+            IList<MtdFilterScript> scripts = await _userHandler.GetFilterScriptsAsync(_user, incomer.FormId, 1);
             if (scripts != null && scripts.Count > 0 && incomer.WaitList != 1)
             {
                 foreach (var fs in scripts)

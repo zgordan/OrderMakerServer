@@ -47,6 +47,7 @@ namespace Mtd.OrderMaker.Server.Entity
         public virtual DbSet<MtdFilterOwner> MtdFilterOwner { get; set; }
         public virtual DbSet<MtdFilterField> MtdFilterField { get; set; }
         public virtual DbSet<MtdFilterScript> MtdFilterScript { get; set; }
+        public virtual DbSet<MtdFilterScriptApply> MtdFilterScriptApply { get; set; }
         public virtual DbSet<MtdForm> MtdForm { get; set; }
         public virtual DbSet<MtdFormDesk> MtdFormDesk { get; set; }
         public virtual DbSet<MtdFormHeader> MtdFormHeader { get; set; }
@@ -671,15 +672,9 @@ namespace Mtd.OrderMaker.Server.Entity
                 entity.HasIndex(e => e.MtdFormId)
                     .HasName("fk_script_filter_idx");
 
-
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
                     .HasColumnType("int(11)");
-
-                entity.Property(e => e.Apply)
-                    .HasColumnName("apply")
-                    .HasColumnType("tinyint(4)")
-                    .HasDefaultValueSql("'0'");
 
                 entity.Property(e => e.MtdFormId)
                     .IsRequired()
@@ -702,6 +697,50 @@ namespace Mtd.OrderMaker.Server.Entity
                     .HasForeignKey(d => d.MtdFormId)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("fk_script_filter");
+            });
+
+            modelBuilder.Entity<MtdFilterScriptApply>(entity =>
+            {
+                entity.ToTable("mtd_filter_script_apply");
+
+                entity.HasIndex(e => e.Id)
+                    .HasName("id_UNIQUE")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.MtdFilterId)
+                    .HasName("fk_script_filter_apply1_idx");
+
+                entity.HasIndex(e => e.MtdFilterScriptId)
+                    .HasName("fk_script_filter_apply2_idx");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.MtdFilterId)
+                    .IsRequired()
+                    .HasColumnName("mtd_filter_id")
+                    .HasColumnType("int(11)");
+
+
+                entity.Property(e => e.MtdFilterScriptId)
+                    .IsRequired()
+                    .HasColumnName("mtd_filter_script_id")
+                    .HasColumnType("int(11)");
+
+
+                entity.HasOne(d => d.MtdFilter)
+                    .WithMany(p => p.MtdFilterScriptApply)
+                    .HasForeignKey(d => d.MtdFilterId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("fk_script_filter_apply1");
+
+                entity.HasOne(d => d.MtdFilterScript)
+                    .WithMany(p => p.MtdFilterScriptApply)
+                    .HasForeignKey(d => d.MtdFilterScriptId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("fk_script_filter_apply2");
+
             });
 
             modelBuilder.Entity<MtdForm>(entity =>
