@@ -41,8 +41,6 @@ namespace Mtd.OrderMaker.Server.Entity
         public string UserId { get; set; }
         public string BlockParts { get; set; }
 
-        public List<MTDSelectListItem> UserItems { get; set; }
-
         public virtual MtdApproval MtdApprovalNavigation { get; set; }
         public virtual ICollection<MtdApprovalResolution> MtdApprovalResolution { get; set; }
         public virtual ICollection<MtdApprovalRejection> MtdApprovalRejection { get; set; }
