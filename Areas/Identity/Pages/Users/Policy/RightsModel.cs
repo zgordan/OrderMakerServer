@@ -23,6 +23,7 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Policy
         public bool SetOwner { get; set; }
         public bool Reviewer { get; set; }
         public bool SetDate { get; set; }
+        public bool ExportToExcel { get; set; }
 
     }
 }

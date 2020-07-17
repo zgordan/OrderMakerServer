@@ -40,7 +40,7 @@ namespace Mtd.OrderMaker.Server.Services
 {
     public enum RightsType
     {
-        ViewAll, Create, Edit, Delete, ViewOwn, EditOwn, DeleteOwn, ViewGroup, EditGroup, DeleteGroup, SetOwn, Reviewer, SetDate, OwnDenyGroup
+        ViewAll, Create, Edit, Delete, ViewOwn, EditOwn, DeleteOwn, ViewGroup, EditGroup, DeleteGroup, SetOwn, Reviewer, SetDate, OwnDenyGroup, ExportToExcel
     };
 
     public class PolicyCache
@@ -536,6 +536,11 @@ namespace Mtd.OrderMaker.Server.Services
                 case RightsType.OwnDenyGroup:
                     {
                         result = policyForms.OwnDenyGroup == 1;
+                        break;
+                    }
+                case RightsType.ExportToExcel:
+                    {
+                        result = policyForms.ExportToExcel == 1;
                         break;
                     }
                 default:

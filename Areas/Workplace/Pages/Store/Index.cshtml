@@ -37,7 +37,6 @@
         <link rel="stylesheet" href="~/lib/mtd-ordermaker/index/css/mtd-index.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/lib/xdan/dist/jquery.datetimepicker.min.css" asp-append-version="true" />
     </environment>
-
 }
 
 @section Breadcrumb {
@@ -45,9 +44,20 @@
     <li>@ViewBag.Title</li>
 }
 
-<form mtd-data-form id="index-excel-form" method="post" enctype="multipart/form-data" action="/api/action/index/excel/export">
+@if (Model.ExportToExcel)
+{
+    @section Action  {
+        <li class="mdc-list-item" role="menuitem" onclick="FileDownload('index-excel-form')">
+            <span class="mdc-list-item__graphic material-icons" aria-hidden="true">import_export</span>
+            <span class="mdc-list-item__text">@Localizer["Export to Excel"]</span>
+        </li>
+    }
+}
+
+
+<form id="index-excel-form" method="post" enctype="multipart/form-data" action="/api/action/index/excel/export">
     @Html.AntiForgeryToken()
-    <input name="InputFormForExport" value="@ViewBag.FormId" type="hidden" />
+    <input name="form-id" value="@ViewBag.FormId" type="hidden" />
 </form>
 
 

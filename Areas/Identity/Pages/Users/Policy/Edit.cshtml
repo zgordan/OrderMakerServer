@@ -24,6 +24,7 @@
     ViewData["Title"] = Localizer["Policy editor"];
     ViewData["SecondTitle"] = Localizer["Editing access template"];
     ViewData["policyId"] = HttpContext.Request.Query["id"];
+    ViewData["ColumnQty"] = Model.ExportToExcel ? 9 : 8;
 }
 
 @section Head {
@@ -114,7 +115,7 @@
                             <th rowspan="2">
                                 @Localizer["Form name"]
                             </th>
-                            <th colspan="8">@Localizer["Rights"]</th>
+                            <th colspan="@ViewBag.ColumnQty">@Localizer["Rights"]</th>
                         </tr>
                         <tr>
                             <th>
@@ -141,6 +142,14 @@
                             <th>
                                 @Localizer["Set Date"]
                             </th>
+
+                            @if (Model.ExportToExcel)
+                            {
+                                <th>
+                                    @Localizer["Export"]
+                                </th>
+                            }
+
                         </tr>
                     </thead>
                     <tbody>
@@ -164,6 +173,7 @@
                                 Reviewer = Model.MtdPolicy.MtdPolicyForms.Where(x => x.MtdForm == form.Id && x.Reviewer == 1).Any(),
                                 SetDate = Model.MtdPolicy.MtdPolicyForms.Where(x => x.MtdForm == form.Id && x.ChangeDate == 1).Any(),
                                 OwnDenyGroup = Model.MtdPolicy.MtdPolicyForms.Where(x => x.MtdForm == form.Id && x.OwnDenyGroup == 1).Any(),
+                                ExportToExcel = Model.MtdPolicy.MtdPolicyForms.Where(x => x.MtdForm == form.Id && x.ExportToExcel == 1).Any(),
                             };
 
                             <tr>
@@ -262,6 +272,29 @@
                                         </div>
                                     </div>
                                 </td>
+                                @if (Model.ExportToExcel)
+                                {
+                                    <td>
+                                        <div class="mdc-form-field">
+                                            <div class="mdc-checkbox">
+                                                <input type="checkbox"
+                                                       class="mdc-checkbox__native-control"
+                                                       id="@form.Id-export-excel" name="@form.Id-export-excel" @if (rightsModel.ExportToExcel) { <text> checked</text>} />
+                                                <div class="mdc-checkbox__background">
+                                                    <svg class="mdc-checkbox__checkmark"
+                                                         viewBox="0 0 24 24">
+                                                        <path class="mdc-checkbox__checkmark-path"
+                                                              fill="none"
+                                                              d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                                    </svg>
+                                                    <div class="mdc-checkbox__mixedmark"></div>
+                                                </div>
+                                            </div>
+                                            <label for="@form.Id-export-excel">@Localizer["To Excel"]</label>
+                                        </div>
+                                    </td>
+                                }
+
                             </tr>
 
                             foreach (var part in form.MtdFormPart.OrderBy(x => x.Sequence))
@@ -338,6 +371,10 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    @if (Model.ExportToExcel)
+                                    {
+                                        <td></td>
+                                    }
                                 </tr>
                             }
                         }

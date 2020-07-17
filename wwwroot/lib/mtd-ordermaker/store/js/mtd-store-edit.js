@@ -203,6 +203,12 @@ if (dialog) {
     });
 }
 
+const textFields = document.querySelectorAll(".mdc-text-field");
+
+textFields.forEach((textField) => {
+    new MTDTextField(textField.id)
+});
+
     //document.addEventListener("keydown", (e) => {
     //    if (e.keyCode == 13) {
     //        event.preventDefault();

@@ -21,8 +21,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Mtd.OrderMaker.Server.AppConfig;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Services;
+using NPOI.OpenXmlFormats.Dml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,11 +41,13 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
     {
         private readonly OrderMakerContext _context;
         private readonly UserHandler _userHandler;
+        private readonly LimitSettings limit;
 
-        public PolicyController(OrderMakerContext context, UserHandler userHandler)
+        public PolicyController(OrderMakerContext context, UserHandler userHandler, IOptions<LimitSettings> limit)
         {
             _context = context;
             _userHandler = userHandler;
+            this.limit = limit.Value;
         }
 
         [HttpPost("add")]
@@ -106,6 +111,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 string formReviewer = form[$"{mtdForm.Id}-reviewer"];
                 string formSetDate = form[$"{mtdForm.Id}-set-date"];
                 string formDenyGroup = form[$"{mtdForm.Id}-deny-group"];
+                string exportToExcel = form[$"{mtdForm.Id}-export-excel"];
 
                 MtdPolicyForms pf = mtdPolicyForms.Where(x => x.MtdForm == mtdForm.Id).FirstOrDefault();
                 bool newPf = false;
@@ -120,6 +126,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 pf.Reviewer = GetSbyte(formReviewer);
                 pf.ChangeDate = GetSbyte(formSetDate);
                 pf.OwnDenyGroup = GetSbyte(formDenyGroup);
+                pf.ExportToExcel = limit.ExportExcel == 1 ? GetSbyte(exportToExcel) : (sbyte)0;
 
                 pf.ViewAll = GetSbyte(formView);
                 pf.ViewGroup = GetSbyte(formViewGroup);
@@ -211,6 +218,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 pf.Reviewer = 1;
                 pf.ChangeDate = 1;
                 pf.OwnDenyGroup = 1;
+                pf.ExportToExcel = (sbyte) limit.ExportExcel;
 
                 pf.ViewAll = 1;
                 pf.ViewGroup = 0;
@@ -296,6 +304,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 pf.Reviewer = 0;
                 pf.ChangeDate = 0;
                 pf.OwnDenyGroup = 0;
+                pf.ExportToExcel = 0;
 
                 pf.ViewAll = 0;
                 pf.ViewGroup = 0;

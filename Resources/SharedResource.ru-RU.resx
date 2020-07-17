@@ -702,4 +702,7 @@
   <data name="Yes" xml:space="preserve">
     <value>Да</value>
   </data>
+  <data name="The maximum number of lines to load is ****. Use a filter to reduce the list." xml:space="preserve">
+    <value>Максимальное количество строк для экспорта - ****. Используйте фильтр, чтобы уменьшить список.</value>
+  </data>
 </root>

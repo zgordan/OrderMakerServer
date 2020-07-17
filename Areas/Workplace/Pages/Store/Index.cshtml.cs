@@ -19,11 +19,15 @@
 
 
 using System.Collections.Generic;
+using System.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.CodeAnalysis.Options;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Mtd.OrderMaker.Server.AppConfig;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Services;
@@ -34,21 +38,24 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
     {
         private readonly OrderMakerContext _context;
         private readonly UserHandler _userHandler;
+        private readonly LimitSettings limit;
 
-        public IndexModel(OrderMakerContext context, UserHandler userHandler)
+        public IndexModel(OrderMakerContext context, UserHandler userHandler, IOptions<LimitSettings> limit)
         {
             _context = context;
             _userHandler = userHandler;
+            this.limit = limit.Value;
         }
 
         public MtdForm MtdForm { get; set; }
+        public bool ExportToExcel { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string indexForm)
         {
             WebAppUser user = await _userHandler.GetUserAsync(HttpContext.User);
             bool isViewer = await _userHandler.CheckUserPolicyAsync(user, indexForm, RightsType.ViewAll);
             bool GroupRight = await _userHandler.CheckUserPolicyAsync(user, indexForm, RightsType.ViewGroup);
-            bool OwnerRight = await _userHandler.CheckUserPolicyAsync(user, indexForm, RightsType.ViewOwn);
+            bool OwnerRight = await _userHandler.CheckUserPolicyAsync(user, indexForm, RightsType.ViewOwn);            
 
             if (!isViewer & !OwnerRight & !GroupRight)
             {
@@ -61,7 +68,10 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
             {
                 return NotFound();
             }
-            
+
+            bool exporter = await _userHandler.CheckUserPolicyAsync(user, indexForm, RightsType.ExportToExcel);
+            ExportToExcel = limit.ExportExcel == 1 && exporter;
+
             ViewData["FormId"] = indexForm;
             return Page();
         }
