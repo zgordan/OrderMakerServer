@@ -24,7 +24,7 @@
 <form mtd-data-form method='post' autocomplete='off' enctype='multipart/form-data' action='/api/store/save'>
     @Html.AntiForgeryToken()
     <input type="hidden" name="idStore" asp-for="@Model.Owner.Store.Id" />
-    <div class="mtd-store-style-blank mdc-elevation--z2">
+    <div class="mtd-store-style-blank">
         <div class="mtd-store-edit-bar" style="text-align: right">
             <div class="mtd-store-edit-control" style="position:absolute">
                 <button type="button" mtd-data-clicker mtd-data-location="/workplace/store/details?id=@Model.Owner.Store.Id" class="mdc-fab mdc-fab--extended" aria-label="Save">
@@ -42,7 +42,57 @@
             </div>
         </div>
         <div id="@Model.Owner.Store.Id-modal" class="mtd-store-style-modal"></div>
-        <div class="mtd-store-style-badge">
+
+        <div class="mtd-store-style-header">
+            <div class="mtd-store-style-badge">
+                @if (Model.Owner.Store.MtdFormNavigation.MtdFormHeader != null)
+                {
+                    var base64 = Convert.ToBase64String(Model.Owner.Store.MtdFormNavigation.MtdFormHeader.Image);
+                    var imgSrc = String.Format("data:{0};base64,{1}", Model.Owner.Store.MtdFormNavigation.MtdFormHeader.ImageType, base64);
+
+                    <img src="@imgSrc" />
+                }
+                <div class="mtd-store-style-title">
+                    @Model.Owner.Store.MtdFormNavigation.Name
+                </div>
+            </div>
+
+            <div class="mtd-store-style-attribute">
+                @if (Model.Owner.Store.MtdFormNavigation.VisibleNumber == 1)
+                {
+                    <span class="mtd-store-style-number">№ @Model.Owner.Store.Sequence.ToString("D9")</span>
+                    <hr />
+                }
+
+                @if (Model.Owner.Store.MtdFormNavigation.VisibleDate == 1)
+                {
+                    if (Model.Owner.SetDate)
+                    {
+
+                        @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                           {
+                               Id = "date-create",
+                               Name = "date-create",
+                               Value = @Model.Owner.Store.Timecr.ToShortDateString(),
+                               Class = "mtd-data-datepicker",
+                               MTDTexFieldView = MTDTextFieldViews.Outlined,
+                               Label = "Date",
+                               LabelLocalized = true,
+
+                           });                  
+
+                    }
+                    else
+                    {
+                        <span class="mtd-store-style-date">@Localizer["Date"] @Model.Owner.Store.Timecr.ToShortDateString()</span>
+                    }
+
+                }
+            </div>
+        </div>
+
+        @*<div class="mtd-store-style-badge">
+
             @if (Model.Owner.Store.MtdFormNavigation.MtdFormHeader != null)
             {
                 var base64 = Convert.ToBase64String(Model.Owner.Store.MtdFormNavigation.MtdFormHeader.Image);
@@ -57,15 +107,28 @@
             </div>
             <div class="mtd-store-style-attribute">
                 <span class="mtd-store-style-number">№ @Model.Owner.Store.Sequence.ToString("D9")</span>
-                <hr />
+
+                <hr/>
 
                 @if (Model.Owner.Store.MtdFormNavigation.VisibleDate == 1)
-                {         
+                {
 
                     if (Model.Owner.SetDate)
                     {
 
+                        @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                           {
+                               Id = "date-create",
+                               Name = "date-create",
+                               Value = @Model.Owner.Store.Timecr.ToShortDateString(),
+                               Class = "mtd-data-datepicker",
+                               MTDTexFieldView = MTDTextFieldViews.Default,
+                               Label = "Date",
+                               LabelLocalized = true,
+
+                           });
                         <input type="text" class="mtd-data-datepicker" value="@Model.Owner.Store.Timecr.ToShortDateString()" name="date-create" />
+
                     }
                     else
                     {
@@ -75,7 +138,10 @@
 
 
             </div>
-        </div>
+        </div>*@
+
+
+
         @if (Model.Parent != null)
         {
             <div class="mtd-store-style-based">

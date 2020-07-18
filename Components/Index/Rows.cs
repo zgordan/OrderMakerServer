@@ -78,8 +78,7 @@ namespace Mtd.OrderMaker.Server.Components.Index
             List<ApprovalStore> approvalStores = await ApprovalHandler.GetStoreStatusAsync(_context, storeIds, user);
 
             MtdApproval mtdApproval = await _context.MtdApproval.Where(x => x.MtdForm == formId).FirstOrDefaultAsync();
-
-            string searchText = "";
+            
             MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == formId);
             var mtdFormList = await ApprovalHandler.GetWaitStoreIds(_context, user, formId);
             int pending = mtdFormList.Count();

@@ -66,6 +66,7 @@
         {
             <li mtd-data-href="/config/approval/stageEdit?id=@stage.Id" id="@stage.Id-licol" class="mtd-list-item mdc-list-item" data-value="@stage.Id" draggable="true" role="button" aria-checked="false">
                 <div style="padding: 8px;">
+                    <span class="mdc-list-item__ripple"></span>
                     @{
                         int endStage = Model.Stages.Max(x => x.Stage);
                     }
@@ -77,6 +78,7 @@
                     @stage.Stage
                 </div>
                 <span class="mdc-list-item__text">
+                    <span class="mdc-list-item__ripple"></span>
                     <span class="mdc-list-item__primary-text">@stage.Name</span>
                     <span class="mdc-list-item__secondary-text">@stage.Description</span>
                 </span>

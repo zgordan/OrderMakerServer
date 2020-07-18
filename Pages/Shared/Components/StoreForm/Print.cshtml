@@ -25,22 +25,22 @@
     var user = await userHandler.GetUserAsync(User);
 }
 
-<div class="mtd-store-style-print mdc-elevation--z2">
-
-    <div class="mtd-store-style-badge">
-        @if (Model.Owner.Store.MtdFormNavigation.MtdFormHeader != null)
-        {
-            var base64 = Convert.ToBase64String(Model.Owner.Store.MtdFormNavigation.MtdFormHeader.Image);
-            var imgSrc = String.Format("data:{0};base64,{1}", Model.Owner.Store.MtdFormNavigation.MtdFormHeader.ImageType, base64);
-
-            <img src="@imgSrc" />
-        }
-    </div>
+<div class="mtd-store-style-print">
 
     <div class="mtd-store-style-header">
-        <div class="mtd-store-style-title">
-            @Model.Owner.Store.MtdFormNavigation.Name
+        <div class="mtd-store-style-badge">
+            @if (Model.Owner.Store.MtdFormNavigation.MtdFormHeader != null)
+            {
+                var base64 = Convert.ToBase64String(Model.Owner.Store.MtdFormNavigation.MtdFormHeader.Image);
+                var imgSrc = String.Format("data:{0};base64,{1}", Model.Owner.Store.MtdFormNavigation.MtdFormHeader.ImageType, base64);
+
+                <img src="@imgSrc" />
+            }
+            <div class="mtd-store-style-title">
+                @Model.Owner.Store.MtdFormNavigation.Name
+            </div>
         </div>
+
         <div class="mtd-store-style-attribute">
             @if (Model.Owner.Store.MtdFormNavigation.VisibleNumber == 1)
             {
@@ -51,14 +51,16 @@
             @if (Model.Owner.Store.MtdFormNavigation.VisibleDate == 1)
             {
                 <span class="mtd-store-style-date">@Localizer["Date"] @Model.Owner.Store.Timecr.ToShortDateString()</span>
+
             }
         </div>
+
     </div>
 
 
     @if (Model.Parent != null)
     {
-        @foreach (var part in Model.Parent.Parts.Where(x => x.Child==1))
+        @foreach (var part in Model.Parent.Parts.Where(x => x.Child == 1))
         {
             @if (part.Title == 1)
             {
@@ -77,7 +79,7 @@
     @foreach (var part in Model.Owner.Parts)
     {
 
-        if (part.Title == 1 )
+        if (part.Title == 1)
         {
             <div class="mtd-store-style-part">
                 @part.Name

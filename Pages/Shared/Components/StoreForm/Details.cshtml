@@ -27,20 +27,21 @@
 }
 
 <div id="block-view" class="mtd-store-style-blank">
-    <div class="mtd-store-style-badge">
-        @if (Model.Owner.Store.MtdFormNavigation.MtdFormHeader != null)
-        {
-            var base64 = Convert.ToBase64String(Model.Owner.Store.MtdFormNavigation.MtdFormHeader.Image);
-            var imgSrc = String.Format("data:{0};base64,{1}", Model.Owner.Store.MtdFormNavigation.MtdFormHeader.ImageType, base64);
-
-            <img src="@imgSrc" />
-        }
-    </div>
 
     <div class="mtd-store-style-header">
-        <div class="mtd-store-style-title">
-            @Model.Owner.Store.MtdFormNavigation.Name
+        <div class="mtd-store-style-badge">
+            @if (Model.Owner.Store.MtdFormNavigation.MtdFormHeader != null)
+            {
+                var base64 = Convert.ToBase64String(Model.Owner.Store.MtdFormNavigation.MtdFormHeader.Image);
+                var imgSrc = String.Format("data:{0};base64,{1}", Model.Owner.Store.MtdFormNavigation.MtdFormHeader.ImageType, base64);
+
+                <img src="@imgSrc" />
+            }
+            <div class="mtd-store-style-title">
+                @Model.Owner.Store.MtdFormNavigation.Name
+            </div>
         </div>
+
         <div class="mtd-store-style-attribute">
             @if (Model.Owner.Store.MtdFormNavigation.VisibleNumber == 1)
             {
@@ -54,7 +55,9 @@
 
             }
         </div>
+
     </div>
+
 
     @if (Model.Parent != null)
     {

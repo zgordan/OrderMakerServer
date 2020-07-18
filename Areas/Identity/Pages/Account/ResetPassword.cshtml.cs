@@ -54,7 +54,6 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account
                 {
                     Code = code
                 };
-                return Page();
             }
 
             return Page();

@@ -42,6 +42,7 @@
 @section Action {
 
     <li mtd-data-href="/config/form/fields?formId=@Model.MtdForm.Id" class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">view_list</span>
         <span class="mdc-list-item__text">@Localizer["Edit fields"]</span>
     </li>
@@ -89,23 +90,24 @@
         <ul mtd-data-draggable class="mdc-list">
             @foreach (var part in Model.MtdForm.MtdFormPart.OrderBy(x => x.Sequence))
             {
-                <li mtd-data-href="/config/form/partedit?id=@part.Id" id="@part.Id-licol" class="mtd-list-item mdc-list-item" draggable="true" role="button" aria-checked="false"
-                    data-value="@part.Id">
-                    <label class="mdc-list-item__text" for="@part.Id-lc">@part.Name</label>
-                    <div class="mtd-config-form-parts__bdrag">
-                        <i class="material-icons" style="color:gray">drag_handle</i>
-                    </div>
-                    <div class="mtd-config-form-parts__bedit">
-                        <button id="add-to-favorites"
-                                class="mdc-icon-button"
-                                aria-label="Add to favorites"
-                                aria-hidden="true"
-                                aria-pressed="false"
-                                mtd-data-href="/config/form/partedit?id=@part.Id">
-                            <i class="material-icons mdc-icon-button__icon">edit</i>
-                        </button>
-                    </div>
-                </li>
+            <li mtd-data-href="/config/form/partedit?id=@part.Id" id="@part.Id-licol" class="mtd-list-item mdc-list-item" draggable="true" role="button" aria-checked="false"
+                data-value="@part.Id">
+                <span class="mdc-list-item__ripple"></span>
+                <label class="mdc-list-item__text" for="@part.Id-lc">@part.Name</label>
+                <div class="mtd-config-form-parts__bdrag">
+                    <i class="material-icons" style="color:gray">drag_handle</i>
+                </div>
+                <div class="mtd-config-form-parts__bedit">
+                    <button id="add-to-favorites"
+                            class="mdc-icon-button"
+                            aria-label="Add to favorites"
+                            aria-hidden="true"
+                            aria-pressed="false"
+                            mtd-data-href="/config/form/partedit?id=@part.Id">
+                        <i class="material-icons mdc-icon-button__icon">edit</i>
+                    </button>
+                </div>
+            </li>
             }
         </ul>
     </div>

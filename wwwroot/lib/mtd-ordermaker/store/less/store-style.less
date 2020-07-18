@@ -33,6 +33,10 @@
     @media (max-width: 768px) {
         max-width: 190px;
     }
+
+    @media (max-width: 400px) {
+        max-width: 150px;
+    }
 }
 
 .mtd-store-style-header {
@@ -44,10 +48,13 @@
     flex-grow: 1;
     font-weight: bold;
     text-transform: uppercase;
+    align-self: center;
     color: black;
     text-shadow: 1px 1px 2px gray;
     overflow-x: hidden;
     text-overflow: ellipsis;
+    padding: 8px;
+  
 
     @media (min-width: 1919px) {
         font-size: 24px;
@@ -71,9 +78,9 @@
     align-self: center;
     text-transform: uppercase;
     color: navy;
-    text-align: right;
+    text-align: left;
     white-space: nowrap;
-
+    
     @media (min-width: 1919px) {
         font-size: 19px;
     }
@@ -103,6 +110,7 @@
 
 .mtd-store-style-date {
     font-weight: normal;
+    font-size:medium;
 }
 
 .mtd-store-style-part {

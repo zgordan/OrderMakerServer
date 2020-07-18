@@ -43,6 +43,11 @@
     max-width: 190px;
   }
 }
+@media (max-width: 400px) {
+  .mtd-store-style-badge > img {
+    max-width: 150px;
+  }
+}
 .mtd-store-style-header {
   display: flex;
   padding: 8px;
@@ -51,10 +56,12 @@
   flex-grow: 1;
   font-weight: bold;
   text-transform: uppercase;
+  align-self: center;
   color: black;
   text-shadow: 1px 1px 2px gray;
   overflow-x: hidden;
   text-overflow: ellipsis;
+  padding: 8px;
 }
 @media (min-width: 1919px) {
   .mtd-store-style-title {
@@ -81,7 +88,7 @@
   align-self: center;
   text-transform: uppercase;
   color: navy;
-  text-align: right;
+  text-align: left;
   white-space: nowrap;
 }
 @media (min-width: 1919px) {
@@ -115,6 +122,7 @@
 }
 .mtd-store-style-date {
   font-weight: normal;
+  font-size: medium;
 }
 .mtd-store-style-part {
   padding: 4px 4px 4px 0px;
@@ -235,7 +243,7 @@
   position: -o-sticky;
   z-index: 2;
   width: 100%;
-  top: 65px;
+  top: 80px;
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   -ms-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -268,6 +276,8 @@
     transform: skewX(49deg);*/
 }
 .mtd-store-edit-control {
+  margin-top: -12px;
+  margin-left: -5px;
   /*width: 100%;
     text-align: center;*/
 }

@@ -39,15 +39,18 @@
 
 @section Action {
     <li class="mdc-list-item" role="menuitem" onclick="document.getElementById('all').click()">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">done_all</span>
         <span class="mdc-list-item__text">@Localizer["Select all"]</span>
     </li>
     <li class="mdc-list-item" role="menuitem" onclick="document.getElementById('clear').click()">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">select_all</span>
         <span class="mdc-list-item__text">@Localizer["Unselect all"]</span>
     </li>
     <li role="separator" class="mdc-list-divider"></li>
     <li id="policy-open-dialog" class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">delete</span>
         <span class="mdc-list-item__text">@Localizer["Delete policy"]</span>
     </li>

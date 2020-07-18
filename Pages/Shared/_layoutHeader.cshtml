@@ -36,6 +36,7 @@
                         <div id="main-apps-menu" class="mdc-menu-surface" style="margin-top: 50px; margin-right: 8px;">
                             <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" style="cursor: pointer">
                                 <li mtd-data-href="@CPQLink" class="mdc-list-item" role="menuitem">
+                                    <span class="mdc-list-item__ripple"></span>
                                     <span class="mdc-list-item__graphic" aria-hidden="true">
                                         <img src="~/lib/mtd-ordermaker/images/mini-icon-cpq.png" width="24" height="24">
                                     </span>
@@ -51,15 +52,18 @@
                     <div id="main-user-menu" class="mdc-menu-surface" style="margin-top: 50px; margin-right: 8px;">
                         <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation="vertical" style="cursor: pointer">
                             <li mtd-data-href="/Identity/Account/Manage" class="mdc-list-item" role="menuitem">
+                                <span class="mdc-list-item__ripple"></span>
                                 <span class="material-icons mdc-list-item__graphic" aria-hidden="true">perm_identity</span>
                                 <span class="mdc-list-item__text">@Localizer["Profile"]</span>
                             </li>
                             <li mtd-data-href="/Identity/Account/Manage/ChangePassword" class="mdc-list-item" role="menuitem">
+                                <span class="mdc-list-item__ripple"></span>
                                 <span class="material-icons mdc-list-item__graphic" aria-hidden="true">lock</span>
                                 <span class="mdc-list-item__text">@Localizer["Password"]</span>
                             </li>
                             <li role="separator" class="mdc-list-divider"></li>
                             <li class="mdc-list-item" role="menuitem" onclick="document.getElementById('form-logout').submit()">
+                                <span class="mdc-list-item__ripple"></span>
                                 <form id="form-logout" style="display: none" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post"></form>
                                 <span class="material-icons mdc-list-item__graphic" aria-hidden="true">exit_to_app</span>
                                 <span mtd-data-clicker mtd-data-location="/" class="mdc-list-item__text">@Localizer["Logout"]</span>

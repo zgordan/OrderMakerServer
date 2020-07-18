@@ -40,15 +40,18 @@
 
 @section Action {
     <li class="mdc-list-item" role="menuitem" mtd-data-href="/config/approval/resolutions/index?stage=@Model.MtdApprovalStage.Id">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">thumb_up</span>
         <span class="mdc-list-item__text">@Localizer["Resolution list"]</span>
     </li>
     <li class="mdc-list-item" role="menuitem" mtd-data-href="/config/approval/rejections/index?stage=@Model.MtdApprovalStage.Id">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">thumb_down</span>
         <span class="mdc-list-item__text">@Localizer["Rejection list"]</span>
     </li>
     <li class="mdc-list-divider"></li>
     <li mtd-data-delete class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">delete</span>
         <span class="mdc-list-item__text">@Localizer["Delete"]</span>
     </li>

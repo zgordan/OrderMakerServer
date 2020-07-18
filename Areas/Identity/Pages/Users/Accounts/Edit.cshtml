@@ -35,16 +35,19 @@
 }
 @section Action  {
     <li class="mdc-list-item" role="menuitem" onclick="document.getElementById('users-confirm-email').click()">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">link</span>
         <span class="mdc-list-item__text">@Localizer["Send link for Email"]</span>
     </li>
     @if (Model.Input.IsConfirm)
     {
         <li class="mdc-list-item" role="menuitem" onclick="document.getElementById('users-confirm-password').click()">
+            <span class="mdc-list-item__ripple"></span>
             <span class="mdc-list-item__graphic material-icons" aria-hidden="true">link</span>
             <span class="mdc-list-item__text">@Localizer["Send link for password"]</span>
         </li>
         <li class="mdc-list-item" role="menuitem" onclick="document.getElementById('users-create-password').click()">
+            <span class="mdc-list-item__ripple"></span>
             <span class="mdc-list-item__graphic material-icons" aria-hidden="true">send</span>
             <span class="mdc-list-item__text">@Localizer["Send new password"]</span>
         </li>
@@ -52,20 +55,24 @@
     else
     {
         <li class="mdc-list-item mdc-list-item--disabled" role="menuitem">
+            <span class="mdc-list-item__ripple"></span>
             <span class="mdc-list-item__graphic material-icons" aria-hidden="true">link</span>
             <span class="mdc-list-item__text">@Localizer["Password recovery"]</span>
         </li>
         <li class="mdc-list-item mdc-list-item--disabled" role="menuitem">
+            <span class="mdc-list-item__ripple"></span>
             <span class="mdc-list-item__graphic material-icons" aria-hidden="true">send</span>
             <span class="mdc-list-item__text">@Localizer["Generating a password"]</span>
         </li>
     }
     <li id="transfer-open-dialog" mtd-dialog-button="dialog-user-transfer" class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">sync_alt</span>
         <span class="mdc-list-item__text">@Localizer["Transfer all documents"]</span>
     </li>
     <li role="separator" class="mdc-list-divider"></li>
     <li id="users-open-dialog" class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">delete</span>
         <span class="mdc-list-item__text">@Localizer["Delete user"]</span>
     </li>

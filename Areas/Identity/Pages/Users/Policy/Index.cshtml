@@ -58,24 +58,25 @@
     <ul id="drgList" class="mdc-list mdc-list--two-line">
         @foreach (var policy in Model.MtdPolicies)
         {
-            <li mtd-data-href="/identity/users/policy/edit?id=@policy.Id" id="@policy-licol" class="mdc-list-item"
-                data-value="@policy.Id" draggable="true" role="button" aria-checked="false">
-                <div style="padding: 8px;">
-                    <i class="material-icons" style="color: gray">security</i>
-                </div>
-                <span class="mdc-list-item__text">
-                    <span class="mdc-list-item__primary-text">@policy.Name</span>
-                    <span class="mdc-list-item__secondary-text">@policy.Description</span>
-                </span>
-                <div class="mtd-desk-bedit">
-                    <button class="mdc-icon-button"
-                            aria-label="edit"
-                            aria-hidden="true"
-                            aria-pressed="false">
-                        <i class="material-icons mdc-icon-button__icon">edit</i>
-                    </button>
-                </div>
-            </li>
+        <li mtd-data-href="/identity/users/policy/edit?id=@policy.Id" id="@policy-licol" class="mdc-list-item"
+            data-value="@policy.Id" draggable="true" role="button" aria-checked="false">
+            <span class="mdc-list-item__ripple"></span>
+            <div style="padding: 8px;">
+                <i class="material-icons" style="color: gray">security</i>
+            </div>
+            <span class="mdc-list-item__text">
+                <span class="mdc-list-item__primary-text">@policy.Name</span>
+                <span class="mdc-list-item__secondary-text">@policy.Description</span>
+            </span>
+            <div class="mtd-desk-bedit">
+                <button class="mdc-icon-button"
+                        aria-label="edit"
+                        aria-hidden="true"
+                        aria-pressed="false">
+                    <i class="material-icons mdc-icon-button__icon">edit</i>
+                </button>
+            </div>
+        </li>
         }
     </ul>
 </div>

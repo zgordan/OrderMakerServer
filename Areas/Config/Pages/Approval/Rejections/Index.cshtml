@@ -56,28 +56,29 @@
     <ul mtd-data-draggable class="mdc-list mdc-list--two-line">
         @foreach (var rejection in Model.Rejections)
         {
-            <li mtd-data-href="/config/approval/rejections/edit?id=@rejection.Id" class="mtd-list-item mdt-config-form__item mdc-list-item"
-                aria-checked="false" data-value="@rejection.Id" id="@rejection.Id-licol" draggable="true">
-                <span class="mdc-list-item__graphic">
-                    @await Component.InvokeAsync("MTDImgViewer", new { maxHeight = 32, maxWidth = 32, imgArray = rejection.ImgData, imgType = rejection.ImgType })
-                </span>
-                <span class="mdc-list-item__text">
-                    <span class="mdc-list-item__primary-text">@rejection.Name</span>
-                    <span class="mdc-list-item__secondary-text">@rejection.Note</span>
-                </span>
+        <li mtd-data-href="/config/approval/rejections/edit?id=@rejection.Id" class="mtd-list-item mdt-config-form__item mdc-list-item"
+            aria-checked="false" data-value="@rejection.Id" id="@rejection.Id-licol" draggable="true">
+            <span class="mdc-list-item__ripple"></span>
+            <span class="mdc-list-item__graphic">
+                @await Component.InvokeAsync("MTDImgViewer", new { maxHeight = 32, maxWidth = 32, imgArray = rejection.ImgData, imgType = rejection.ImgType })
+            </span>
+            <span class="mdc-list-item__text">
+                <span class="mdc-list-item__primary-text">@rejection.Name</span>
+                <span class="mdc-list-item__secondary-text">@rejection.Note</span>
+            </span>
 
-                <div class="mtd-config-form__bedit">
-                    <button class="mdc-icon-button"
-                            aria-label="edit"
-                            aria-hidden="true"
-                            aria-pressed="false">
-                        <i class="material-icons mdc-icon-button__icon">edit</i>
-                    </button>
-                </div>
-                <div class="mtd-desk-draggable-bdrag">
-                    <i class="material-icons" style="color:gray">drag_handle</i>
-                </div>
-            </li>
+            <div class="mtd-config-form__bedit">
+                <button class="mdc-icon-button"
+                        aria-label="edit"
+                        aria-hidden="true"
+                        aria-pressed="false">
+                    <i class="material-icons mdc-icon-button__icon">edit</i>
+                </button>
+            </div>
+            <div class="mtd-desk-draggable-bdrag">
+                <i class="material-icons" style="color:gray">drag_handle</i>
+            </div>
+        </li>
         }
     </ul>
 </div>
