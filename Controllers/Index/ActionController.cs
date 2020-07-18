@@ -109,7 +109,6 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostExportAsync()
         {
-
             if (limit.ExportExcel == 0) { return NotFound(); }
 
             var form = await Request.ReadFormAsync();            
@@ -130,7 +129,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
 
             if (outFlow.Count > limit.ExportSize) {
 
-                string message = _localizer["The maximum number of lines to load is ****. Use a filter to reduce the list."];
+                string message = _localizer["Limit **** lines! Use a filter to shrink the list."];
                 message = message.Replace("****", limit.ExportSize.ToString());
                 return BadRequest(new JsonResult(message)); 
             }
