@@ -51,11 +51,13 @@
             <span class="mdc-list-item__text">@Localizer["Edit"]</span>
         </li>
     }
+
     <li mtd-data-href="/workplace/store/detailsprint?id=@Model.MtdStore.Id" mtd_data_href-target="_blank" class="mdc-list-item" role="menuitem">
         <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">print</span>
         <span class="mdc-list-item__text">@Localizer["Print"]</span>
     </li>
+
     @if (Model.IsInstallerOwner)
     {
         <li mtd-dialog-button="dialog-owner" class="mdc-list-item" role="menuitem">
@@ -85,7 +87,7 @@
 
     @if (Model.IsEraser)
     {
-        <hr />
+        <hr class="mdc-list-divider">
         <li id="eraser" class="mdc-list-item" role="menuitem">
             <span class="mdc-list-item__ripple"></span>
             <span class="mdc-list-item__graphic material-icons" aria-hidden="true">delete</span>

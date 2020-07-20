@@ -705,4 +705,10 @@
   <data name="The maximum number of lines to load is ****. Use a filter to reduce the list." xml:space="preserve">
     <value>Максимальное количество строк для экспорта - ****. Используйте фильтр, чтобы уменьшить список.</value>
   </data>
+  <data name="Approval history" xml:space="preserve">
+    <value>История согласования</value>
+  </data>
+  <data name="Form printing" xml:space="preserve">
+    <value>Печать формы</value>
+  </data>
 </root>
