@@ -390,8 +390,8 @@
   <data name="Print" xml:space="preserve">
     <value>Печать</value>
   </data>
-  <data name="Print form view" xml:space="preserve">
-    <value>Печатная форма</value>
+  <data name="Document form" xml:space="preserve">
+    <value>Форма документа</value>
   </data>
   <data name="Restart Approval" xml:space="preserve">
     <value>Перезапустить согласование</value>
@@ -704,5 +704,11 @@
   </data>
   <data name="Limit **** lines! Use a filter to shrink the list." xml:space="preserve">
     <value>Лимит **** строк! Используйте фильтр, чтобы уменьшить список. </value>
+  </data>
+  <data name="Approval history" xml:space="preserve">
+    <value>История согласования</value>
+  </data>
+  <data name="Form printing" xml:space="preserve">
+    <value>Печать формы</value>
   </data>
 </root>

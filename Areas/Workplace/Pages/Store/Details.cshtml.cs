@@ -80,7 +80,7 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                 return NotFound();
             }
 
-            MtdStore = await _context.MtdStore.FirstOrDefaultAsync(m => m.Id == id);
+            MtdStore = await _context.MtdStore.Include(x=>x.MtdFormNavigation.MtdFormHeader).FirstOrDefaultAsync(m => m.Id == id);
 
             if (MtdStore == null)
             {
@@ -146,14 +146,12 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                 {
                     webAppUsers = await _userHandler.GetUsersInGroupsAsync(user);
                 }
-
                 
                 webAppUsers.OrderBy(x => x.Title).ToList().ForEach((item) => {
                     UsersList.Add(new MTDSelectListItem { 
                          Id = item.Id, Value = item.GetFullName()
                     });
-                });
-             
+                });             
             }
 
             UsersRequest = new List<MTDSelectListItem>();

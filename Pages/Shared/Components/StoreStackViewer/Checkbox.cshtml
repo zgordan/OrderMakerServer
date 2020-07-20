@@ -29,21 +29,17 @@
                     @Model.MtdFormPartFieldNavigation.Name
                 </div>
                 <div class="mtd-store-view-col-value">
-                    <div class="mtd-ui-material-check-view">
-                        @if (@Model.MtdStoreStackInt.Register == 1)
-                        {
-                            <div class="mtd-ui-material-check-view-result">
-                                <i class="fas fa-check-circle fa-lg"></i>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="mtd-ui-material-check-view-result">
-                                <i class="far fa-times-circle fa-lg" style="color: gray"></i>
-                            </div>
-                        }
-                    </div>
+
+                    @if (@Model.MtdStoreStackInt.Register == 1)
+                    {
+                        <i class="fas fa-check-circle" style="font-size: 24px"></i>
+                    }
+                    else
+                    {
+                        <i class="far fa-times-circle" style="color: gray; font-size: 24px"></i>
+                    }
                 </div>
+
             </div>
             break;
         default:
@@ -52,21 +48,17 @@
                     @Model.MtdFormPartFieldNavigation.Name
                 </div>
                 <div class="mtd-store-view-row-value">
-                    <div class="mtd-ui-material-check-view">
-                        @if (@Model.MtdStoreStackInt.Register == 1)
-                        {
-                            <div class="mtd-ui-material-check-view-result">
-                                <i class="fas fa-check fa-lg"></i>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="mtd-ui-material-check-view-result">
-                                <i class="fas fa-ban fa-lg"></i>
-                            </div>
-                        }
-                    </div>
+
+                    @if (@Model.MtdStoreStackInt.Register == 1)
+                    {
+                        <i class="fas fa-check" style="font-size: 24px"></i>
+                    }
+                    else
+                    {
+                        <i class="fas fa-ban" style="color: gray; font-size: 24px"></i>
+                    }
                 </div>
+
             </div>
             break;
     }
