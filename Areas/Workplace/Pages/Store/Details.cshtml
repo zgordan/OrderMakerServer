@@ -52,7 +52,7 @@
         </li>
     }
 
-    <li mtd-data-href="/workplace/store/detailsprint?id=@Model.MtdStore.Id" mtd_data_href-target="_blank" class="mdc-list-item" role="menuitem">
+    <li mtd-dialog-button="dialog-print" mtd_data_href-target="_blank" class="mdc-list-item" role="menuitem">
         <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">print</span>
         <span class="mdc-list-item__text">@Localizer["Print"]</span>
@@ -111,6 +111,7 @@
     }
 }
 
+
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/approval/restart'>
     @Html.AntiForgeryToken()
     <input type="hidden" name="id-store" value="@Model.MtdStore.Id" />
@@ -148,6 +149,9 @@
 }
 
 <div class="mtd-desk">
+    
+    @await Html.PartialAsync("./Partials/DialogPrint")
+
     <div class="mtd-desk-panel">
         <div>
             @await Html.PartialAsync("./Partials/DetailsNavButtons")
@@ -162,10 +166,10 @@
             <div class="mtd-desk-block-content  mtd-desk-block--border">
                 <div class="mtd-desk-block-title">
                     <div class="mtd-desk-block-title-icon">
-                        <i class="material-icons" aria-hidden="true">print</i>
+                        <i class="far fa-file-alt "></i>
                     </div>
                     <div class="mtd-desk-block-title-label">
-                        @Localizer["Print form view"]
+                        @Localizer["Document form"]
                     </div>
                     <div class="mtd-desk-block-title-button">
                         <button onclick="clickBlockToogle(this)"
@@ -184,8 +188,58 @@
         </div>
         <div class="mtd-desk-block">
 
-            @await Html.PartialAsync("./Partials/DetailsInfo")
-            @await Html.PartialAsync("./Partials/DetailsHistory")
+            <div class="mtd-desk-block-content mtd-desk-block--border">
+                <div class="mtd-desk-block-title">
+                    <div class="mtd-desk-block-title-icon">
+                        <i class="material-icons" aria-hidden="true">info</i>
+                    </div>
+                    <div class="mtd-desk-block-title-label">
+                        @Localizer["Document information"]
+                    </div>
+                    <div class="mtd-desk-block-title-button">
+                        <button onclick="clickBlockToogle(this)"
+                                class="mdc-icon-button"
+                                aria-label="Add to favorites"
+                                aria-hidden="true"
+                                aria-pressed="false"
+                                data="block-info">
+                            <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">add_box</i>
+                            <i class="material-icons mdc-icon-button__icon">indeterminate_check_box</i>
+                        </button>
+                    </div>
+                </div>
+                <div id="block-info" class="mtd-desk-block-body">
+                    @await Html.PartialAsync("./Partials/DetailsInfo")
+                </div>
+            </div>
+
+            @if (Model.IsFormApproval)
+            {
+                <div class="mtd-desk-block-content mtd-desk-block--border">
+                    <div class="mtd-desk-block-title">
+                        <div class="mtd-desk-block-title-icon">
+                            <i class="material-icons" aria-hidden="true">history</i>
+                        </div>
+                        <div class="mtd-desk-block-title-label">
+                            @Localizer["Approval history"]
+                        </div>
+                        <div class="mtd-desk-block-title-button">
+                            <button onclick="clickBlockToogle(this)"
+                                    class="mdc-icon-button"
+                                    aria-label="Add to favorites"
+                                    aria-hidden="true"
+                                    aria-pressed="false"
+                                    data="block-approval">
+                                <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">add_box</i>
+                                <i class="material-icons mdc-icon-button__icon">indeterminate_check_box</i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="block-approval" class="mtd-desk-block-body">
+                        @await Html.PartialAsync("./Partials/DetailsApproval")
+                    </div>
+                </div>
+            }
 
         </div>
     </div>
@@ -200,7 +254,7 @@
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/delete'>
     @Html.AntiForgeryToken()
     <input id="store-delete-id" name="store-delete-id" type="hidden" value="@Model.MtdStore.Id" />
-    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/workplace/store?indexform=@Model.MtdStore.MtdForm" mtd-data-message="@Localizer["The document was deleted."]" type="hidden" />
+    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/workplace/store?indexform=@Model.MtdStore.MtdForm" mtd-data-message="@Localizer[" The document was deleted."]" type="hidden" />
 </form>
 
 <div id="dialog-store-delete" class="mdc-dialog"

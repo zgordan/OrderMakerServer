@@ -390,8 +390,8 @@
   <data name="Print" xml:space="preserve">
     <value>Печать</value>
   </data>
-  <data name="Print form view" xml:space="preserve">
-    <value>Печатная форма</value>
+  <data name="Document form" xml:space="preserve">
+    <value>Форма документа</value>
   </data>
   <data name="Restart Approval" xml:space="preserve">
     <value>Перезапустить согласование</value>

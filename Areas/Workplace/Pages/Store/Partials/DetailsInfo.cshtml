@@ -5,33 +5,11 @@
 @using static Mtd.OrderMaker.Server.Extensions.UserExtensions
 @inject IHtmlLocalizer<SharedResource> Localizer
 
-<div class="mtd-desk-block-content mtd-desk-block--border">
-    <div class="mtd-desk-block-title">
-        <div class="mtd-desk-block-title-icon">
-            <i class="material-icons" aria-hidden="true">info</i>
-        </div>
-        <div class="mtd-desk-block-title-label">
-            @Localizer["Document information"]
-        </div>
-        <div class="mtd-desk-block-title-button">
-            <button onclick="clickBlockToogle(this)"
-                    class="mdc-icon-button"
-                    aria-label="Add to favorites"
-                    aria-hidden="true"
-                    aria-pressed="false"
-                    data="block-info">
-                <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">add_box</i>
-                <i class="material-icons mdc-icon-button__icon">indeterminate_check_box</i>
-            </button>
-        </div>
-    </div>
-    <div id="block-info" class="mtd-desk-block-body">
-        <table style="white-space: nowrap; border-collapse:collapse">
-            <tr><td>ID</td><td colspan="2">@Model.MtdStore.Sequence.ToString("D9")</td></tr>
-            <tr><td>@Localizer["Owner"]</td><td colspan="2">@Model.UserOwner.GetFullName()</td></tr>
-            <tr><td>@Localizer["Created by"]</td><td style="width:100%">@Localizer[$"{Model.ChangesHistory.CreateByUser}"]</td><td>@Localizer[$"{Model.ChangesHistory.CreateByTime}"]</td></tr>
-            <tr><td>@Localizer["Edited by"]</td><td>@Localizer[$"{Model.ChangesHistory.LastEditedUser}"]</td><td>@Localizer[$"{Model.ChangesHistory.LastEditedTime}"]</td></tr>
 
-        </table>
-    </div>
-</div>
+<table style="white-space: nowrap; border-collapse:collapse">
+    <tr><td>ID</td><td colspan="2">@Model.MtdStore.Sequence.ToString("D9")</td></tr>
+    <tr><td>@Localizer["Owner"]</td><td colspan="2">@Model.UserOwner.GetFullName()</td></tr>
+    <tr><td>@Localizer["Created by"]</td><td style="width:100%">@Localizer[$"{Model.ChangesHistory.CreateByUser}"]</td><td>@Localizer[$"{Model.ChangesHistory.CreateByTime}"]</td></tr>
+    <tr><td>@Localizer["Edited by"]</td><td>@Localizer[$"{Model.ChangesHistory.LastEditedUser}"]</td><td>@Localizer[$"{Model.ChangesHistory.LastEditedTime}"]</td></tr>
+</table>
+

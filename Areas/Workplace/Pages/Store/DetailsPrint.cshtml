@@ -20,14 +20,24 @@
 @page
 @model Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store.DetailsModel
 @namespace Mtd.OrderMaker.Server.Components.Store
+@inject IHtmlLocalizer<SharedResource> Localizer
 
 @{
     Layout = "";
+    string PrintForm = HttpContext.Request.Query["printForm"];
+    bool printForm = (PrintForm ?? string.Empty) == "true";
+
+    string PrintInfo = HttpContext.Request.Query["printInfo"];
+    bool printInfo = (PrintInfo ?? string.Empty) == "true";
+
+    string PrintApproval = HttpContext.Request.Query["printApproval"];
+    bool printApproval = (PrintApproval ?? string.Empty) == "true";
 }
 
 <!DOCTYPE html>
 <html>
 <head>
+
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/google/css/material-components-web.min.css" asp-append-version="true" />
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
@@ -35,49 +45,43 @@
     <link rel="stylesheet" href="~/lib/fontawesome/css/solid.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/fontawesome/css/regular.min.css" asp-append-version="true" />
 
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/main/css/mtd-main.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/store/css/mtd-store-view.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/ui/css/mtd-ui-material.css" asp-append-version="true" />
 
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/mtd-checkbox/css/mtd-checkbox.css" asp-append-version="true" />
 
 </head>
-<body onload="window.print()">
-    <div style="display: flex; align-items: center; justify-content: center; width: 21cm">
-        @await Component.InvokeAsync("StoreForm", new { store = Model.MtdStore, type = FormType.Print })
-    </div>
-    <div style="page-break-after: always;"></div>
-    <div style="width: 21cm">
-        <div class="mtd-store-style-header">
-            <div class="mtd-store-style-badge">
-                @if (Model.MtdStore.MtdFormNavigation.MtdFormHeader != null)
-                {
-                    var base64 = Convert.ToBase64String(Model.MtdStore.MtdFormNavigation.MtdFormHeader.Image);
-                    var imgSrc = String.Format("data:{0};base64,{1}", Model.MtdStore.MtdFormNavigation.MtdFormHeader.ImageType, base64);
+<body onload="window.print()" style="overflow:auto">
 
-                    <img src="@imgSrc" />
-                }
-                <div class="mtd-store-style-title">
-                    @Model.MtdStore.MtdFormNavigation.Name
-                </div>
-            </div>
-
-            <div class="mtd-store-style-attribute">
-                @if (Model.MtdStore.MtdFormNavigation.VisibleNumber == 1)
-                {
-                    <span class="mtd-store-style-number">№ @Model.MtdStore.Sequence.ToString("D9")</span>
-                    <hr />
-                }
-
-                @if (Model.MtdStore.MtdFormNavigation.VisibleDate == 1)
-                {
-                    <span class="mtd-store-style-date">Date @Model.MtdStore.Timecr.ToShortDateString()</span>
-
-                }
-            </div>
-
+    @if (printForm)
+    {
+        <div style="display: flex; align-items: center; justify-content: center; width: 21cm">
+            @await Component.InvokeAsync("StoreForm", new { store = Model.MtdStore, type = FormType.Print })
         </div>
-        @await Html.PartialAsync("./Partials/DetailsInfo")
-    </div>
+        <div style="page-break-after: always;"></div>
+    }
+
+    @if (printInfo)
+    {
+        @Localizer["Document information"]
+        <hr />
+        <div style="width: 21cm">
+            @await Html.PartialAsync("./Partials/Header")
+            @await Html.PartialAsync("./Partials/DetailsInfo")
+        </div>
+        <div style="page-break-after: always;"></div>
+    }
+
+    @if (printApproval)
+    {
+        <div style="width: 21cm">
+            @await Html.PartialAsync("./Partials/Header")
+            @await Html.PartialAsync("./Partials/DetailsApproval")
+        </div>
+    }
+
+
 </body>
 </html>
 
