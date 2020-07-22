@@ -50,40 +50,6 @@ using NPOI.XSSF.UserModel;
 
 namespace Mtd.OrderMaker.Web.Controllers.Index
 {
-    public static class IWorkBookExtensions
-    {
-
-        public static void WriteExcelToResponse(this IWorkbook book, HttpContext httpContext, string templateName)
-        {
-
-
-            var response = httpContext.Response;
-
-            response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            response.Headers.Add("Content-Disposition", string.Format("attachment;filename={0}", "BESTINVEST_fee_rebate_loader_.xlsx"));
-            MemoryStream ms = new MemoryStream();
-            book.Write(ms);
-            using (var sw = new StreamWriter(response.Body))
-            {
-                sw.Write(ms);
-            }
-
-            //var response = httpContext.Response;
-            ////response.ContentType = "application/vnd.ms-excel";
-            //response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            //response.Headers.Add("Content-Disposition", string.Format("attachment;filename={0}", "BESTINVEST_fee_rebate_loader_.xlsx"));
-
-            // book.Write(response.Body);
-
-            //if (!string.IsNullOrEmpty(templateName))
-            //{
-            //    var contentDisposition = new Microsoft.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
-            //    contentDisposition.SetHttpFileName(templateName);
-            //    response.Headers[HeaderNames.ContentDisposition] = contentDisposition.ToString();
-            //}
-            //book.Write(response.Body);
-        }
-    }
 
     [Route("api/action/index")]
     [ApiController]
@@ -147,7 +113,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
             IList<MtdFormPartField> columns = incomer.FieldForColumn.Where(x => fieldIds.Contains(x.Id)).ToList();
 
             IWorkbook workbook = CreateWorkbook(mtdStore, columns, mtdStoreStack);
-            // workbook.WriteExcelToResponse(HttpContext, "OrderMakerList.xlsx");
+       
             var ms = new NpoiMemoryStream
             {
                 AllowClose = false
@@ -159,10 +125,8 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
 
             return new FileStreamResult(ms, new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
             {
-                FileDownloadName = $"{user.Title}-{DateTime.UtcNow:yyyyMMddHHmmss}.xlsx"
+                FileDownloadName = $"{DateTime.UtcNow:yyyyMMddHHmmss}.xlsx"
             };
-
-            //return Ok();
         }
 
         private IWorkbook CreateWorkbook(IList<MtdStore> mtdStores, IList<MtdFormPartField> partFields, IList<MtdStoreStack> storeStack)
