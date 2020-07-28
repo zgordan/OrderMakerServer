@@ -24,6 +24,7 @@ using Mtd.OrderMaker.Server.Extensions;
 using MySqlX.XDevAPI.Common;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -50,7 +51,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
 
             var list = context.MtdStoreApproval.Where(x => stagesIds.Contains(x.MtdApproveStage)).Select(x => x.Id);
             var stores = context.MtdStore.Where(x => x.MtdForm == mtdApproval.MtdForm && !list.Contains(x.Id))
-                .Select(x => new MtdStoreApproval { Id = x.Id, MtdApproveStage = firstStage.Id, PartsApproved = "&", Complete = 0, Result = 0 });
+                .Select(x => new MtdStoreApproval { Id = x.Id, MtdApproveStage = firstStage.Id, PartsApproved = "&", Complete = 0, Result = 0, LastEventTime = DateTime.Now });
             await context.MtdStoreApproval.AddRangeAsync(stores);
             await context.SaveChangesAsync();
 
@@ -193,7 +194,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
             if (!isApprovalForm || isComplete) { return false; }
 
             MtdStore mtdStore = await GetStoreAsync();
-            if (mtdStore.MtdStoreApproval.SignChain != null && mtdStore.MtdStoreApproval.SignChain.Length > 0)
+            if (mtdStore.MtdStoreApproval != null && mtdStore.MtdStoreApproval.SignChain != null && mtdStore.MtdStoreApproval.SignChain.Length > 0)
             {
                 List<string> userIds = await GetUsersWaitSignAsync();
                 string userId = userIds.TakeLast(1).FirstOrDefault();
@@ -213,7 +214,6 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
             }
 
             if (mtdApprovalStage != null && (mtdApprovalStage.UserId.Equals(user.Id) || forOwner)) { return true; }
-
             return false;
 
         }
@@ -313,7 +313,8 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
                 Complete = 0,
                 MtdApproveStage = mtdApprovalStage.Id,
                 Result = -1,
-                PartsApproved = "&"
+                PartsApproved = "&",
+                LastEventTime = DateTime.Now,
             };
 
             MtdLogApproval mtdLogApproval = new MtdLogApproval()
@@ -360,6 +361,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
                 PartsApproved = currentStage.BlockParts,
                 Complete = complete,
                 Result = 1,
+                LastEventTime = DateTime.Now,
             };
 
 
@@ -434,6 +436,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
             }
             
             storeApproval.SignChain = signChain;
+            storeApproval.LastEventTime = DateTime.Now;
 
             _context.MtdStoreApproval.Update(storeApproval);
             MtdApprovalStage currentStage = await GetCurrentStageAsync();
@@ -493,7 +496,8 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
                 MtdApproveStage = prevStage.Id,
                 PartsApproved = blockPartsStage == null ? "&" : blockPartsStage.BlockParts,
                 Complete = complete ? (sbyte)1 : (sbyte)0,
-                Result = -1
+                Result = -1,
+                LastEventTime = DateTime.Now,
             };
 
             if (mtdStore.MtdStoreApproval == null)
@@ -565,7 +569,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
                 Comment = comment,
                 UserRecipientId = userRecipient.Id,
                 UserRecipientName = userRecipient.Title,
-                IsSign = 1,
+                IsSign = 1,                
             };
 
             string singChain = string.Empty;
@@ -576,6 +580,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
 
             singChain += $"&{userRecipient.Id}";
             mtdStore.MtdStoreApproval.SignChain = singChain;
+            mtdStore.MtdStoreApproval.LastEventTime = DateTime.Now;
 
             _context.MtdStoreApproval.Update(mtdStore.MtdStoreApproval);
             await _context.MtdLogApproval.AddAsync(mtdLog);
@@ -609,6 +614,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
                 PartsApproved = lastStage.BlockParts,
                 Complete = complete,
                 Result = result,
+                LastEventTime = DateTime.Now
             };
 
 

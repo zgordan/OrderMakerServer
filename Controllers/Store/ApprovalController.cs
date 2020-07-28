@@ -68,7 +68,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             if (!isApprover || !isFirstStage) { return NotFound(); }
 
             MtdApprovalStage stageNext = await approvalHandler.GetNextStageAsync();
-            bool sendEmail = stageNext.UserId != webAppUser.Id ? true : false;
+            bool sendEmail = stageNext.UserId != webAppUser.Id;
 
             bool isOk = await approvalHandler.ActionApprove(webAppUser, resolutionId, comment);
 

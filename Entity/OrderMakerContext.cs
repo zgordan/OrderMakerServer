@@ -1562,7 +1562,6 @@ namespace Mtd.OrderMaker.Server.Entity
                 entity.HasIndex(e => e.MtdApproveStage)
                     .HasName("fk_store_approve_stage_idx");
 
-
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
                     .HasColumnType("varchar(36)");
@@ -1589,6 +1588,12 @@ namespace Mtd.OrderMaker.Server.Entity
                 entity.Property(e => e.SignChain)
                     .HasColumnName("sign_chain")
                     .HasColumnType("longtext");
+
+                entity.Property(e => e.LastEventTime)
+                    .IsRequired()
+                    .HasColumnName("last_event_time")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.HasOne(d => d.IdNavigation)
                     .WithOne(p => p.MtdStoreApproval)

@@ -34,7 +34,7 @@ namespace Mtd.OrderMaker.Server.Entity
         public string Name { get; set; }
         public string Description { get; set; }
         public int Sequence { get; set; }
-        public bool Active { get; set; }
+        public sbyte Active { get; set; }
         public int MtdSysStyle { get; set; }
         public string MtdForm { get; set; }
         public sbyte Title { get; set; }

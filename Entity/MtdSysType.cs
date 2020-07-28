@@ -31,7 +31,7 @@ namespace Mtd.OrderMaker.Server.Entity
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public bool Active { get; set; }
+        public sbyte Active { get; set; }
 
         public virtual ICollection<MtdFormPartField> MtdFormPartField { get; set; }
     }

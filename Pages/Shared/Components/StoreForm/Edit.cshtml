@@ -24,7 +24,7 @@
 <form mtd-data-form method='post' autocomplete='off' enctype='multipart/form-data' action='/api/store/save'>
     @Html.AntiForgeryToken()
     <input type="hidden" name="idStore" asp-for="@Model.Owner.Store.Id" />
-    <div class="mtd-store-style-blank">
+    <div class="mtd-store-style-blank mdc-elevation--z4" style="margin-bottom: 24px;">
         <div class="mtd-store-edit-bar" style="text-align: right">
             <div class="mtd-store-edit-control" style="position:absolute">
                 <button type="button" mtd-data-clicker mtd-data-location="/workplace/store/details?id=@Model.Owner.Store.Id" class="mdc-fab mdc-fab--extended" aria-label="Save">
@@ -78,7 +78,6 @@
                                MTDTexFieldView = MTDTextFieldViews.Outlined,
                                Label = "Date",
                                LabelLocalized = true,
-
                            });                  
 
                     }

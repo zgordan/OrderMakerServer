@@ -37,9 +37,9 @@
 }
 
 @section Breadcrumb {
-    <li><a href="/">@Localizer["Desktop"]</a></li>
-    <li><a asp-area="Workplace" asp-page="/Store/Index" asp-route-indexForm="@Model.MtdForm.Id">@Localizer["List data"]</a></li>
-    <li><a asp-area="Workplace" asp-page="/Store/Details" asp-route-id="@Model.MtdStore.Id">@Localizer["Form view"]</a></li>
+    <li><a style="cursor:pointer" mtd-data-href="/">@Localizer["Desktop"]</a></li>
+    <li><a style="cursor:pointer" mtd-data-href="/workplace/store/index?indexForm=@Model.MtdForm.Id">@Localizer["List data"]</a></li>
+    <li><a style="cursor:pointer" mtd-data-href="/workplace/store/details?id=@Model.MtdStore.Id">@Localizer["Form view"]</a></li>
     <li>@ViewBag.Title</li>
 }
 
@@ -80,7 +80,7 @@
        
        $.datetimepicker.setLocale(@Localizer["'en'"]);
 
-        new MTDTextField("date-create");
+       new MTDTextField("date-create");
 
     </script>
 }

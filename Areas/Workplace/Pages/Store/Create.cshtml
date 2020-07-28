@@ -32,8 +32,8 @@
     <link rel="stylesheet" href="~/lib/xdan/dist/jquery.datetimepicker.min.css" asp-append-version="true" />
 }
 @section Breadcrumb {
-    <li><a href="/">@Localizer["Desktop"]</a></li>
-    <li><a asp-area="Workplace" asp-page="/Store/Index" asp-route-indexForm="@Model.MtdForm.Id">@Localizer["List data"]</a></li>
+    <li><a style="cursor:pointer" mtd-data-href="/">@Localizer["Desktop"]</a></li>
+    <li><a style="cursor:pointer" mtd-data-href="/workplace/store/index?indexForm=@Model.MtdForm.Id">@Localizer["List data"]</a></li>
     <li>@ViewBag.Title</li>
 }
 

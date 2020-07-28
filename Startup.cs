@@ -289,20 +289,21 @@ namespace Mtd.OrderMaker.Server
 
             if (sysType.Result < 10)
             {
-
+                sbyte active = 1;
                 List<MtdSysType> mtdSysTypes = new List<MtdSysType> {
-                    new MtdSysType{ Id = 1, Name="Text", Description="Text", Active=true },
-                    new MtdSysType{ Id = 2, Name="Integer", Description="Integer", Active=true},
-                    new MtdSysType{ Id = 3, Name="Decimal",Description="Decimal", Active=true},
-                    new MtdSysType{ Id = 4, Name = "Memo",Description="Memo",Active=true},
-                    new MtdSysType{ Id = 5, Name="Date",Description="Date",Active=true},
-                    new MtdSysType{ Id = 6, Name="DateTime",Description="DateTime",Active=true},
-                    new MtdSysType{ Id = 7, Name="File",Description="File",Active=true},
-                    new MtdSysType{ Id = 8, Name="Image",Description="Image",Active=true},
+                    new MtdSysType{ Id = 1, Name="Text", Description="Text", Active=active },
+                    new MtdSysType{ Id = 2, Name="Integer", Description="Integer", Active=active},
+                    new MtdSysType{ Id = 3, Name="Decimal",Description="Decimal", Active=active},
+                    new MtdSysType{ Id = 4, Name = "Memo",Description="Memo",Active=active},
+                    new MtdSysType{ Id = 5, Name="Date",Description="Date",Active=active},
+                    new MtdSysType{ Id = 6, Name="DateTime",Description="DateTime",Active=active},
+                    new MtdSysType{ Id = 7, Name="File",Description="File",Active=active},
+                    new MtdSysType{ Id = 8, Name="Image",Description="Image",Active=active},
                     //new MtdSysType{ Id = 9, Name="Phone",Description="Phone",Active=false},
                     //new MtdSysType{ Id = 10, Name="Time",Description="Time",Active=false},
-                    new MtdSysType{ Id = 11, Name="List",Description="List",Active=true},
-                    new MtdSysType{ Id = 12, Name="Checkbox",Description="Checkbox",Active=true},
+                    new MtdSysType{ Id = 11, Name="List",Description="List",Active=active},
+                    new MtdSysType{ Id = 12, Name="Checkbox",Description="Checkbox",Active=active},
+                    new MtdSysType{ Id = 13, Name="Link",Description="Link",Active=active},
                 };
 
                 context.MtdSysType.AddRange(mtdSysTypes);
@@ -316,8 +317,8 @@ namespace Mtd.OrderMaker.Server
                 List<MtdSysTerm> mtdSysTerms = new List<MtdSysTerm>
                 {
                     new MtdSysTerm {Id=1,Name="equal", Sign="=" },
-                    new MtdSysTerm {Id=2,Name="less", Sign="<" },
-                    new MtdSysTerm {Id=3,Name="more", Sign=">" },
+                    new MtdSysTerm {Id=2,Name="less", Sign=">" },
+                    new MtdSysTerm {Id=3,Name="more", Sign="<" },
                     new MtdSysTerm {Id=4,Name="contains", Sign="~" },
                     new MtdSysTerm {Id=5,Name="no equal", Sign="<>" },
                 };
@@ -332,8 +333,8 @@ namespace Mtd.OrderMaker.Server
             {
                 List<MtdSysStyle> mtdSysStyles = new List<MtdSysStyle>
                 {
-                    new MtdSysStyle{Id=4,Name="Line", Description="Line", Active=true},
-                    new MtdSysStyle{Id=5,Name="Column", Description="Column", Active=true}
+                    new MtdSysStyle{Id=4,Name="Line", Description="Line", Active=(sbyte)1},
+                    new MtdSysStyle{Id=5,Name="Column", Description="Column", Active=(sbyte)1}
                 };
 
                 context.MtdSysStyle.AddRange(mtdSysStyles);

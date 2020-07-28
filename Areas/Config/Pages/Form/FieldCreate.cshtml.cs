@@ -71,7 +71,7 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
             };
 
             TypeItems = new List<MTDSelectListItem>();
-            var listType = await _context.MtdSysType.Where(x => x.Active).OrderBy(x => x.Id).ToListAsync();
+            var listType = await _context.MtdSysType.Where(x => x.Active==1).OrderBy(x => x.Id).ToListAsync();
             listType.ForEach((item) =>
             {
                 TypeItems.Add(new MTDSelectListItem { Id=item.Id.ToString(), Value=item.Name });

@@ -10,6 +10,8 @@ const fieldWrapper = document.getElementById("fieldWrapper");
 selectType.selector.listen('MDCSelect:change', () => {    
        
     if (selectType.selector.value === '11') {
-            fieldWrapper.style.display = "";
-        }
+        fieldWrapper.style.display = "";
+    } else {
+        fieldWrapper.style.display = 'none';
+    }
     });
