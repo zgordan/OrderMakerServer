@@ -61,7 +61,7 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Policy
 
             MtdGroups = await _context.MtdGroup.OrderBy(x=>x.Name).ToListAsync();
             MtdForms = await _context.MtdForm.Include(x => x.MtdFormPart).OrderBy(x=>x.Sequence).ToListAsync();
-            ExportToExcel = limit.ExportExcel == 1;
+            ExportToExcel = limit.ExportExcel;
             return Page();
         }
 

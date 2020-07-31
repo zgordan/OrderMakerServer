@@ -70,7 +70,7 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
             }
 
             bool exporter = await _userHandler.CheckUserPolicyAsync(user, indexForm, RightsType.ExportToExcel);
-            ExportToExcel = limit.ExportExcel == 1 && exporter;
+            ExportToExcel = limit.ExportExcel && exporter;
 
             ViewData["FormId"] = indexForm;
             return Page();

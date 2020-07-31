@@ -9,7 +9,7 @@ namespace Mtd.OrderMaker.Server.AppConfig
     {
         public int Users { get; set; }
         public int Forms { get; set; }
-        public int ExportExcel { get; set; }
+        public bool ExportExcel { get; set; }
         public int ExportSize { get; set; }
     }
 }

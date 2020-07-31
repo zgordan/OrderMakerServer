@@ -75,7 +75,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PostExportAsync()
         {
-            if (limit.ExportExcel == 0) { return NotFound(); }
+            if (!limit.ExportExcel) { return NotFound(); }
 
             var form = await Request.ReadFormAsync();            
             string formId = form["form-id"];

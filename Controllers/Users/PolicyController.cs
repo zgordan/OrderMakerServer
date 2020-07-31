@@ -126,7 +126,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 pf.Reviewer = GetSbyte(formReviewer);
                 pf.ChangeDate = GetSbyte(formSetDate);
                 pf.OwnDenyGroup = GetSbyte(formDenyGroup);
-                pf.ExportToExcel = limit.ExportExcel == 1 ? GetSbyte(exportToExcel) : (sbyte)0;
+                pf.ExportToExcel = limit.ExportExcel ? (sbyte)1 : (sbyte)0;
 
                 pf.ViewAll = GetSbyte(formView);
                 pf.ViewGroup = GetSbyte(formViewGroup);
@@ -218,7 +218,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 pf.Reviewer = 1;
                 pf.ChangeDate = 1;
                 pf.OwnDenyGroup = 1;
-                pf.ExportToExcel = (sbyte) limit.ExportExcel;
+                pf.ExportToExcel = limit.ExportExcel ? (sbyte)  1 : (sbyte) 0;
 
                 pf.ViewAll = 1;
                 pf.ViewGroup = 0;
