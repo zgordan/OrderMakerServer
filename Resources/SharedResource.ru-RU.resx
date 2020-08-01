@@ -456,8 +456,8 @@
   <data name="Your account email address" xml:space="preserve">
     <value>Адрес электронной почты Вашей учетной записи</value>
   </data>
-  <data name="Begin approval process" xml:space="preserve">
-    <value>Начало процесса согласования</value>
+  <data name="Approval process" xml:space="preserve">
+    <value>Процесс согласования</value>
   </data>
   <data name="Comment" xml:space="preserve">
     <value>Комментарий</value>
@@ -492,7 +492,7 @@
   <data name="Confirmation of approval" xml:space="preserve">
     <value>Одобрение документа</value>
   </data>
-  <data name="Document rejection" xml:space="preserve">
+  <data name="Document Rejection" xml:space="preserve">
     <value>Отклонение документа</value>
   </data>
   <data name="Document return" xml:space="preserve">
@@ -710,5 +710,17 @@
   </data>
   <data name="Form printing" xml:space="preserve">
     <value>Печать формы</value>
+  </data>
+  <data name="Please follow the links and complete the approval process.&lt;br/&gt; Or use the filter 'Wait list' to get a list of documents awaiting approval." xml:space="preserve">
+    <value>Пожалуйста, перейдите по ссылкам и завершите процесс согласования.&lt;br/&gt; Или используйте фильтр «Лист ожидания», чтобы получить список документов, ожидающих согласования.</value>
+  </data>
+  <data name="The following documents are awaiting your approval:" xml:space="preserve">
+    <value>Следующие документы ожидают Вашего утверждения:</value>
+  </data>
+  <data name="This document must be agreed upon.&lt;br/&gt; Send the document for approval by clicking the Apply button." xml:space="preserve">
+    <value>Этот документ должен быть согласован.&lt;br/&gt; Отправьте документ на согласование, нажав кнопку «Применить».</value>
+  </data>
+  <data name="Before approval, make sure that the document is filled in correctly and the comments made are corrected." xml:space="preserve">
+    <value>Перед согласованием убедитесь, что документ заполнен правильно и сделанные замечания исправлены.</value>
   </data>
 </root>

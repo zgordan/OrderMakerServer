@@ -29,5 +29,6 @@ namespace Mtd.OrderMaker.Server.AppConfig
         public string Title { get; set; }
         public string CopyRight { get; set; }
         public string Footer { get; set; }
+        public string Host { get; set; }
     }
 }

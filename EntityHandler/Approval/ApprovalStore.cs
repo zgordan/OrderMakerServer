@@ -20,5 +20,6 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
     {
         public string StoreId { get; set; }
         public ApprovalStatus Status { get; set; }
+        public string OwnerId { get; set; }
     }
 }

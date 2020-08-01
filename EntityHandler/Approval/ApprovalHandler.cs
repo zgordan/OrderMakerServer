@@ -30,7 +30,7 @@ using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.EntityHandler.Approval
 {
-    public class ApprovalHandler
+    public partial class ApprovalHandler
     {
         private readonly OrderMakerContext _context;
         private readonly string idStore;
@@ -103,7 +103,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
                 bool isFirst = await approvalHandler.IsFirstStageAsync();
                 bool isApprover = await approvalHandler.IsApproverAsync(appUser);
                 approvalStore.Status = DefineStatus(isComplete, result, isFirst, isApprover);
-
+                approvalStore.OwnerId = await approvalHandler.GetOwnerID();
                 resultList.Add(approvalStore);
             }
 

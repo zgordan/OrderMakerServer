@@ -1,21 +1,34 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="x-apple-disable-message-reformatting">
+    <title>{header}</title>
 </head>
 <body>
+    
+    <span class="es-preheader" style="display:block !important;font-size:0px; color:#ffffff;">
+       {title}&nbsp;&zwnj;
+    </span>
+
     <div style="width:100%">
-        <div style="background-image: linear-gradient(to left, navy , transparent); padding: 16px;">
-            <span style="font-size: x-large; font-weight: bold; text-shadow: 1px 2px 3px gray; color: navy">{title}</span>
+        <div style="text-align: center; background-color: white">
+            <img src="{logo}" style="max-width: 235px;" />
+            <div style="font-size:medium;">&nbsp;&nbsp;{title}&nbsp;&nbsp;</div>
         </div>
-        <div style="padding:16px; background-color: whitesmoke; color: black">
+
+        <hr />
+
+        <div>
             <h2>{header}</h2>
             {content}
         </div>
-        <div style="background-color: whitesmoke; padding: 16px; border-top: 1px solid navy; font-size: small">
-            &copy; {copyright}
-            <br />
+
+        <hr />
+
+        <div>
             <span style="font-size: smaller;">{footer}</span>
         </div>
     </div>

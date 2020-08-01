@@ -45,6 +45,7 @@ using Microsoft.Extensions.Hosting;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Mtd.OrderMaker.Server.Extensions;
+using Mtd.OrderMaker.Service;
 
 namespace Mtd.OrderMaker.Server
 {
@@ -130,11 +131,13 @@ namespace Mtd.OrderMaker.Server
             services.Configure<ConfigSettings>(Configuration.GetSection("ConfigSettings"));
             services.Configure<LimitSettings>(Configuration.GetSection("LimitSettings"));
 
+            services.AddHostedService<HostedService>();
+            services.AddScoped<IScopedService, ApprovalReminder>();
 
             services.AddMvc(options => options.EnableEndpointRouting = false);
 
-            IMvcBuilder builder = services.AddRazorPages();
 #if DEBUG
+            IMvcBuilder builder = services.AddRazorPages();
             if (CurrentEnvironment.IsDevelopment())
             {
                 builder.AddRazorRuntimeCompilation();

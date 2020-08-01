@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using Mtd.OrderMaker.Server.AppConfig;
+using Mtd.OrderMaker.Server.Entity;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,12 +24,14 @@ namespace Mtd.OrderMaker.Server.Services
     {
         private EmailSettings _emailSettings { get; }
         private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly OrderMakerContext _context;
+        private readonly ConfigHandler configHandler;
 
-
-        public EmailSenderBlank(IOptions<EmailSettings> emailSettings, IWebHostEnvironment hostingEnvironment)
+        public EmailSenderBlank(IOptions<EmailSettings> emailSettings, IWebHostEnvironment hostingEnvironment, ConfigHandler configHandler)
         {
             _emailSettings = emailSettings.Value;
             _hostingEnvironment = hostingEnvironment;
+            this.configHandler = configHandler;
         }
 
         public Task SendEmailAsync(string email, string subject, string message)
@@ -37,9 +40,11 @@ namespace Mtd.OrderMaker.Server.Services
             return Task.FromResult(0);
         }
 
-
         public async Task<bool> SendEmailBlankAsync(BlankEmail blankEmail)
         {
+            string pathImgMenu = $"{_emailSettings.Host}/lib/mtd-ordermaker/images/logo-mtd.png";
+            var imgMenu = await configHandler.GetImageFromConfig(configHandler.CodeImgMenu);
+            if (imgMenu != string.Empty) { pathImgMenu = $"{_emailSettings.Host}/images/logo.png"; }
 
             try
             {
@@ -56,6 +61,7 @@ namespace Mtd.OrderMaker.Server.Services
                 var htmlArray = File.ReadAllText(file);
                 string htmlText = htmlArray.ToString();
 
+                htmlText = htmlText.Replace("{logo}", pathImgMenu);
                 htmlText = htmlText.Replace("{title}", _emailSettings.Title);
                 htmlText = htmlText.Replace("{header}", blankEmail.Header);
                 htmlText = htmlText.Replace("{content}", message);
@@ -96,7 +102,7 @@ namespace Mtd.OrderMaker.Server.Services
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error EMail sender service \n {ex.Message}");
+                throw new Exception($"Error Email sender service \n {ex.Message}");
             }
         }
     }

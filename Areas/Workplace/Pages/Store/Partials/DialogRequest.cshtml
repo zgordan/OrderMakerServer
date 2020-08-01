@@ -29,15 +29,15 @@
                 <div class="mtd-dialog-space"></div>
 
                 @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
-           {
-               Id = "select-recipient",
-               Name = "id-user-recipient",
-               Label = "User",
-               LabelLocalized = true,
-               Items = Model.UsersRequest,
-               MTDSelectListView = MTDSelectListViews.Outlined
+                   {
+                       Id = "select-recipient",
+                       Name = "id-user-recipient",
+                       Label = "User",
+                       LabelLocalized = true,
+                       Items = Model.UsersRequest,
+                       MTDSelectListView = MTDSelectListViews.Outlined
 
-           })
+                   })
 
                 <div class="mtd-dialog-space"></div>
 
@@ -70,73 +70,3 @@
     </div>
 </div>
 
-
-<form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/approval/request'>
-    @Html.AntiForgeryToken()
-    <input type="hidden" name="id-store" value="@Model.MtdStore.Id" />
-    <input type="hidden" name="id-form" value="@Model.MtdStore.MtdForm" />
-    <div id="dialog-request" class="mdc-dialog"
-         role="alertdialog"
-         aria-modal="true"
-         aria-labelledby="dialog-request-title"
-         aria-describedby="dialog-request-content">
-        <div class="mdc-dialog__container">
-            <div class="mdc-dialog__surface">
-
-                <h2 class="mdc-dialog__title" id="request-form-title">
-                    @Localizer["User Signature Request"]
-                </h2>
-                <div class="mdc-dialog__content" id="accept-dialog-content">
-                    <hr />
-                    @Localizer["Make a request for the resolution of the user to whom this document is available."]
-                    <hr />
-
-                    <div style="padding-top: 18px;">
-                        @Localizer["Select a user from the list:"]
-                    </div>
-
-                    @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
-                       {
-                           Id = "select-recipient",
-                           Name = "id-user-recipient",
-                           Label = "Users list",
-                           LabelLocalized = true,
-                           Items = Model.UsersList,
-                           MTDSelectListView = MTDSelectListViews.Outlined
-                       })
-
-                    @*<div class="mdc-select" style="width: 100%; margin-top: 8px;">
-                            <i class="mdc-select__dropdown-icon"></i>
-                            <select class="mdc-select__native-control" asp-items="ViewBag.UsersRequest" name="id-user-recipient"></select>
-                            <label class="mdc-floating-label mdc-floating-label--float-above">@Localizer["User"]</label>
-                            <div class="mdc-line-ripple"></div>
-                        </div>*@
-
-                    <div style="padding-top: 18px; width: 100%">
-                        <label class="mdc-text-field mdc-text-field--textarea" style="width:100%">
-                            <div class="mdc-text-field-character-counter">0 / 250</div>
-                            <textarea class="mdc-text-field__input" aria-labelledby="comment-start-id" name="comment-request-id" rows="3" cols="40"
-                                      maxlength="250" placeholder="@Localizer["Create a comment if necessary"]"></textarea>
-                            <div class="mdc-notched-outline">
-                                <div class="mdc-notched-outline__leading"></div>
-                                <div class="mdc-notched-outline__notch">
-                                    <span class="mdc-floating-label" id="comment-request-id">@Localizer["Comment"]</span>
-                                </div>
-                                <div class="mdc-notched-outline__trailing"></div>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-                <footer class="mdc-dialog__actions">
-                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
-                        <span class="mdc-button__label">@Localizer["Cancel"]</span>
-                    </button>
-                    <button type="button" id="clicker-approve" mtd-data-clicker mtd-data-message="@Localizer["Request sent successfully"]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" style="color:green">
-                        <span class="mdc-button__label">@Localizer["Request"]</span>
-                    </button>
-                </footer>
-            </div>
-        </div>
-        <div class="mdc-dialog__scrim"></div>
-    </div>
-</form>

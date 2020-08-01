@@ -12,7 +12,12 @@ document.querySelectorAll("[mtd-dialog-button]").forEach((item) => {
         document.body.style.overflow = "-moz-scrollbars-vertical";
         document.body.style.overflowY = "scroll";
         document.body.style.height = "100vh";
-        appContent.classList.remove("drawer-frame-app-content"); 
+        appContent.classList.remove("drawer-frame-app-content");
+        const tf = dialog.querySelector(".mdc-text-field--textarea");
+        if (tf) {
+            tf.focus();
+        }
+
     });
 
     dialog.querySelectorAll('[mtd-dialog-cancel]').forEach((b) => {
