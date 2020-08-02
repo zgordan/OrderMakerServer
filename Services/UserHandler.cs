@@ -58,10 +58,10 @@ namespace Mtd.OrderMaker.Server.Services
         private readonly PolicyCache _cache;
         private readonly OrderMakerContext _context;
         private readonly SignInManager<WebAppUser> _signInManager;
-
+        private readonly IdentityDbContext identity;
         public static readonly string PolicyKey = "PolicyCache";
 
-        public UserHandler(PolicyCache cache, OrderMakerContext context,
+        public UserHandler(IdentityDbContext identity,PolicyCache cache, OrderMakerContext context,
             IUserStore<WebAppUser> store,
             IOptions<IdentityOptions> optionsAccessor,
             IPasswordHasher<WebAppUser> passwordHasher,
@@ -70,11 +70,12 @@ namespace Mtd.OrderMaker.Server.Services
             ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors,
             IServiceProvider services, ILogger<UserManager<WebAppUser>> logger, SignInManager<WebAppUser> signInManager) :
             base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
-        {
-            _context = context;
-            _signInManager = signInManager;
-            _cache = cache;
-        }
+                {
+                    _context = context;
+                    _signInManager = signInManager;
+                    _cache = cache;
+                    this.identity = identity;
+                }
 
         public async Task<IList<MtdPolicy>> CacheRefresh()
         {
@@ -350,6 +351,19 @@ namespace Mtd.OrderMaker.Server.Services
             }
 
             return result;
+        }
+
+        public async Task<IList<WebAppUser>> GetUsersInGroupAsync(string groupId = null) 
+        {
+            if (groupId != null)
+            {
+                Claim claim = new Claim("group", groupId);
+                return await GetUsersForClaimAsync(claim);
+            }
+
+            IList<string> userIds = await identity.UserClaims.Where(x => x.ClaimType == "group").Select(x => x.UserId).ToListAsync();            
+            return  await Users.Where(x=> !userIds.Contains(x.Id)).ToListAsync();
+            
         }
 
         public async Task<List<WebAppUser>> GetUsersInGroupsAsync(WebAppUser webAppUser)

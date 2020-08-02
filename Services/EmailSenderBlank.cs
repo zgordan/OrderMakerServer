@@ -65,7 +65,6 @@ namespace Mtd.OrderMaker.Server.Services
                 htmlText = htmlText.Replace("{title}", _emailSettings.Title);
                 htmlText = htmlText.Replace("{header}", blankEmail.Header);
                 htmlText = htmlText.Replace("{content}", message);
-                htmlText = htmlText.Replace("{copyright}", _emailSettings.CopyRight);
                 htmlText = htmlText.Replace("{footer}", _emailSettings.Footer);
 
                 await SendEmailAsync(blankEmail.Email, blankEmail.Subject, htmlText);

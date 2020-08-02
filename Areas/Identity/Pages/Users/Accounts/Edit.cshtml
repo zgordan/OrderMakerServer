@@ -29,8 +29,8 @@
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/users/css/mtd-users.css" asp-append-version="true" />
 }
 @section Breadcrumb {
-    <li><a href="/Identity/Users">@Localizer["Users"]</a></li>
-    <li><a href="/Identity/Users/Accounts">@Localizer["Accounts"]</a></li>
+    <li><a style="cursor:pointer" mtd-data-href="/Identity/Users">@Localizer["Users"]</a></li>
+    <li><a style="cursor:pointer" mtd-data-href="/Identity/Users/Accounts">@Localizer["Accounts"]</a></li>
     <li>@ViewData["Title"]</li>
 }
 @section Action  {
@@ -135,7 +135,6 @@
             </button>
         </div>
     </div>
-
     <div class="mtd-users-edit-title" style="padding-left: 16px">
         <div style="background-color: lightgray;   width: 52px; height: 52px; border-radius: 50%; text-align:center; align-self: center">
             <i class="material-icons" style="font-size: 48px; color: white">person</i>
