@@ -5,7 +5,7 @@
 @inject IHtmlLocalizer<SharedResource> Localizer
 
 
-<div id="dialog-print" class="mtd-dialog mtd-dialog-hidden noselect" style="max-width: 720px; text-transform: uppercase">
+<div id="dialog-print" class="mtd-dialog mtd-dialog-hidden noselect" style="max-width: 350px; text-transform: uppercase">
     <div class="mtd-dialog-container">
         <div class="mtd-dialog-title">
             <div>
@@ -16,6 +16,9 @@
             </div>
         </div>
         <div class="mtd-dialog-content">
+
+            <hr class="mdc-list-divider" />
+
             <div style="display: flex; flex-wrap:wrap;">
                 <div class="mdc-form-field">
                     <div class="mdc-checkbox">
@@ -74,10 +77,10 @@
                 </div>
             </div>
 
-            <hr />
+            <hr class="mdc-list-divider" />
 
-            <div  class="mtd-dialog-buttons">
-                <a id="print-button" mtd-dialog-cancel  class="mdc-button mdc-button--raised mdc-theme--secondary-bg" target="_blank" 
+            <div class="mtd-dialog-buttons">
+                <a id="print-button" mtd-dialog-cancel class="mdc-button mdc-button--raised mdc-theme--secondary-bg" target="_blank"
                    href="/workplace/store/detailsprint?id=@Model.MtdStore.Id&printForm=true&printApproval=false&printInfo=false">
                     <div class="mdc-button__ripple"></div>
                     <span class="mdc-button__label">@Localizer["Print"]</span>
