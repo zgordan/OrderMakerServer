@@ -3,48 +3,54 @@
 @inject IHtmlLocalizer<SharedResource> Localizer
 
 
-<form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/approval/response/-1'>
-    @Html.AntiForgeryToken()
-    <input type="hidden" name="id-store" value="@Model.MtdStore.Id" />
-    <div id="dialog-reject-sign" class="mdc-dialog"
-         role="alertdialog"
-         aria-modal="true"
-         aria-labelledby="dialog-reject-title"
-         aria-describedby="dialog-reject-content">
-        <div class="mdc-dialog__container">
-            <div class="mdc-dialog__surface">
-                <h2 class="mdc-dialog__title" id="reject-sign-form-title">
-                    @Localizer["Negative response to the request"]
-                </h2>
-                <div class="mdc-dialog__content" id="reject-sign-dialog-content">
-                    <hr />
-                     @Localizer["A negative answer response to a user’s request will be recorded in the list of approval history."]
-                    <hr />
-                    <div style="padding-top: 18px; width: 100%">
-                        <label id="d-reject" class="mdc-text-field mdc-text-field--textarea" style="width:100%">
-                            <div class="mdc-text-field-character-counter">0 / 250</div>
-                            <textarea class="mdc-text-field__input" aria-labelledby="comment-reject-sign-id" name="comment-request-id" rows="3" cols="40"
-                                      maxlength="250" placeholder="@Localizer["Create a comment if necessary"]"></textarea>
-                            <div class="mdc-notched-outline">
-                                <div class="mdc-notched-outline__leading"></div>
-                                <div class="mdc-notched-outline__notch">
-                                    <span class="mdc-floating-label" id="comment-reject-sign-id">@Localizer["Comment"]</span>
-                                </div>
-                                <div class="mdc-notched-outline__trailing"></div>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-                <footer class="mdc-dialog__actions">
-                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
-                        <span class="mdc-button__label">@Localizer["Cancel"]</span>
-                    </button>
-                    <button type="button" id="clicker-reject-sign" mtd-data-clicker mtd-data-message="@Localizer["Responce sent."]" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" style="color:green">
-                        <span class="mdc-button__label">@Localizer["Apply"]</span>
-                    </button>
-                </footer>
+<div id="dialog-reject-sign" class="mtd-dialog mtd-dialog-hidden" style="max-width: 670px">
+    <div class="mtd-dialog-container">
+        <div class="mtd-dialog-title">
+            <div>
+                @Localizer["Negative response to the request"]
+            </div>
+            <div>
+                <button mtd-dialog-cancel class="mdc-icon-button material-icons">close</button>
             </div>
         </div>
-        <div class="mdc-dialog__scrim"></div>
+        <div class="mtd-dialog-content">
+            <form mtd-data-form method="post" autocomplete='off' action='/api/store/approval/response/-1' novalidate>
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id-store" value="@Model.MtdStore.Id" />
+
+                <div class="mtd-dialog-info">
+                    @Localizer["A negative answer response to a user’s request will be recorded in the list of approval history."]
+                </div>
+
+                <div class="mtd-dialog-space"></div>
+
+                @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                   {
+                       Id = "comment-reject-sign-id",
+                       Name = "comment-request-id",
+                       Label = "Comment",
+                       LabelLocalized = true,
+                       Placeholder = "Create a comment if necessary",
+                       PlaceholderLocalized = true,
+                       Cols = 40,
+                       Rows = 3,
+                       MaxLength = 250,
+                       MTDTexFieldView = MTDTextFieldViews.TextArea,
+                   })
+
+                <div class="mtd-dialog-buttons">
+                    <button mtd-dialog-cancel mtd-data-clicker class="mdc-button mdc-button--raised mdc-theme--secondary-bg" type="button" mtd-data-message="@Localizer["Request sent successfully."]">
+                        <div class="mdc-button__ripple"></div>
+                        <span class="mdc-button__label">@Localizer["Apply"]</span>
+                    </button>
+                    <button mtd-dialog-cancel class="mdc-button" type="button">
+                        <div class="mdc-button__ripple"></div>
+                        <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-</form>
+</div>
+
+

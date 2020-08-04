@@ -27,38 +27,11 @@ const selectRecipient = new MTDSelectList("select-recipient");
 const commentRequest = new MTDTextField("comment-request");
 const commentConsidered = new MTDTextField("comment-considered");
 
-const dialogAcceptSign = document.getElementById('dialog-accept-sign');
-if (dialogAcceptSign) {
-    const d = new mdc.dialog.MDCDialog(dialogAcceptSign);
-    const rb = document.getElementById('accept-sign-button');
-    if (rb) {
-        rb.addEventListener('click', () => {
-            d.open();
-        });
-    }
-}
+const commentRequestId = new MTDTextField("comment-request-id");
+const commentRejectSignId = new MTDTextField("comment-reject-sign-id");
+const commentReturnSignId = new MTDTextField("comment-return-sign-id");
 
-const dialogReturnSign = document.getElementById('dialog-return-sign');
-if (dialogReturnSign) {
-    const d = new mdc.dialog.MDCDialog(dialogReturnSign);
-    const rb = document.getElementById('return-sign-button');
-    if (rb) {
-        rb.addEventListener('click', () => {
-            d.open();
-        });
-    }
-}
 
-const dialogRejectSign = document.getElementById('dialog-reject-sign');
-if (dialogRejectSign) {
-    const d = new mdc.dialog.MDCDialog(dialogRejectSign);
-    const rb = document.getElementById('reject-sign-button');
-    if (rb) {
-        rb.addEventListener('click', () => {
-            d.open();
-        });
-    }
-}
 
 const eraser = document.getElementById("eraser");
 if (eraser) {

@@ -314,11 +314,10 @@
   top: -6px;
 }
 .mtd-store-view-approvals {
-  padding-top: 12px;
-  display: flex;
-  right: 18px;
-  position: absolute;
-  max-width: 250px;
+  display: inline-flex;
+  /*    right: 18px;
+    position: absolute;
+    max-width: 250px;*/
 }
 #dialog-start {
   max-width: 640px;
