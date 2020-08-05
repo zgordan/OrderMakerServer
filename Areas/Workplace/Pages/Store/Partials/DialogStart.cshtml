@@ -16,7 +16,7 @@
             <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/store/approval/start'>
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="id-store" value="@Model.MtdStore.Id" />
-                <div class="mtd-dialog-info--border">
+                <div class="mtd-dialog-info">
                     @if (Model.ApprovalStatus == EntityHandler.Approval.ApprovalStatus.Iteraction)
                     {
                         <div style="color: darkred">

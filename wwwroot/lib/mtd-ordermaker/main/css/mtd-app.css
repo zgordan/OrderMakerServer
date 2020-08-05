@@ -36,6 +36,7 @@
 .mtd-desk-block {
   width: 797px;
   padding: 2px;
+  margin: 4px;
 }
 @media (min-width: 1919px) {
   .mtd-desk-block {
@@ -68,41 +69,44 @@
 
 .mtd-desk-block-title {
   padding: 6px;
-  background-color: lightgray;
+  background-color: whitesmoke;
   display: flex;
-}
-@media (max-width: 1020px) {
-  .mtd-desk-block-title {
-    padding: 2px;
-  }
+  position: relative;
+  margin-bottom: 1.3em;
 }
 
 .mtd-desk-block-title-icon {
   align-self: center;
   padding-left: 4px;
   color: gray;
+  flex-grow: 1;
+  z-index: 2;
 }
 
 .mtd-desk-block-title-label {
-  flex-grow: 1;
-  align-self: center;
-  padding-left: 4px;
-  padding-right: 4px;
-  font-weight: bold;
+  background-color: whitesmoke;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin-top: 2em;
   color: gray;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  z-index: 1;
+  padding: 8px;
+  text-shadow: 1px 1px 2px #fff;
+  border-radius: 25%;
 }
 
 .mtd-desk-block-title-button {
   color: #454545;
-  display: none;
-}
-@media (max-width: 1020px) {
-  .mtd-desk-block-title-button {
-    display: block;
-  }
+  float: right;
+  /*    display: none;
+      @media (max-width: 1020px) {
+          display: block;
+      }*/
 }
 
 .mtd-desk-block-content {
@@ -304,9 +308,10 @@
 }
 
 .mtd-dialog-info {
-  padding: 8px 0 8px 0;
-  margin: 8px 0 8px 0;
+  padding-bottom: 12px;
+  /*   margin: 8px 0 8px 0;*/
   color: gray;
+  text-align: center;
 }
 
 .mtd-dialog-info--border {
@@ -314,6 +319,7 @@
   border-top: 1px solid #ccc;
   padding: 8px 0 8px 0;
   color: gray;
+  text-align: center;
 }
 
 .mtd-dialog-buttons {

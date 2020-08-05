@@ -148,25 +148,37 @@
     @await Html.PartialAsync("./Partials/DialogConsiderApproved")
 }
 
-<div class="mtd-desk">
-    
-    @await Html.PartialAsync("./Partials/DialogPrint")
 
+<div class="mtd-desk" style="margin-bottom: 24px">
     <div class="mtd-desk-panel">
         <div>
             @await Html.PartialAsync("./Partials/DetailsNavButtons")
         </div>
-        <div style="flex-grow:1">
-            @await Html.PartialAsync("./Partials/ApprovalBlock")
-        </div>
     </div>
 
+    @await Html.PartialAsync("./Partials/DialogPrint")
+    @if (Model.IsSign)
+    {
+        @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogConfirmSign.cshtml")
+        @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogReturnSign.cshtml")
+        @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogRejectSign.cshtml")
+    }
+    else
+    {
+        @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogStart.cshtml")
+        @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogReject.cshtml")
+        @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogReturn.cshtml")
+        @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogConfirm.cshtml")
+    }
+
+    @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogRequest.cshtml")
+
+
     <div class="mtd-desk-blocks">
-        <div class="mtd-desk-block mtd-desk-block--pull" style="max-width: 797px;">
-            <div class="mtd-desk-block-content  mtd-desk-block--border">
+        <div class="mtd-desk-block mtd-desk-block--pull mdc-elevation--z4" style="max-width: 797px;">
+            <div class="mtd-desk-block-content">
                 <div class="mtd-desk-block-title">
-                    <div class="mtd-desk-block-title-icon">
-                        <i class="far fa-file-alt "></i>
+                    <div class="mtd-desk-block-title-icon">                        
                     </div>
                     <div class="mtd-desk-block-title-label">
                         @Localizer["Document form"]
@@ -185,13 +197,10 @@
                 </div>
                 @await Component.InvokeAsync("StoreForm", new { store = Model.MtdStore, type = FormType.Details })
             </div>
-        </div>
-        <div class="mtd-desk-block">
-
-            <div class="mtd-desk-block-content mtd-desk-block--border">
+            <div class="mtd-desk-block-content">
                 <div class="mtd-desk-block-title">
                     <div class="mtd-desk-block-title-icon">
-                        <i class="material-icons" aria-hidden="true">info</i>
+
                     </div>
                     <div class="mtd-desk-block-title-label">
                         @Localizer["Document information"]
@@ -212,13 +221,15 @@
                     @await Html.PartialAsync("./Partials/DetailsInfo")
                 </div>
             </div>
-
-            @if (Model.IsFormApproval)
-            {
-                <div class="mtd-desk-block-content mtd-desk-block--border">
+        </div>
+        @if (Model.IsFormApproval)
+        {
+            <div class="mtd-desk-block mdc-elevation--z4">
+                <div class="mtd-desk-block-content ">
                     <div class="mtd-desk-block-title">
                         <div class="mtd-desk-block-title-icon">
-                            <i class="material-icons" aria-hidden="true">history</i>
+                            @*<i class="material-icons" aria-hidden="true">history</i>*@
+                            @await Html.PartialAsync("./Partials/ApprovalBlock")
                         </div>
                         <div class="mtd-desk-block-title-label">
                             @Localizer["Approval history"]
@@ -239,9 +250,9 @@
                         @await Html.PartialAsync("./Partials/DetailsApproval")
                     </div>
                 </div>
-            }
 
-        </div>
+            </div>
+        }
     </div>
 </div>
 

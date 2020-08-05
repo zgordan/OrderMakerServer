@@ -41,7 +41,7 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
         public MtdStore MtdStore { get; set; }
         public MtdForm MtdForm { get; set; }
 
-        public async Task<IActionResult> OnGet(string formId, string idStoreParent)
+        public async Task<IActionResult> OnGet(string formId)
         {
 
             if (formId == null)
@@ -57,11 +57,8 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                 return Forbid();
             }
 
-            MtdForm = await _context.MtdForm.FindAsync(formId);
-
-            MtdStore mtdStoreParent = await _context.MtdStore.FirstOrDefaultAsync(x => x.Id == idStoreParent);
-
-            MtdStore = new MtdStore { MtdForm = MtdForm.Id, MtdFormNavigation = MtdForm, Parent = idStoreParent, ParentNavigation = mtdStoreParent };
+            MtdForm = await _context.MtdForm.FindAsync(formId);            
+            MtdStore = new MtdStore { MtdForm = MtdForm.Id, MtdFormNavigation = MtdForm};
             return Page();
         }
 

@@ -7,9 +7,16 @@
 
 
 <table style="white-space: nowrap; border-collapse:collapse">
-    <tr><td>ID</td><td colspan="2">@Model.MtdStore.Sequence.ToString("D9")</td></tr>
-    <tr><td>@Localizer["Owner"]</td><td colspan="2">@Model.UserOwner.GetFullName()</td></tr>
-    <tr><td>@Localizer["Created by"]</td><td style="width:100%">@Localizer[$"{Model.ChangesHistory.CreateByUser}"]</td><td>@Localizer[$"{Model.ChangesHistory.CreateByTime}"]</td></tr>
-    <tr><td>@Localizer["Edited by"]</td><td>@Localizer[$"{Model.ChangesHistory.LastEditedUser}"]</td><td>@Localizer[$"{Model.ChangesHistory.LastEditedTime}"]</td></tr>
+    <tr style="border-bottom: 1px solid #ccc; font-weight: 600">
+        <td>
+            <i class="material-icons" aria-hidden="true">assignment_ind</i>
+        </td>
+        <td>
+            @Localizer["Owner"]
+        </td>
+        <td colspan="2">@Model.UserOwner.GetFullName()</td>
+    </tr>
+    <tr><td></td><td>@Localizer["Created by"]</td><td style="width:100%">@Localizer[$"{Model.ChangesHistory.CreateByUser}"]</td><td>@Localizer[$"{Model.ChangesHistory.CreateByTime}"]</td></tr>
+    <tr><td></td><td>@Localizer["Edited by"]</td><td>@Localizer[$"{Model.ChangesHistory.LastEditedUser}"]</td><td>@Localizer[$"{Model.ChangesHistory.LastEditedTime}"]</td></tr>
 </table>
 

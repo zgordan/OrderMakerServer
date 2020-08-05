@@ -272,7 +272,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                         }
                 };
 
-                if (comment != null)
+                if (comment != null && comment.Length>0)
                 {
                     blankEmail.Content.Add($"{ _localizer["User's comment"]}: <em>{comment}</em>");
                 }
@@ -308,7 +308,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                               }
             };
 
-            if (comment != null)
+            if (comment != null && comment.Length > 0)
             {
                 blankEmail.Content.Add($"{ _localizer["User's comment"]}: <em>{comment}</em>");
             }
@@ -345,7 +345,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                         }
                 };
 
-                if (comment != null)
+                if (comment != null && comment.Length > 0)
                 {
                     blankEmail.Content.Add($"{ _localizer["User's comment"]}: <em>{comment}</em>");
                 }
@@ -368,7 +368,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                               }
                 };
 
-                if (comment != null)
+                if (comment != null && comment.Length > 0)
                 {
                     blankEmail.Content.Add($"{ _localizer["User's comment"]}: <em>{comment}</em>");
                 }
@@ -413,7 +413,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                         }
                 };
 
-                if (comment != null)
+                if (comment != null && comment.Length > 0)
                 {
                     blankEmail.Content.Add($"{ _localizer["User's comment"]}: <em>{comment}</em>");
                 }
@@ -449,7 +449,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                         }
                 };
 
-                if (comment != null)
+                if (comment != null && comment.Length > 0)
                 {
                     blankOwner.Content.Add($"{ _localizer["User's comment"]}: <em>{comment}</em>");
                 }
@@ -481,7 +481,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                               }
             };
 
-            if (comment != null)
+            if (comment != null && comment.Length > 0)
             {
                 blankEmail.Content.Add($"{ _localizer["User's comment"]}: <em>{comment}</em>");
             }
@@ -511,7 +511,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                               }
             };
 
-            if (comment != null)
+            if (comment != null && comment.Length > 0)
             {
                 blankEmail.Content.Add($"{ _localizer["User's comment"]}: <em>{comment}</em>");
             }

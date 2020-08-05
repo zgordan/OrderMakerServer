@@ -133,7 +133,7 @@
         </div>
 
         @Html.AntiForgeryToken()
-        <input id="store-parent-id" value="@Model.Store.Parent" type="hidden" name="store-parent-id" />
+   
         <input id="store-create-clicker" mtd-data-clicker mtd-data-location="/workplace/store/details?id=@idStore" type="hidden" />
         <input type="hidden" name="form-id" value="@Model.Store.MtdForm" />
         <input type="hidden" name="store-id" value="@idStore" />

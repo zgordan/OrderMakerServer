@@ -168,7 +168,6 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
         public async Task<IActionResult> OnPostCreateAsync()
         {
             string formId = Request.Form["form-id"];
-            string parentId = Request.Form["store-parent-id"];
             string dateCreate = Request.Form["date-create"];
             string idStore = Request.Form["store-id"];
 
@@ -184,7 +183,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             int? sequence = await _context.MtdStore.Where(x => x.MtdForm == formId).MaxAsync(x => (int?)x.Sequence) ?? 0;
             sequence++;
 
-            MtdStore mtdStore = new MtdStore { Id = idStore, MtdForm = formId, Sequence = sequence ?? 1, Parent = parentId.Length > 0 ? parentId : null };
+            MtdStore mtdStore = new MtdStore { Id = idStore, MtdForm = formId, Sequence = sequence ?? 1 };
 
             bool setData = await _userHandler.CheckUserPolicyAsync(webAppUser, mtdStore.MtdForm, RightsType.SetDate);
             if (setData)

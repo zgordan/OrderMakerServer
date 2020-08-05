@@ -72,7 +72,6 @@
            })
 
         </div>
-
     </form>
 </div>
 
@@ -115,11 +114,13 @@
                                 @*<i class="fas fa-user" style="color: gray"></i>*@
                                 <strong>@person.User.Title</strong>
                             </div>
-                            <div style="font-style:italic">
-                                <i class="fas fa-user-friends" style="color: gray"></i>
-                                @person.User.TitleGroup
-                            </div>
-
+                            @if (person.User.TitleGroup != null && person.User.TitleGroup.Length > 0)
+                            {
+                                <div style="font-style:italic">
+                                    <i class="fas fa-user-friends" style="color: gray"></i>
+                                    @person.User.TitleGroup
+                                </div>
+                            }
                         </td>
                         <td>
                             <strong>@person.User.UserName</strong>

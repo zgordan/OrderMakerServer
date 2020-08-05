@@ -15,7 +15,7 @@
             <form mtd-data-form method="post" autocomplete='off' action='/api/store/approval/approve'>
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="id-store" value="@Model.MtdStore.Id" />
-                <div class="mtd-dialog-info--border">
+                <div class="mtd-dialog-info">
                     @Localizer["A positive decision on the current document will complete the approval process or forward the document to the next user."]
                 </div>
 
