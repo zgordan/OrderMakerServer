@@ -23,6 +23,9 @@
 .mtd-store-style-badge {
   width: 100%;
 }
+.mtd-store-style-badge > img {
+  max-width: 270px;
+}
 @media (min-width: 1919px) {
   .mtd-store-style-badge > img {
     max-width: 250px;
