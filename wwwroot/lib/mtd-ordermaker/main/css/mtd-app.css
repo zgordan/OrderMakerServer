@@ -100,12 +100,12 @@
 }
 
 .mtd-desk-block-title-button {
-  color: #454545;
+  color: lightsteelblue;
   float: right;
   /*    display: none;
-      @media (max-width: 1020px) {
-          display: block;
-      }*/
+  @media (max-width: 1020px) {
+      display: block;
+  }*/
 }
 
 .mtd-desk-block-content {
