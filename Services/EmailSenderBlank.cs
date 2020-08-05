@@ -22,7 +22,7 @@ namespace Mtd.OrderMaker.Server.Services
 
     public class EmailSenderBlank : IEmailSenderBlank
     {
-        private EmailSettings _emailSettings { get; }
+        private readonly EmailSettings _emailSettings;
         private readonly IWebHostEnvironment _hostingEnvironment;       
         private readonly ConfigHandler configHandler;
 
@@ -91,11 +91,13 @@ namespace Mtd.OrderMaker.Server.Services
                     IsBodyHtml = true,
                 };
 
-                using SmtpClient smtp = new SmtpClient(_emailSettings.SmtpServer, _emailSettings.Port);
-                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtp.UseDefaultCredentials = false;
-                smtp.Credentials = new NetworkCredential(_emailSettings.FromAddress, _emailSettings.Password);
-                smtp.EnableSsl = true;
+                using SmtpClient smtp = new SmtpClient(_emailSettings.SmtpServer, _emailSettings.Port)
+                {
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(_emailSettings.FromAddress, _emailSettings.Password),
+                    EnableSsl = true
+                };
                 await smtp.SendMailAsync(mail);
             }
             catch (Exception ex)
