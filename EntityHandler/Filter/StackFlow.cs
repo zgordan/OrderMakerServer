@@ -22,6 +22,7 @@ using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.EntityHandler.Approval;
 using Mtd.OrderMaker.Server.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -105,6 +106,21 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
                         break;
                     }
             }
+
+            int pageCount = 0;
+            decimal count = (decimal)outFlow.Count / incomer.PageSize;
+            pageCount = Convert.ToInt32(Math.Ceiling(count));
+            pageCount = pageCount == 0 ? 1 : pageCount;
+            outFlow.PageCount = pageCount;
+
+            IList<MtdFormPart> parts = await _userHandler.GetAllowPartsForView(_user, incomer.FormId);
+            List<string> partIds = parts.Select(x => x.Id).ToList();
+
+            IList<string> fieldIds = fieldIds = incomer.FieldForColumn.Select(x => x.Id).ToList();
+            IList<string> allowFiieldIds = await _context.MtdFormPartField.Where(x => partIds.Contains(x.MtdFormPart)).Select(x => x.Id).ToListAsync();
+            fieldIds = allowFiieldIds.Where(x => fieldIds.Contains(x)).ToList();
+
+            outFlow.AllowFieldIds = fieldIds;
 
             return outFlow;
         }

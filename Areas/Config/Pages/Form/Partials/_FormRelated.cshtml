@@ -1,0 +1,46 @@
+﻿@model EditModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+<div class="mtd-users-wrap noselect">
+    <div style="flex-grow: 1; padding: 24px 8px 8px 8px;">
+        <div style="position:relative">
+            <div style="position: absolute; padding: 4px; top: -16px; left: 12px; background-color:white;font-weight: 500; z-index:1;">
+                @Localizer["Available forms for creating a dependent link"]
+            </div>
+        </div>
+        <div style="border: 1px solid lightgray; padding: 8px; position:relative;">
+            <div style="display: flex; flex-wrap:wrap;">
+                @if (!Model.ListForms.Any())
+                {
+                    <span style="padding: 4px;">
+                        @Localizer["No forms to select"]
+                    </span>
+                }
+                @foreach (var item in Model.ListForms)
+                {
+                   
+                    <div style="margin: 4px; padding:4px; display: flex; background-color: whitesmoke; border-radius: 15px; width: 200px;  overflow:hidden;">
+                        <div class="mdc-form-field">
+                            <div class="mdc-checkbox">
+                                <input type="checkbox"
+                                       class="mdc-checkbox__native-control"
+                                       id="@item.MtdForm.Id-related" name="@item.MtdForm.Id-related" @if (item.Checked) { <text> checked</text>} />
+                                <div class="mdc-checkbox__background">
+                                    <svg class="mdc-checkbox__checkmark"
+                                         viewBox="0 0 24 24">
+                                        <path class="mdc-checkbox__checkmark-path"
+                                              fill="none"
+                                              d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                    </svg>
+                                    <div class="mdc-checkbox__mixedmark"></div>
+                                </div>
+                            </div>
+                            <label for="@item.MtdForm.Id-related" style="cursor:pointer">@item.MtdForm.Name</label>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

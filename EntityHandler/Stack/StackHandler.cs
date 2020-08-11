@@ -52,7 +52,87 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Stack
                .ToListAsync();
 
             return mtdStoreStack;
-        } 
+        }
+
+        public string GetValueAsString(MtdStoreStack stack, MtdFormPartField field)
+        {
+            string value = string.Empty;
+
+            switch (field.MtdSysType)
+            {
+                case 2:
+                    {
+                        int result = 0;
+                        if (stack != null && stack.MtdStoreStackInt != null)
+                        {
+                            result = stack.MtdStoreStackInt.Register;
+                        };
+                        value = result.ToString();
+                        break;
+                    }
+                case 3:
+                    {
+                        double result = 0.00;
+                        if (stack != null && stack.MtdStoreStackDecimal != null)
+                        {
+                            result = (double)stack.MtdStoreStackDecimal.Register;
+                        }
+                        value = result.ToString();
+                        break;
+                    }
+                case 5:
+                    {
+
+                        if (stack != null && stack.MtdStoreStackDate != null)
+                        {
+                            value = stack.MtdStoreStackDate.Register.Date.ToShortDateString();
+                        }
+                        break;
+                    }
+                case 6:
+                    {
+                        if (stack != null && stack.MtdStoreStackDate != null)
+                        {
+                     
+                            value = stack.MtdStoreStackDate.Register.ToShortDateString();
+                        }
+
+                        break;
+                    }
+ 
+                case 11:
+                    {
+                        
+                        if (stack != null && stack.MtdStoreLink != null)
+                        {
+                            value = stack.MtdStoreLink.Register;
+                        }
+                        break;
+                    }
+                case 12:
+                    {
+                        int result = 0;
+                        if (stack != null && stack.MtdStoreStackInt != null)
+                        {
+                            result = stack.MtdStoreStackInt.Register;
+                        }
+                        value = result.ToString();
+                        break;
+                    }
+                default:
+                    {                    
+                        if (stack != null && stack.MtdStoreStackText != null)
+                        {
+                            value = stack.MtdStoreStackText.Register;
+                        }
+                   
+                        break;
+                    }
+            }
+
+            return value;
+
+        }
 
     }
 }

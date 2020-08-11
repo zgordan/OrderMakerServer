@@ -17,6 +17,8 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -27,6 +29,13 @@ using Mtd.OrderMaker.Server.Entity;
 
 namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
 {
+
+    public class FormRelated
+    {
+        public MtdForm MtdForm { get; set; }
+        public bool Checked { get; set; }
+    }
+
     public class EditModel : PageModel
     {
         private readonly OrderMakerContext _context;
@@ -43,6 +52,8 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
         [BindProperty]
         public bool VisibleDate { get; set; }
 
+        public List<FormRelated> ListForms { get; set; }
+
         public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
@@ -58,8 +69,20 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
             }
 
 
-            VisibleNumber = MtdForm.VisibleNumber == 1 ? true : false;
-            VisibleDate = MtdForm.VisibleDate == 1 ? true : false;
+            VisibleNumber = MtdForm.VisibleNumber == 1;
+            VisibleDate = MtdForm.VisibleDate == 1;
+
+            IList<MtdForm> forms = await _context.MtdForm.OrderBy(x => x.Sequence).ToListAsync();
+            IList<MtdFormRelated> relateds = await _context.MtdFormRelated.Where(x => x.ParentFormId == MtdForm.Id).ToListAsync();
+            ListForms = new List<FormRelated>();
+            foreach (var form in forms)
+            {
+                ListForms.Add(new FormRelated
+                {
+                    MtdForm = form,
+                    Checked = relateds.Where(x => x.ChildFormId == form.Id).Any()
+                });
+            }
 
             return Page();
         }
@@ -77,6 +100,31 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
                 return NotFound();
             }
 
+            var form = await Request.ReadFormAsync();
+
+            IList<MtdForm> mtdForms = await _context.MtdForm.AsNoTracking().OrderBy(x => x.Sequence).ToListAsync();
+            List<MtdFormRelated> relateds = new List<MtdFormRelated>();
+            IList<MtdFormRelated> listForDelete = await _context.MtdFormRelated.AsNoTracking().Where(x => x.ParentFormId == oldForm.Id).ToListAsync();
+            if (listForDelete.Count>0)
+            {
+                _context.MtdFormRelated.RemoveRange(listForDelete);
+                await _context.SaveChangesAsync();
+            }
+            
+
+            foreach (var mtdForm in mtdForms)
+            {
+                if (form[$"{mtdForm.Id}-related"].FirstOrDefault() == "true")
+                {
+                    relateds.Add(new MtdFormRelated { Id = Guid.NewGuid().ToString(), ParentFormId = MtdForm.Id, ChildFormId = mtdForm.Id });
+                }
+            }
+
+            if (relateds.Count > 0)
+            {
+                _context.MtdFormRelated.AddRange(relateds);
+            }
+
             MtdForm.Parent = oldForm.Parent;
             _context.Attach(MtdForm).State = EntityState.Modified;
 
@@ -84,10 +132,10 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
             MtdForm.VisibleDate = VisibleDate ? (sbyte)1 : (sbyte)0;
 
             string idCheckBox = "header-delete";
-            if (Request.Form[idCheckBox].FirstOrDefault() == null || Request.Form[idCheckBox].FirstOrDefault() == "false")
+            if (form[idCheckBox].FirstOrDefault() == null || form[idCheckBox].FirstOrDefault() == "false")
             {
                 string idInput = "header-file-upload-input";
-                IFormFile file = Request.Form.Files.FirstOrDefault(x => x.Name == idInput);
+                IFormFile file = form.Files.FirstOrDefault(x => x.Name == idInput);
                 if (file != null)
                 {
                     byte[] streamArray = new byte[file.Length];
@@ -116,10 +164,10 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
 
             string idCheckDeskBox = "desk-delete";
 
-            if (Request.Form[idCheckDeskBox].FirstOrDefault() == null || Request.Form[idCheckDeskBox].FirstOrDefault() == "false")
+            if (form[idCheckDeskBox].FirstOrDefault() == null || form[idCheckDeskBox].FirstOrDefault() == "false")
             {
                 string idInput = "desk-file-upload-input";
-                IFormFile file = Request.Form.Files.FirstOrDefault(x => x.Name == idInput);
+                IFormFile file = form.Files.FirstOrDefault(x => x.Name == idInput);
                 if (file != null)
                 {
                     byte[] streamArray = new byte[file.Length];
@@ -147,6 +195,7 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
                 MtdFormDesk desk = new MtdFormDesk() { Id = MtdForm.Id };
                 _context.Attach(desk).State = EntityState.Deleted;
             }
+
 
             try
             {

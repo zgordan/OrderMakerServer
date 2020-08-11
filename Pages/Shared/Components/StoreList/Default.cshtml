@@ -1,0 +1,83 @@
+﻿@model StoreListModel
+
+<div mtd-store-list="@Model.ListId">
+
+    <input type="hidden" id="@Model.ListId-selected-id" name="selected-id" value="@Model.ResultValue" />
+    <input type="hidden" id="@Model.ListId-selected-target" value="@Model.ResultTarget" />
+
+
+
+    <form id="@Model.ListId-form" method="post" action="/api/store/list" autocomplete="off">
+        @Html.AntiForgeryToken()
+
+        <input type="number" class="mtd-main-display-none" id="@Model.ListId-page-number" name="search-page" value="@Model.PageNumber" />
+        <input type="number" class="mtd-main-display-none" id="@Model.ListId-page-count" name="search-page-count" value="@Model.PageCount" />
+
+
+        <div style="display: flex;">
+            <div>
+                <input type="text" id="@Model.ListId-search-number" name="search-number" placeholder="number" />
+            </div>
+            <div style="flex-grow: 1">
+                <input type="text" id="@Model.ListId-search-text" name="search-text" placeholder="search text" style="width: 100%" />
+            </div>
+            <div>
+                <input type="hidden" id="@Model.ListId-form-img"  value="@Model.ImgSrc" />
+                @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
+                       {
+                           Id = $"{Model.ListId}-form-id",
+                           Name = "form-id",
+                           Items = Model.RelatedForms,
+                           Label = "Document Form",
+                           LabelLocalized = true,
+                       })
+            </div>
+            <div>
+                <button type="button" onclick="StoreListClearFilter('@Model.ListId')">Clear</button>
+            </div>
+        </div>
+    </form>
+
+    <div id="@Model.ListId-table-area">
+        <table>
+            <thead>
+                <tr>
+                    @foreach (string colname in Model.Columns)
+                    {
+                        <th>@colname</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var storeItem in Model.Store)
+                {
+                    <tr onclick="StoreListClickRow('@Model.ListId','@storeItem.Fields[0].Value','@Model.CurentForm.Name', '@storeItem.Fields[1].Value')">
+
+                        @foreach (var field in storeItem.Fields)
+                        {
+                            <td>@field.Value</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div style="display:flex;">
+        <div>
+            <button onclick="StoreListPageNavFirst('@Model.ListId')"><<</button>
+        </div>
+        <div>
+            <button onclick="StoreListPageNavPrev('@Model.ListId')"><</button>
+        </div>
+        <div id="@Model.ListId-page-line">
+            @Model.PageLine
+        </div>
+        <div>
+            <button onclick="StoreListPageNavNext('@Model.ListId')">></button>
+        </div>
+        <div>
+            <button onclick="StoreListPageNavLast('@Model.ListId')">>></button>
+        </div>
+    </div>
+</div>

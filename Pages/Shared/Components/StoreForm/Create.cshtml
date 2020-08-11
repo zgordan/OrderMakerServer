@@ -25,72 +25,9 @@
     string idStore = Guid.NewGuid().ToString();    
 }
 
-<div class="mtd-store-style-blank mdc-elevation--z4">
-    <div class="mtd-store-edit-bar" style="text-align: right">
-        <div class="mtd-store-edit-control" style="position:absolute">
-            <button id="store-create-button" class="mdc-fab mdc-fab--extended" aria-label="Create" type="button">
-                <div class="mdc-fab__ripple"></div>
-                <span class="material-icons mdc-fab__icon">save</span>
-                <span class="mdc-fab__label">@Localizer["Save"]</span>
-            </button>
-        </div>
-        <div>
-            <button mtd-data-href="/workplace/store/index?indexForm=@Model.Store.MtdFormNavigation.Id" class="mdc-button" type="button">
-                <div class="mdc-button__ripple"></div>
-                <span class="mdc-button__label">@Localizer["Cancel"]</span>
-                <i class="material-icons mdc-button__icon" aria-hidden="true">cancel</i>
-            </button>
-        </div>
-    </div>
-    @*<div class="mtd-store-edit-bar">
-            <div class="mtd-store-edit-control">
-                <div class="mtd-ui-material-submit">
-                    <button id="store-create-button" type="button">@Localizer["Save"]</button>
-                </div>
-            </div>
-        </div>*@
-    @if (Model.Store.MtdFormNavigation.ParentNavigation != null)
-    {
-
-        string parentNumber = "";
-        string checkDisplay = "none";
-        if (Model.Store.ParentNavigation != null)
-        {
-            parentNumber = Model.Store.ParentNavigation.Sequence.ToString("D9");
-            checkDisplay = "";
-        }
-
-
-        <div style="padding-bottom:18px;">
-            <form id="store-parent-form" method="post" autocomplete="off" action="/api/store/number/id" style="width: 100%">
-                @Html.AntiForgeryToken()
-                <input value="@Model.Store.MtdFormNavigation.Parent" type="hidden" name="idFromParent" />
-                <input id="store-parent-number" value="@parentNumber" type="hidden" name="store-parent-number" />
-            </form>
-            <div id="store-parent-progress" role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate mdc-linear-progress--closed">
-                <div class="mdc-linear-progress__buffering-dots"></div>
-                <div class="mdc-linear-progress__buffer"></div>
-                <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
-                    <span class="mdc-linear-progress__bar-inner"></span>
-                </div>
-                <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
-                    <span class="mdc-linear-progress__bar-inner"></span>
-                </div>
-            </div>
-            <div id="store-base-field" class="mdc-text-field mdc-text-field--with-trailing-icon" style="width: 100%;">
-                <i id="parent-result-warning" class="material-icons mdc-text-field__icon mdc-animation-deceleration-curve-timing-function" style="color: red; display: none">warning</i>
-                <i id="parent-result-check" class="material-icons mdc-text-field__icon mdc-animation-deceleration-curve-timing-function" style="color: green; display: @checkDisplay">check</i>
-                <input type="number" id="store-parent-input" class="mdc-text-field__input" value="@parentNumber" name="store-parent-input" required>
-                <label class="mdc-floating-label" for="storeParenNum">@Localizer["On based form"]</label>
-                <div class="mdc-line-ripple"></div>
-            </div>
-            <div class="mdc-text-field-helper-line">
-                <div class="mdc-text-field-helper-text">@Localizer["Enter the document number"]  "@Model.Store.MtdFormNavigation.ParentNavigation.Name" </div>
-            </div>
-        </div>
-    }
-
+<div class="mtd-store-style-blank">
     <div id="@idStore-modal" class="mtd-store-style-modal"></div>
+    
     <form mtd-data-form method='post' autocomplete='off' enctype='multipart/form-data' action='@action'>
         <div class="mtd-store-style-badge">
             @if (Model.Store.MtdFormNavigation.MtdFormHeader != null)
@@ -121,7 +58,7 @@
                                MTDTexFieldView = MTDTextFieldViews.Outlined,
                                Label = "Date",
                                LabelLocalized = true,
-                           });                        
+                           });
                     }
                     else
                     {
@@ -133,10 +70,11 @@
         </div>
 
         @Html.AntiForgeryToken()
-   
+
         <input id="store-create-clicker" mtd-data-clicker mtd-data-location="/workplace/store/details?id=@idStore" type="hidden" />
         <input type="hidden" name="form-id" value="@Model.Store.MtdForm" />
         <input type="hidden" name="store-id" value="@idStore" />
+        <input type="hidden" id="store-parent" name="store-parent" value="@Model.Store.Parent" />
 
         <div>
             @foreach (var part in Model.Parts)

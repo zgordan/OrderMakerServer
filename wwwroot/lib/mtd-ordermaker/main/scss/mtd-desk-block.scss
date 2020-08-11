@@ -65,14 +65,14 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-   
     padding: 8px;
     text-shadow: 1px 1px 2px #fff;
     border-radius: 25%;
 }
 
 .mtd-desk-block-title-button {
-    color: lightsteelblue;
+    color: navy;
+    //color: lightsteelblue;
     float: right;
     /*    display: none;
     @media (max-width: 1020px) {
@@ -89,9 +89,32 @@
 }
 
 .mtd-desk-block-content--colapsed {
-   display: none;
+    display: none;
 }
 
+
+.mtd-desk-block-content--full {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    top: 56px;
+    z-index: 3;
+    background-color: white;
+    animation: 1s alternate slidein;
+}
+
+@keyframes slidein {
+    from {
+        bottom: initial;
+        top: initial;
+        width: 100%; 
+    }
+        
+    to {
+        bottom: 0        
+    }
+}
 
 .mtd-desk-block-body {
     overflow: hidden;

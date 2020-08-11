@@ -57,6 +57,9 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
         {
             string Id = Request.Form["idStore"];
             string dateCreate = Request.Form["date-create"];
+            string storeParent = Request.Form["store-parent"];
+
+            if (storeParent == string.Empty || storeParent.Length > 36) { storeParent = null; }
 
             MtdStore mtdStore = await _context.MtdStore.FirstOrDefaultAsync(x => x.Id == Id);
             if (mtdStore == null)
@@ -84,6 +87,8 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                     _context.MtdStore.Update(mtdStore);
                 }
             }
+            
+            mtdStore.Parent = storeParent;
 
             MtdLogDocument mtdLog = new MtdLogDocument
             {
@@ -167,9 +172,13 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> OnPostCreateAsync()
         {
+            var form = await Request.ReadFormAsync();
             string formId = Request.Form["form-id"];
             string dateCreate = Request.Form["date-create"];
             string idStore = Request.Form["store-id"];
+            string storeParent = Request.Form["store-parent"];
+
+            if (storeParent == string.Empty || storeParent.Length > 36) { storeParent = null; }
 
             WebAppUser webAppUser = await _userHandler.GetUserAsync(HttpContext.User);
             bool isCreator = await _userHandler.IsCreator(webAppUser, formId);
@@ -183,7 +192,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             int? sequence = await _context.MtdStore.Where(x => x.MtdForm == formId).MaxAsync(x => (int?)x.Sequence) ?? 0;
             sequence++;
 
-            MtdStore mtdStore = new MtdStore { Id = idStore, MtdForm = formId, Sequence = sequence ?? 1 };
+            MtdStore mtdStore = new MtdStore { Id = idStore, MtdForm = formId, Sequence = sequence ?? 1, Parent = storeParent };
 
             bool setData = await _userHandler.CheckUserPolicyAsync(webAppUser, mtdStore.MtdForm, RightsType.SetDate);
             if (setData)

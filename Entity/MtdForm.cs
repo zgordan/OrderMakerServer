@@ -35,6 +35,8 @@ namespace Mtd.OrderMaker.Server.Entity
             MtdPolicyForms = new HashSet<MtdPolicyForms>();
             MtdStore = new HashSet<MtdStore>();
             MtdFilterScript = new HashSet<MtdFilterScript>();
+            MtdParentForms = new HashSet<MtdFormRelated>();
+            MtdChildForms = new HashSet<MtdFormRelated>();
         }
 
         public string Id { get; set; }
@@ -58,7 +60,9 @@ namespace Mtd.OrderMaker.Server.Entity
         public virtual ICollection<MtdFormPart> MtdFormPart { get; set; }
         public virtual ICollection<MtdPolicyForms> MtdPolicyForms { get; set; }
         public virtual ICollection<MtdStore> MtdStore { get; set; }
-        public virtual ICollection<MtdFilterScript> MtdFilterScript { get; set; }
+        public virtual ICollection<MtdFilterScript> MtdFilterScript { get; set; }        
+        public virtual ICollection<MtdFormRelated> MtdParentForms { get; set; }
+        public virtual ICollection<MtdFormRelated> MtdChildForms { get; set; }
     }
 }
 

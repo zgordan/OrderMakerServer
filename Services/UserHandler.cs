@@ -61,7 +61,7 @@ namespace Mtd.OrderMaker.Server.Services
         private readonly IdentityDbContext identity;
         public static readonly string PolicyKey = "PolicyCache";
 
-        public UserHandler(IdentityDbContext identity,PolicyCache cache, OrderMakerContext context,
+        public UserHandler(IdentityDbContext identity, PolicyCache cache, OrderMakerContext context,
             IUserStore<WebAppUser> store,
             IOptions<IdentityOptions> optionsAccessor,
             IPasswordHasher<WebAppUser> passwordHasher,
@@ -70,12 +70,12 @@ namespace Mtd.OrderMaker.Server.Services
             ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors,
             IServiceProvider services, ILogger<UserManager<WebAppUser>> logger, SignInManager<WebAppUser> signInManager) :
             base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
-                {
-                    _context = context;
-                    _signInManager = signInManager;
-                    _cache = cache;
-                    this.identity = identity;
-                }
+        {
+            _context = context;
+            _signInManager = signInManager;
+            _cache = cache;
+            this.identity = identity;
+        }
 
         public async Task<IList<MtdPolicy>> CacheRefresh()
         {
@@ -201,6 +201,9 @@ namespace Mtd.OrderMaker.Server.Services
 
         public async Task<bool> IsViewer(WebAppUser user, string formId, string storeId)
         {
+            if (storeId == null || formId == null) { return false; }
+            if (storeId.Length > 36 || formId.Length > 36) { return false; }
+
             IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
             string policyId = await GetPolicyIdAsync(user);
             if (policyId == null) { return false; }
@@ -208,14 +211,25 @@ namespace Mtd.OrderMaker.Server.Services
             if (policyForms == null) { return false; }
             if (policyForms.ViewAll == 1) { return true; }
 
-            if (storeId != null)
-            {
-                bool isOwner = await IsOwner(user, storeId);
-                if (policyForms.ViewOwn == 1 && isOwner) { return true; }
+            bool isOwner = await IsOwner(user, storeId);
+            if (policyForms.ViewOwn == 1 && isOwner) { return true; }
 
-                bool inGroup = await InGroup(user, formId, storeId);
-                if (policyForms.ViewGroup == 1 && inGroup) { return true; }
-            }
+            bool inGroup = await InGroup(user, formId, storeId);
+            if (policyForms.ViewGroup == 1 && inGroup) { return true; }
+
+            return false;
+
+        }
+
+        public async Task<bool> IsViewer(WebAppUser user, string formId)
+        {
+            if (formId.Length > 36) { return false; }
+            IList<MtdPolicy> mtdPolicy = await CacheGetOrCreateAsync();
+            string policyId = await GetPolicyIdAsync(user);
+            if (policyId == null) { return false; }
+            MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == formId && x.MtdPolicy == policyId).FirstOrDefault();
+            if (policyForms == null) { return false; }
+            if (policyForms.ViewAll == 1 || policyForms.ViewGroup == 1 || policyForms.ViewOwn==1) { return true; }
 
             return false;
 
@@ -341,7 +355,7 @@ namespace Mtd.OrderMaker.Server.Services
             List<WebAppUser> result = new List<WebAppUser>();
             List<WebAppUser> users = await GetUsersInGroupsAsync(webAppUser);
 
-            foreach(WebAppUser user in users)
+            foreach (WebAppUser user in users)
             {
                 bool checkDeny = await CheckUserPolicyAsync(user, formId, RightsType.OwnDenyGroup);
                 if (!checkDeny || webAppUser.Id == user.Id)
@@ -353,7 +367,7 @@ namespace Mtd.OrderMaker.Server.Services
             return result;
         }
 
-        public async Task<IList<WebAppUser>> GetUsersInGroupAsync(string groupId = null) 
+        public async Task<IList<WebAppUser>> GetUsersInGroupAsync(string groupId = null)
         {
             if (groupId != null)
             {
@@ -361,9 +375,9 @@ namespace Mtd.OrderMaker.Server.Services
                 return await GetUsersForClaimAsync(claim);
             }
 
-            IList<string> userIds = await identity.UserClaims.Where(x => x.ClaimType == "group").Select(x => x.UserId).ToListAsync();            
-            return  await Users.Where(x=> !userIds.Contains(x.Id)).ToListAsync();
-            
+            IList<string> userIds = await identity.UserClaims.Where(x => x.ClaimType == "group").Select(x => x.UserId).ToListAsync();
+            return await Users.Where(x => !userIds.Contains(x.Id)).ToListAsync();
+
         }
 
         public async Task<List<WebAppUser>> GetUsersInGroupsAsync(WebAppUser webAppUser)
@@ -435,7 +449,7 @@ namespace Mtd.OrderMaker.Server.Services
         public async Task<MtdFilter> GetFilterAsync(ClaimsPrincipal principal, string formId)
         {
             WebAppUser user = await GetUserAsync(principal);
-            return await GetFilterAsync(user,formId);
+            return await GetFilterAsync(user, formId);
         }
 
         public async Task<bool> IsFilterAccessingAsync(ClaimsPrincipal user, int scriptId)
@@ -457,11 +471,12 @@ namespace Mtd.OrderMaker.Server.Services
             List<int> filterIds = policy.MtdPolicyScripts.Select(x => x.MtdFilterScriptId).ToList();
 
             var query = _context.MtdFilterScript.AsNoTracking().Where(x => filterIds.Contains(x.Id) && x.MtdFormId == formId);
-            
-            if (apply > 0) {
+
+            if (apply > 0)
+            {
                 var filter = await GetFilterAsync(user, formId);
-                IList<int> applyIds = await _context.MtdFilterScriptApply.Where(x => x.MtdFilterId == filter.Id).Select(x=>x.MtdFilterScriptId).ToListAsync(); 
-                query = query.Where(q => applyIds.Contains(q.Id)); 
+                IList<int> applyIds = await _context.MtdFilterScriptApply.Where(x => x.MtdFilterId == filter.Id).Select(x => x.MtdFilterScriptId).ToListAsync();
+                query = query.Where(q => applyIds.Contains(q.Id));
             }
 
             return await query.ToListAsync();

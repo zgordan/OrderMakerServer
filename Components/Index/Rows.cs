@@ -52,27 +52,17 @@ namespace Mtd.OrderMaker.Server.Components.Index
         public async Task<IViewComponentResult> InvokeAsync(string formId)
         {
             var user = await _userHandler.GetUserAsync(HttpContext.User);
-            IList<MtdFormPart> parts = await _userHandler.GetAllowPartsForView(user, formId);
-            List<string> partIds = parts.Select(x => x.Id).ToList(); 
 
             FilterHandler handlerFilter = new FilterHandler(_context, formId, user, _userHandler);
             Incomer incomer = await handlerFilter.GetIncomerDataAsync();
             TypeQuery typeQuery = await handlerFilter.GetTypeQueryAsync(user);
             OutFlow outFlow = await handlerFilter.GetStackFlowAsync(incomer, typeQuery);
-            IList<MtdStore> mtdStore = outFlow.MtdStores;
-
-            decimal count = (decimal)outFlow.Count / incomer.PageSize;
-            pageCount = Convert.ToInt32(Math.Ceiling(count));
-            pageCount = pageCount == 0 ? 1 : pageCount;
-
-            IList<string> storeIds = mtdStore.Select(s => s.Id).ToList();
-            IList<string> fieldIds = fieldIds = incomer.FieldForColumn.Select(x => x.Id).ToList();
-
-            IList<string> allowFiieldIds = await _context.MtdFormPartField.Where(x => partIds.Contains(x.MtdFormPart)).Select(x => x.Id).ToListAsync();
-            fieldIds = allowFiieldIds.Where(x => fieldIds.Contains(x)).ToList();
+            
+            IList<MtdStore> mtdStores = outFlow.MtdStores;
+            IList<string> storeIds = mtdStores.Select(s => s.Id).ToList();
 
             StackHandler handlerStack = new StackHandler(_context);
-            IList<MtdStoreStack> mtdStoreStack = await handlerStack.GetStackAsync(storeIds, fieldIds);
+            IList<MtdStoreStack> mtdStoreStack = await handlerStack.GetStackAsync(storeIds, outFlow.AllowFieldIds);
 
             IList<MtdStoreApproval> mtdStoreApprovals = await _context.MtdStoreApproval.Where(x => storeIds.Contains(x.Id)).ToListAsync();
             List<ApprovalStore> approvalStores = await ApprovalHandler.GetStoreStatusAsync(_context, storeIds, user);
@@ -87,9 +77,9 @@ namespace Mtd.OrderMaker.Server.Components.Index
             {
                 FormId = formId,
                 SearchNumber = incomer.SearchNumber,
-                PageCount = pageCount,
-                MtdFormPartFields = incomer.FieldForColumn.Where(x => fieldIds.Contains(x.Id)).ToList(),
-                MtdStores = mtdStore,
+                PageCount = outFlow.PageCount,
+                MtdFormPartFields = incomer.FieldForColumn.Where(x => outFlow.AllowFieldIds.Contains(x.Id)).ToList(),
+                MtdStores = mtdStores,
                 MtdStoreStack = mtdStoreStack,
                 WaitList = incomer.WaitList == 1,
                 ShowDate = await handlerFilter.IsShowDate(),

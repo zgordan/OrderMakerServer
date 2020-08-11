@@ -17,6 +17,8 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -41,6 +43,8 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
         public MtdStore MtdStore { get; set; }
         public MtdForm MtdForm { get; set; }
 
+        public IList<MtdForm> RelatedForms { get; set; }
+
         public async Task<IActionResult> OnGet(string formId)
         {
 
@@ -59,6 +63,12 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
 
             MtdForm = await _context.MtdForm.FindAsync(formId);            
             MtdStore = new MtdStore { MtdForm = MtdForm.Id, MtdFormNavigation = MtdForm};
+
+            RelatedForms = await _context.MtdFormRelated.Include(x=>x.MtdChildForm)
+                .Where(x => x.ParentFormId == MtdForm.Id).Select(x=>x.MtdChildForm)
+                .OrderBy(x=>x.Sequence)
+                .ToListAsync();
+
             return Page();
         }
 

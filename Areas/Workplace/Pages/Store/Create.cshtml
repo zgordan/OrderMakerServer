@@ -22,10 +22,14 @@
 
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHtmlLocalizer<SharedResource> Localizer
+
 @{
     ViewData["Title"] = Localizer["Creating document"];
     ViewData["SecondTitle"] = Model.MtdForm.Name;
+    string parentStoreId = Request.Query["parentStoreId"];
+    string @listGuid = Guid.NewGuid().ToString(); 
 }
+
 @section Head{
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/store/css/mtd-store-edit.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/ui/css/mtd-ui-material.css" asp-append-version="true" />
@@ -38,12 +42,74 @@
 }
 
 <div class="mtd-desk">
-    <div class="mtd-desk-panel"></div>
+    <div class="mtd-desk-panel">
+        <div style="padding-left: 4px; text-align: center; z-index: 2; position:fixed">
+            <button id="store-create-button" class="mdc-fab" aria-label="Create" type="button">
+                <div class="mdc-fab__ripple"></div>
+                <span class="material-icons mdc-fab__icon">save</span>
+                @*<span class="mdc-fab__label">@Localizer["Save"]</span>*@
+            </button>
+            <div style="padding-top: 8px;">
+                <button class="mdc-fab mdc-fab--mini" aria-label="List" mtd-data-href="/workplace/store/index?indexForm=@Model.MtdForm.Id">
+                    <div class="mdc-fab__ripple"></div>
+                    <span class="mdc-fab__icon material-icons">cancel</span>
+                    @*<span class="mdc-fab__label">@Localizer["Cancel"]</span>*@
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="mtd-desk-block-content">
+        <div class="mtd-desk-blocks">
+            <div class="mtd-desk-block">
+                <div style="height: 112px;">
+                    <div id="block-relation" class="mtd-desk-block-content mdc-elevation--z4">
+                        <div class="mtd-desk-block-title">
+                            <div class="mtd-desk-block-title-icon"></div>
+                            <div class="mtd-desk-block-title-label">
+                                @Localizer["Related document"]
+                            </div>
+                            <div class="mtd-desk-block-title-button">
+                                <button onclick="clickBlockFullScreen(this)"
+                                        class="mdc-icon-button"
+                                        aria-label="Add to favorites"
+                                        aria-hidden="true"
+                                        aria-pressed="false"
+                                        data="block-relation">
+                                    <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">close_fullscreen</i>
+                                    <i class="material-icons mdc-icon-button__icon">open_in_full</i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="block-parent" class="mtd-desk-block-body">
+                            <div>
+                                @await Component.InvokeAsync(typeof(StoreViewer), new
+                                   {
+                                       storeId = parentStoreId,
+                                       viewerId = listGuid
+                                   })
+                            </div>
+
+                            <div style="text-align: center; font-weight: bold">
+                                @await Component.InvokeAsync(typeof(StoreList), new
+                                {                                   
+                                    resultTarget = "store-parent",
+                                    resultValue = parentStoreId,
+                                    relatedForms = Model.RelatedForms,
+                                    listId = listGuid
+
+                                })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mtd-desk-block-content mdc-elevation--z4">
+                    @await Component.InvokeAsync("StoreForm", new { store = Model.MtdStore, type = FormType.Create })
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="mtd-main-center">
-    @await Component.InvokeAsync("StoreForm", new { store = Model.MtdStore, type = FormType.Create })
-</div>
 
 <div id="dialog-info" class="mdc-dialog"
      role="alertdialog"
@@ -68,7 +134,7 @@
 </div>
 
 
-@section Scripts {   
+@section Scripts {
     <script src="~/lib/mtd-ordermaker/store/js/mtd-store-edit.js" asp-append-version="true"></script>
     <script src="~/lib/mtd-ordermaker/ui/js/mtd-ui-material.js" asp-append-version="true"></script>
     <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>

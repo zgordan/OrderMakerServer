@@ -49,6 +49,7 @@ namespace Mtd.OrderMaker.Server.Entity
         public virtual DbSet<MtdFilterScript> MtdFilterScript { get; set; }
         public virtual DbSet<MtdFilterScriptApply> MtdFilterScriptApply { get; set; }
         public virtual DbSet<MtdForm> MtdForm { get; set; }
+        public virtual DbSet<MtdFormRelated> MtdFormRelated { get; set; }
         public virtual DbSet<MtdFormDesk> MtdFormDesk { get; set; }
         public virtual DbSet<MtdFormHeader> MtdFormHeader { get; set; }
         public virtual DbSet<MtdFormList> MtdFormList { get; set; }
@@ -911,6 +912,45 @@ namespace Mtd.OrderMaker.Server.Entity
                     .WithMany(p => p.MtdFormList)
                     .HasForeignKey(d => d.MtdForm)
                     .HasConstraintName("fk_list_form");
+            });
+
+            modelBuilder.Entity<MtdFormRelated>(entity =>
+            {
+                entity.ToTable("mtd_form_related");
+
+                entity.HasIndex(e => e.Id)
+                    .HasName("id_UNIQUE")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.ParentFormId)
+                    .HasName("fk_parent_form_idx");
+
+                entity.HasIndex(e => e.ChildFormId)
+                    .HasName("fk_child_form_idx");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.ParentFormId)
+                    .IsRequired()
+                    .HasColumnName("parent_form_id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.ChildFormId)
+                    .IsRequired()
+                    .HasColumnName("child_form_id")
+                    .HasColumnType("varchar(36)");
+
+                entity.HasOne(d => d.MtdParentForm)
+                    .WithMany(p => p.MtdParentForms)
+                    .HasForeignKey(d => d.ParentFormId)
+                    .HasConstraintName("fk_parent_form");
+
+                entity.HasOne(d => d.MtdChildForm)
+                    .WithMany(p => p.MtdChildForms)
+                    .HasForeignKey(d => d.ChildFormId)
+                    .HasConstraintName("fk_child_form");
             });
 
             modelBuilder.Entity<MtdFormPart>(entity =>

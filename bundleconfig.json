@@ -3,6 +3,7 @@
     "outputFileName": "wwwroot/lib/mtd-ordermaker/main/js/mtd-main.min.js",
     "inputFiles": [
       "wwwroot/lib/mtd-ordermaker/main/js/mtd-main.js",
+      "wwwroot/lib/mtd-ordermaker/main/js/mtd-main-desk.js",
       "wwwroot/lib/mtd-ordermaker/main/js/mtd-draggable.js",
       "wwwroot/lib/mtd-ordermaker/main/js/mtd-select-list.js",
       "wwwroot/lib/mtd-ordermaker/main/js/mtd-text-field.js",
