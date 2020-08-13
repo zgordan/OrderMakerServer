@@ -9,9 +9,7 @@
         setTimeout(() => BodyShowHide(content), 500);
     } else {
         BodyShowHide(content);
-    }
-
-    
+    }    
     
 }
 
@@ -23,4 +21,20 @@ const clickBlockToogle = (el) => {
 
 const BodyShowHide = (content) => {
     content.querySelector(".mtd-desk-block-body--hidden").classList.toggle("mtd-main-display-none");
+}
+
+
+const fabs = document.querySelectorAll(".mtd-fab");
+if (fabs) {
+    fabs.forEach((fab) => {
+        console.log(fab);
+        fab.addEventListener("mouseover", () => {
+            fab.querySelector(".mdc-fab__label").classList.toggle("mtd-main-display-none");
+            fab.classList.toggle("mdc-fab--extended");
+        });
+        fab.addEventListener("mouseout", () => {
+            fab.classList.toggle("mdc-fab--extended");
+            fab.querySelector(".mdc-fab__label").classList.toggle("mtd-main-display-none");
+        });
+    });
 }

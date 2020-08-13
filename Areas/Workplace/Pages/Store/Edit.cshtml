@@ -44,7 +44,25 @@
 }
 
 <div class="mtd-desk">
-    <div class="mtd-desk-panel"></div>
+    <div class="mtd-desk-panel">
+        <div style="padding-left: 4px; z-index: 3; position:fixed">
+            <div style="height: 56px;">
+                <button id="store-create-button" class="mtd-fab mdc-fab" aria-label="Create" type="button">
+                    <div class="mdc-fab__ripple"></div>
+                    <span class="material-icons mdc-fab__icon">save</span>
+                    <span class="mdc-fab__label mtd-main-display-none">@Localizer["Save"]</span>
+                </button>
+            </div>
+            <div style="padding-top: 8px; padding-left: 8px">
+                <button class="mtd-fab mdc-fab mdc-fab--mini" aria-label="List" mtd-data-href="/workplace/store/index?indexForm=@Model.MtdForm.Id">
+                    <div class="mdc-fab__ripple"></div>
+                    <span class="mdc-fab__icon material-icons">cancel</span>
+                    <span class="mdc-fab__label mtd-main-display-none">@Localizer["Cancel"]</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="mtd-main-center">
         @await Component.InvokeAsync("StoreForm", new { store = Model.MtdStore, type = FormType.Edit })
     </div>

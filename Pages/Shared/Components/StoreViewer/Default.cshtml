@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHtmlLocalizer<SharedResource> Localizer
 
-<div id="@Model.ViewerId-viewer" style="height: 36px; width: 100%">
+<div id="@Model.ViewerId-viewer" style="min-height: 36px;">
     <div style="display: flex; align-items:center; flex-wrap:wrap">
         <div style="padding: 4px;">
             <img id="@Model.ViewerId-viewer-img" src="@Model.ImgSrc" style="max-height: 24px; max-width: 120px;" />

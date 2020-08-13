@@ -43,17 +43,19 @@
 
 <div class="mtd-desk">
     <div class="mtd-desk-panel">
-        <div style="padding-left: 4px; text-align: center; z-index: 3; position:fixed">
-            <button id="store-create-button" class="mdc-fab" aria-label="Create" type="button">
-                <div class="mdc-fab__ripple"></div>
-                <span class="material-icons mdc-fab__icon">save</span>
-                @*<span class="mdc-fab__label">@Localizer["Save"]</span>*@
-            </button>
-            <div style="padding-top: 8px;">
-                <button class="mdc-fab mdc-fab--mini" aria-label="List" mtd-data-href="/workplace/store/index?indexForm=@Model.MtdForm.Id">
+        <div style="padding-left: 4px; z-index: 3; position:fixed">
+            <div style="height: 56px;">
+                <button id="store-create-button" class="mtd-fab mdc-fab" aria-label="Create" type="button">
+                    <div class="mdc-fab__ripple"></div>
+                    <span class="material-icons mdc-fab__icon">save</span>
+                    <span class="mdc-fab__label mtd-main-display-none">@Localizer["Save"]</span>
+                </button>
+            </div>
+            <div style="padding-top: 8px; padding-left: 8px">
+                <button class="mtd-fab mdc-fab mdc-fab--mini" aria-label="List" mtd-data-href="/workplace/store/index?indexForm=@Model.MtdForm.Id">
                     <div class="mdc-fab__ripple"></div>
                     <span class="mdc-fab__icon material-icons">cancel</span>
-                    @*<span class="mdc-fab__label">@Localizer["Cancel"]</span>*@
+                    <span class="mdc-fab__label mtd-main-display-none">@Localizer["Cancel"]</span>
                 </button>
             </div>
         </div>
@@ -82,14 +84,16 @@
                             </button>
                         </div>
                     </div>
-                    <div class="mtd-desk-block-body">
+
+                
 
                         @await Component.InvokeAsync(typeof(StoreViewer), new
                             {
-                            storeId = parentStoreId,
-                            viewerId = listGuid
+                                storeId = parentStoreId,
+                                viewerId = listGuid
                             })
-                        <div class="mtd-desk-block-body--hidden mtd-main-display-none" style="width:100%">
+
+                        <div class="mtd-desk-block-body--hidden mtd-main-display-none">
 
                             @await Component.InvokeAsync(typeof(StoreList), new
                             {
@@ -99,7 +103,7 @@
                                 listId = listGuid
                             })
 
-                        </div>
+         
                     </div>
                 </div>
             </div>

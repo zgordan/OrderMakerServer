@@ -89,65 +89,7 @@
                 }
             </div>
         </div>
-
-        @*<div class="mtd-store-style-badge">
-
-            @if (Model.Owner.Store.MtdFormNavigation.MtdFormHeader != null)
-            {
-                var base64 = Convert.ToBase64String(Model.Owner.Store.MtdFormNavigation.MtdFormHeader.Image);
-                var imgSrc = String.Format("data:{0};base64,{1}", Model.Owner.Store.MtdFormNavigation.MtdFormHeader.ImageType, base64);
-
-                <img src="@imgSrc" />
-            }
-        </div>
-        <div class="mtd-store-style-header">
-            <div class="mtd-store-style-title">
-                @Model.Owner.Store.MtdFormNavigation.Name
-            </div>
-            <div class="mtd-store-style-attribute">
-                <span class="mtd-store-style-number">№ @Model.Owner.Store.Sequence.ToString("D9")</span>
-
-                <hr/>
-
-                @if (Model.Owner.Store.MtdFormNavigation.VisibleDate == 1)
-                {
-
-                    if (Model.Owner.SetDate)
-                    {
-
-                        @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
-                           {
-                               Id = "date-create",
-                               Name = "date-create",
-                               Value = @Model.Owner.Store.Timecr.ToShortDateString(),
-                               Class = "mtd-data-datepicker",
-                               MTDTexFieldView = MTDTextFieldViews.Default,
-                               Label = "Date",
-                               LabelLocalized = true,
-
-                           });
-                        <input type="text" class="mtd-data-datepicker" value="@Model.Owner.Store.Timecr.ToShortDateString()" name="date-create" />
-
-                    }
-                    else
-                    {
-                        <span class="mtd-store-style-date">@Localizer["Date"] @Model.Owner.Store.Timecr.ToShortDateString()</span>
-                    }
-                }
-
-
-            </div>
-        </div>*@
-
-
-
-        @if (Model.Parent != null)
-        {
-            <div class="mtd-store-style-based">
-                <div style="position: absolute; color: gray;font-weight: 500; background-color: white;margin-top: -24px; left:0;  padding: 4px; border-radius: 20%; font-size: smaller">@Localizer["On based"]</div>
-                @Model.Parent.Store.MtdFormNavigation.Name <text>№</text> @Model.Parent.Store.Sequence.ToString("D9") <text>от</text> @Model.Parent.Store.Timecr.ToShortDateString()
-            </div>
-        }
+       
         <div>
             @foreach (var part in Model.Owner.Parts)
             {

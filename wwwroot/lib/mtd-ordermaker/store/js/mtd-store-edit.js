@@ -74,6 +74,7 @@ ListenerCreate();
 
 const tagName = "mtdSelector";
 const items = document.querySelectorAll(`div[${tagName}]`);
+
 items.forEach((item) => {
 
     const id = item.attributes.getNamedItem(tagName).nodeValue;
@@ -162,10 +163,4 @@ textFields.forEach((textField) => {
     new MTDTextField(textField.id)
 });
 
-    //document.addEventListener("keydown", (e) => {
-    //    if (e.keyCode == 13) {
-    //        event.preventDefault();
-    //        return false;
-    //    }
-    //});
 

@@ -102,10 +102,6 @@
 .mtd-desk-block-title-button {
   color: navy;
   float: right;
-  /*    display: none;
-  @media (max-width: 1020px) {
-      display: block;
-  }*/
 }
 
 .mtd-desk-block-content {
@@ -113,7 +109,6 @@
   margin-bottom: 4px;
   overflow: hidden;
   overflow-x: auto;
-  /*white-space:nowrap;*/
 }
 
 .mtd-desk-block-content--colapsed {
@@ -132,7 +127,6 @@
 .mtd-desk-block-body {
   overflow: hidden;
   overflow-x: auto;
-  /*white-space: nowrap;*/
 }
 
 .mtd-desk-block-content table tr td:first-child {
@@ -152,9 +146,12 @@
 }
 
 .mtd-desk-block-area {
+  padding-top: 12px;
   display: flex;
   flex-direction: column;
   justify-items: center;
+  overflow: hidden;
+  overflow-x: auto;
 }
 
 .mtd-desk-block-area-table {
@@ -210,6 +207,35 @@
 .mtd-desk-block-area-table table td:nth-child(2),
 .mtd-desk-block-area-table table th:nth-child(2) {
   display: none;
+}
+
+.mtd-desk-block-search-text {
+  flex-grow: 1;
+}
+@media (max-width: 730px) {
+  .mtd-desk-block-search-text {
+    display: none;
+  }
+}
+
+@media (max-width: 730px) {
+  .mtd-desk-block-search-number {
+    flex-grow: 1;
+  }
+}
+@media (max-width: 414px) {
+  .mtd-desk-block-search-number {
+    display: none;
+  }
+}
+
+.mtd-desk-block-document {
+  display: flex;
+}
+@media (max-width: 414px) {
+  .mtd-desk-block-document {
+    flex-grow: 1;
+  }
 }
 
 .mtd-desk-draggable-item {

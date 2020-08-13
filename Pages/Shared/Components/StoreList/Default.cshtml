@@ -19,7 +19,7 @@
         <input type="number" class="mtd-main-display-none" id="@Model.ListId-page-number" name="search-page" value="@Model.PageNumber" />
         <input type="number" class="mtd-main-display-none" id="@Model.ListId-page-count" name="search-page-count" value="@Model.PageCount" />
         <div style="display: flex;">
-            <div>
+            <div class="mtd-desk-block-search-number">
                 @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
                    {
                        Id = $"{Model.ListId}-search-number",
@@ -31,9 +31,9 @@
                        HelperError = "Only numbers",
                        HelperErrorLocalizer = true
                    })
-
             </div>
-            <div style="flex-grow: 1;">
+            <div class="mtd-desk-block-search-text">
+
                 @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
                    {
                        Id = $"{Model.ListId}-search-text",
@@ -41,21 +41,20 @@
                        Placeholder = "Search for words in text fields",
                        PlaceholderLocalized = true,
                        IconLeading = "fa fa-search",
-                       HelperText = "A plus sign between words means logical AND",
-                       HelperTextLocalizer = true,
                    })
 
             </div>
-            <div>
+           
+            <div class="mtd-desk-block-document">
                 <input type="hidden" id="@Model.ListId-form-img" value="@Model.ImgSrc" />
                 @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
-                       {
-                           Id = $"{Model.ListId}-form-id",
-                           Name = "form-id",
-                           Items = Model.RelatedForms,
-                           Label = "Document Form",
-                           LabelLocalized = true,
-                       })
+                   {
+                       Id = $"{Model.ListId}-form-id",
+                       Name = "form-id",
+                       Items = Model.RelatedForms,
+                       Label = "Document Form",
+                       LabelLocalized = true,
+                   })
             </div>
 
             <div class="mtd-button-hint" style="padding-right:16px;">
@@ -72,6 +71,7 @@
 
 
     <div class="mtd-desk-block-area">
+
         <div id="@Model.ListId-table-area" class="mtd-desk-block-area-table">
             <table>
                 <thead>
