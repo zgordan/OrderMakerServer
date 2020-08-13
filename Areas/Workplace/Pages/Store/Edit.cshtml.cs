@@ -17,6 +17,7 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -44,7 +45,7 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
 
         public MtdForm MtdForm { get; set; }
         public MtdStore MtdStore { get; set; }
-
+        public IList<MtdForm> RelatedForms { get; set; }
         public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
@@ -75,8 +76,13 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                 return Forbid();
             }
 
-            MtdForm = await _context.MtdForm.FindAsync(MtdStore.MtdForm);            
-           
+            MtdForm = await _context.MtdForm.FindAsync(MtdStore.MtdForm);
+
+            RelatedForms = await _context.MtdFormRelated.Include(x => x.MtdChildForm)
+                 .Where(x => x.ParentFormId == MtdForm.Id).Select(x => x.MtdChildForm)
+                 .OrderBy(x => x.Sequence)
+                 .ToListAsync();
+
             return Page();
         }
 

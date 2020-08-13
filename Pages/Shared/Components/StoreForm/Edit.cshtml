@@ -24,23 +24,11 @@
 <form mtd-data-form method='post' autocomplete='off' enctype='multipart/form-data' action='/api/store/save'>
     @Html.AntiForgeryToken()
     <input type="hidden" name="idStore" asp-for="@Model.Owner.Store.Id" />
-    <div class="mtd-store-style-blank mdc-elevation--z4" style="margin-bottom: 24px;">
-        <div class="mtd-store-edit-bar" style="text-align: right">
-            <div class="mtd-store-edit-control" style="position:absolute">
-                <button type="button" mtd-data-clicker mtd-data-location="/workplace/store/details?id=@Model.Owner.Store.Id" class="mdc-fab mdc-fab--extended" aria-label="Save">
-                    <div class="mdc-fab__ripple"></div>
-                    <span class="material-icons mdc-fab__icon">save</span>
-                    <span class="mdc-fab__label">@Localizer["Save"]</span>
-                </button>
-            </div>
-            <div>
-                <button mtd-data-href="/workplace/store/details?id=@Model.Owner.Store.Id" class="mdc-button" type="button">
-                    <div class="mdc-button__ripple"></div>
-                    <span class="mdc-button__label">@Localizer["Cancel"]</span>
-                    <i class="material-icons mdc-button__icon" aria-hidden="true">cancel</i>
-                </button>
-            </div>
-        </div>
+    <input type="hidden" id="store-parent" name="store-parent" value="@Model.Owner.Store.Parent" />
+    <input type="hidden" id="store-edit-clicker" mtd-data-clicker mtd-data-location="/workplace/store/details?id=@Model.Owner.Store.Id" />
+
+    <div class="mtd-store-style-blank" style="margin-bottom: 24px;">    
+
         <div id="@Model.Owner.Store.Id-modal" class="mtd-store-style-modal"></div>
 
         <div class="mtd-store-style-header">
@@ -78,7 +66,7 @@
                                MTDTexFieldView = MTDTextFieldViews.Outlined,
                                Label = "Date",
                                LabelLocalized = true,
-                           });                  
+                           });
 
                     }
                     else
@@ -89,7 +77,7 @@
                 }
             </div>
         </div>
-       
+
         <div>
             @foreach (var part in Model.Owner.Parts)
             {

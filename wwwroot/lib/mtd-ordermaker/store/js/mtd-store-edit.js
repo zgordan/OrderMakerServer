@@ -17,60 +17,8 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
-function pad(num, size) {
-    var s = num + "";
-    while (s.length < size) s = "0" + s;
-    return s;
-}
-
-const ListenerCreate = (e) => {
-
-    const spn = document.getElementById("store-parent-input");
-    if (!spn) {
-        const storeCreateButton = document.getElementById("store-create-button");
-        if (storeCreateButton) {
-            storeCreateButton.addEventListener('click', () => {
-                document.getElementById('store-create-clicker').click();
-            });
-        }
-
-        return;
-    }
-
-    const form = document.getElementById("store-parent-form");
-    const action = form.getAttribute('action');
-    const iconCheck = document.getElementById("parent-result-check");
-    const iconWarning = document.getElementById("parent-result-warning");
-    const progress = document.getElementById("store-parent-progress");
-
-    document.getElementById("store-create-button").addEventListener('click', () => {
-
-        const xmlHttp = new XMLHttpRequest();
-        const formData = CreateFormData(form);
-        xmlHttp.open("post", action, true);
-        xmlHttp.onreadystatechange = function (e) {
-            if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-                setTimeout(() => {
-                    if (this.responseText) {
-                        iconCheck.style.display = "";
-                        document.getElementById("store-base-field").classList.remove("mdc-text-field--invalid");             
-                        spn.value = pad(spn.value, 9);
-                        document.getElementById('store-create-clicker').click();
-                    } else {
-                        iconWarning.style.display = "";
-                        MainShowSnackBar("Неправильный номер документа!");
-                    }
-                    progress.classList.add("mdc-linear-progress--closed");
-                }, 500);
-            }
-        }
-        xmlHttp.send(formData);
-    });
-}
 
 //Start
-
-ListenerCreate();
 
 const tagName = "mtdSelector";
 const items = document.querySelectorAll(`div[${tagName}]`);

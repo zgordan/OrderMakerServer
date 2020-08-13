@@ -97,7 +97,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Store
                 SearchNumber = searchNumber.ToString(),
                 SearchText = searchText,
                 Page = this.PageNumber,
-                PageSize = 10,
+                PageSize = 5,
                 FieldForColumn = await filterHandler.GetFieldsAsync(),
                 WaitList = 0,
             };
