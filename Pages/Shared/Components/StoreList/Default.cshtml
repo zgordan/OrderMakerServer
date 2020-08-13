@@ -1,28 +1,53 @@
 ﻿@model StoreListModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> Localizer
 
-<div mtd-store-list="@Model.ListId">
+@{
+    int height = 80;
+    height += Model.RelatedForms.Count() * 48;
+    string heightPX = $"{height}px";
+}
+
+<div mtd-store-list="@Model.ListId" style="min-height:@heightPX;">
 
     <input type="hidden" id="@Model.ListId-selected-id" name="selected-id" value="@Model.ResultValue" />
     <input type="hidden" id="@Model.ListId-selected-target" value="@Model.ResultTarget" />
 
-
-
-    <form id="@Model.ListId-form" method="post" action="/api/store/list" autocomplete="off">
+    <form id="@Model.ListId-form" method="post" action="/api/store/list" autocomplete="off" novalidate>
         @Html.AntiForgeryToken()
 
         <input type="number" class="mtd-main-display-none" id="@Model.ListId-page-number" name="search-page" value="@Model.PageNumber" />
         <input type="number" class="mtd-main-display-none" id="@Model.ListId-page-count" name="search-page-count" value="@Model.PageCount" />
-
-
         <div style="display: flex;">
             <div>
-                <input type="text" id="@Model.ListId-search-number" name="search-number" placeholder="number" />
+                @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                   {
+                       Id = $"{Model.ListId}-search-number",
+                       Name = "search-number",
+                       Placeholder = "Number",
+                       PlaceholderLocalized = true,
+                       IconLeading = "fas fa-barcode",
+                       Pattern = AppConfig.RegexPatterns.Numbers,
+                       HelperError = "Only numbers",
+                       HelperErrorLocalizer = true
+                   })
+
             </div>
-            <div style="flex-grow: 1">
-                <input type="text" id="@Model.ListId-search-text" name="search-text" placeholder="search text" style="width: 100%" />
+            <div style="flex-grow: 1;">
+                @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                   {
+                       Id = $"{Model.ListId}-search-text",
+                       Name = "search-text",
+                       Placeholder = "Search for words in text fields",
+                       PlaceholderLocalized = true,
+                       IconLeading = "fa fa-search",
+                       HelperText = "A plus sign between words means logical AND",
+                       HelperTextLocalizer = true,
+                   })
+
             </div>
             <div>
-                <input type="hidden" id="@Model.ListId-form-img"  value="@Model.ImgSrc" />
+                <input type="hidden" id="@Model.ListId-form-img" value="@Model.ImgSrc" />
                 @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
                        {
                            Id = $"{Model.ListId}-form-id",
@@ -32,52 +57,63 @@
                            LabelLocalized = true,
                        })
             </div>
-            <div>
-                <button type="button" onclick="StoreListClearFilter('@Model.ListId')">Clear</button>
+
+            <div class="mtd-button-hint" style="padding-right:16px;">
+                <button onclick="StoreListClearFilter('@Model.ListId')" class="mdc-icon-button mdc-theme--secondary" type="button">
+                    <i class="far fa-window-close"></i>
+                </button>
+                <div class="mtd-button-hint_info">
+                    <span>@Localizer["Clear all"]</span>
+                </div>
             </div>
+
         </div>
     </form>
 
-    <div id="@Model.ListId-table-area">
-        <table>
-            <thead>
-                <tr>
-                    @foreach (string colname in Model.Columns)
-                    {
-                        <th>@colname</th>
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var storeItem in Model.Store)
-                {
-                    <tr onclick="StoreListClickRow('@Model.ListId','@storeItem.Fields[0].Value','@Model.CurentForm.Name', '@storeItem.Fields[1].Value')">
 
-                        @foreach (var field in storeItem.Fields)
+    <div class="mtd-desk-block-area">
+        <div id="@Model.ListId-table-area" class="mtd-desk-block-area-table">
+            <table>
+                <thead>
+                    <tr>
+                        @foreach (string colname in Model.Columns)
                         {
-                            <td>@field.Value</td>
+                            <th>@colname</th>
                         }
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var storeItem in Model.Store)
+                    {
+                        <tr onclick="StoreListClickRow('@Model.ListId','@storeItem.Fields[0].Value','@Model.CurentForm.Name', '@storeItem.Fields[1].Value',[this])">
+
+                            @foreach (var field in storeItem.Fields)
+                            {
+                                <td><div>@field.Value</div></td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div style="display:flex; align-items:center;  margin: 0 auto; padding: 8px;">
+            <div style="padding: 4px; font-size:x-large">
+                <a href="#" onclick="StoreListPageNavFirst('@Model.ListId')"><<</a>
+            </div>
+            <div style="padding: 4px;font-size:x-large">
+                <a href="#" onclick="StoreListPageNavPrev('@Model.ListId')"><</a>
+            </div>
+            <div id="@Model.ListId-page-line" style="padding: 4px;">
+                @Model.PageLine
+            </div>
+            <div style="padding: 4px;font-size:x-large">
+                <a href="#" onclick="StoreListPageNavNext('@Model.ListId')">></a>
+            </div>
+            <div style="padding: 4px;font-size:x-large">
+                <a href="#" onclick="StoreListPageNavLast('@Model.ListId')">>></a>
+            </div>
+        </div>
     </div>
 
-    <div style="display:flex;">
-        <div>
-            <button onclick="StoreListPageNavFirst('@Model.ListId')"><<</button>
-        </div>
-        <div>
-            <button onclick="StoreListPageNavPrev('@Model.ListId')"><</button>
-        </div>
-        <div id="@Model.ListId-page-line">
-            @Model.PageLine
-        </div>
-        <div>
-            <button onclick="StoreListPageNavNext('@Model.ListId')">></button>
-        </div>
-        <div>
-            <button onclick="StoreListPageNavLast('@Model.ListId')">>></button>
-        </div>
-    </div>
 </div>

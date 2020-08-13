@@ -10,7 +10,7 @@ const StoreListRequest = (listId) => {
         .then((response) => {
             return response.json();
         }).then((data) => {
-            console.log(data.imgSrc);
+     
             document.getElementById(`${listId}-form-img`).value = data.formImg;
 
             StoreListCreateTable(data, listId);
@@ -46,20 +46,23 @@ const StoreListCreateTable = (data, listId) => {
     var count = data.store.count > 10 ? 10 : data.store.length;
 
     for (var r = 0; r < count; r++) {
-        var tr = document.createElement('tr');
+        var tr = document.createElement('tr');        
 
         tr.addEventListener("click", (e) => {
-            var t = e.path[1];
-            var storeId = t.cells[0].innerText;
+            var t = e.path.filter(word => word.nodeName === "TR");            
+            var storeId = t[0].cells[0].children[0].innerText;
+            var docName = t[0].cells[1].children[0].innerText;
 
-            StoreListClickRow(listId, storeId, data.formImg, data.formName, t.cells[1].innerText);
+            StoreListClickRow(listId, storeId, data.formName, docName,t);
         });
 
         for (var c = 0; c < data.columns.length; c++) {
             var td = document.createElement('td');
+            var div = document.createElement('div');
+            td.appendChild(div);
             var text = document.createTextNode(data.store[r].fields[c].value);
-
-            td.appendChild(text);
+            div.appendChild(text)
+            td.appendChild(div);
             tr.appendChild(td);
         }
 
@@ -82,7 +85,6 @@ const StoreListPageNavFirst = (listId) => {
     var pageNumber = document.getElementById(`${listId}-page-number`);
     if (pageNumber.value === "1") { return false; }
     pageNumber.value = 1;
-    fireEvent(pageNumber, "change");
     StoreListRequest(listId);
 }
 
@@ -114,38 +116,59 @@ const StoreListPageNavLast = (listId) => {
     StoreListRequest(listId);
 }
 
-const StoreListClickRow = (listId, storeId, imgSrc, formName, docName) => {
+const StoreListClickRow = (listId, storeId, formName, docName,t) => {
 
     document.getElementById(`${listId}-selected-id`).value = storeId;
-    UpdateViewer(listId, formName, docName)
+    t[0].style.backgroundColor = '#EAEDED';
+    setTimeout(() => t[0].style.backgroundColor = 'white', 300);
+
     UpdateTarget(listId, storeId);
+    UpdateViewer(listId, formName, docName)
+    
 
 }
 
 const StoreListClearSelected = (listId) => {
 
     document.getElementById(`${listId}-selected-id`).value = "";
-
-    UpdateViewer(listId);
     UpdateTarget(listId, "");
+    UpdateViewer(listId);
+    
 }
 
 
 const StoreListClearFilter = (listId) => {
 
-    document.getElementById(`${listId}-search-number`).value = "";
-    document.getElementById(`${listId}-search-text`).value = "";
+    document.getElementById(`${listId}-search-number-input`).value = "";
+    document.getElementById(`${listId}-search-text-input`).value = "";
     document.getElementById(`${listId}-page-number`).value = "1";
+
+    StoreListClearSelected(listId);
 
     StoreListRequest(listId);
 }
 
 const UpdateViewer = (listId, formName, docName) => {
 
-    var src = document.getElementById(`${listId}-form-img`).value;
-    document.getElementById(`${listId}-viewer-img`).src = src;
     document.getElementById(`${listId}-viewer-form-name`).innerText = formName === undefined ? "" : formName;
-    document.getElementById(`${listId}-viewer-doc-name`).innerText = docName === undefined ? "" : docName;
+    document.getElementById(`${listId}-viewer`).style.backgroundColor = '#EAEDED';
+    setTimeout(() => document.getElementById(`${listId}-viewer`).style.backgroundColor = 'white', 300);
+
+    if (docName) {
+
+        var src = document.getElementById(`${listId}-form-img`).value;
+        document.getElementById(`${listId}-viewer-img`).src = src;
+        const selectedId = document.getElementById(`${listId}-selected-id`).value;
+        document.getElementById(`${listId}-viewer-on`).innerHTML = `<a href="/workplace/store/details?id=${selectedId}" target="_blank">${docName}</a>`;
+        document.getElementById(`${listId}-viewer-on`).style.display = '';        
+        document.getElementById(`${listId}-viewer-off`).style.display = 'none';
+       
+    } else {
+        document.getElementById(`${listId}-viewer-on`).innerText = '';
+        document.getElementById(`${listId}-viewer-on`).style.display = 'none';
+        document.getElementById(`${listId}-viewer-img`).src = '';
+        document.getElementById(`${listId}-viewer-off`).style.display = '';
+    }
 
 }
 
@@ -166,25 +189,42 @@ if (sls) {
 
         UpdateTarget(listId, selectedId);
 
-        const inputNumber = document.getElementById(`${listId}-search-number`);
-        const inputText = document.getElementById(`${listId}-search-text`);
+        const inputNumber = new MTDTextField(`${listId}-search-number`);
+        const inputText = new MTDTextField(`${listId}-search-text`);
+        const form = document.getElementById(`${listId}-form`);
 
-        inputNumber.addEventListener('keydown', (e) => {
+        inputNumber.input.addEventListener('keydown', (e) => {
             if (e.keyCode == 13) {
-                inputText.value = "";
+                inputText.textField.value = "";
+                inputNumber.input.blur();
+                const validate = form.reportValidity();
+                if (!validate) {                    
+                    return false;
+                }                
                 StoreListRequest(listId);
             }
         });
 
-        inputText.addEventListener('keydown', (e) => {
-            if (e.keyCode == 13) {
-                inputNumber.value = "";
+        inputText.input.addEventListener('keydown', (e) => {
+            if (e.keyCode == 13) {      
+
+                inputNumber.textField.value = "";
+                inputText.input.blur();
+
+                const validate = form.reportValidity();
+                if (!validate) {
+                    return false;
+                }
+
+                
                 StoreListRequest(listId);
             }
         });
 
         var selectRelated = new MTDSelectList(`${listId}-form-id`);
         selectRelated.selector.listen('MDCSelect:change', () => {
+            var pageNumber = document.getElementById(`${listId}-page-number`);
+            pageNumber.value = "1";
             StoreListRequest(listId);
         });
 

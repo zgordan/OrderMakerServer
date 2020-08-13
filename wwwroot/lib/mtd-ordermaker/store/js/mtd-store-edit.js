@@ -94,7 +94,7 @@ items.forEach((item) => {
     });
 
     input.addEventListener("change", (event) => {
-        select.innerHTML = event.target.files[0].name;
+        select.innerText = event.target.files[0].name;
         href.hidden = true; select.hidden = false; strike.hidden = true;
         actionDelete.hidden = false;
         actionUndo.hidden = true;
@@ -148,8 +148,8 @@ if (dialog) {
     document.querySelectorAll('[mtd-info]').forEach((item) => {
         item.addEventListener('click', (e) => {
             const note = item.getAttribute('mtd-info');
-            dialogInfoTitle.innerHTML = e.target.textContent;
-            dialogInfoContent.innerHTML = note;
+            dialogInfoTitle.innerText = e.target.textContent;
+            dialogInfoContent.innerText = note;
             dialogInfo.open();
 
         });

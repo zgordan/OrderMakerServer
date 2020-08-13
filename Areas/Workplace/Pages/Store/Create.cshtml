@@ -27,7 +27,7 @@
     ViewData["Title"] = Localizer["Creating document"];
     ViewData["SecondTitle"] = Model.MtdForm.Name;
     string parentStoreId = Request.Query["parentStoreId"];
-    string @listGuid = Guid.NewGuid().ToString(); 
+    string @listGuid = Guid.NewGuid().ToString();
 }
 
 @section Head{
@@ -43,7 +43,7 @@
 
 <div class="mtd-desk">
     <div class="mtd-desk-panel">
-        <div style="padding-left: 4px; text-align: center; z-index: 2; position:fixed">
+        <div style="padding-left: 4px; text-align: center; z-index: 3; position:fixed">
             <button id="store-create-button" class="mdc-fab" aria-label="Create" type="button">
                 <div class="mdc-fab__ripple"></div>
                 <span class="material-icons mdc-fab__icon">save</span>
@@ -58,55 +58,56 @@
             </div>
         </div>
     </div>
-    <div class="mtd-desk-block-content">
-        <div class="mtd-desk-blocks">
-            <div class="mtd-desk-block">
-                <div style="height: 112px;">
-                    <div id="block-relation" class="mtd-desk-block-content mdc-elevation--z4">
-                        <div class="mtd-desk-block-title">
-                            <div class="mtd-desk-block-title-icon"></div>
-                            <div class="mtd-desk-block-title-label">
-                                @Localizer["Related document"]
-                            </div>
-                            <div class="mtd-desk-block-title-button">
-                                <button onclick="clickBlockFullScreen(this)"
-                                        class="mdc-icon-button"
-                                        aria-label="Add to favorites"
-                                        aria-hidden="true"
-                                        aria-pressed="false"
-                                        data="block-relation">
-                                    <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">close_fullscreen</i>
-                                    <i class="material-icons mdc-icon-button__icon">open_in_full</i>
-                                </button>
-                            </div>
+
+    <div class="mtd-desk-blocks">
+        <div class="mtd-desk-block">
+
+            <div style="min-height: 128px; text-align:center">
+
+                <div id="block-relation" class="mtd-desk-block-content mdc-elevation--z4">
+                    <div class="mtd-desk-block-title">
+                        <div class="mtd-desk-block-title-icon"></div>
+                        <div class="mtd-desk-block-title-label">
+                            @Localizer["Document-based on"]
                         </div>
-                        <div id="block-parent" class="mtd-desk-block-body">
-                            <div>
-                                @await Component.InvokeAsync(typeof(StoreViewer), new
-                                   {
-                                       storeId = parentStoreId,
-                                       viewerId = listGuid
-                                   })
-                            </div>
+                        <div class="mtd-desk-block-title-button">
+                            <button onclick="clickBlockFullScreen(this)"
+                                    class="mdc-icon-button"
+                                    aria-label="Add to favorites"
+                                    aria-hidden="true"
+                                    aria-pressed="false"
+                                    data="block-relation">
+                                <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">close_fullscreen</i>
+                                <i class="material-icons mdc-icon-button__icon">open_in_full</i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mtd-desk-block-body">
 
-                            <div style="text-align: center; font-weight: bold">
-                                @await Component.InvokeAsync(typeof(StoreList), new
-                                {                                   
-                                    resultTarget = "store-parent",
-                                    resultValue = parentStoreId,
-                                    relatedForms = Model.RelatedForms,
-                                    listId = listGuid
+                        @await Component.InvokeAsync(typeof(StoreViewer), new
+                            {
+                            storeId = parentStoreId,
+                            viewerId = listGuid
+                            })
+                        <div class="mtd-desk-block-body--hidden mtd-main-display-none" style="width:100%">
 
-                                })
-                            </div>
+                            @await Component.InvokeAsync(typeof(StoreList), new
+                            {
+                                resultTarget = "store-parent",
+                                resultValue = parentStoreId,
+                                relatedForms = Model.RelatedForms,
+                                listId = listGuid
+                            })
+
                         </div>
                     </div>
                 </div>
-                <div class="mtd-desk-block-content mdc-elevation--z4">
-                    @await Component.InvokeAsync("StoreForm", new { store = Model.MtdStore, type = FormType.Create })
-                </div>
+            </div>
+            <div class="mtd-desk-block-content mdc-elevation--z4">
+                @await Component.InvokeAsync("StoreForm", new { store = Model.MtdStore, type = FormType.Create })
             </div>
         </div>
+
     </div>
 </div>
 

@@ -12,6 +12,7 @@ namespace Mtd.OrderMaker.Server.Components.Store
 {
     public class StoreViewerModel
     {
+        public string SoreId { get; set; }
         public string ImgSrc { get; set; }
         public string FormName { get; set; }
         public string DocName { get; set; }
@@ -37,6 +38,7 @@ namespace Mtd.OrderMaker.Server.Components.Store
             {
                 StoreViewerModel nullModel = new StoreViewerModel
                 {
+                    SoreId = string.Empty,
                     ImgSrc = string.Empty,
                     FormName = string.Empty,
                     DocName = string.Empty,
@@ -59,6 +61,7 @@ namespace Mtd.OrderMaker.Server.Components.Store
 
             StoreViewerModel model = new StoreViewerModel
             {
+                SoreId = storeId,
                 ImgSrc = imgSrc,
                 FormName = mtdForm.Name,
                 DocName = $"{localizer["No."]} {mtdStore.Sequence:D9} {localizer["at"]} {mtdStore.Timecr.ToShortDateString()}",

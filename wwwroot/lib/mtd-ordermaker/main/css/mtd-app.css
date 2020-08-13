@@ -121,26 +121,14 @@
 }
 
 .mtd-desk-block-content--full {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  top: 56px;
-  z-index: 3;
+  position: absolute;
+  right: 12px;
+  left: 12px;
+  z-index: 2;
   background-color: white;
-  animation: 1s alternate slidein;
+  animation: 1s alternate;
 }
 
-@keyframes slidein {
-  from {
-    bottom: initial;
-    top: initial;
-    width: 100%;
-  }
-  to {
-    bottom: 0;
-  }
-}
 .mtd-desk-block-body {
   overflow: hidden;
   overflow-x: auto;
@@ -161,6 +149,67 @@
 
 .mtd-desk-block--border {
   border: 1px solid lightgray;
+}
+
+.mtd-desk-block-area {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+}
+
+.mtd-desk-block-area-table {
+  margin: 0 auto;
+}
+
+.mtd-desk-block-area-table table {
+  border-collapse: collapse;
+  cursor: pointer;
+}
+
+.mtd-desk-block-area-table table thead {
+  background-color: whitesmoke;
+  border: 1px solid #ccc;
+}
+
+.mtd-desk-block-area-table table tbody {
+  border: 1px solid #ccc;
+}
+
+.mtd-desk-block-area-table table th {
+  height: 32px;
+  padding: 7px;
+  font-size: small;
+  text-align: left !important;
+}
+
+.mtd-desk-block-area-table table td {
+  border-bottom: 1px solid lightgray;
+  border-top: 1px solid lightgray;
+  height: 32px;
+  max-width: 280px;
+  text-align: left !important;
+  vertical-align: middle;
+}
+
+.mtd-desk-block-area-table table td div {
+  max-height: 32px;
+  line-height: 1.1em;
+  overflow: hidden;
+}
+
+.mtd-desk-block-area-table table tbody tr {
+  border-top: 1px solid lightgray;
+}
+
+.mtd-desk-block-area-table table tbody tr:hover {
+  background-color: rgba(100, 149, 237, 0.08);
+}
+
+.mtd-desk-block-area-table table td:first-child,
+.mtd-desk-block-area-table table th:first-child,
+.mtd-desk-block-area-table table td:nth-child(2),
+.mtd-desk-block-area-table table th:nth-child(2) {
+  display: none;
 }
 
 .mtd-desk-draggable-item {

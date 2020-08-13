@@ -22,25 +22,32 @@
 
 @{
     string action = $"/api/store/create";
-    string idStore = Guid.NewGuid().ToString();    
+    string idStore = Guid.NewGuid().ToString();
 }
 
-<div class="mtd-store-style-blank">
-    <div id="@idStore-modal" class="mtd-store-style-modal"></div>
-    
-    <form mtd-data-form method='post' autocomplete='off' enctype='multipart/form-data' action='@action'>
-        <div class="mtd-store-style-badge">
-            @if (Model.Store.MtdFormNavigation.MtdFormHeader != null)
-            {
-                var base64 = Convert.ToBase64String(Model.Store.MtdFormNavigation.MtdFormHeader.Image);
-                var imgSrc = String.Format("data:{0};base64,{1}", Model.Store.MtdFormNavigation.MtdFormHeader.ImageType, base64);
+<form mtd-data-form method='post' autocomplete='off' enctype='multipart/form-data' action='@action'>
+    @Html.AntiForgeryToken()
 
-                <img src="@imgSrc" />
-            }
-        </div>
+    <input type="hidden" id="store-create-clicker" mtd-data-clicker mtd-data-location="/workplace/store/details?id=@idStore" />
+    <input type="hidden" name="form-id" value="@Model.Store.MtdForm" />
+    <input type="hidden" name="store-id" value="@idStore" />
+    <input type="hidden" id="store-parent" name="store-parent" value="@Model.Store.Parent" />
+
+    <div class="mtd-store-style-blank">
+        <div id="@idStore-modal" class="mtd-store-style-modal"></div>
+
         <div class="mtd-store-style-header">
-            <div class="mtd-store-style-title">
-                @Model.Store.MtdFormNavigation.Name
+            <div class="mtd-store-style-badge">
+                @if (Model.Store.MtdFormNavigation.MtdFormHeader != null)
+                {
+                    var base64 = Convert.ToBase64String(Model.Store.MtdFormNavigation.MtdFormHeader.Image);
+                    var imgSrc = String.Format("data:{0};base64,{1}", Model.Store.MtdFormNavigation.MtdFormHeader.ImageType, base64);
+
+                    <img src="@imgSrc" />
+                }
+                <div class="mtd-store-style-title">
+                    @Model.Store.MtdFormNavigation.Name
+                </div>
             </div>
             <div class="mtd-store-style-attribute">
                 <span class="mtd-store-style-number" style="opacity:0.3">№ @Model.Store.Sequence.ToString("D9")</span>
@@ -69,13 +76,6 @@
             </div>
         </div>
 
-        @Html.AntiForgeryToken()
-
-        <input id="store-create-clicker" mtd-data-clicker mtd-data-location="/workplace/store/details?id=@idStore" type="hidden" />
-        <input type="hidden" name="form-id" value="@Model.Store.MtdForm" />
-        <input type="hidden" name="store-id" value="@idStore" />
-        <input type="hidden" id="store-parent" name="store-parent" value="@Model.Store.Parent" />
-
         <div>
             @foreach (var part in Model.Parts)
             {
@@ -88,5 +88,6 @@
                 @await Component.InvokeAsync("StorePartEditor", new { part = part, model = Model })
             }
         </div>
-    </form>
-</div>
+    </div>
+
+</form>

@@ -1,13 +1,24 @@
 ﻿@model Mtd.OrderMaker.Server.Components.Store.StoreViewerModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> Localizer
 
-<div id="@Model.ViewerId-viewer" style="display: flex; align-items:center">
-    <div>
-        <img id="@Model.ViewerId-viewer-img" src="@Model.ImgSrc" style="max-height: 64px; max-width: 120px;" />
-    </div>
-    <div id="@Model.ViewerId-viewer-form-name">
-        @Model.FormName
-    </div>
-    <div id="@Model.ViewerId-viewer-doc-name">
-        @Model.DocName
+<div id="@Model.ViewerId-viewer" style="height: 36px; width: 100%">
+    <div style="display: flex; align-items:center; flex-wrap:wrap">
+        <div style="padding: 4px;">
+            <img id="@Model.ViewerId-viewer-img" src="@Model.ImgSrc" style="max-height: 24px; max-width: 120px;" />
+        </div>
+        <div id="@Model.ViewerId-viewer-form-name" style="padding: 4px;">
+            @Model.FormName
+        </div>
+        <div id="@Model.ViewerId-viewer-doc-name" style="padding: 4px;">
+            @{
+                string viewerOn = (Model.DocName != null && Model.DocName != string.Empty) ? "" : "none";
+                string viewerOff = (Model.DocName != null && Model.DocName != string.Empty) ? "none" : "";
+            }
+            <div id="@Model.ViewerId-viewer-on" style="display: @viewerOn; align-self: center;" >
+                <a href="/workplace/store/details?id=@Model.SoreId" target="_blank">@Model.DocName</a>  
+            </div>
+            <div id="@Model.ViewerId-viewer-off" style="display: @viewerOff; align-self: center;">@Localizer["No selected"]</div>
+        </div>
     </div>
 </div>
