@@ -72,7 +72,9 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
         public List<MTDSelectListItem> UsersList { get; set; }
         public List<MTDSelectListItem> Stages { get; set; }
         public List<MTDSelectListItem> UsersRequest { get; set; }
+        public List<MTDSelectListItem> RelatedForms { get; set; }
 
+        public List<string> ChildIds { get; set; }
         public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
@@ -226,6 +228,22 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
             }
 
             await FilListResolutions(approvalHandler);
+
+            RelatedForms = new List<MTDSelectListItem>();
+            List<MtdForm> relatedForms = await _context.MtdFormRelated.Include(x => x.MtdChildForm)
+                .Where(x => x.ParentFormId == MtdForm.Id).Select(x => x.MtdChildForm)
+                .OrderBy(x => x.Sequence)
+                .ToListAsync();
+            if (relatedForms != null) {
+                string selecteFormId = relatedForms.Select(x => x.Id).FirstOrDefault();
+                foreach (var form in relatedForms)
+                {
+                    RelatedForms.Add(new MTDSelectListItem { Id = form.Id, Value = form.Name, Selectded = form.Id == selecteFormId });
+                }
+            }
+
+            ChildIds = await _context.MtdStore.Where(x => x.Parent == MtdStore.Id).Select(x => x.Id).ToListAsync();
+            if (ChildIds == null) { ChildIds = new List<string>(); }
 
             return Page();
         }

@@ -1,0 +1,48 @@
+﻿@model DetailsModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Mtd.OrderMaker.Server.Components.Controls
+@using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+
+<div id="dialog-select-form" class="mtd-dialog mtd-dialog-hidden" style="max-width: 670px;">
+    <div class="mtd-dialog-container">
+        <div class="mtd-dialog-title">
+            <div>
+                <span>@Localizer["Create Document-based On"]</span>
+            </div>
+            <div>
+                <button mtd-dialog-cancel class="mdc-icon-button material-icons">close</button>
+            </div>
+        </div>
+        <div class="mtd-dialog-content">
+                
+                <div class="mtd-dialog-info">
+                    @Localizer["Select the form of the creating document, which will depend on the current document."]
+                </div>
+
+                @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
+                    {
+                        Id = "select-form",
+                        Name = "select-form",
+                        Label = "Document Form",
+                        LabelLocalized = true,
+                        Items = Model.RelatedForms,
+                        MTDSelectListView = MTDSelectListViews.Outlined
+                    })
+
+                <div class="mtd-dialog-buttons">
+                    <button mtd-dialog-cancel onclick="CreateLinkForm(this)" class="mdc-button mdc-button--raised mdc-theme--secondary-bg" type="button"
+                         data="/workplace/store/create?formId={form}&parentStoreId=@Model.MtdStore.Id">
+                        <div class="mdc-button__ripple"></div>
+                        <span class="mdc-button__label">@Localizer["Apply"]</span>
+                    </button>
+                    <button mtd-dialog-cancel class="mdc-button" type="button">
+                        <div class="mdc-button__ripple"></div>
+                        <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                    </button>
+                </div>
+        </div>
+    </div>
+</div>
+

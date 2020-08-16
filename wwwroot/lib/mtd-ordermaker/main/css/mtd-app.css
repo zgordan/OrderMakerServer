@@ -462,6 +462,10 @@
   margin-left: 0;
 }
 
+.mdc-button--outlined {
+  --mdc-theme-primary: #3b7beb;
+}
+
 .mtd-density-list .mdc-list-item {
   height: 36px;
 }

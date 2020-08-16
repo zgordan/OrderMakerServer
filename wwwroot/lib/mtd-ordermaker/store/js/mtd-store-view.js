@@ -1,4 +1,11 @@
 ﻿
+const CreateLinkForm = (el) => {
+    var re = /{form}/gi;    
+    var url = el.getAttribute("data");
+    var newUrl = url.replace(re, selectFormLink.selector.value);
+    window.open(newUrl, '_blank');        
+}
+
 //Start
 
 const selectOwner = new MTDSelectList("select-owner");
@@ -23,6 +30,7 @@ const commentRequestId = new MTDTextField("comment-request-id");
 const commentRejectSignId = new MTDTextField("comment-reject-sign-id");
 const commentReturnSignId = new MTDTextField("comment-return-sign-id");
 
+const selectFormLink = new MTDSelectList("select-form");
 
 
 const eraser = document.getElementById("eraser");

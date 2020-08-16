@@ -7,16 +7,35 @@
 
 
 <table style="white-space: nowrap; border-collapse:collapse">
-    <tr style="border-bottom: 1px solid #ccc; font-weight: 600">
+    <tr style="font-weight: 600">
         <td>
             <i class="material-icons" aria-hidden="true">assignment_ind</i>
         </td>
         <td>
-            @Localizer["Owner"]
-        </td>
+            <span style="padding: 4px;">@Localizer["Owner"]</span>
+</td>
         <td colspan="2">@Model.UserOwner.GetFullName()</td>
     </tr>
-    <tr><td></td><td>@Localizer["Created by"]</td><td style="width:100%">@Localizer[$"{Model.ChangesHistory.CreateByUser}"]</td><td>@Localizer[$"{Model.ChangesHistory.CreateByTime}"]</td></tr>
+
+    @if (Model.MtdStore.Parent != null)
+    {
+        <tr>
+            <td style="text-align:center"><i class="fas fa-sitemap fa-lg"></i></td>
+            <td>
+                <span style="padding: 4px; font-weight: 600 ">@Localizer["Document-based"]</span>                
+            </td>
+            <td colspan="2">
+                @await Component.InvokeAsync(typeof(StoreViewer), new
+                    {
+                        storeId = Model.MtdStore.Parent,
+                        viewerId = Guid.NewGuid().ToString()
+                    })
+            </td>
+        </tr>
+    }
+
+    <tr style="border-top: 1px solid #ccc;"><td></td><td>@Localizer["Created by"]</td><td style="width:100%">@Localizer[$"{Model.ChangesHistory.CreateByUser}"]</td><td>@Localizer[$"{Model.ChangesHistory.CreateByTime}"]</td></tr>
     <tr><td></td><td>@Localizer["Edited by"]</td><td>@Localizer[$"{Model.ChangesHistory.LastEditedUser}"]</td><td>@Localizer[$"{Model.ChangesHistory.LastEditedTime}"]</td></tr>
+
 </table>
 

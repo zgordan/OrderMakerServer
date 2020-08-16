@@ -1,4 +1,7 @@
-﻿.mdc-text-field{
+﻿@use "@material/button";
+
+
+.mdc-text-field{
     width: 100%;
 }
 
@@ -24,4 +27,8 @@
 .mdc-text-field__input:required ~ .mdc-floating-label::after, .mdc-text-field__input:required ~ .mdc-notched-outline .mdc-floating-label::after {
     content: "";
     margin-left: 0;
+}
+
+.mdc-button--outlined {
+    --mdc-theme-primary: #3b7beb;
 }
