@@ -64,6 +64,8 @@
     <div class="mtd-desk-blocks">
         <div class="mtd-desk-block">
 
+            @if (Model.ParentForms != null && Model.ParentForms.Count > 0)
+            {
                 <div style="min-height: 128px; text-align:center">
                     <div id="block-relation" class="mtd-desk-block-content mdc-elevation--z4">
                         <div class="mtd-desk-block-title">
@@ -85,7 +87,6 @@
                         </div>
 
 
-
                         @await Component.InvokeAsync(typeof(StoreViewer), new
                             {
                                 storeId = parentStoreId,
@@ -98,7 +99,7 @@
                             {
                                 resultTarget = "store-parent",
                                 resultValue = parentStoreId,
-                                relatedForms = Model.RelatedForms,
+                                relatedForms = Model.ParentForms,
                                 listId = listGuid
                             })
 
@@ -106,7 +107,9 @@
                         </div>
                     </div>
                 </div>
-         
+            }
+
+
 
 
             <div class="mtd-desk-block-content mdc-elevation--z4">

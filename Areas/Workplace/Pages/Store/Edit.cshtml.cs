@@ -45,7 +45,7 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
 
         public MtdForm MtdForm { get; set; }
         public MtdStore MtdStore { get; set; }
-        public IList<MtdForm> RelatedForms { get; set; }
+        public IList<MtdForm> ParentForms { get; set; }
         public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
@@ -78,8 +78,8 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
 
             MtdForm = await _context.MtdForm.FindAsync(MtdStore.MtdForm);
 
-            RelatedForms = await _context.MtdFormRelated.Include(x => x.MtdChildForm)
-                 .Where(x => x.ParentFormId == MtdForm.Id).Select(x => x.MtdChildForm)
+            ParentForms = await _context.MtdFormRelated.Include(x => x.MtdParentForm)
+                 .Where(x => x.ChildFormId == MtdForm.Id).Select(x => x.MtdParentForm)
                  .OrderBy(x => x.Sequence)
                  .ToListAsync();
 

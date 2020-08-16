@@ -230,6 +230,7 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
             await FilListResolutions(approvalHandler);
 
             RelatedForms = new List<MTDSelectListItem>();
+
             List<MtdForm> relatedForms = await _context.MtdFormRelated.Include(x => x.MtdChildForm)
                 .Where(x => x.ParentFormId == MtdForm.Id).Select(x => x.MtdChildForm)
                 .OrderBy(x => x.Sequence)

@@ -72,7 +72,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             ApprovalHandler approvalHandler = new ApprovalHandler(_context, mtdStore.Id);
             ApprovalStatus approvalStatus = await approvalHandler.GetStatusAsync(webAppUser);
 
-            if (!isEditor || approvalStatus == ApprovalStatus.Rejected)
+            if (!isEditor || approvalStatus == ApprovalStatus.Rejected || approvalStatus == ApprovalStatus.Waiting)
             {
                 return Ok(403);
             }
@@ -139,7 +139,6 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                     }
 
                     _context.MtdStoreStack.UpdateRange(stackOld);
-
 
                     List<MtdStoreStack> stackNewOnly = stackNew.Where(x => !stackOld.Select(f => f.MtdFormPartField).Contains(x.MtdFormPartField)).ToList();
 
