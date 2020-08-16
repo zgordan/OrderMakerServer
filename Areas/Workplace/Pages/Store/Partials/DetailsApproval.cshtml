@@ -4,6 +4,11 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHtmlLocalizer<SharedResource> Localizer
 
+@{ 
+    string path = ViewContext.HttpContext.Request.Path;
+    bool isPrint = path == "/workplace/store/detailsprint";
+}
+
 <table style="white-space: nowrap; border-collapse:collapse">
 
     @if (Model.IsApprover)
@@ -255,6 +260,7 @@
             counter++;
 
             string none = Model.ApprovalHistory.Count - counter > 1 ? "none" : "";
+            if (isPrint) { none = "" ; }
 
             if (!item.IsSign)
             {
