@@ -132,12 +132,12 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Store
                     }
                 };
 
-                fields.ToList().ForEach((field) =>
+                foreach(MtdFormPartField field in fields)
                 {
                     MtdStoreStack stack = mtdStoreStack.Where(x => x.MtdStore == storeId && x.MtdFormPartField == field.Id).FirstOrDefault();
                     string value = handlerStack.GetValueAsString(stack, field);
                     store.Fields.Add(new StoreListField { Id = field.Id, SysType = field.MtdSysType.ToString(), Name = field.Name, Value = value });
-                });
+                }
 
                 storeFields.Add(store);
             }

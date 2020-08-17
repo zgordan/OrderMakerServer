@@ -99,7 +99,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                 MtdStore storeParent = await _context.MtdStore.FindAsync(storeParentId);
                 if (storeParent.Parent == mtdStore.Id)
                 {
-                    return BadRequest(localizer["Cyclic link! The selected document is the basis for the current one."]);
+                    return BadRequest(localizer["Cyclic link! This document cannot be selected."]);
                 }
 
                 if (storeParentId == mtdStore.Id)
@@ -108,7 +108,13 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                 }
             }
 
-            mtdStore.Parent = storeParentId;
+            bool isRelatedEditor = await _userHandler.CheckUserPolicyAsync(webAppUser, mtdStore.MtdForm, RightsType.RelatedEdit);
+
+            if (isRelatedEditor)
+            {
+                mtdStore.Parent = storeParentId;
+            }
+            
 
 
             MtdLogDocument mtdLog = new MtdLogDocument
@@ -213,7 +219,6 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             int? sequence = await _context.MtdStore.Where(x => x.MtdForm == formId).MaxAsync(x => (int?)x.Sequence) ?? 0;
             sequence++;
 
-            MtdStore mtdStore = new MtdStore { Id = idStore, MtdForm = formId, Sequence = sequence ?? 1, Parent = storeParentId };
 
             /*Circular link check*/
             if (storeParentId != null)
@@ -221,9 +226,15 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                 MtdStore storeParent = await _context.MtdStore.FindAsync(storeParentId);
                 if (storeParent.Parent == idStore)
                 {
-                    return BadRequest(localizer["Cyclic link! The selected document is the basis for the current one."]);
+                    return BadRequest(localizer["Cyclic link! This document cannot be selected."]);
                 }
             }
+
+            bool isRelatedCreator= await _userHandler.CheckUserPolicyAsync(webAppUser, formId, RightsType.RelatedCreate);
+            if (!isRelatedCreator) { storeParentId = null; }
+
+            MtdStore mtdStore = new MtdStore { Id = idStore, MtdForm = formId, Sequence = sequence ?? 1, Parent = storeParentId };
+            
 
             bool setData = await _userHandler.CheckUserPolicyAsync(webAppUser, mtdStore.MtdForm, RightsType.SetDate);
             if (setData)

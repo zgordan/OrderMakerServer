@@ -251,7 +251,6 @@
   right: 48px;
   color: cornflowerblue;
   cursor: pointer;
-  background-color: white;
 }
 @media (max-width: 410px) {
   .mtd-desk-draggable-bedit {

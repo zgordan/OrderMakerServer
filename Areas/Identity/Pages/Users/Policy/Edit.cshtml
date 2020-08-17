@@ -24,7 +24,7 @@
     ViewData["Title"] = Localizer["Policy editor"];
     ViewData["SecondTitle"] = Localizer["Editing access template"];
     ViewData["policyId"] = HttpContext.Request.Query["id"];
-    ViewData["ColumnQty"] = Model.ExportToExcel ? 9 : 8;
+    ViewData["ColumnQty"] = Model.ExportToExcel ? 10 : 9;
 }
 
 @section Head {
@@ -137,6 +137,9 @@
                                 @Localizer["Own docs"]
                             </th>
                             <th>
+                                @Localizer["Document-based"]
+                            </th>
+                            <th>
                                 @Localizer["Set Owner"]
                             </th>
                             <th>
@@ -177,6 +180,8 @@
                                 SetDate = Model.MtdPolicy.MtdPolicyForms.Where(x => x.MtdForm == form.Id && x.ChangeDate == 1).Any(),
                                 OwnDenyGroup = Model.MtdPolicy.MtdPolicyForms.Where(x => x.MtdForm == form.Id && x.OwnDenyGroup == 1).Any(),
                                 ExportToExcel = Model.MtdPolicy.MtdPolicyForms.Where(x => x.MtdForm == form.Id && x.ExportToExcel == 1).Any(),
+                                RelatedCreate = Model.MtdPolicy.MtdPolicyForms.Where(x => x.MtdForm == form.Id && x.RelatedCreate == 1).Any(),
+                                RelatedEdit = Model.MtdPolicy.MtdPolicyForms.Where(x => x.MtdForm == form.Id && x.RelatedEdit == 1).Any(),
                             };
 
                             <tr>
@@ -220,6 +225,9 @@
                                         </div>
                                         <label for="@form.Id-deny-group">@Localizer["Deny group"]</label>
                                     </div>
+                                </td>
+                                <td>
+                                    @await Html.PartialAsync("./_tdRelated", rightsModel)
                                 </td>
                                 <td>
                                     <div class="mdc-form-field">
@@ -369,6 +377,7 @@
                                             <label for="@part.Id-part-edit"></label>
                                         </div>
                                     </td>
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>

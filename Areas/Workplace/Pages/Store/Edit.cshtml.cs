@@ -83,18 +83,20 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                  .Where(x => x.ChildFormId == MtdForm.Id).Select(x => x.MtdParentForm)
                  .OrderBy(x => x.Sequence)
                  .ToListAsync();
+            
+            bool isRelatedEditor = await _userHandler.CheckUserPolicyAsync(user, MtdForm.Id, RightsType.RelatedEdit);
 
-            if (parentForms != null)
+            if (parentForms != null && isRelatedEditor)
             {
-                parentForms.ForEach(async (form) =>
+                foreach(MtdForm form in parentForms)
                 {
-                    bool isViewer = await _userHandler.IsViewer(user, form.Id);
-                    if (isViewer)
+                    bool isViewer = await _userHandler.IsViewer(user, form.Id);                    
+
+                    if (isViewer && isRelatedEditor)
                     {
                         ParentForms.Add(form);
                     }
-
-                });
+                }
             }
 
             return Page();

@@ -43,6 +43,8 @@ namespace Mtd.OrderMaker.Server.Entity
         public sbyte ChangeDate { get; set; }
         public sbyte OwnDenyGroup { get; set; }
         public sbyte ExportToExcel { get; set; }
+        public sbyte RelatedCreate { get; set; }
+        public sbyte RelatedEdit { get; set; }
 
         public virtual MtdForm MtdFormNavigation { get; set; }
         public virtual MtdPolicy MtdPolicyNavigation { get; set; }

@@ -113,6 +113,9 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 string formDenyGroup = form[$"{mtdForm.Id}-deny-group"];
                 string exportToExcel = form[$"{mtdForm.Id}-export-excel"];
 
+                string relatedCreate = form[$"{mtdForm.Id}-related-create"];
+                string relatedEdit = form[$"{mtdForm.Id}-related-edit"];
+
                 MtdPolicyForms pf = mtdPolicyForms.Where(x => x.MtdForm == mtdForm.Id).FirstOrDefault();
                 bool newPf = false;
                 if (pf == null)
@@ -126,7 +129,9 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 pf.Reviewer = GetSbyte(formReviewer);
                 pf.ChangeDate = GetSbyte(formSetDate);
                 pf.OwnDenyGroup = GetSbyte(formDenyGroup);
-                pf.ExportToExcel = limit.ExportExcel ? (sbyte)1 : (sbyte)0;
+                pf.ExportToExcel = limit.ExportExcel ? GetSbyte(exportToExcel) : (sbyte)0;
+                pf.RelatedCreate = GetSbyte(relatedCreate);
+                pf.RelatedEdit = GetSbyte(relatedEdit);
 
                 pf.ViewAll = GetSbyte(formView);
                 pf.ViewGroup = GetSbyte(formViewGroup);
@@ -219,6 +224,8 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 pf.ChangeDate = 1;
                 pf.OwnDenyGroup = 1;
                 pf.ExportToExcel = limit.ExportExcel ? (sbyte)  1 : (sbyte) 0;
+                pf.RelatedCreate = 1;
+                pf.RelatedEdit = 1;
 
                 pf.ViewAll = 1;
                 pf.ViewGroup = 0;
@@ -305,6 +312,8 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 pf.ChangeDate = 0;
                 pf.OwnDenyGroup = 0;
                 pf.ExportToExcel = 0;
+                pf.RelatedCreate = 0;
+                pf.RelatedEdit = 0;
 
                 pf.ViewAll = 0;
                 pf.ViewGroup = 0;

@@ -69,17 +69,20 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                 .OrderBy(x=>x.Sequence)
                 .ToListAsync();
 
-            if (parentForms != null)
+            bool isRelatedCreator = await _userHandler.CheckUserPolicyAsync(user, formId, RightsType.RelatedCreate);
+
+            if (parentForms != null && isRelatedCreator)
             {
-                parentForms.ForEach(async (form) =>
+                foreach(MtdForm form in parentForms)
                 {
-                    bool isViewer = await _userHandler.IsViewer(user,form.Id);
+                    bool isViewer = await _userHandler.IsViewer(user, form.Id);
+                    
                     if (isViewer)
                     {
                         ParentForms.Add(form);
                     }
+                }
 
-                });
             }
 
             return Page();

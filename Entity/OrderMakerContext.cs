@@ -1428,6 +1428,16 @@ namespace Mtd.OrderMaker.Server.Entity
                     .HasColumnType("tinyint(4)")
                     .HasDefaultValueSql("'0'");
 
+                entity.Property(e => e.RelatedCreate)
+                    .HasColumnName("related_create")
+                    .HasColumnType("tinyint(4)")
+                    .HasDefaultValueSql("'0'");
+
+                entity.Property(e => e.RelatedEdit)
+                    .HasColumnName("related_edit")
+                    .HasColumnType("tinyint(4)")
+                    .HasDefaultValueSql("'0'");
+
                 entity.HasOne(d => d.MtdFormNavigation)
                     .WithMany(p => p.MtdPolicyForms)
                     .HasForeignKey(d => d.MtdForm)

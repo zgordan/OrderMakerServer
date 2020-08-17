@@ -40,7 +40,8 @@ namespace Mtd.OrderMaker.Server.Services
 {
     public enum RightsType
     {
-        ViewAll, Create, Edit, Delete, ViewOwn, EditOwn, DeleteOwn, ViewGroup, EditGroup, DeleteGroup, SetOwn, Reviewer, SetDate, OwnDenyGroup, ExportToExcel
+        ViewAll, Create, Edit, Delete, ViewOwn, EditOwn, DeleteOwn, ViewGroup, EditGroup, DeleteGroup, SetOwn, Reviewer, SetDate, OwnDenyGroup, 
+        ExportToExcel, RelatedCreate, RelatedEdit
     };
 
     public class PolicyCache
@@ -137,7 +138,6 @@ namespace Mtd.OrderMaker.Server.Services
             if (mtdPolicy == null) return null;
             return mtdPolicy.Where(x => x.Id == policyId).FirstOrDefault();
         }
-
 
         public async Task<WebAppUser> GetOwnerAsync(string idStore)
         {
@@ -570,6 +570,16 @@ namespace Mtd.OrderMaker.Server.Services
                 case RightsType.ExportToExcel:
                     {
                         result = policyForms.ExportToExcel == 1;
+                        break;
+                    }
+                case RightsType.RelatedCreate:
+                    {
+                        result = policyForms.RelatedCreate == 1;
+                        break;
+                    }
+                case RightsType.RelatedEdit:
+                    {
+                        result = policyForms.RelatedEdit == 1;
                         break;
                     }
                 default:

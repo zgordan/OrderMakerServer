@@ -765,8 +765,8 @@
   <data name="Cyclic link! A document cannot be a basis for itself." xml:space="preserve">
     <value>Циклическая ссылка! Документ не может быть основанием для самого себя.</value>
   </data>
-  <data name="Cyclic link! The selected document is the basis for the current one." xml:space="preserve">
-    <value>Циклическая ссылка! Выбранный документ является основанием для текущего.</value>
+  <data name="Cyclic link! This document cannot be selected." xml:space="preserve">
+    <value>Циклическая ссылка! Этот документ нельзя выбрать.</value>
   </data>
   <data name="This form is the basis for the following documents:" xml:space="preserve">
     <value>Эта форма является основанием для следующих документов:</value>

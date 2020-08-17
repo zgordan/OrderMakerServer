@@ -82,7 +82,7 @@
     }
 
     @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogRequest.cshtml")
-    @await Html.PartialAsync("./Partials/DialogRelationDocs")
+    @await Html.PartialAsync("./Partials/DialogRelatedDocs")
 
 
     <div class="mtd-desk-blocks">
@@ -132,7 +132,7 @@
             </div>
         </div>
 
-        @if (Model.IsFormApproval || Model.RelatedForms.Count > 0)
+        @if (Model.IsFormApproval || Model.RelatedDocs)
         {
             <div class="mtd-desk-block mdc-elevation--z4">
 
@@ -180,16 +180,19 @@
                     </div>
                 }
 
-                @if (Model.RelatedForms.Count > 0)
+                @if (Model.RelatedDocs)
                 {
                     <div class="mtd-desk-block-content">
                         <div class="mtd-desk-block-title">
                             <div class="mtd-desk-block-title-icon">
-                                <button mtd-dialog-button="dialog-select-form" class="mdc-button mdc-button--outlined">
-                                    <div class="mdc-button__ripple"></div>
-                                    <i class="fas fa-sitemap mdc-button__icon" aria-hidden="true"></i>
-                                    <span class="mdc-button__label">@Localizer["Create"]</span>
-                                </button>
+                                @if (Model.RelatedForms.Count > 0)
+                                {
+                                    <button mtd-dialog-button="dialog-select-form" class="mdc-button mdc-button--outlined">
+                                        <div class="mdc-button__ripple"></div>
+                                        <i class="fas fa-sitemap mdc-button__icon" aria-hidden="true"></i>
+                                        <span class="mdc-button__label">@Localizer["Create"]</span>
+                                    </button>
+                                }
                             </div>
                             <div class="mtd-desk-block-title-label">
                                 @Localizer["Related documents"]

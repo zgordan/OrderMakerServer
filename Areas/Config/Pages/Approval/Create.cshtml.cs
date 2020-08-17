@@ -56,10 +56,9 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Approval
             ViewData["Forms"] = new SelectList(MtdForms.OrderBy(x => x.Sequence), "Id", "Name");
 
             FormItems = new List<MTDSelectListItem>();
-            MtdForms.ToList().ForEach((item) =>
-            {
+            foreach(MtdForm item in MtdForms) {
                 FormItems.Add(new MTDSelectListItem { Id = item.Id, Value = item.Name });
-            });
+            }
 
             return Page();
         }
