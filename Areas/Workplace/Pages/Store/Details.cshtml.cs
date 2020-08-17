@@ -239,11 +239,16 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                 string selecteFormId = relatedForms.Select(x => x.Id).FirstOrDefault();
                 foreach (var form in relatedForms)
                 {
-                    RelatedForms.Add(new MTDSelectListItem { Id = form.Id, Value = form.Name, Selectded = form.Id == selecteFormId });
+                    bool viever = await _userHandler.IsViewer(user, form.Id);
+                    if (viever)
+                    {
+                        RelatedForms.Add(new MTDSelectListItem { Id = form.Id, Value = form.Name, Selectded = form.Id == selecteFormId });
+                    }                    
                 }
             }
 
             ChildIds = await _context.MtdStore.Where(x => x.Parent == MtdStore.Id).Select(x => x.Id).ToListAsync();
+
             if (ChildIds == null) { ChildIds = new List<string>(); }
 
             return Page();

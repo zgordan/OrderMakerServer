@@ -52,7 +52,7 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
                 SearchText = searchText;
             }
 
-            MtdForm = await query.ToListAsync();
+            MtdForm = await query.OrderBy(x=>x.Sequence).ToListAsync();
             return Page();
 
         }

@@ -15,8 +15,17 @@
                 string viewerOn = (Model.DocName != null && Model.DocName != string.Empty) ? "" : "none";
                 string viewerOff = (Model.DocName != null && Model.DocName != string.Empty) ? "none" : "";
             }
-            <div id="@Model.ViewerId-viewer-on" style="display: @viewerOn; align-self: center;" >
-                <a href="/workplace/store/details?id=@Model.SoreId" target="_blank">@Model.DocName</a>  
+            <div id="@Model.ViewerId-viewer-on" style="display: @viewerOn; align-self: center;">
+                @if (Model.IsViewer)
+                {
+                    <a href="/workplace/store/details?id=@Model.SoreId" target="_blank">@Model.DocName</a>
+
+                }
+                else
+                {
+                    <span>@Model.DocName</span>
+                }
+
             </div>
             <div id="@Model.ViewerId-viewer-off" style="display: @viewerOff; align-self: center;">@Localizer["No selected"]</div>
         </div>

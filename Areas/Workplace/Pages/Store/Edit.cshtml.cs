@@ -77,17 +77,28 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
             }
 
             MtdForm = await _context.MtdForm.FindAsync(MtdStore.MtdForm);
+            ParentForms = new List<MtdForm>();
 
-            ParentForms = await _context.MtdFormRelated.Include(x => x.MtdParentForm)
+            List<MtdForm> parentForms = await _context.MtdFormRelated.Include(x => x.MtdParentForm)
                  .Where(x => x.ChildFormId == MtdForm.Id).Select(x => x.MtdParentForm)
                  .OrderBy(x => x.Sequence)
                  .ToListAsync();
 
+            if (parentForms != null)
+            {
+                parentForms.ForEach(async (form) =>
+                {
+                    bool isViewer = await _userHandler.IsViewer(user, form.Id);
+                    if (isViewer)
+                    {
+                        ParentForms.Add(form);
+                    }
+
+                });
+            }
+
             return Page();
         }
-
-
-
 
     }
 }

@@ -723,4 +723,52 @@
   <data name="Before approval, make sure that the document is filled in correctly and the comments made are corrected." xml:space="preserve">
     <value>Перед согласованием убедитесь, что документ заполнен правильно и сделанные замечания исправлены.</value>
   </data>
+  <data name="Create Document-based On" xml:space="preserve">
+    <value>Создание документа на основании</value>
+  </data>
+  <data name="Document-based on" xml:space="preserve">
+    <value>Документ основание</value>
+  </data>
+  <data name="Select the form of the creating document, which will depend on the current document." xml:space="preserve">
+    <value>Выберите форму создаваемого документа, которая будет зависеть от текущего документа.</value>
+  </data>
+  <data name="at" xml:space="preserve">
+    <value>от</value>
+  </data>
+  <data name="Document-based" xml:space="preserve">
+    <value>Документ основание</value>
+  </data>
+  <data name="No documents" xml:space="preserve">
+    <value>Нет документов</value>
+  </data>
+  <data name="No selected" xml:space="preserve">
+    <value>Не выбран</value>
+  </data>
+  <data name="No." xml:space="preserve">
+    <value>№</value>
+  </data>
+  <data name="Number" xml:space="preserve">
+    <value>Номер</value>
+  </data>
+  <data name="Only numbers" xml:space="preserve">
+    <value>Только цифры</value>
+  </data>
+  <data name="Related documents" xml:space="preserve">
+    <value>Связанные документы</value>
+  </data>
+  <data name="The current document is the basis for the following documents:" xml:space="preserve">
+    <value>Текущий документ является основанием для следующих документов:</value>
+  </data>
+  <data name="Do you confirm the restart of the workflow?" xml:space="preserve">
+    <value>Вы подтверждаете перезапуск процесса согласования?</value>
+  </data>
+  <data name="Cyclic link! A document cannot be a basis for itself." xml:space="preserve">
+    <value>Циклическая ссылка! Документ не может быть основанием для самого себя.</value>
+  </data>
+  <data name="Cyclic link! The selected document is the basis for the current one." xml:space="preserve">
+    <value>Циклическая ссылка! Выбранный документ является основанием для текущего.</value>
+  </data>
+  <data name="This form is the basis for the following documents:" xml:space="preserve">
+    <value>Эта форма является основанием для следующих документов:</value>
+  </data>
 </root>

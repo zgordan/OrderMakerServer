@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Primitives;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
@@ -42,24 +43,28 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
     {
         private readonly OrderMakerContext _context;
         private readonly UserHandler _userHandler;
+        private readonly IStringLocalizer<SharedResource> localizer;
+
         private enum TypeAction { Create, Edit };
 
-        public DataController(OrderMakerContext context, UserHandler userHandler)
+        public DataController(OrderMakerContext context, UserHandler userHandler, IStringLocalizer<SharedResource> localizer)
         {
             _context = context;
             _userHandler = userHandler;
+            this.localizer = localizer;
         }
 
         // POST: api/store/save
         [HttpPost("save")]
         [ValidateAntiForgeryToken]
+        [Produces("application/json")]
         public async Task<IActionResult> OnPostSaveAsync()
         {
             string Id = Request.Form["idStore"];
             string dateCreate = Request.Form["date-create"];
-            string storeParent = Request.Form["store-parent"];
+            string storeParentId = Request.Form["store-parent"];
 
-            if (storeParent == string.Empty || storeParent.Length > 36) { storeParent = null; }
+            if (storeParentId == string.Empty || storeParentId.Length > 36) { storeParentId = null; }
 
             MtdStore mtdStore = await _context.MtdStore.FirstOrDefaultAsync(x => x.Id == Id);
             if (mtdStore == null)
@@ -87,8 +92,24 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                     _context.MtdStore.Update(mtdStore);
                 }
             }
-            
-            mtdStore.Parent = storeParent;
+
+            /*Circular link check*/
+            if (storeParentId != null)
+            {
+                MtdStore storeParent = await _context.MtdStore.FindAsync(storeParentId);
+                if (storeParent.Parent == mtdStore.Id)
+                {
+                    return BadRequest(localizer["Cyclic link! The selected document is the basis for the current one."]);
+                }
+
+                if (storeParentId == mtdStore.Id)
+                {
+                    return BadRequest(localizer["Cyclic link! A document cannot be a basis for itself."]);
+                }
+            }
+
+            mtdStore.Parent = storeParentId;
+
 
             MtdLogDocument mtdLog = new MtdLogDocument
             {
@@ -169,15 +190,16 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
 
         [HttpPost("create")]
         [ValidateAntiForgeryToken]
+        [Produces("application/json")]
         public async Task<IActionResult> OnPostCreateAsync()
         {
             var form = await Request.ReadFormAsync();
             string formId = Request.Form["form-id"];
             string dateCreate = Request.Form["date-create"];
             string idStore = Request.Form["store-id"];
-            string storeParent = Request.Form["store-parent"];
+            string storeParentId = Request.Form["store-parent"];
 
-            if (storeParent == string.Empty || storeParent.Length > 36) { storeParent = null; }
+            if (storeParentId == string.Empty || storeParentId.Length > 36) { storeParentId = null; }
 
             WebAppUser webAppUser = await _userHandler.GetUserAsync(HttpContext.User);
             bool isCreator = await _userHandler.IsCreator(webAppUser, formId);
@@ -191,7 +213,17 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             int? sequence = await _context.MtdStore.Where(x => x.MtdForm == formId).MaxAsync(x => (int?)x.Sequence) ?? 0;
             sequence++;
 
-            MtdStore mtdStore = new MtdStore { Id = idStore, MtdForm = formId, Sequence = sequence ?? 1, Parent = storeParent };
+            MtdStore mtdStore = new MtdStore { Id = idStore, MtdForm = formId, Sequence = sequence ?? 1, Parent = storeParentId };
+
+            /*Circular link check*/
+            if (storeParentId != null)
+            {
+                MtdStore storeParent = await _context.MtdStore.FindAsync(storeParentId);
+                if (storeParent.Parent == idStore)
+                {
+                    return BadRequest(localizer["Cyclic link! The selected document is the basis for the current one."]);
+                }
+            }
 
             bool setData = await _userHandler.CheckUserPolicyAsync(webAppUser, mtdStore.MtdForm, RightsType.SetDate);
             if (setData)
@@ -339,7 +371,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
 
                 /**Update all fields for SysTrigger UserGroup 33E8212E-059B-482D-8CBD-DFDB073E3B63**/
                 await UpdateTriggerUserGroup(idStore, webAppUser, formId);
-             
+
 
                 await _context.MtdStoreOwner.AddAsync(mtdStoreOwner);
                 await _context.SaveChangesAsync();
@@ -407,7 +439,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             {
                 blockedParts = await approvalHandler.GetBlockedPartsIds();
             }
-            
+
             string userTitleGroup = user.TitleGroup;
             if (typeAction == TypeAction.Edit)
             {
