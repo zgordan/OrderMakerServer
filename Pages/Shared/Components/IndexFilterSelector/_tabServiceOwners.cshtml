@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHtmlLocalizer<SharedResource> Localizer
 
-<div id="index-filter-service-owners" class="mtd-main-display-none">
+<div id="index-filter-service-owners" style="display: none">
     <form mtd-data-form method="post" action="~/api/filter/service/add/owner" autocomplete='off'>
         @Html.AntiForgeryToken()
         <input name="form-id" value="@Model.FormId" hidden />

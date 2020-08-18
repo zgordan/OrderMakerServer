@@ -33,5 +33,6 @@ namespace Mtd.OrderMaker.Server.Models.Index
         public List<MTDSelectListItem> CustomItems { get; set; }
         public List<MTDSelectListItem> TermItems { get; set; }
         public List<MTDSelectListItem> UsersItems { get; set; }
+        public List<MTDSelectListItem> RelatedDocs { get; set; }
     }
 }

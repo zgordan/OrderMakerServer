@@ -468,9 +468,6 @@
   <data name="Decision Result" xml:space="preserve">
     <value>Резолюция</value>
   </data>
-  <data name="Select a solution from the list:" xml:space="preserve">
-    <value>Выберите решение из списка:</value>
-  </data>
   <data name="Start" xml:space="preserve">
     <value>Начать</value>
   </data>
@@ -520,7 +517,7 @@
     <value>Запрос резолюции пользователя</value>
   </data>
   <data name="Your decision to complete the approval process with a Reject status." xml:space="preserve">
-    <value>Ваше решение завершить процесс утверждения со статусом Отказ.</value>
+    <value>Ваше решение завершит процесс согласования со статусом Отказ.</value>
   </data>
   <data name="Signature request" xml:space="preserve">
     <value>Запрос резолюции</value>

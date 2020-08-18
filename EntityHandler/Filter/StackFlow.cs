@@ -47,6 +47,9 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
                     MtdStores = await queryMtdStore.OrderByDescending(x => x.Sequence).Skip((incomer.Page - 1) * incomer.PageSize).Take(incomer.PageSize).ToListAsync()
                 };
 
+                IList<string> allowFields = await GetAllowFieldsAsync(incomer);
+                outFlow.AllowFieldIds = allowFields;
+
                 return outFlow;
             }
 
@@ -113,6 +116,16 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
             pageCount = pageCount == 0 ? 1 : pageCount;
             outFlow.PageCount = pageCount;
 
+
+
+            IList<string> fieldIds = await GetAllowFieldsAsync(incomer);
+            outFlow.AllowFieldIds = fieldIds;
+
+            return outFlow;
+        }
+
+        private async Task<IList<string>> GetAllowFieldsAsync(Incomer incomer)
+        {
             IList<MtdFormPart> parts = await _userHandler.GetAllowPartsForView(_user, incomer.FormId);
             List<string> partIds = parts.Select(x => x.Id).ToList();
 
@@ -120,9 +133,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
             IList<string> allowFiieldIds = await _context.MtdFormPartField.Where(x => partIds.Contains(x.MtdFormPart)).Select(x => x.Id).ToListAsync();
             fieldIds = allowFiieldIds.Where(x => fieldIds.Contains(x)).ToList();
 
-            outFlow.AllowFieldIds = fieldIds;
-
-            return outFlow;
+            return  fieldIds;
         }
     }
 }

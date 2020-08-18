@@ -159,6 +159,21 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
                     }
 
                 }
+
+
+                MtdFilterRelated mtdFilterRelated = await _context.MtdFilterRelated.FindAsync(filter.Id);
+                if (mtdFilterRelated != null)
+                {
+                    string formName = await _context.MtdForm.Where(x=>x.Id==mtdFilterRelated.FormId).Select(x=>x.Name).FirstOrDefaultAsync() ?? "Not Found";
+                    DisplayData displayDate = new DisplayData()
+                    {
+                        Id = filter.Id,
+                        Header = localizer["Document-based"],
+                        Value = $"{formName} {localizer["No."]} {mtdFilterRelated.DocBasedNumber}",
+                        Type = "-related"
+                    };
+                    displayDatas.Add(displayDate);
+                }
             }
 
             DisplayModelView displayModelView = new DisplayModelView

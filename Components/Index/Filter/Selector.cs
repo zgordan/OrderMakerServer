@@ -34,14 +34,13 @@ using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Components.Index.Filter
 {
-    public enum ServiceFilter { DateCreated, DocumentOwner }
+    public enum ServiceFilter { DateCreated, DocumentOwner, DocumentBased  }
 
     [ViewComponent(Name = "IndexFilterSelector")]
     public class Selector : ViewComponent
     {
         private readonly OrderMakerContext _context;
-        private readonly UserHandler _userHandler;
-        private List<MTDSelectListItem> ServiceItems => GetServiceItems();
+        private readonly UserHandler _userHandler;     
 
         public Selector(OrderMakerContext orderMakerContext, UserHandler userHandler)
         {
@@ -64,16 +63,20 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
                 terms.Add(new MTDSelectListItem { Id = term.Id.ToString(), Value = $"{term.Name} ({term.Sign})", Localized = true });
             }));
 
-            List<MTDSelectListItem> userList = await GetUserItems(user, formId);
+            List<MTDSelectListItem> userList = await GetUserItemsAsync(user, formId);
 
             IList<MtdFilterScript> scripts = await _userHandler.GetFilterScriptsAsync(user,formId,0);            
             List<MTDSelectListItem> scriptItems = new List<MTDSelectListItem>();
-            
+
+            List<MTDSelectListItem> relatedDocs = await  GetRelatedDocsAsync(user,formId);
+
             foreach (var script in scripts)
             {
                 scriptItems.Add(new MTDSelectListItem { Id = script.Id.ToString(), Value = script.Name });
             }
-                                     
+
+            bool withRelated = relatedDocs.Count > 0;
+            List<MTDSelectListItem> serviceItems = GetServiceItems(withRelated);
 
             SelectorModelView selector = new SelectorModelView()
             {
@@ -82,7 +85,8 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
                 UsersItems = userList,
                 CustomItems = customItems,
                 TermItems = terms,
-                ServiceItems = this.ServiceItems
+                ServiceItems = serviceItems,
+                RelatedDocs = relatedDocs
             };
 
             return View("Default", selector);
@@ -127,7 +131,7 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
             return customItems;
         }
 
-        private async Task<List<MTDSelectListItem>> GetUserItems(WebAppUser user, string formId)
+        private async Task<List<MTDSelectListItem>> GetUserItemsAsync(WebAppUser user, string formId)
         {
             List<MTDSelectListItem> userList = new List<MTDSelectListItem>();
 
@@ -154,9 +158,39 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
 
         }
 
-        private List<MTDSelectListItem> GetServiceItems()
+        private async Task<List<MTDSelectListItem>> GetRelatedDocsAsync(WebAppUser user, string formId)
         {
-            return new List<MTDSelectListItem>
+            List<MtdForm> relatedForms = await _context.MtdFormRelated.Include(x => x.MtdParentForm)
+                .Where(x => x.ChildFormId == formId).Select(x => x.MtdParentForm)
+                .OrderBy(x => x.Sequence)
+                .ToListAsync();
+
+            List<MTDSelectListItem> relatedDocs = new List<MTDSelectListItem>();
+            if (relatedForms != null)
+            {
+
+                string selecteFormId = null;
+
+                foreach (var form in relatedForms)
+                {
+                    bool viever = await _userHandler.IsViewer(user, form.Id);
+                    bool creator = await _userHandler.CheckUserPolicyAsync(user, form.Id, RightsType.RelatedCreate);
+
+                    if (viever && creator)
+                    {
+                        if (selecteFormId == null) { selecteFormId = form.Id; }
+                        relatedDocs.Add(new MTDSelectListItem { Id = form.Id, Value = form.Name, Selectded = form.Id == selecteFormId });
+                    }
+                }
+            }
+
+            return relatedDocs;
+        }
+
+        private List<MTDSelectListItem> GetServiceItems(bool withRelated)
+        {
+
+            List<MTDSelectListItem> result = new List<MTDSelectListItem>
                     {
                         new MTDSelectListItem {
                             Id=ServiceFilter.DateCreated.ToString(),
@@ -168,7 +202,21 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
                             Value="Document owner",
                             Localized = true
                         }
+
                     };
+
+
+            if (withRelated)
+            {
+                result.Add(new MTDSelectListItem
+                {
+                    Id = ServiceFilter.DocumentBased.ToString(),
+                    Value = "Document-based",
+                    Localized = true
+                });
+            }
+
+            return result;
         }
     }
 }

@@ -251,6 +251,20 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
                 if (!ok) { return BadRequest(new JsonResult("Error: Bad request.")); }
             }
 
+            if (strID.Contains("-related"))
+            {
+                strID = strID.Replace("-related", "");
+                bool ok = int.TryParse(strID, out int filterId);
+                if (!ok) return Ok();
+                MtdFilterRelated filterRelated = new MtdFilterRelated { Id = filterId };
+                try
+                {
+                    _context.MtdFilterRelated.Remove(filterRelated);
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception ex) { throw ex.InnerException; }
+            }
+
             return Ok();
 
         }
@@ -287,6 +301,12 @@ namespace Mtd.OrderMaker.Server.Controllers.Index
             if (mtdFilterOwner != null)
             {
                 _context.MtdFilterOwner.Remove(mtdFilterOwner);
+            }
+
+            MtdFilterRelated filterRelated = await _context.MtdFilterRelated.FindAsync(filterId);
+            if (filterRelated != null)
+            {
+                _context.MtdFilterRelated.Remove(filterRelated);
             }
 
             try

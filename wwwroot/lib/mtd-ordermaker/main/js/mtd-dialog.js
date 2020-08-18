@@ -21,10 +21,35 @@ document.querySelectorAll("[mtd-dialog-button]").forEach((item) => {
     });
 
     dialog.querySelectorAll('[mtd-dialog-cancel]').forEach((b) => {
+
         b.addEventListener("click", () => {
+
             dialog.classList.add("mtd-dialog-hidden");
             modal.style.display = "";
             document.body.style.overflow = "hidden";            
+            document.body.style.overflowY = "";
+            document.body.style.height = "";
+            appContent.classList.add("drawer-frame-app-content");
+        });
+    });
+
+    dialog.querySelectorAll('[mtd-dialog-apply]').forEach((b) => {
+
+        b.addEventListener("click", (e) => {
+            const form = e.path.filter(word => word.nodeName === "FORM");
+
+            if (form[0]) {
+
+                const validate = form[0].reportValidity();
+                if (!validate) {
+                    return false;
+                }
+
+            }
+
+            dialog.classList.add("mtd-dialog-hidden");
+            modal.style.display = "";
+            document.body.style.overflow = "hidden";
             document.body.style.overflowY = "";
             document.body.style.height = "";
             appContent.classList.add("drawer-frame-app-content");

@@ -59,6 +59,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
                     .Include(x => x.MtdFilterOwner)
                     .Include(x => x.MtdFilterDate)
                     .Include(m => m.MtdFilterColumn)
+                    .Include(m => m.MtdFilterRelated)
                     .FirstOrDefaultAsync(x => x.IdUser == _user.Id && x.MtdForm == FormId);
 
                 if (register != null && register.MtdFilterDate != null)
@@ -72,6 +73,18 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
                     queryMtdStore = queryMtdStore
                         .Where(x => x.MtdStoreOwner.UserId == register.MtdFilterOwner.OwnerId);
                 }
+
+                if (register != null && register.MtdFilterRelated != null)
+                {
+                    string parentId = await _context.MtdStore
+                        .Where(x => x.Sequence == register.MtdFilterRelated.DocBasedNumber && x.MtdForm == register.MtdFilterRelated.FormId)
+                        .Select(x => x.Id)
+                        .FirstOrDefaultAsync() ?? string.Empty;
+
+                    queryMtdStore = queryMtdStore.Where(x => x.Parent == parentId);
+
+                }
+
             }
             return register;
         }

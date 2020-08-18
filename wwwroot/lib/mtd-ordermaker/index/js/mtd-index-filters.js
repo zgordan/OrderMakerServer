@@ -6,11 +6,17 @@ class ServiceForm {
         this.locale = document.getElementById("index-locale-for-date");
         this.dateStart = new MTDTextField("index-filter-date-start");
         this.dateFinish = new MTDTextField("index-filter-date-finish");
+
+        this.number = new MTDTextField("index-filter-related-number");
+
         this.period = document.getElementById("index-filter-service-period");
         this.owners = document.getElementById("index-filter-service-owners");
+        this.related = document.getElementById("index-filter-service-related");
 
         this.select = new MTDSelectList("index-filter-service-list");
         this.ownersList = new MTDSelectList("index-filter-service-owners-list");
+
+        this.relatedDocs = new MTDSelectList("index-filter-service-related-list");
     }
 
 }
@@ -65,9 +71,18 @@ const Service = () => {
 
     const sf = new ServiceForm();
 
-    sf.select.selector.listen('MDCSelect:change', () => {
-        sf.period.classList.toggle("mtd-main-display-none");
-        sf.owners.classList.toggle("mtd-main-display-none");
+    sf.select.selector.listen('MDCSelect:change', (e) => {
+
+        const val = sf.select.selector.value;
+
+        sf.period.style.display = val === "DateCreated" ? "" : "none"; 
+        sf.owners.style.display = val === "DocumentOwner" ? "" : "none";
+
+        if (sf.related) {
+            sf.related.style.display = val === "DocumentBased" ? "" : "none";
+        }
+        
+
     });
 
     const dtp = new LocaleDTP();

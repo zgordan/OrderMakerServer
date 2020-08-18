@@ -45,6 +45,7 @@ namespace Mtd.OrderMaker.Server.Entity
         public virtual DbSet<MtdFilterColumn> MtdFilterColumn { get; set; }
         public virtual DbSet<MtdFilterDate> MtdFilterDate { get; set; }
         public virtual DbSet<MtdFilterOwner> MtdFilterOwner { get; set; }
+        public virtual DbSet<MtdFilterRelated> MtdFilterRelated { get; set; }
         public virtual DbSet<MtdFilterField> MtdFilterField { get; set; }
         public virtual DbSet<MtdFilterScript> MtdFilterScript { get; set; }
         public virtual DbSet<MtdFilterScriptApply> MtdFilterScriptApply { get; set; }
@@ -601,6 +602,35 @@ namespace Mtd.OrderMaker.Server.Entity
                     .HasForeignKey<MtdFilterOwner>(d => d.Id)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("fk_owner_filter");
+            });
+
+            modelBuilder.Entity<MtdFilterRelated>(entity =>
+            {
+                entity.ToTable("mtd_filter_related");
+
+                entity.HasIndex(e => e.Id)
+                    .HasName("id_UNIQUE")
+                    .IsUnique();
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.FormId)
+                    .IsRequired()
+                    .HasColumnName("form_id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.DocBasedNumber)
+                    .IsRequired()
+                    .HasColumnName("doc-based-number")
+                    .HasColumnType("int(11)");
+
+                entity.HasOne(d => d.IdNavigation)
+                    .WithOne(p => p.MtdFilterRelated)
+                    .HasForeignKey<MtdFilterRelated>(d => d.Id)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("fk_related_filter");
             });
 
             modelBuilder.Entity<MtdFilterField>(entity =>

@@ -1,0 +1,50 @@
+﻿@model Models.Index.SelectorModelView
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+<div id="index-filter-service-related" style="display: none">
+    <form mtd-data-form method="post" action="~/api/filter/service/add/related" autocomplete='off'>
+        @Html.AntiForgeryToken()
+        <input name="form-id" value="@Model.FormId" hidden />
+        <div class="index-filter-content-tab-second">
+            <div class="index-filter-content-tab-second--full">
+                @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
+                {
+                   Id = "index-filter-service-related-list",
+                   Name = "document-based-id",                   
+                   MTDSelectListView = MTDSelectListViews.Outlined,
+                   Label = "Document form",
+                   LabelLocalized = true,
+                   ValueId = Model.RelatedDocs.Select(x => x.Id).FirstOrDefault(),
+                   Items = Model.RelatedDocs
+                })
+            </div>
+            <div class="index-filter-content-tab-second--separator"></div>
+            <div>
+                @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                   {
+                       Id = "index-filter-related-number",
+                       Label = "Number",                  
+                       LabelLocalized = true,
+                       IconLeading = "fas fa-barcode",
+                       Name = "related-number",
+                       Pattern = AppConfig.RegexPatterns.Numbers,
+                       MTDTexFieldView = MTDTextFieldViews.Outlined,
+                       HelperError = "Only numbers",
+                       HelperErrorLocalizer = true,
+                       Required = true
+                   })
+            </div>
+        </div>
+        <div class="index-filter-content-tab-foot">
+            <button mtd-dialog-apply mtd-data-clicker class="mdc-button mdc-button--raised mdc-theme--secondary-bg" type="button">
+                <div class="mdc-button__ripple"></div>
+                <span class="mdc-button__label">@Localizer["Apply"]</span>
+            </button>
+            <button mtd-dialog-cancel class="mdc-button" type="button">
+                <div class="mdc-button__ripple"></div>
+                <span class="mdc-button__label">@Localizer["Cancel"]</span>
+            </button>
+        </div>
+    </form>
+</div>
