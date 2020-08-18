@@ -32,7 +32,6 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
     public partial class FilterHandler
     {
 
-
         public async Task<OutFlow> GetDataForEmptyAsync(Incomer incomer)
         {
 
@@ -60,15 +59,11 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
 
         public async Task<OutFlow> GetDataForTextAsync(Incomer incomer)
         {
-             List<string> fieldsIds = incomer.FieldForColumn.Select(x => x.Id).ToList();
+            /*to search in all fields*/
+            IList<string> fieldsIds = await GetAllowFieldsAsync();
 
-            /*Uncomment this to search in all fields*/
-            //IList<MtdFormPart> parts = await _userHandler.GetAllowPartsForView(_user, incomer.FormId);
-            //List<string> partIds = parts.Select(x => x.Id).ToList();
-
-            //IList<string> fieldsIds = await _context.MtdFormPartField.Where(x => partIds.Contains(x.MtdFormPart)).Select(x=>x.Id).ToListAsync();
-            //IList<string> allowFiieldIds = await _context.MtdFormPartField.Where(x => partIds.Contains(x.MtdFormPart)).Select(x => x.Id).ToListAsync();
-            //fieldsIds = allowFiieldIds.Where(x => fieldsIds.Contains(x)).ToList();
+            /*To search only selected columns*/
+            //List<string> fieldsIds = incomer.FieldIds;
 
 
             IList<string> storeIds = new List<string>();

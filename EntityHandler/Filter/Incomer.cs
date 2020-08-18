@@ -19,6 +19,7 @@
 
 using Mtd.OrderMaker.Server.Entity;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Mtd.OrderMaker.Server.EntityHandler.Filter
 {
@@ -31,6 +32,8 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
         public int Page { get; set; }
         public int WaitList { get; set; }
         public IList<MtdFormPartField> FieldForColumn { get; set; }
+        public List<string> FieldIds => FieldForColumn.Select(x => x.Id).ToList();
         public IList<MtdFilterField> FieldForFilter { get; set; }
+        
     }
 }

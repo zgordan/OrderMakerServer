@@ -62,7 +62,7 @@ namespace Mtd.OrderMaker.Server.Components.Index
             IList<string> storeIds = mtdStores.Select(s => s.Id).ToList();
 
             StackHandler handlerStack = new StackHandler(_context);
-            IList<MtdStoreStack> mtdStoreStack = await handlerStack.GetStackAsync(storeIds, outFlow.AllowFieldIds);
+            IList<MtdStoreStack> mtdStoreStack = await handlerStack.GetStackAsync(storeIds, incomer.FieldIds);
 
             IList<MtdStoreApproval> mtdStoreApprovals = await _context.MtdStoreApproval.Where(x => storeIds.Contains(x.Id)).ToListAsync();
             List<ApprovalStore> approvalStores = await ApprovalHandler.GetStoreStatusAsync(_context, storeIds, user);
@@ -78,7 +78,7 @@ namespace Mtd.OrderMaker.Server.Components.Index
                 FormId = formId,
                 SearchNumber = incomer.SearchNumber,
                 PageCount = outFlow.PageCount,
-                MtdFormPartFields = incomer.FieldForColumn.Where(x => outFlow.AllowFieldIds.Contains(x.Id)).ToList(),
+                MtdFormPartFields = incomer.FieldForColumn,
                 MtdStores = mtdStores,
                 MtdStoreStack = mtdStoreStack,
                 WaitList = incomer.WaitList == 1,

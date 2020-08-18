@@ -38,8 +38,10 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
         private readonly WebAppUser _user;
         private IQueryable<MtdStore> queryMtdStore;
         private readonly UserHandler _userHandler;
+        private IList<string> allowFieldIds;
 
         public string FormId { get; private set; }
+
 
         public FilterHandler(OrderMakerContext orderMakerContext, string formId, WebAppUser user, UserHandler userHandler)
         {
@@ -48,6 +50,18 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
             _userHandler = userHandler;
             FormId = formId;
             queryMtdStore = _context.MtdStore;
+        }
+
+        private async Task<IList<string>> GetAllowFieldsAsync()
+        {
+            if (allowFieldIds != null) { return allowFieldIds; }
+
+            IList<MtdFormPart> parts = await _userHandler.GetAllowPartsForView(_user, FormId);
+            List<string> partIds = parts.Select(x => x.Id).ToList();
+            IList<string> allowFiieldIds = await _context.MtdFormPartField.Where(x => partIds.Contains(x.MtdFormPart)).Select(x => x.Id).ToListAsync();
+            allowFieldIds = allowFiieldIds;
+
+            return allowFieldIds;
         }
 
         private async Task<MtdFilter> GetFilterAsync()
@@ -170,8 +184,16 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
                     .ToListAsync();
             }
 
+            if (result != null)
+            {
+                IList<string> fieldIds = await GetAllowFieldsAsync();
+                result = result.Where(x => fieldIds.Contains(x.Id)).ToList();
+            }
+            
+
             return result;
         }
+
 
         public async Task<IList<MtdFilterField>> GetAdvancedAsync()
         {

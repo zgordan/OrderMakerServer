@@ -106,8 +106,8 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Store
             OutFlow outFlow = await filterHandler.GetStackFlowAsync(incomer, typeQuery);
             StackHandler handlerStack = new StackHandler(context);
             List<string> storeIds = outFlow.MtdStores.Select(x => x.Id).ToList();
-            IList<MtdStoreStack> mtdStoreStack = await handlerStack.GetStackAsync(storeIds, outFlow.AllowFieldIds);
-            List<MtdFormPartField> fields = await context.MtdFormPartField.Where(x => outFlow.AllowFieldIds.Contains(x.Id)).ToListAsync();
+            IList<MtdStoreStack> mtdStoreStack = await handlerStack.GetStackAsync(storeIds, incomer.FieldIds);
+           
 
 
 
@@ -132,7 +132,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Store
                     }
                 };
 
-                foreach(MtdFormPartField field in fields)
+                foreach(MtdFormPartField field in incomer.FieldForColumn)
                 {
                     MtdStoreStack stack = mtdStoreStack.Where(x => x.MtdStore == storeId && x.MtdFormPartField == field.Id).FirstOrDefault();
                     string value = handlerStack.GetValueAsString(stack, field);
@@ -147,13 +147,13 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Store
             StoreFields = storeFields;
             Columns = new List<string>();
 
-            if (fields != null)
+            if (incomer.FieldForColumn != null)
             {
                 Columns.Add(localizer["ID"]);
                 Columns.Add(localizer["Name"]);
                 Columns.Add(localizer["Number"]);
                 Columns.Add(localizer["Date"]);
-                Columns.AddRange(fields.Select(x => x.Name).ToList());
+                Columns.AddRange(incomer.FieldForColumn.Select(x => x.Name).ToList());
             }
         }
 

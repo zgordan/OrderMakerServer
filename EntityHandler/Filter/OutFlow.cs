@@ -27,7 +27,6 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
         public int Count { get; set; }
         public int PageCount { get; set; }
         public IList<MtdStore> MtdStores { get; set; }
-        public IList<string> AllowFieldIds { get; set; }
 
     }
 }
