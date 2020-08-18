@@ -129,7 +129,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
             IList<MtdFormPart> parts = await _userHandler.GetAllowPartsForView(_user, incomer.FormId);
             List<string> partIds = parts.Select(x => x.Id).ToList();
 
-            IList<string> fieldIds = fieldIds = incomer.FieldForColumn.Select(x => x.Id).ToList();
+            IList<string> fieldIds = incomer.FieldForColumn.Select(x => x.Id).ToList();
             IList<string> allowFiieldIds = await _context.MtdFormPartField.Where(x => partIds.Contains(x.MtdFormPart)).Select(x => x.Id).ToListAsync();
             fieldIds = allowFiieldIds.Where(x => fieldIds.Contains(x)).ToList();
 
