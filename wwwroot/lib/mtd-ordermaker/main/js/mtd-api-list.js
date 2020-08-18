@@ -61,7 +61,7 @@ const StoreListCreateTable = (data, listId) => {
             var div = document.createElement('div');
             td.appendChild(div);
             var text = document.createTextNode(data.store[r].fields[c].value);
-            div.appendChild(text)
+            div.appendChild(text);
             td.appendChild(div);
             tr.appendChild(td);
         }

@@ -56,7 +56,7 @@ async function clickBlockDetail (el) {
         for (let tr of rows) {
 
             tr.style.display = "";     
-            await await delay();                          
+            await delay();                          
         }
 
         el.setAttribute('aria-checked','true');
@@ -69,7 +69,7 @@ async function clickBlockDetail (el) {
             counter++;
 
             tr.style.display = rows.length - counter > 1 ? "none" : "";
-            await await delay();
+            await delay();
         }
 
         el.setAttribute('aria-checked', 'false');

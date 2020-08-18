@@ -7,7 +7,8 @@
       "wwwroot/lib/mtd-ordermaker/main/js/mtd-draggable.js",
       "wwwroot/lib/mtd-ordermaker/main/js/mtd-select-list.js",
       "wwwroot/lib/mtd-ordermaker/main/js/mtd-text-field.js",
-      "wwwroot/lib/mtd-ordermaker/main/js/mtd-dialog.js"
+      "wwwroot/lib/mtd-ordermaker/main/js/mtd-dialog.js",
+      "wwwroot/lib/mtd-ordermaker/main/js/mtd-api-list.js"
     ]
   },
   {

@@ -159,7 +159,7 @@ const ListenerForPostData = () => {
 
         const result = form.querySelector('input[mtd-data-result]');
         let action = form.getAttribute('action');
-        if (!action) { action = ""}
+        if (!action) { action = ""; }
         const clickers = form.querySelectorAll('[mtd-data-clicker]');
         const inputs = form.querySelectorAll('input[mtd-input-clicker]');
 
