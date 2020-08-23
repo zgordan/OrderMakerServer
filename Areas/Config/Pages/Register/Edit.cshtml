@@ -1,0 +1,181 @@
+﻿@page
+@model EditModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+@{
+    ViewData["Title"] = Localizer["Register editor"];
+    ViewData["SecondTitle"] = Localizer["Editing register parametr"];
+}
+
+@section Breadcrumb {
+    <li mtd-data-href="/config"><a href="/config">@Localizer["Configurator"]</a></li>
+    <li mtd-data-href="/config/register"><a href="/config/register">@Localizer["Register"]</a></li>
+    <li>@ViewBag.Title</li>
+}
+
+<div class="mtd-desk">
+    <div class="mtd-desk-panel">
+        <div style="padding-left: 16px">
+            <button mtd-data-clicker-by="clicker-save" type="button" class="mdc-fab mdc-fab--extended">
+                <div class="mdc-fab__ripple"></div>
+                <span class="material-icons mdc-fab__icon">save</span>
+                <span class="mdc-fab__label">@Localizer["Save"]</span>
+            </button>
+        </div>
+    </div>
+    <form mtd-data-form method="post" autocomplete="off" action="" novalidate>
+        <input type="hidden" asp-for="MtdRegister.Id" />
+        <input type="hidden" id="clicker-save" mtd-data-clicker mtd-data-message="@Localizer["Changes saved."]" />
+        <div style="display: flex; align-items:center">
+            <div style="padding: 2px; min-width: 25%">
+                @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                   {
+                       Id = "form-name",
+                       Name = "MtdRegister.Name",
+                       Required = true,
+                       Label = "Name",
+                       LabelLocalized = true,
+                       MTDTexFieldView = MTDTextFieldViews.Outlined,
+                       Value = Model.MtdRegister.Name
+                   })
+            </div>
+            <div style="flex-grow:1; padding: 2px;">
+                @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                   {
+                       Id = "form-note",
+                       Name = "MtdRegister.Description",
+                       Required = true,
+                       Label = "Description",
+                       LabelLocalized = true,
+                       MTDTexFieldView = MTDTextFieldViews.Outlined,
+                       Value = Model.MtdRegister.Description
+                   })
+            </div>
+            <div>
+                <div class="mtd-desk-field--border" style="height: 42px; padding: 6px;">
+                    <div class="mdc-form-field">
+                        <div class="mdc-checkbox">
+                            <input type="checkbox"
+                                   class="mdc-checkbox__native-control"
+                                   id="parentLimit" name="ParentLimit" asp-for="ParentLimit" />
+                            <div class="mdc-checkbox__background">
+                                <svg class="mdc-checkbox__checkmark"
+                                     viewBox="0 0 24 24">
+                                    <path class="mdc-checkbox__checkmark-path"
+                                          fill="none"
+                                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                </svg>
+                                <div class="mdc-checkbox__mixedmark"></div>
+                            </div>
+                        </div>
+                        <label for="parentLimit">@Localizer["Parent Limit"]</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mtd-desk-blocks">
+            <div class="mtd-desk-block mdc-elevation--z2">
+
+                <div class="mtd-desk-block-content">
+                    <div style="text-align: center; color: gray">
+                        <h3>@Localizer["List of digital form fields controlled by this register"]</h3>
+                    </div>
+                    
+                 <hr/>
+                    <table style="width:100%">
+                        <thead>
+                            <tr>   
+                                <th>@Localizer["Linked"]</th>
+                                <th>@Localizer["Form name"]</th>
+                                <th>@Localizer["Field name"]</th>
+                                <th>@Localizer["Income"]</th>
+                                <th>@Localizer["Expense"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var form in Model.Forms)
+                            {
+                                @foreach (var field in form.Fields)
+                                {
+                                    if (Model.RejectFieldIds.Contains(field.Id)) { continue; }
+
+                                    bool linked = false; bool income = false; bool expense = false;
+                                    MtdRegisterField rf = Model.RegisterFields.FirstOrDefault(x=>x.Id == field.Id);
+                                    if (rf != null) { linked = true;  income = rf.Income == 1; expense = rf.Expense == 1; }
+
+                                    <tr>
+                                        <td>
+                                            <div class="mdc-form-field">
+                                                <div class="mdc-checkbox">
+                                                    <input type="checkbox"
+                                                           class="mdc-checkbox__native-control" id="@field.Id-linked" name="@field.Id-linked" @if (linked) { <text> checked</text> } />
+                                                    <div class="mdc-checkbox__background">
+                                                        <svg class="mdc-checkbox__checkmark"
+                                                             viewBox="0 0 24 24">
+                                                            <path class="mdc-checkbox__checkmark-path"
+                                                                  fill="none"
+                                                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                                        </svg>
+                                                        <div class="mdc-checkbox__mixedmark"></div>
+                                                    </div>
+                                                </div>                           
+                                            </div>
+                                        </td>
+                                        <td>@form.MtdForm.Name </td>
+                                        <td>@field.Name</td>
+                                        <td>
+                                            <div class="mdc-form-field">
+                                                <div class="mdc-checkbox">
+                                                    <input type="checkbox"
+                                                           class="mdc-checkbox__native-control" id="@field.Id-income" name="@field.Id-income" @if (income) { <text> checked</text> }  />
+                                                    <div class="mdc-checkbox__background">
+                                                        <svg class="mdc-checkbox__checkmark"
+                                                             viewBox="0 0 24 24">
+                                                            <path class="mdc-checkbox__checkmark-path"
+                                                                  fill="none"
+                                                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                                        </svg>
+                                                        <div class="mdc-checkbox__mixedmark"></div>
+                                                    </div>
+                                                </div>                              
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="mdc-form-field">
+                                                <div class="mdc-checkbox">
+                                                    <input type="checkbox"
+                                                           class="mdc-checkbox__native-control" id="@field.Id-expense" name="@field.Id-expense"  @if (expense) { <text> checked</text> } />
+                                                    <div class="mdc-checkbox__background">
+                                                        <svg class="mdc-checkbox__checkmark"
+                                                             viewBox="0 0 24 24">
+                                                            <path class="mdc-checkbox__checkmark-path"
+                                                                  fill="none"
+                                                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                                        </svg>
+                                                        <div class="mdc-checkbox__mixedmark"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>     
+
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        new MTDTextField("form-name");
+        new MTDTextField("form-note");
+        new MTDSelectList("select-form");
+        new MTDSelectList("select-field");
+    </script>
+}

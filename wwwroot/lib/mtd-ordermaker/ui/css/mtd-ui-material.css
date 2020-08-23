@@ -18,6 +18,9 @@
 .mtd-ui-material-form input[type='number'] {
   -moz-appearance: textfield;
 }
+.mtd-ui-text-label--col {
+  white-space: nowrap;
+}
 .mtd-ui-material-form .mtd-ui-text-label {
   position: absolute;
   top: 0.25rem;

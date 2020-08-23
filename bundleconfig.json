@@ -68,5 +68,11 @@
     "inputFiles": [
       "wwwroot/lib/mtd-ordermaker/mtd-checkbox/css/mtd-checkbox.css"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/mtd-ordermaker/config/js/mtd-config-register.min.js",
+    "inputFiles": [
+      "wwwroot/lib/mtd-ordermaker/config/js/mtd-config-register.js"
+    ]
   }
 ]

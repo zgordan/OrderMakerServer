@@ -44,9 +44,6 @@
         </div>
     </div>
 
-
-
-
     <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="">
         <input type="hidden" asp-for="MtdForm.Id" />
         <input type="hidden" id="clicker-create" mtd-data-clicker mtd-data-location="/config/form/edit?id=@Model.MtdForm.Id" mtd-data-message="@Localizer["New form created"]." />
@@ -59,7 +56,7 @@
                    Label = "Name",
                    LabelLocalized = true,
                    MTDTexFieldView = MTDTextFieldViews.Outlined,
-                   Value = @Model.MtdForm.Name,
+                   Value = Model.MtdForm.Name,
                })
         </div>
 
@@ -72,7 +69,7 @@
                    Label = "Description",
                    LabelLocalized = true,
                    MTDTexFieldView = MTDTextFieldViews.TextArea,
-                   Value = @Model.MtdForm.Description,
+                   Value = Model.MtdForm.Description,
                    Cols = 40,
                    Rows = 5,
                    MaxLength = 250

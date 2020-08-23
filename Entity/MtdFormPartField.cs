@@ -49,5 +49,7 @@ namespace Mtd.OrderMaker.Server.Entity
         public virtual ICollection<MtdFilterColumn> MtdFilterColumn { get; set; }
         public virtual ICollection<MtdFilterField> MtdFilterField { get; set; }
         public virtual ICollection<MtdStoreStack> MtdStoreStack { get; set; }
+        public virtual MtdRegisterField MtdRegisterField { get; set; }
+
     }
 }

@@ -1,0 +1,56 @@
+﻿@page
+@model IndexModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+@{
+    ViewData["Title"] = Localizer["Registers"];
+    ViewData["SecondTitle"] = Localizer["Register data list"];
+}
+
+@section Breadcrumb {
+    <li><a href="/config">@Localizer["Configurator"]</a></li>
+    <li>@ViewBag.Title</li>
+}
+
+<div class="mtd-desk">
+    <div class="mtd-desk-panel">
+        <div style="padding-left: 16px">
+            <button mtd-data-href="/config/register/create" class="mdc-fab mdc-fab--extended" aria-label="Create">
+                <div class="mdc-fab__ripple"></div>
+                <span class="material-icons mdc-fab__icon">add</span>
+                <span class="mdc-fab__label">@Localizer["Create"]</span>
+            </button>
+        </div>
+    </div>
+    <form method="get" autocomplete='off' novalidate>
+        @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+        {
+            Id = "search-text",
+            Name = "searchText",
+            Placeholder = "Search for text",
+            PlaceholderLocalized = true,
+            IconLeading = "fas fa-search",
+            Value = Model.SearchText,
+        })
+    </form>
+
+    <ul class="mdc-list mdc-list--two-line"> 
+        @foreach (var register in Model.MtdRegisters)
+        {
+        <li mtd-data-href="/config/register/edit?id=@register.Id"  class="mtd-list-item mdc-list-item" data-value="@register.Id" aria-checked="false">
+            <span class="mdc-list-item__ripple"></span>
+            <span class="mdc-list-item__text">
+                <span class="mdc-list-item__primary-text">@register.Name</span>
+                <span class="mdc-list-item__secondary-text">@register.Description</span>
+            </span>
+        </li>
+        }
+    </ul>
+</div>
+
+
+
+@section Scripts {
+    <script src="~/lib/mtd-ordermaker/config/js/mtd-config-register.js" asp-append-version="true"></script>
+}

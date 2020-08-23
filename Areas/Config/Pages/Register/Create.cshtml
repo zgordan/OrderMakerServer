@@ -1,0 +1,63 @@
+﻿@page
+@model CreateModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+@{
+    ViewData["Title"] = Localizer["New register"];
+    ViewData["SecondTitle"] = Localizer["Creating new register"];
+}
+
+@section Breadcrumb {
+    <li mtd-data-href="/config"><a href="/config">@Localizer["Configurator"]</a></li>
+    <li mtd-data-href="/config/register"><a href="/config/register">@Localizer["Registers"]</a></li>
+    <li>@ViewBag.Title</li>
+}
+
+<div class="mtd-desk">
+    <div class="mtd-desk-panel">
+        <div style="padding-left: 16px">
+            <button mtd-data-clicker-by="clicker-create" type="button" class="mdc-fab mdc-fab--extended">
+                <span class="material-icons mdc-fab__icon">add</span>
+                <span class="mdc-fab__label">@Localizer["Create"]</span>
+            </button>
+        </div>
+    </div>
+    <form mtd-data-form method="post" autocomplete="off" action="" novalidate>
+        <input type="hidden" asp-for="MtdRegister.Id" />
+        <input type="hidden" id="clicker-create" mtd-data-clicker mtd-data-location="/config/register/edit?id=@Model.MtdRegister.Id" mtd-data-message="@Localizer["New register created"]." />
+        <div class="mtd-desk-field">
+            @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+               {
+                   Id = "form-name",
+                   Name = "MtdRegister.Name",
+                   Required = true,
+                   Label = "Name",
+                   LabelLocalized = true,
+                   MTDTexFieldView = MTDTextFieldViews.Outlined,
+               })
+        </div>
+
+        <div class="mtd-desk-field">
+            @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+               {
+                   Id = "form-note",
+                   Name = "MtdRegister.Description",
+                   Required = true,
+                   Label = "Description",
+                   LabelLocalized = true,
+                   MTDTexFieldView = MTDTextFieldViews.TextArea, 
+                   Cols = 40,
+                   Rows = 5,
+                   MaxLength = 250
+               })
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        new MTDTextField("form-name");
+        new MTDTextField("form-note");
+    </script>
+}
