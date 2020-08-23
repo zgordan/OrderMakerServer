@@ -19,26 +19,24 @@
 
 @model MtdStoreStack
 
-
-<input id="@Model.MtdFormPartField-datalink" name="@Model.MtdFormPartField-datalink" type="text" hidden />
-@switch (ViewBag.TypeStyle)
-{
-    case "Columns":
-        <div class="mtd-store-edit-col-root">
-            <div class="mtd-ui-material-form">
-                @Html.DropDownList(Model.MtdFormPartField, ViewData[Model.MtdFormPartField] as SelectList, new { DataLink = Model.MtdFormPartField })
-                <label mtd-info="@Model.MtdFormPartFieldNavigation.Description" for="select" class="mtd-ui-text-label">@Model.MtdFormPartFieldNavigation.Name</label>
-                <i class="mtd-ui-text-bottom"></i>
-            </div>
-        </div>
-        break;
-    default:
-        <div class="mtd-ui-material-form">
-            @Html.DropDownList(Model.MtdFormPartField, ViewData[Model.MtdFormPartField] as SelectList, new { DataLink = Model.MtdFormPartField })
-            <label mtd-info="@Model.MtdFormPartFieldNavigation.Description" for="select" class="mtd-ui-text-label">@Model.MtdFormPartFieldNavigation.Name</label>
-            <i class="mtd-ui-text-bottom"></i>
-        </div>
-        break;
+@{
+    List<MTDSelectListItem> items = (List<MTDSelectListItem>)ViewData[Model.MtdFormPartField];
+    MTDSelectListItem itemSelected = items.Where(x => x.Selectded).FirstOrDefault();
 }
 
+<div class="mtd-select-list">
+    @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
+    {
+        Id = Model.MtdFormPartField,
+        Name = Model.MtdFormPartField,
+        Label = Model.MtdFormPartFieldNavigation.Name,
+        MTDSelectListView = MTDSelectListViews.Outlined,
+        Items = items,
+        ValueId = itemSelected == null ? items.Select(x => x.Id).FirstOrDefault() : itemSelected.Id,
+
+    })
+
+    <input id="@Model.MtdFormPartField-datalink" name="@Model.MtdFormPartField-datalink" type="text" hidden />
+    <div style="height: 8px;"></div>
+</div>
 

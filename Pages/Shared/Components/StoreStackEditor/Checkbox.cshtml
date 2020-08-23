@@ -24,7 +24,19 @@
     if (Model.MtdStoreStackInt.Register == 1) { result = "checked"; }
 }
 
-@switch (ViewBag.TypeStyle)
+
+<div mtd-info="@Model.MtdFormPartFieldNavigation.Description" class="mtd-store-edit-row-name">
+    @Model.MtdFormPartFieldNavigation.Name
+</div>
+<div class="mtd-store-edit-row-value">
+    <div class="mtd-ui-material-check">
+        <input type="checkbox" @result id="@Model.MtdFormPartFieldNavigation.Id" name="@Model.MtdFormPartFieldNavigation.Id"
+               value=@result />
+        <label for="@Model.MtdFormPartFieldNavigation.Id"></label>
+    </div>
+</div>
+
+@*@switch (ViewBag.TypeStyle)
 {
     case "Columns":
         <div class="mtd-store-edit-col-root">
@@ -33,7 +45,7 @@
             </div>
             <div class="mtd-store-edit-col-value">
                 <div class="mtd-ui-material-check">
-                    <input  type="checkbox" @result id="@Model.MtdFormPartFieldNavigation.Id" name="@Model.MtdFormPartFieldNavigation.Id"
+                    <input type="checkbox" @result id="@Model.MtdFormPartFieldNavigation.Id" name="@Model.MtdFormPartFieldNavigation.Id"
                            value=@result />
                     <label for="@Model.MtdFormPartFieldNavigation.Id"></label>
                 </div>
@@ -54,7 +66,7 @@
             </div>
         </div>
         break;
-}
+}*@
 
 
 

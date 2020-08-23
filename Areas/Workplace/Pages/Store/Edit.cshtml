@@ -107,14 +107,13 @@
                                 listId = listGuid
                             })
 
-
                         </div>
                     </div>
                 </div>
             }
 
 
-            <div class="mtd-desk-block-content mdc-elevation--z4">
+            <div class="mdc-elevation--z4">
                 @await Component.InvokeAsync("StoreForm", new { store = Model.MtdStore, type = FormType.Edit })
             </div>
         </div>

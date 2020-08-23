@@ -26,6 +26,7 @@
            maxlength="@Model.MaxLength"           
            pattern="@Model.Pattern"
            mtd-data-message="@Model.MtdDataMessage"
+           @if (Model.Step != string.Empty) { <text> step="@Model.Step" </text> }
            @if (Model.MtdInputClicker) { <text> mtd-input-clicker </text>}
            @Model.RDAttribute
            >

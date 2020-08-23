@@ -51,7 +51,6 @@ namespace Mtd.OrderMaker.Server.Components.Store
                 .Where(x => x.MtdForm == formId)
                 .OrderBy(s => s.Sequence)
                 .ToListAsync();
-
             return result;
         }
 

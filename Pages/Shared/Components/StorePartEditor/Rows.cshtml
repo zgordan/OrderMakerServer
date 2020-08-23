@@ -19,9 +19,11 @@
 
 @model Models.Store.Warehouse
 
-<div class="mtd-store-edit-row-wrap">
+<div class="mtd-store-edit-rows">
     @foreach (var field in Model.Fields)
     {
-        @await Component.InvokeAsync("StoreStackEditor", new { field = field, warehouse = Model })
+        <div class="mtd-store-edit-item">
+            @await Component.InvokeAsync("StoreStackEditor", new { field = field, warehouse = Model })
+        </div>
     }
 </div>

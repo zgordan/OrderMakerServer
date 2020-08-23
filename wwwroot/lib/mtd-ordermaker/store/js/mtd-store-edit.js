@@ -112,3 +112,37 @@ textFields.forEach((textField) => {
 });
 
 
+const divields = document.querySelectorAll(".mtd-select-list");
+divields.forEach((divField) => {
+    var selectField =  divField.querySelector(".mdc-select");
+    var select = new MTDSelectList(selectField.id);
+    document.getElementById(`${selectField.id}-datalink`).value = select.selector.selectedText.textContent;
+    select.selector.listen('MDCSelect:change', () => {
+        document.getElementById(`${selectField.id}-datalink`).value = select.selector.selectedText.textContent;
+    });
+});
+
+
+const toggleParts = document.querySelectorAll("[mtd-button-toggle]");
+
+toggleParts.forEach((button) => {
+
+    button.addEventListener("click", () => {
+        const id = button.getAttribute("mtd-button-toggle");
+        const parts = document.querySelectorAll(`[mtd-div-toggle='${id}']`);
+        parts.forEach((part) => {
+            part.classList.toggle("mtd-main-display-none");
+        });
+    });
+});
+
+const PartsOpenAll = () => {
+    toggleParts.forEach((button) => {
+        button.classList.remove("mdc-icon-button--on");
+        const id = button.getAttribute("mtd-button-toggle");
+        const parts = document.querySelectorAll(`[mtd-div-toggle='${id}']`);
+        parts.forEach((part) => {
+            part.classList.remove("mtd-main-display-none");
+        });
+    });
+}
