@@ -24,7 +24,6 @@ namespace Mtd.OrderMaker.Server.Entity
     {
         public long Id { get; set; }
         public decimal Register { get; set; }
-        public int RegisterAction { get; set; }
         public virtual MtdStoreStack IdNavigation { get; set; }
     }
 }

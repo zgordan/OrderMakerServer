@@ -16,12 +16,15 @@
 
 <div class="mtd-desk">
     <div class="mtd-desk-panel">
-        <div style="padding-left: 16px">
+        <div style="padding-left: 16px;flex-grow:1">
             <button mtd-data-clicker-by="clicker-save" type="button" class="mdc-fab mdc-fab--extended">
                 <div class="mdc-fab__ripple"></div>
                 <span class="material-icons mdc-fab__icon">save</span>
                 <span class="mdc-fab__label">@Localizer["Save"]</span>
             </button>
+        </div>
+        <div style="padding:8px; padding-top: 42px">
+            <span>@Localizer["Balance:"] <strong>@Model.Balance</strong></span>
         </div>
     </div>
     <form mtd-data-form method="post" autocomplete="off" action="" novalidate>
@@ -82,11 +85,11 @@
                     <div style="text-align: center; color: gray">
                         <h3>@Localizer["List of digital form fields controlled by this register"]</h3>
                     </div>
-                    
-                 <hr/>
+
+                    <hr />
                     <table style="width:100%">
                         <thead>
-                            <tr>   
+                            <tr>
                                 <th>@Localizer["Linked"]</th>
                                 <th>@Localizer["Form name"]</th>
                                 <th>@Localizer["Field name"]</th>
@@ -102,14 +105,15 @@
                                     if (Model.RejectFieldIds.Contains(field.Id)) { continue; }
 
                                     bool linked = false; bool income = false; bool expense = false;
-                                    MtdRegisterField rf = Model.RegisterFields.FirstOrDefault(x=>x.Id == field.Id);
-                                    if (rf != null) { linked = true;  income = rf.Income == 1; expense = rf.Expense == 1; }
+                                    MtdRegisterField rf = Model.RegisterFields.FirstOrDefault(x => x.Id == field.Id);
+                                    if (rf != null) { linked = true; income = rf.Income == 1; expense = rf.Expense == 1; }
 
                                     <tr>
                                         <td>
+
                                             <div class="mdc-form-field">
                                                 <div class="mdc-checkbox">
-                                                    <input type="checkbox"
+                                                    <input type="checkbox" onchange="ChangeRegisterLinked(this)"
                                                            class="mdc-checkbox__native-control" id="@field.Id-linked" name="@field.Id-linked" @if (linked) { <text> checked</text> } />
                                                     <div class="mdc-checkbox__background">
                                                         <svg class="mdc-checkbox__checkmark"
@@ -120,16 +124,17 @@
                                                         </svg>
                                                         <div class="mdc-checkbox__mixedmark"></div>
                                                     </div>
-                                                </div>                           
+                                                </div>
                                             </div>
                                         </td>
                                         <td>@form.MtdForm.Name </td>
                                         <td>@field.Name</td>
                                         <td>
+
                                             <div class="mdc-form-field">
                                                 <div class="mdc-checkbox">
-                                                    <input type="checkbox"
-                                                           class="mdc-checkbox__native-control" id="@field.Id-income" name="@field.Id-income" @if (income) { <text> checked</text> }  />
+                                                    <input type="checkbox" onchange="ChangeRegisterAction(this)"
+                                                           class="mdc-checkbox__native-control" id="@field.Id-income" name="@field.Id-income" @if (income) { <text> checked</text> } />
                                                     <div class="mdc-checkbox__background">
                                                         <svg class="mdc-checkbox__checkmark"
                                                              viewBox="0 0 24 24">
@@ -139,14 +144,15 @@
                                                         </svg>
                                                         <div class="mdc-checkbox__mixedmark"></div>
                                                     </div>
-                                                </div>                              
+                                                </div>
                                             </div>
                                         </td>
                                         <td>
+
                                             <div class="mdc-form-field">
                                                 <div class="mdc-checkbox">
-                                                    <input type="checkbox"
-                                                           class="mdc-checkbox__native-control" id="@field.Id-expense" name="@field.Id-expense"  @if (expense) { <text> checked</text> } />
+                                                    <input type="checkbox" onchange="ChangeRegisterAction(this)"
+                                                           class="mdc-checkbox__native-control" id="@field.Id-expense" name="@field.Id-expense" @if (expense) { <text> checked</text> } />
                                                     <div class="mdc-checkbox__background">
                                                         <svg class="mdc-checkbox__checkmark"
                                                              viewBox="0 0 24 24">
@@ -166,16 +172,11 @@
                     </table>
                 </div>
             </div>
-        </div>     
+        </div>
 
     </form>
 </div>
 
 @section Scripts {
-    <script>
-        new MTDTextField("form-name");
-        new MTDTextField("form-note");
-        new MTDSelectList("select-form");
-        new MTDSelectList("select-field");
-    </script>
+    <script src="~/lib/mtd-ordermaker/config/js/mtd-config-register-edit.js" asp-append-version="true"></script>
 }

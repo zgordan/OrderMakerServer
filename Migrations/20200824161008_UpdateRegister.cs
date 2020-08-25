@@ -6,20 +6,6 @@ namespace Mtd.OrderMaker.Server.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "register_action",
-                table: "mtd_store_stack_int",
-                type: "int(11)",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddColumn<int>(
-                name: "register_action",
-                table: "mtd_store_stack_decimal",
-                type: "int(11)",
-                nullable: false,
-                defaultValue: 0);
-
             migrationBuilder.CreateTable(
                 name: "mtd_register",
                 columns: table => new
@@ -76,11 +62,6 @@ namespace Mtd.OrderMaker.Server.Migrations
                 name: "fk_mtd_form_register_idx",
                 table: "mtd_register_field",
                 column: "mtd_register_id");
-
-
-            migrationBuilder.Sql("update mtd_store_stack_int set register_action=0 where id<>''");
-            migrationBuilder.Sql("update mtd_store_stack_decimal set register_action=0 where id<>''");
-
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -90,14 +71,6 @@ namespace Mtd.OrderMaker.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "mtd_register");
-
-            migrationBuilder.DropColumn(
-                name: "register_action",
-                table: "mtd_store_stack_int");
-
-            migrationBuilder.DropColumn(
-                name: "register_action",
-                table: "mtd_store_stack_decimal");
         }
     }
 }

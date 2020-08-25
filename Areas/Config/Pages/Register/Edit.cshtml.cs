@@ -28,6 +28,8 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Register
         [BindProperty]
         public bool ParentLimit { get; set; }
 
+        public decimal Balance { get; set; }
+
         public List<FormFields> Forms { get; set; }
         public List<MtdRegisterField> RegisterFields { get; set; }
         public List<string> RejectFieldIds { get; set; }
@@ -50,6 +52,8 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Register
             RejectFieldIds = await context.MtdRegisterField.Where(x => x.MtdRegisterId != MtdRegister.Id).Select(x=>x.Id).ToListAsync();
             if (RegisterFields == null) { RegisterFields = new List<MtdRegisterField>(); }
             if (RejectFieldIds == null) { RejectFieldIds = new List<string>(); }
+
+            Balance =  await  formHandler.GetRegisterBalanceAsync(MtdRegister);
 
             return Page();
         }

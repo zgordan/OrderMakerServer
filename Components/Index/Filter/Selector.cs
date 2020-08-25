@@ -158,6 +158,7 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
 
         }
 
+        /*Warnibg: Only for viewer list */
         private async Task<List<MTDSelectListItem>> GetRelatedDocsAsync(WebAppUser user, string formId)
         {
             List<MtdForm> relatedForms = await _context.MtdFormRelated.Include(x => x.MtdParentForm)
@@ -174,9 +175,9 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
                 foreach (var form in relatedForms)
                 {
                     bool viever = await _userHandler.IsViewer(user, form.Id);
-                    bool creator = await _userHandler.CheckUserPolicyAsync(user, form.Id, RightsType.RelatedCreate);
+                    ///bool creator = await _userHandler.CheckUserPolicyAsync(user, form.Id, RightsType.RelatedCreate);
 
-                    if (viever && creator)
+                    if (viever)
                     {
                         if (selecteFormId == null) { selecteFormId = form.Id; }
                         relatedDocs.Add(new MTDSelectListItem { Id = form.Id, Value = form.Name, Selectded = form.Id == selecteFormId });

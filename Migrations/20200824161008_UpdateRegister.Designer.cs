@@ -9,7 +9,7 @@ using Mtd.OrderMaker.Server.Entity;
 namespace Mtd.OrderMaker.Server.Migrations
 {
     [DbContext(typeof(OrderMakerContext))]
-    [Migration("20200820131311_UpdateRegister")]
+    [Migration("20200824161008_UpdateRegister")]
     partial class UpdateRegister
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1713,10 +1713,6 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasColumnName("register")
                         .HasColumnType("decimal(20,2)");
 
-                    b.Property<int>("RegisterAction")
-                        .HasColumnName("register_action")
-                        .HasColumnType("int(11)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
@@ -1771,10 +1767,6 @@ namespace Mtd.OrderMaker.Server.Migrations
 
                     b.Property<int>("Register")
                         .HasColumnName("register")
-                        .HasColumnType("int(11)");
-
-                    b.Property<int>("RegisterAction")
-                        .HasColumnName("register_action")
                         .HasColumnType("int(11)");
 
                     b.HasKey("Id");

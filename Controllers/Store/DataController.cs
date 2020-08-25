@@ -25,6 +25,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Primitives;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.EntityHandler;
 using Mtd.OrderMaker.Server.EntityHandler.Approval;
 using Mtd.OrderMaker.Server.Extensions;
 using Mtd.OrderMaker.Server.Services;
@@ -114,7 +115,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             {
                 mtdStore.Parent = storeParentId;
             }
-            
+
 
 
             MtdLogDocument mtdLog = new MtdLogDocument
@@ -127,6 +128,13 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
 
 
             OutData outData = await CreateDataAsync(Id, webAppUser, TypeAction.Edit);
+
+            if (!outData.CheckRegister)
+            {
+
+                return BadRequest(new JsonResult($"{localizer["Limit for Register:"]} {outData.CheckRegisterInfo}"));
+            }
+
             List<MtdStoreStack> stackNew = outData.MtdStoreStacks;
 
 
@@ -230,11 +238,11 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                 }
             }
 
-            bool isRelatedCreator= await _userHandler.CheckUserPolicyAsync(webAppUser, formId, RightsType.RelatedCreate);
+            bool isRelatedCreator = await _userHandler.CheckUserPolicyAsync(webAppUser, formId, RightsType.RelatedCreate);
             if (!isRelatedCreator) { storeParentId = null; }
 
             MtdStore mtdStore = new MtdStore { Id = idStore, MtdForm = formId, Sequence = sequence ?? 1, Parent = storeParentId };
-            
+
 
             bool setData = await _userHandler.CheckUserPolicyAsync(webAppUser, mtdStore.MtdForm, RightsType.SetDate);
             if (setData)
@@ -275,6 +283,12 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             await _context.MtdLogDocument.AddAsync(mtdLog);
 
             OutData outParam = await CreateDataAsync(mtdStore.Id, webAppUser, TypeAction.Create);
+
+            if (!outParam.CheckRegister)
+            {
+                return BadRequest(new JsonResult($"{localizer["Limit for Register:"]} {outParam.CheckRegisterInfo}"));
+            }
+
             List<MtdStoreStack> stackNew = outParam.MtdStoreStacks;
             await _context.MtdStoreStack.AddRangeAsync(stackNew);
 
@@ -517,7 +531,42 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             {
                 MtdFormPartField = titleField,
                 MtdStoreStacks = stackNew,
+                CheckRegister = true
             };
+
+
+            /*Check registers*/
+            List<string> fieldIds = outParam.MtdStoreStacks.Select(x => x.MtdFormPartField).ToList();
+            IList<string> registerIds = await _context.MtdRegister.Where(x => x.ParentLimit == 1).Select(x => x.Id).ToListAsync();
+            
+            if (registerIds != null && store.Parent != null)
+            {
+
+                List<MtdRegisterField> registerFields = await _context.MtdRegisterField.Include(c=>c.MtdRegister)
+                    .Where(x => fieldIds.Contains(x.Id) && registerIds.Contains(x.MtdRegisterId) && x.Expense == 1 && x.Income == 0)
+                    .ToListAsync();
+
+                if (registerFields != null)
+                {
+                    FormHandler registerHandler = new FormHandler(_context);
+                    foreach(MtdRegister register in registerFields.Select(x => x.MtdRegister))
+                    {
+                        MtdStore parentStore = await registerHandler.GetParentStoreAsync(store.Id);
+                        decimal balance =  await registerHandler.GetRegisterBalanceAsync(register, store.Id, parentStore.Id);
+                        List<string> fieldIdsForRegister = registerFields.Where(x => x.MtdRegisterId == register.Id).Select(x => x.Id).ToList();
+                        decimal sumInt = outParam.MtdStoreStacks.Where(x => fieldIdsForRegister.Contains(x.MtdFormPartField) && x.MtdStoreStackInt != null).Sum(x => x.MtdStoreStackInt.Register);
+                        decimal sumDecimal = outParam.MtdStoreStacks.Where(x => fieldIdsForRegister.Contains(x.MtdFormPartField) && x.MtdStoreStackDecimal != null).Sum(x => x.MtdStoreStackDecimal.Register);
+                        decimal allSum = sumInt + sumDecimal;
+                        bool checkRegister = (balance - allSum) >= 0;
+                        outParam.CheckRegister = checkRegister;
+                        if (!checkRegister)
+                        {
+                            outParam.CheckRegisterInfo = register.Name;
+                        }
+
+                    }
+                }                                                
+            }
 
             return outParam;
         }
@@ -532,5 +581,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
     {
         public List<MtdStoreStack> MtdStoreStacks { get; set; }
         public MtdFormPartField MtdFormPartField { get; set; }
+        public bool CheckRegister { get; set; }
+        public string CheckRegisterInfo { get; set; }
     }
 }

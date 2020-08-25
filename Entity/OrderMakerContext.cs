@@ -1921,10 +1921,6 @@ namespace Mtd.OrderMaker.Server.Entity
                     .HasColumnName("register")
                     .HasColumnType("decimal(20,2)");
 
-                entity.Property(e => e.RegisterAction)
-                    .HasColumnName("register_action")
-                    .HasColumnType("int(11)");
-
                 entity.HasOne(d => d.IdNavigation)
                     .WithOne(p => p.MtdStoreStackDecimal)
                     .HasForeignKey<MtdStoreStackDecimal>(d => d.Id)
@@ -1985,10 +1981,6 @@ namespace Mtd.OrderMaker.Server.Entity
 
                 entity.Property(e => e.Register)
                     .HasColumnName("register")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.RegisterAction)
-                    .HasColumnName("register_action")
                     .HasColumnType("int(11)");
 
                 entity.HasOne(d => d.IdNavigation)

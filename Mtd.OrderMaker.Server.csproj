@@ -18,7 +18,7 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
 </Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <RepositoryUrl>https://github.com/olegbruev/OrderMakerServer</RepositoryUrl>
-    <PackageReleaseNotes>Release 1.3.6.beta.4 New Form Editor</PackageReleaseNotes>
+    <PackageReleaseNotes>Release 1.3.6.beta.4 Register and parent limit</PackageReleaseNotes>
     <PackageIconUrl>http://ordermaker.org/favicon.ico</PackageIconUrl>
     <ApplicationIcon>form.ico</ApplicationIcon>
     <Version>1.3.6</Version>
@@ -90,7 +90,11 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
     <Compile Remove="Migrations\20200728134522_UpdateTimeApproval.cs" />
     <Compile Remove="Migrations\20200728134522_UpdateTimeApproval.Designer.cs" />
     <Compile Remove="Migrations\20200819160415_UpdateRegister.cs" />
-    <Compile Remove="Migrations\20200819160415_UpdateRegister.Designer.cs" />    
+    <Compile Remove="Migrations\20200819160415_UpdateRegister.Designer.cs" />
+    <Compile Remove="Migrations\20200820131311_UpdateRegister.cs" />
+    <Compile Remove="Migrations\20200820131311_UpdateRegister.Designer.cs" />
+    <Compile Remove="Migrations\20200824152958_UpdateRegister.cs" />
+    <Compile Remove="Migrations\20200824152958_UpdateRegister.Designer.cs" />    
   </ItemGroup>
 
   <ItemGroup>
