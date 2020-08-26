@@ -77,16 +77,44 @@
         </div>
 
         <div>
+            @{ string partId = Guid.NewGuid().ToString(); }
+
             @foreach (var part in Model.Parts)
             {
                 if (part.Title == 1)
                 {
-                    <div class="mtd-store-style-part">
-                        @part.Name
+                    partId = part.Id;
+                    <div class="mtd-store-edit-part">
+                        <div style="flex-grow:1">
+                            @part.Name
+                        </div>
+
+                        <div>
+                            <button mtd-button-toggle="@partId" class="mdc-icon-button" type="button" style="color: navy">
+                                <div class="mdc-button__ripple"></div>
+                                <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">expand_more</i>
+                                <i class="material-icons mdc-icon-button__icon">expand_less</i>
+                            </button>
+                        </div>
                     </div>
                 }
-                @await Component.InvokeAsync("StorePartEditor", new { part = part, model = Model })
+
+                <div mtd-div-toggle="@partId">
+                    @await Component.InvokeAsync("StorePartEditor", new { part = part, model = Model })
+                </div>
             }
+
+            @*@foreach (var part in Model.Parts)
+        {
+            if (part.Title == 1)
+            {
+                <div class="mtd-store-style-part">
+                    @part.Name
+                </div>
+            }
+
+            @await Component.InvokeAsync("StorePartEditor", new { part = part, model = Model })
+        }*@
         </div>
     </div>
 

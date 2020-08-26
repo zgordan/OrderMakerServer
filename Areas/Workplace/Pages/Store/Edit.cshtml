@@ -38,9 +38,9 @@
 }
 
 @section Breadcrumb {
-    <li><a style="cursor:pointer" mtd-data-href="/">@Localizer["Desktop"]</a></li>
-    <li><a style="cursor:pointer" mtd-data-href="/workplace/store/index?indexForm=@Model.MtdForm.Id">@Localizer["List data"]</a></li>
-    <li><a style="cursor:pointer" mtd-data-href="/workplace/store/details?id=@Model.MtdStore.Id">@Localizer["Form view"]</a></li>
+    <li mtd-data-href="/" ><a href="/">@Localizer["Desktop"]</a></li>
+    <li mtd-data-href="/workplace/store/index?indexForm=@Model.MtdForm.Id"><a href="/workplace/store/index?indexForm=@Model.MtdForm.Id">@Localizer["List data"]</a></li>
+    <li mtd-data-href="/workplace/store/details?id=@Model.MtdStore.Id"><a href="/workplace/store/details?id=@Model.MtdStore.Id">@Localizer["Form view"]</a></li>
     <li>@ViewBag.Title</li>
 }
 
