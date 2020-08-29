@@ -57,24 +57,27 @@
                     <label for="print-info">@Localizer["Document information"]</label>
                 </div>
 
-                <div class="mdc-form-field">
-                    <div class="mdc-checkbox">
-                        <input type="checkbox"
-                               class="mdc-checkbox__native-control"
-                               id="print-approval" />
-                        <div class="mdc-checkbox__background">
-                            <svg class="mdc-checkbox__checkmark"
-                                 viewBox="0 0 24 24">
-                                <path class="mdc-checkbox__checkmark-path"
-                                      fill="none"
-                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                            </svg>
-                            <div class="mdc-checkbox__mixedmark"></div>
+                @if (Model.IsFormApproval)
+                {
+                    <div class="mdc-form-field">
+                        <div class="mdc-checkbox">
+                            <input type="checkbox"
+                                   class="mdc-checkbox__native-control"
+                                   id="print-approval" />
+                            <div class="mdc-checkbox__background">
+                                <svg class="mdc-checkbox__checkmark"
+                                     viewBox="0 0 24 24">
+                                    <path class="mdc-checkbox__checkmark-path"
+                                          fill="none"
+                                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                </svg>
+                                <div class="mdc-checkbox__mixedmark"></div>
+                            </div>
+                            <div class="mdc-checkbox__ripple"></div>
                         </div>
-                        <div class="mdc-checkbox__ripple"></div>
+                        <label for="print-approval">@Localizer["Approval history"]</label>
                     </div>
-                    <label for="print-approval">@Localizer["Approval history"]</label>
-                </div>
+                }
             </div>
 
             <hr class="mdc-list-divider" />

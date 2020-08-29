@@ -768,4 +768,25 @@
   <data name="This form is the basis for the following documents:" xml:space="preserve">
     <value>Эта форма является основанием для следующих документов:</value>
   </data>
+  <data name="Expense" xml:space="preserve">
+    <value>Расход</value>
+  </data>
+  <data name="Field name" xml:space="preserve">
+    <value>Имя поля</value>
+  </data>
+  <data name="Form name" xml:space="preserve">
+    <value>Имя формы</value>
+  </data>
+  <data name="Income" xml:space="preserve">
+    <value>Доход</value>
+  </data>
+  <data name="Limit for Register:" xml:space="preserve">
+    <value>Ограничение регистра:</value>
+  </data>
+  <data name="Linked" xml:space="preserve">
+    <value>Связан</value>
+  </data>
+  <data name="List of digital form fields controlled by this register" xml:space="preserve">
+    <value>Список полей цифровой формы, которые контролируются этим регистром</value>
+  </data>
 </root>

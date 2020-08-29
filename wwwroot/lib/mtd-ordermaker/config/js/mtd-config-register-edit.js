@@ -5,26 +5,32 @@ new MTDSelectList("select-field");
 
 const ChangeRegisterAction = (target) => {
 
-    let id;
-    if (target.id.includes('income')) {
-        id = target.id.replace('-income', '-expense');        
-    } else {
-        id = target.id.replace('-expense', '-income');        
-    }
+    let id = target.id.replace('-income', '').replace('-expense', '');
+ 
+    const income = document.getElementById(`${id}-income`);
+    const expense = document.getElementById(`${id}-expense`);
+    const linked = document.getElementById(`${id}-linked`);
 
-    document.getElementById(id).checked = false;
+    income.checked = income.id == target.id;
+    expense.checked = expense.id == target.id;
+
+    linked.checked = income.checked != false || expense.checked != false;
+    
 }
 
 const ChangeRegisterLinked = (target) => {
 
     const id = target.id.replace('-linked', '');
+    const income = document.getElementById(`${id}-income`);
+    const expense = document.getElementById(`${id}-expense`);
 
     if (!target.checked) {
         
-        document.getElementById(`${id}-income`).checked = false;
-        document.getElementById(`${id}-expense`).checked = false;
+        income.checked = false;
+        expense.checked = false;
 
     } else {
-        document.getElementById(`${id}-income`).checked = true;
+
+        income.checked = true;
     }
 }

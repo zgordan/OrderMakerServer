@@ -154,7 +154,7 @@
                         <td>
                             <div class="mtd-store-view-status">
                                 <div>
-                                    @if (Model.MtdApproval.ImgStart == null)
+                                    @if (Model.MtdApproval == null || Model.MtdApproval.ImgStart == null)
                                     {<i style="vertical-align:middle" class="material-icons">new_releases</i> }
                                     else
                                     {
@@ -169,7 +169,7 @@
                                     }
                                 </div>
                                 <div>
-                                    @if (Model.MtdApproval.ImgStartText == null)
+                                    @if (Model.MtdApproval == null || Model.MtdApproval.ImgStartText == null)
                                     {@Localizer["Not started"]}
                                 else
                                 {@Model.MtdApproval.ImgStartText}
