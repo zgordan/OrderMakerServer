@@ -31,6 +31,7 @@ namespace Mtd.OrderMaker.Server.Entity
             MtdLogApproval = new HashSet<MtdLogApproval>();
             MtdStoreLink = new HashSet<MtdStoreLink>();
             MtdStoreStack = new HashSet<MtdStoreStack>();
+            MtdStoreActitvites = new HashSet<MtdStoreActivity>();
         }
 
         public string Id { get; set; }
@@ -49,5 +50,6 @@ namespace Mtd.OrderMaker.Server.Entity
         public virtual ICollection<MtdLogApproval> MtdLogApproval { get; set; }
         public virtual ICollection<MtdStoreLink> MtdStoreLink { get; set; }
         public virtual ICollection<MtdStoreStack> MtdStoreStack { get; set; }
+        public virtual ICollection<MtdStoreActivity> MtdStoreActitvites { get; set; }
     }
 }

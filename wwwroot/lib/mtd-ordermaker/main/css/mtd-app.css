@@ -353,6 +353,24 @@
   cursor: pointer;
 }
 
+.mtd-desk-title {
+  width: 100%;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+}
+
+.mtd-desk-title-header {
+  padding: 2px;
+}
+
+.mtd-desk-title-name {
+  font-weight: bold;
+  font-size: large;
+  padding: 2px;
+}
+
 .mtd-dialog-hidden {
   display: none;
 }

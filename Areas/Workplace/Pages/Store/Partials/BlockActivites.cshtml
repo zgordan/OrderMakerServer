@@ -1,0 +1,33 @@
+﻿@model Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store.DetailsModel
+@namespace Mtd.OrderMaker.Server.Components.Store
+@using Mtd.OrderMaker.Server.EntityHandler.Approval
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+
+
+
+<div class="mtd-desk-block-content">
+    <div class="mtd-desk-block-title">
+        <div class="mtd-desk-block-title-icon">
+
+        </div>
+        <div class="mtd-desk-block-title-label">
+            @Localizer["Activites"]
+        </div>
+        <div class="mtd-desk-block-title-button">
+            <button onclick="clickBlockToogle(this)"
+                    class="mdc-icon-button"
+                    aria-label="Add to favorites"
+                    aria-hidden="true"
+                    aria-pressed="false"
+                    data="block-activites">
+                <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">expand_more</i>
+                <i class="material-icons mdc-icon-button__icon">expand_less</i>
+            </button>
+        </div>
+    </div>
+    <div id="block-activites" class="mtd-desk-block-body">
+        Activites
+    </div>
+</div>

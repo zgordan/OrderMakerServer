@@ -50,6 +50,7 @@ namespace Mtd.OrderMaker.Server.Entity
         public virtual DbSet<MtdFilterScript> MtdFilterScript { get; set; }
         public virtual DbSet<MtdFilterScriptApply> MtdFilterScriptApply { get; set; }
         public virtual DbSet<MtdForm> MtdForm { get; set; }
+        public virtual DbSet<MtdFormActivity> MtdFormActivites { get; set; }
         public virtual DbSet<MtdFormRelated> MtdFormRelated { get; set; }
         public virtual DbSet<MtdFormDesk> MtdFormDesk { get; set; }
         public virtual DbSet<MtdFormHeader> MtdFormHeader { get; set; }
@@ -67,6 +68,7 @@ namespace Mtd.OrderMaker.Server.Entity
         public virtual DbSet<MtdRegister> MtdRegister { get; set; }
         public virtual DbSet<MtdRegisterField> MtdRegisterField { get; set; }
         public virtual DbSet<MtdStore> MtdStore { get; set; }
+        public virtual DbSet<MtdStoreActivity> MtdStoreActivites { get; set; }
         public virtual DbSet<MtdStoreApproval> MtdStoreApproval { get; set; }
         public virtual DbSet<MtdStoreLink> MtdStoreLink { get; set; }
         public virtual DbSet<MtdStoreOwner> MtdStoreOwner { get; set; }
@@ -837,6 +839,52 @@ namespace Mtd.OrderMaker.Server.Entity
                     .HasForeignKey(d => d.Parent)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("fk_form_parent");
+            });
+
+
+            modelBuilder.Entity<MtdFormActivity>(entity =>
+            {
+                entity.ToTable("mtd_form_activity");
+
+                entity.HasIndex(e => e.Id)
+                    .HasName("id_UNIQUE")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.MtdFomrId)
+                    .HasName("fk_mtd_form_activity_idx");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.MtdFomrId)
+                    .IsRequired()
+                    .HasColumnName("mtd_form_id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
+                    .HasColumnType("varchar(120)");
+
+                entity.Property(e => e.Image)
+                    .HasColumnName("image")
+                    .HasColumnType("mediumblob");
+
+                entity.Property(e => e.ImageType)
+                    .HasColumnName("image_type")
+                    .HasColumnType("varchar(256)");
+
+                entity.Property(e => e.Description)
+                    .IsRequired()
+                    .HasColumnName("description")
+                    .HasColumnType("varchar(512)");
+
+                entity.HasOne(d => d.MtdForm)
+                    .WithMany(p => p.MtdFormActivites)
+                    .HasForeignKey(d => d.MtdFomrId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("fk_mtd_form_activity");
             });
 
             modelBuilder.Entity<MtdFormDesk>(entity =>
@@ -1701,6 +1749,57 @@ namespace Mtd.OrderMaker.Server.Entity
                     .HasForeignKey(d => d.Parent)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("fk_mtd_store_parent");
+            });
+
+            modelBuilder.Entity<MtdStoreActivity>(entity =>
+            {
+                entity.ToTable("mtd_store_activity");
+
+                entity.HasIndex(e => e.Id)
+                    .HasName("id_UNIQUE")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.MtdStoreId)
+                    .HasName("fk_store_activity_store_idx");
+
+                entity.HasIndex(e => e.MtdFormActivityId)
+                    .HasName("fk_store_activity_idx");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.MtdFormActivityId)
+                    .HasColumnName("mtd_form_activity_id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.MtdStoreId)
+                    .IsRequired()
+                    .HasColumnName("mtd_store_id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.Comment)
+                    .IsRequired()
+                    .HasColumnName("app_comment")
+                    .HasColumnType("varchar(512)");
+
+                entity.Property(e => e.TimeCr)
+                    .IsRequired()
+                    .HasColumnName("timecr")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.HasOne(d => d.MtdStore)
+                    .WithMany(p => p.MtdStoreActitvites)
+                    .HasForeignKey(d => d.MtdStoreId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("fk_store_activity_store");
+
+                entity.HasOne(d => d.MtdFormActitvity)
+                    .WithMany(p => p.MtdStoreActivites)
+                    .HasForeignKey(d => d.MtdFormActivityId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("fk_store_activity_idx");
             });
 
             modelBuilder.Entity<MtdStoreApproval>(entity =>

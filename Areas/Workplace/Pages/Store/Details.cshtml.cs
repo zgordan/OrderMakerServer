@@ -72,11 +72,12 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
         public List<MTDSelectListItem> UsersList { get; set; }
         public List<MTDSelectListItem> Stages { get; set; }
         public List<MTDSelectListItem> UsersRequest { get; set; }
-
         public bool RelatedDocs { get; set; }
         public List<MTDSelectListItem> RelatedForms { get; set; }
-
         public List<string> ChildIds { get; set; }
+
+        public bool ViewActivites { get; set; }
+
         public async Task<IActionResult> OnGetAsync(string id)
         {
             if (id == null)
@@ -260,7 +261,9 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
             ChildIds = await _context.MtdStore.Where(x => x.Parent == MtdStore.Id).Select(x => x.Id).ToListAsync();
 
             if (ChildIds == null) { ChildIds = new List<string>(); }
-                       
+
+
+            ViewActivites = true;
 
             return Page();
         }
