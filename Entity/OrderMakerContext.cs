@@ -850,14 +850,14 @@ namespace Mtd.OrderMaker.Server.Entity
                     .HasName("id_UNIQUE")
                     .IsUnique();
 
-                entity.HasIndex(e => e.MtdFomrId)
+                entity.HasIndex(e => e.MtdFormId)
                     .HasName("fk_mtd_form_activity_idx");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
                     .HasColumnType("varchar(36)");
 
-                entity.Property(e => e.MtdFomrId)
+                entity.Property(e => e.MtdFormId)
                     .IsRequired()
                     .HasColumnName("mtd_form_id")
                     .HasColumnType("varchar(36)");
@@ -867,6 +867,15 @@ namespace Mtd.OrderMaker.Server.Entity
                     .HasColumnName("name")
                     .HasColumnType("varchar(120)");
 
+                entity.Property(e => e.Description)
+                    .IsRequired()
+                    .HasColumnName("description")
+                    .HasColumnType("varchar(512)");
+
+                entity.Property(e => e.Sequence)    
+                    .HasColumnName("sequence")
+                    .HasColumnType("int(11)");
+
                 entity.Property(e => e.Image)
                     .HasColumnName("image")
                     .HasColumnType("mediumblob");
@@ -875,14 +884,9 @@ namespace Mtd.OrderMaker.Server.Entity
                     .HasColumnName("image_type")
                     .HasColumnType("varchar(256)");
 
-                entity.Property(e => e.Description)
-                    .IsRequired()
-                    .HasColumnName("description")
-                    .HasColumnType("varchar(512)");
-
                 entity.HasOne(d => d.MtdForm)
                     .WithMany(p => p.MtdFormActivites)
-                    .HasForeignKey(d => d.MtdFomrId)
+                    .HasForeignKey(d => d.MtdFormId)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("fk_mtd_form_activity");
             });
@@ -1770,6 +1774,7 @@ namespace Mtd.OrderMaker.Server.Entity
                     .HasColumnType("varchar(36)");
 
                 entity.Property(e => e.MtdFormActivityId)
+                    .IsRequired()
                     .HasColumnName("mtd_form_activity_id")
                     .HasColumnType("varchar(36)");
 
@@ -1788,6 +1793,11 @@ namespace Mtd.OrderMaker.Server.Entity
                     .HasColumnName("timecr")
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasColumnName("user_id")
+                    .HasColumnType("varchar(36)");
 
                 entity.HasOne(d => d.MtdStore)
                     .WithMany(p => p.MtdStoreActitvites)

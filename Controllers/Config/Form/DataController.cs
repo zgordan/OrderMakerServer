@@ -33,7 +33,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Config.Form
     [Route("api/config/form")]
     [ApiController]
     [Authorize(Roles = "Admin")]
-    public class DataController : ControllerBase
+    public partial class DataController : ControllerBase
     {
 
         private readonly OrderMakerContext _context;

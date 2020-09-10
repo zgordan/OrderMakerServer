@@ -1,4 +1,82 @@
 ﻿@page
 @model Mtd.OrderMaker.Server.Areas.Config.Pages.Form.ActCreateModel
+
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> Localizer
+
 @{
+    ViewData["Title"] = Localizer["New form activity"];
+    ViewData["SecondTitle"] = Localizer["Creating a new form activity"];
+}
+
+@section Breadcrumb {
+    <li mtd-data-href="/config"><a href="/config">@Localizer["Configurator"]</a></li>
+    <li mtd-data-href="/config"><a href="/config/form">@Localizer["Forms"]</a></li>
+    <li mtd-data-href="/config"><a href="/config/form/edit?id=@Model.MtdForm.Id">@Localizer["Form editor"]</a></li>
+    <li mtd-data-href="/config"><a href="/config/form/parts?formId=@Model.MtdForm.Id">@Localizer["Parts editor"]</a></li>
+    <li>@ViewBag.Title</li>
+}
+
+
+<div class="mtd-desk">
+    <div class="mtd-desk-panel">
+        <div style="padding-left: 16px">
+            <button mtd-data-clicker-by="clicker-create" class="mdc-fab mdc-fab--extended" aria-label="Create">
+                <div class="mdc-fab__ripple"></div>
+                <span class="material-icons mdc-fab__icon">add</span>
+                <span class="mdc-fab__label">@Localizer["Create"]</span>
+            </button>
+        </div>
+    </div>
+    <div class="mtd-desk-title">
+        <div class="mtd-desk-title-header">
+            @if (ViewBag.ImgSrcForm != string.Empty)
+            {
+                <img src="@ViewBag.ImgSrcForm" />
+            }
+        </div>
+        <div class="mtd-desk-title-name">
+            <span>@Model.MtdForm.Name</span>
+        </div>
+    </div>
+    <form mtd-data-form method="post" autocomplete="off" action="/api/config/form/activity/create" novalidate>
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="MtdForm.Id" name="formId" />
+        <input type="hidden" asp-for="MtdFormActivity.Id" name="activityId" />
+        <input id="clicker-create" type="hidden" mtd-data-clicker mtd-data-location="/config/form/actedit?id=@Model.MtdFormActivity.Id" mtd-data-message="@Localizer["New form activity created"]." />
+
+        <div class="mtd-desk-field">
+            @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+               {
+                   Id = "activity-name",
+                   Name = "activityName",
+                   Label = "Name",
+                   LabelLocalized = true,
+                   Required = true,
+                   MTDTexFieldView = MTDTextFieldViews.Outlined,
+                   MaxLength = 120
+               })
+        </div>
+        <div class="mtd-desk-field">
+            @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+               {
+                   Id = "activity-note",
+                   Name = "activityNote",
+                   Label = "Description",
+                   LabelLocalized = true,
+                   Required = true,
+                   MTDTexFieldView = MTDTextFieldViews.TextArea,
+                   Cols = 40,
+                   Rows = 4,
+                   MaxLength = 512
+               })
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        new MTDTextField("activity-name");
+        new MTDTextField("activity-note");
+    </script>
 }

@@ -32,6 +32,9 @@ const commentReturnSignId = new MTDTextField("comment-return-sign-id");
 
 const selectFormLink = new MTDSelectList("select-form");
 
+const activityDate = new MTDTextField("activity-date");
+const activityComment = new MTDTextField("activity-comment");
+const activitySelect = new MTDSelectList("activity-select");
 
 const eraser = document.getElementById("eraser");
 if (eraser) {

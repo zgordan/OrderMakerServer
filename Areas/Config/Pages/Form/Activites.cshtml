@@ -10,6 +10,11 @@
     ViewData["SecondTitle"] = Localizer["Form activites management"];
 }
 
+
+@section Head {
+    <link rel="stylesheet" href="~/lib/mtd-ordermaker/config/css/mtd-config-form-parts.css" asp-append-version="true" />
+}
+
 @section Breadcrumb {
     <li mtd-data-href="/config"><a href="/config">@Localizer["Configurator"]</a></li>
     <li mtd-data-href="/config/form"><a href="/config/form">@Localizer["Forms"]</a></li>
@@ -18,6 +23,7 @@
 }
 
 @section Action {
+
     <li mtd-data-href="/config/form/parts?formid=@Model.MtdForm.Id" class="mdc-list-item" role="menuitem">
         <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">line_weight</span>
@@ -40,6 +46,7 @@
             </button>
         </div>
     </div>
+
     <div class="mtd-desk-title">
         <div class="mtd-desk-title-header">
             @if (ViewBag.ImgSrcForm != string.Empty)
@@ -51,6 +58,53 @@
             <span>@Model.MtdForm.Name</span>
         </div>
     </div>
+
+    <form mtd-data-form="sequence" method="post" action="/api/config/form/activity/sequence">
+        @Html.AntiForgeryToken()
+        <input mtd-data-sequence name="fieldSeqData" type="hidden" />
+        <input name="formId" type="hidden" value="@Model.MtdForm.Id" />
+        <input mtd-data-clicker type="hidden" />
+    </form>
+
+    <ul mtd-data-draggable class="mdc-list mdc-list--two-line">
+        @foreach (var activity in Model.MtdFormActivities)
+        {
+            <li mtd-data-href="/config/form/actedit?id=@activity.Id" id="@activity.Id-licol" class="mtd-list-item mdc-list-item" draggable="true" role="button" aria-checked="false"
+                data-value="@activity.Id">
+                <span class="mdc-list-item__ripple"></span>
+
+                @if (activity.Image != null)
+                {
+                    var base64 = Convert.ToBase64String(activity.Image);
+                    var imgSrc = String.Format("data:{0};base64,{1}", activity.ImageType, base64);
+
+                    <span class="mdc-list-item__graphic">
+                        <img src="@imgSrc" style="max-height: 48px; max-width: 48px;" />
+
+                    </span>
+                }
+                <span class="mdc-list-item__text">
+                    <span class="mdc-list-item__primary-text">@activity.Name</span>
+                    <span class="mdc-list-item__secondary-text">@activity.Description</span>
+                </span>
+
+                <div class="mtd-config-form-parts__bdrag">
+                    <i class="material-icons" style="color:gray">drag_handle</i>
+                </div>
+                <div class="mtd-config-form-parts__bedit">
+                    <button id="add-to-favorites"
+                            class="mdc-icon-button"
+                            aria-label="Add to favorites"
+                            aria-hidden="true"
+                            aria-pressed="false"
+                            mtd-data-href="/config/form/actedit?id=@activity.Id">
+                        <i class="material-icons mdc-icon-button__icon">edit</i>
+                    </button>
+                </div>
+            </li>
+        }
+    </ul>
+
 </div>
 
 

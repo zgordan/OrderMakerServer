@@ -12,7 +12,7 @@ namespace Mtd.OrderMaker.Server.Entity
         public string MtdFormActivityId { get; set; }
         public string Comment { get; set; }
         public DateTime TimeCr { get; set; }
-
+        public string UserId { get; set; }
         public virtual MtdStore MtdStore { get; set; }
         public virtual MtdFormActivity  MtdFormActitvity {get; set;}
     }

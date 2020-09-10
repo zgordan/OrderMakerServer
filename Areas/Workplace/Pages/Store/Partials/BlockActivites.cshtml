@@ -10,7 +10,11 @@
 <div class="mtd-desk-block-content">
     <div class="mtd-desk-block-title">
         <div class="mtd-desk-block-title-icon">
-
+            <button mtd-dialog-button="dialog-add-activity" class="mdc-button mdc-button--outlined">
+                <div class="mdc-button__ripple"></div>
+                <i class="fas fa-plus mdc-button__icon" aria-hidden="true"></i>
+                <span class="mdc-button__label">@Localizer["Add"]</span>
+            </button>
         </div>
         <div class="mtd-desk-block-title-label">
             @Localizer["Activites"]
@@ -28,6 +32,56 @@
         </div>
     </div>
     <div id="block-activites" class="mtd-desk-block-body">
-        Activites
+        <table id="block-activites-table" style="white-space: nowrap; border-collapse:collapse;">
+            <thead><tr><th></th><th style="width:100%"></th><th></th></tr></thead>
+            <tbody>
+                @{ int counter = 0;}
+
+                @foreach (var actline in Model.ActivityLines)
+                {
+                    counter++;
+                    string none = Model.ActivityLines.Count - counter > 1 ? "none" : "";
+
+
+ 
+                    <tr style=" border-top: 1px solid #ccc; display: @none;">
+                        <td align="center" style="min-width: 56px">
+                            <img src="@actline.ImgSrc" style="max-width: 48px; max-height: 48px;" />
+                        </td>
+                        <td>
+                            <div>
+                                <strong>@actline.Name</strong> 
+                            </div>
+                            <div>
+                                @actline.User
+                            </div>
+                            <div style="font-style:italic; font-size:small;">
+                                <i class="material-icons" aria-hidden="true" style="color: slategray;">comment</i>
+                                @actline.Comment
+                            </div>
+                        </td>
+                        <td>
+                            <div>@actline.TimeCr</div>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+
+        @if (Model.ActivityLines.Count > 2)
+        {
+            <div style="text-align:center; border-top: 1px dashed  gray; margin-top: 12px;">
+                <button style="background-color: white; margin-top: -24px;" onclick="clickBlockDetail(this)"
+                        class="mdc-icon-button"
+                        data="block-activites-table"
+                        aria-checked="false">
+                    <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">expand_less</i>
+                    <i class="material-icons mdc-icon-button__icon">expand_more</i>
+                </button>
+            </div>
+        }
+
     </div>
 </div>

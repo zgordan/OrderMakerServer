@@ -40,7 +40,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
     [Route("api/store")]
     [ApiController]
     [Authorize(Roles = "Admin,User")]
-    public class DataController : ControllerBase
+    public partial class DataController : ControllerBase
     {
         private readonly OrderMakerContext _context;
         private readonly UserHandler _userHandler;

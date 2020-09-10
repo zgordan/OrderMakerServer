@@ -789,4 +789,13 @@
   <data name="List of digital form fields controlled by this register" xml:space="preserve">
     <value>Список полей цифровой формы, которые контролируются этим регистром</value>
   </data>
+  <data name="'19/39/9999 29:59'" xml:space="preserve">
+    <value>'39.19.9999 29:59'</value>
+  </data>
+  <data name="'h:i A'" xml:space="preserve">
+    <value>'H:i'</value>
+  </data>
+  <data name="'m/d/Y h:i A'" xml:space="preserve">
+    <value>'d.m.Y H:i'</value>
+  </data>
 </root>

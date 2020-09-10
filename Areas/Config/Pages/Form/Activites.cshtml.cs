@@ -19,8 +19,9 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
             this.context = context;
         }
 
-        [BindProperty]
         public MtdForm MtdForm { get; set; }
+
+        public IList<MtdFormActivity> MtdFormActivities { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string formId)
         {
@@ -35,6 +36,8 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
             }
 
             ViewData["ImgSrcForm"] = FormHeaderHandler.GetImageSrc(MtdForm.MtdFormHeader);
+            MtdFormActivities = await context.MtdFormActivites.Where(x => x.MtdFormId == MtdForm.Id).OrderBy(x=>x.Sequence).ToListAsync();
+
 
             return Page();
         }

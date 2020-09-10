@@ -15,6 +15,7 @@ namespace Mtd.OrderMaker.Server.Migrations
                     mtd_form_id = table.Column<string>(type: "varchar(36)", nullable: false),
                     image = table.Column<byte[]>(type: "mediumblob", nullable: true),
                     image_type = table.Column<string>(type: "varchar(256)", nullable: true),
+                    sequence = table.Column<int>(type: "int(11)", nullable: false),
                     name = table.Column<string>(type: "varchar(120)", nullable: false),
                     description = table.Column<string>(type: "varchar(512)", nullable: false)
                 },
@@ -35,9 +36,10 @@ namespace Mtd.OrderMaker.Server.Migrations
                 {
                     id = table.Column<string>(type: "varchar(36)", nullable: false),
                     mtd_store_id = table.Column<string>(type: "varchar(36)", nullable: false),
-                    mtd_form_activity_id = table.Column<string>(type: "varchar(36)", nullable: true),
+                    mtd_form_activity_id = table.Column<string>(type: "varchar(36)", nullable: false),
                     app_comment = table.Column<string>(type: "varchar(512)", nullable: false),
-                    timecr = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
+                    timecr = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    user_id = table.Column<string>(type: "varchar(36)", nullable: false)
                 },
                 constraints: table =>
                 {

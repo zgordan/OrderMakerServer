@@ -18,7 +18,7 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
 </Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <RepositoryUrl>https://github.com/olegbruev/OrderMakerServer</RepositoryUrl>
-    <PackageReleaseNotes>Release 1.3.7.beta.3 Create Activites</PackageReleaseNotes>
+    <PackageReleaseNotes>Release 1.3.7.beta.3 Activites Complete</PackageReleaseNotes>
     <PackageIconUrl>http://ordermaker.org/favicon.ico</PackageIconUrl>
     <ApplicationIcon>form.ico</ApplicationIcon>
     <Version>1.3.7</Version>
@@ -100,7 +100,23 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
     <Compile Remove="Migrations\20200902120310_UpdateActivites.cs" />
     <Compile Remove="Migrations\20200902120310_UpdateActivites.Designer.cs" />
     <Compile Remove="Migrations\20200902131031_UpdateActivites.cs" />
-    <Compile Remove="Migrations\20200902131031_UpdateActivites.Designer.cs" />    
+    <Compile Remove="Migrations\20200902131031_UpdateActivites.Designer.cs" />
+    <Compile Remove="Migrations\20200902131404_UpdateActivites.cs" />
+    <Compile Remove="Migrations\20200902131404_UpdateActivites.Designer.cs" />
+    <Compile Remove="Migrations\20200903102845_UpdateActivites.cs" />
+    <Compile Remove="Migrations\20200903102845_UpdateActivites.Designer.cs" />
+    <Compile Remove="Migrations\20200903105158_UpdateActivites.cs" />
+    <Compile Remove="Migrations\20200903105158_UpdateActivites.Designer.cs" />
+    <Compile Remove="Migrations\20200903105503_UpdateActivites.cs" />
+    <Compile Remove="Migrations\20200903105503_UpdateActivites.Designer.cs" />
+    <Compile Remove="Migrations\20200903110224_UpdateActivites.cs" />
+    <Compile Remove="Migrations\20200903110224_UpdateActivites.Designer.cs" />
+    <Compile Remove="Migrations\20200903111349_UpdateActivites.cs" />
+    <Compile Remove="Migrations\20200903111349_UpdateActivites.Designer.cs" />
+    <Compile Remove="Migrations\20200903111635_UpdateActivites.cs" />
+    <Compile Remove="Migrations\20200903111635_UpdateActivites.Designer.cs" />
+    <Compile Remove="Migrations\20200909142536_UpdateActivites.cs" />
+    <Compile Remove="Migrations\20200909142536_UpdateActivites.Designer.cs" />    
   </ItemGroup>
 
   <ItemGroup>

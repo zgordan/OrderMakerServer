@@ -63,7 +63,7 @@
         </div>
     </div>
 
-    <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/config/form/part/create">
+    <form mtd-data-form method="post" autocomplete="off" action="/api/config/form/part/create">
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="MtdForm.Id" name="formId" />
         <input type="hidden" asp-for="MtdFormPart.Id" name="partId" />

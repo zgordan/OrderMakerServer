@@ -744,7 +744,7 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasColumnName("image_type")
                         .HasColumnType("varchar(256)");
 
-                    b.Property<string>("MtdFomrId")
+                    b.Property<string>("MtdFormId")
                         .IsRequired()
                         .HasColumnName("mtd_form_id")
                         .HasColumnType("varchar(36)");
@@ -754,13 +754,17 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasColumnName("name")
                         .HasColumnType("varchar(120)");
 
+                    b.Property<int>("Sequence")
+                        .HasColumnName("sequence")
+                        .HasColumnType("int(11)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
                         .HasName("id_UNIQUE");
 
-                    b.HasIndex("MtdFomrId")
+                    b.HasIndex("MtdFormId")
                         .HasName("fk_mtd_form_activity_idx");
 
                     b.ToTable("mtd_form_activity");
@@ -1582,6 +1586,7 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasColumnType("varchar(512)");
 
                     b.Property<string>("MtdFormActivityId")
+                        .IsRequired()
                         .HasColumnName("mtd_form_activity_id")
                         .HasColumnType("varchar(36)");
 
@@ -1595,6 +1600,11 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasColumnName("timecr")
                         .HasColumnType("datetime")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnName("user_id")
+                        .HasColumnType("varchar(36)");
 
                     b.HasKey("Id");
 
@@ -2166,7 +2176,7 @@ namespace Mtd.OrderMaker.Server.Migrations
                 {
                     b.HasOne("Mtd.OrderMaker.Server.Entity.MtdForm", "MtdForm")
                         .WithMany("MtdFormActivites")
-                        .HasForeignKey("MtdFomrId")
+                        .HasForeignKey("MtdFormId")
                         .HasConstraintName("fk_mtd_form_activity")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2394,7 +2404,8 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .WithMany("MtdStoreActivites")
                         .HasForeignKey("MtdFormActivityId")
                         .HasConstraintName("fk_store_activity_idx")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Mtd.OrderMaker.Server.Entity.MtdStore", "MtdStore")
                         .WithMany("MtdStoreActitvites")
