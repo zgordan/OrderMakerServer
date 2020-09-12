@@ -162,7 +162,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
         public async Task<bool> IsApprovalFormAsync()
         {
             MtdApproval mtdApproval = await GetApproval();
-            return mtdApproval == null ? false : true;
+            return mtdApproval != null;
         }
 
         public async Task<MtdApprovalStage> GetCurrentStageAsync()
@@ -172,7 +172,13 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
 
             MtdStore mtdStore = await GetStoreAsync();
             if (mtdStore.MtdStoreApproval == null) return await GetFirstStageAsync();
-            return approval.MtdApprovalStage.Where(x => x.Id == mtdStore.MtdStoreApproval.MtdApproveStage).FirstOrDefault();
+
+            MtdApprovalStage stage = approval.MtdApprovalStage.Where(x => x.Id == mtdStore.MtdStoreApproval.MtdApproveStage).FirstOrDefault();
+            if (stage != null && stage.UserId == "owner")
+            {
+                stage.UserId = await GetOwnerID();
+            }
+            return stage;
         }
 
 
@@ -278,6 +284,12 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
             IList<MtdApprovalStage> stages = await GetStagesAsync();
             var stage = stages.Where(x => x.Stage < prevStage.Stage).FirstOrDefault();
             if (stage != null) { prevStage = stage; }
+            
+            if (prevStage.UserId == "owner")
+            {
+                prevStage.UserId = await GetOwnerID();
+            }
+            
             return prevStage;
         }
 
@@ -285,7 +297,12 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
         {
             MtdApprovalStage current = await GetCurrentStageAsync();
             IList<MtdApprovalStage> stages = await GetStagesAsync();
-            return stages.Where(x => x.Stage > current.Stage).FirstOrDefault();
+            MtdApprovalStage next = stages.Where(x => x.Stage > current.Stage).FirstOrDefault();
+            if (next.UserId == "owner")
+            {
+                next.UserId = await GetOwnerID();
+            }
+            return next;
 
         }
 
@@ -293,7 +310,13 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
         {
             MtdApprovalStage mtdStage = await GetCurrentStageAsync();
             List<string> userIds = await GetUsersWaitSignAsync();
-            if (userIds.Count > 0) { return userIds.TakeLast(1).FirstOrDefault(); }                      
+            if (userIds.Count > 0) { return userIds.TakeLast(1).FirstOrDefault(); }
+            
+            if (mtdStage.UserId == "owner")
+            {
+                mtdStage.UserId = await GetOwnerID();
+            }
+
             return mtdStage.UserId; 
         }
 
