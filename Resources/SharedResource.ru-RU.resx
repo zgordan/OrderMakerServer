@@ -918,4 +918,7 @@
   <data name="YES - complete the task; NO - refuse the assignment." xml:space="preserve">
     <value>ДА - задача выполнена; НЕТ - отказаться от выполнения</value>
   </data>
+  <data name="In this option, comment is required" xml:space="preserve">
+    <value>Для этого события  комментарий обязателен</value>
+  </data>
 </root>
