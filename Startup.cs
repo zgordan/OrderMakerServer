@@ -132,7 +132,8 @@ namespace Mtd.OrderMaker.Server
             services.Configure<LimitSettings>(Configuration.GetSection("LimitSettings"));
 
             services.AddHostedService<HostedService>();
-            services.AddScoped<IScopedService, ApprovalReminder>();
+            services.AddScoped<IScopedService, ReminderApproval>();
+            services.AddScoped<IScopedService, ReminderTask>();
 
             services.AddMvc(options => options.EnableEndpointRouting = false);
 

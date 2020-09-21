@@ -82,6 +82,7 @@ namespace Mtd.OrderMaker.Server.Entity
         public virtual DbSet<MtdSysTerm> MtdSysTerm { get; set; }
         public virtual DbSet<MtdSysType> MtdSysType { get; set; }
         public virtual DbSet<MtdSysTrigger> MtdSysTrigger { get; set; }
+        public virtual DbSet<MtdStoreTask> MtdStoreTasks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -2225,6 +2226,92 @@ namespace Mtd.OrderMaker.Server.Entity
                     .IsRequired()
                     .HasColumnName("sequence")
                     .HasColumnType("int");
+            });
+
+            modelBuilder.Entity<MtdStoreTask>(entity =>
+            {
+                entity.ToTable("mtd_store_task");
+
+                entity.HasIndex(e => e.Id)
+                    .HasName("id_UNIQUE")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.MtdStoreId)
+                    .HasName("fk_mtd_store_task_idx");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.MtdStoreId)
+                    .IsRequired()
+                    .HasColumnName("mtd_store_id")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("name")
+                    .HasColumnType("varchar(250)");
+
+                entity.Property(e => e.Deadline)
+                    .IsRequired()
+                    .HasColumnName("deadline")
+                    .HasColumnType("datetime");
+
+
+                entity.Property(e => e.Initiator )
+                    .IsRequired()
+                    .HasColumnName("iniciator")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.InitNote)
+                    .IsRequired()
+                    .HasColumnName("init_note")
+                    .HasColumnType("varchar(250)");
+
+                entity.Property(e => e.InitTimeCr)
+                    .IsRequired()
+                    .HasColumnName("init_timecr")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Executor)
+                    .IsRequired()
+                    .HasColumnName("executor")
+                    .HasColumnType("varchar(36)");
+
+                entity.Property(e => e.ExecNote)
+                    .IsRequired()
+                    .HasColumnName("exec_note")
+                    .HasColumnType("varchar(250)");
+
+                entity.Property(e => e.ExecTimeCr)
+                    .IsRequired()
+                    .HasColumnName("exec_timecr")
+                    .HasColumnType("datetime");
+
+
+                entity.Property(e => e.Complete)
+                    .IsRequired()
+                    .HasColumnName("complete")
+                    .HasColumnType("int(11)");
+
+
+                entity.Property(e => e.PrivateTask)
+                    .IsRequired()
+                    .HasColumnName("private_task")
+                    .HasColumnType("tinyint(4)");
+
+                entity.Property(e => e.LastEventTime)
+                    .IsRequired()
+                    .HasColumnName("last_evant_time")
+                    .HasColumnType("datetime");
+
+
+                entity.HasOne(d => d.MtdStore)
+                    .WithMany(p => p.MtdStoreTasks)
+                    .HasForeignKey(d => d.MtdStoreId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("fk_mtd_store_task");
             });
         }
     }

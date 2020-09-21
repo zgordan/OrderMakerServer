@@ -4,6 +4,7 @@
 @{
     string mainClass = "mdc-select mdc-select--outlined ";
     if (Model.Label == null) { mainClass += "mdc-select--no-label "; }
+    if (Model.Disabled) { mainClass += "mdc-select--disabled "; }
 }
 
 <div mtd-select-list id="@Model.Id" class="@mainClass">

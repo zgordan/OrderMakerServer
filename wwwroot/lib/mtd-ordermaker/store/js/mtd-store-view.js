@@ -1,10 +1,11 @@
 ﻿
 const CreateLinkForm = (el) => {
-    var re = /{form}/gi;    
+    var re = /{form}/gi;
     var url = el.getAttribute("data");
     var newUrl = url.replace(re, selectFormLink.selector.value);
-    window.open(newUrl, '_blank');        
+    window.open(newUrl, '_blank');
 }
+
 
 //Start
 
@@ -16,7 +17,7 @@ const commentStart = new MTDTextField("comment-start");
 const selectDecisionConfirm = new MTDSelectList("select-decision-confirm");
 const commentConfirm = new MTDTextField("comment-confirm");
 
-const selectSatge= new MTDSelectList("select-stage");
+const selectSatge = new MTDSelectList("select-stage");
 const commentReturn = new MTDTextField("comment-return");
 
 const selectDecisionReject = new MTDSelectList("select-decision-reject");
@@ -35,6 +36,31 @@ const selectFormLink = new MTDSelectList("select-form");
 const activityDate = new MTDTextField("activity-date");
 const activityComment = new MTDTextField("activity-comment");
 const activitySelect = new MTDSelectList("activity-select");
+const activityDeleteDialog = new mdc.dialog.MDCDialog(document.getElementById('activity-dialog-delete'));
+
+const taskPrivate = document.getElementById("task-private");
+const taskDeadline = new MTDTextField("task-deadline");
+const taskName = new MTDTextField("task-name");
+const taskExecution = new MTDSelectList("task-executor");
+const taskInitNote = new MTDTextField("task-init-note");
+const taskCloseComment = new MTDTextField("task-close-comment");
+
+const taskDeleteDialog = new mdc.dialog.MDCDialog(document.getElementById('task-dialog-delete'));
+
+
+const openTaskDeleteDialog = (taskId) => {
+    document.getElementById('task-delete-id').value = taskId;
+    taskDeleteDialog.open();
+}
+
+const openActivityDeleteDialog = (activityId) => {
+    document.getElementById('activity-delete-id').value = activityId;
+    activityDeleteDialog.open();
+}
+
+const closeTask = (taskId) => {
+    document.getElementById('task-close-id').value = taskId;
+}
 
 const eraser = document.getElementById("eraser");
 if (eraser) {
@@ -61,9 +87,9 @@ if (printButton) {
         let re;
         if (e.target.checked) {
             re = "printForm=false"; url = url.replace(re, "printForm=true");
-        } else { re = "printForm=true"; url = url.replace(re, "printForm=false");}
+        } else { re = "printForm=true"; url = url.replace(re, "printForm=false"); }
 
-        printButton.setAttribute("href",url);
+        printButton.setAttribute("href", url);
     });
 
     document.getElementById("print-info").addEventListener("change", (e) => {

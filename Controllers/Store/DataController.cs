@@ -45,14 +45,16 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
         private readonly OrderMakerContext _context;
         private readonly UserHandler _userHandler;
         private readonly IStringLocalizer<SharedResource> localizer;
+        private readonly IEmailSenderBlank emailSender;
 
         private enum TypeAction { Create, Edit };
 
-        public DataController(OrderMakerContext context, UserHandler userHandler, IStringLocalizer<SharedResource> localizer)
+        public DataController(OrderMakerContext context, UserHandler userHandler, IStringLocalizer<SharedResource> localizer, IEmailSenderBlank emailSender)
         {
             _context = context;
             _userHandler = userHandler;
             this.localizer = localizer;
+            this.emailSender = emailSender;
         }
 
         // POST: api/store/save
@@ -115,8 +117,6 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             {
                 mtdStore.Parent = storeParentId;
             }
-
-
 
             MtdLogDocument mtdLog = new MtdLogDocument
             {
@@ -318,7 +318,6 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                 return Ok(403);
             }
 
-
             _context.MtdStore.Remove(mtdStore);
             await _context.SaveChangesAsync();
 
@@ -396,7 +395,6 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
 
                 /**Update all fields for SysTrigger UserGroup 33E8212E-059B-482D-8CBD-DFDB073E3B63**/
                 await UpdateTriggerUserGroup(idStore, webAppUser, formId);
-
 
                 await _context.MtdStoreOwner.AddAsync(mtdStoreOwner);
                 await _context.SaveChangesAsync();

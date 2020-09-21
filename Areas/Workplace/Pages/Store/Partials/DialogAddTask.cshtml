@@ -1,0 +1,120 @@
+﻿@model DetailsModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+
+<div id="dialog-add-task" class="mtd-dialog mtd-dialog-hidden" style="max-width: 670px;">
+    <div class="mtd-dialog-container">
+        <div class="mtd-dialog-title">
+            <div>
+                @Localizer["Add task dialog"]
+            </div>
+            <div>
+                <button mtd-dialog-cancel class="mdc-icon-button material-icons">close</button>
+            </div>
+        </div>
+        <div class="mtd-dialog-content">
+            <form mtd-data-form method="post" autocomplete='off' action='/api/store/task/add'>
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="formId" value="@Model.MtdStore.MtdForm" />
+                <input type="hidden" name="storeId" value="@Model.MtdStore.Id" />
+                <input type="hidden" id="index-filter-custom-date-locale" name="date-format" value="@Localizer["MM/dd/yyyy"]" />
+
+                @*<div class="mtd-dialog-info">
+            @Localizer["A positive decision on the current document will complete the approval process or forward the document to the next user."]
+        </div>*@
+
+
+                @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                   {
+                       Id = "task-name",
+                       Name = "taskName",
+                       Label = "Task",
+                       LabelLocalized = true,
+                       Cols = 40,
+                       Rows = 3,
+                       MaxLength = 250,
+                       MTDTexFieldView = MTDTextFieldViews.Outlined,
+                       Class = "mtd-focus-control",
+                       Required = true,
+                   })
+
+
+                @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                    {
+                        Id = "task-deadline",
+                        Name = "taskDeadline",
+                        Label = "Deadline",
+                        LabelLocalized = true,
+                        Value = DateTime.Now.ToString("g"),
+                        Required = true,
+                        IconLeading = "far fa-calendar-alt",
+                        Class = " mtd-data-datetimepicker ",
+                        MTDTexFieldView = MTDTextFieldViews.Outlined
+                    })
+
+                <div class="mtd-dialog-space"></div>
+
+                <div class="mdc-form-field noselect">
+                    <div class="mdc-checkbox">
+                        <input type="checkbox"
+                               class="mdc-checkbox__native-control"
+                               id="task-private" name="taskPrivate" />
+                        <div class="mdc-checkbox__background">
+                            <svg class="mdc-checkbox__checkmark"
+                                 viewBox="0 0 24 24">
+                                <path class="mdc-checkbox__checkmark-path"
+                                      fill="none"
+                                      d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                            </svg>
+                            <div class="mdc-checkbox__mixedmark"></div>
+                        </div>
+                        <div class="mdc-checkbox__ripple"></div>
+                    </div>
+                    <label for="task-private">@Localizer["Private task"]</label>
+                </div>
+
+
+                <div class="mtd-dialog-space"></div>
+
+                @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
+                   {
+                       Id = "task-executor",
+                       Name = "taskExecutor",
+                       Label = "Responsible for execution",
+                       LabelLocalized = true,
+                       Items = Model.UsersList,
+                       MTDSelectListView = MTDSelectListViews.Outlined,
+                       ValueId = Model.UserOwner.Id,
+                   })
+
+                <div class="mtd-dialog-space"></div>
+
+                @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                   {
+                       Id = "task-init-note",
+                       Name = "taskInitNote",
+                       Label = "Comment",
+                       LabelLocalized = true,
+                       Placeholder = "Create a comment if necessary",
+                       PlaceholderLocalized = true,
+                       Cols = 40,
+                       Rows = 3,
+                       MaxLength = 250,
+                       MTDTexFieldView = MTDTextFieldViews.TextArea,
+                   })
+                                
+                <div class="mtd-dialog-buttons">
+                    <button mtd-dialog-apply mtd-data-clicker class="mdc-button mdc-button--raised mdc-theme--secondary-bg" type="button" mtd-data-message="@Localizer["Task added."]">
+                        <div class="mdc-button__ripple"></div>
+                        <span class="mdc-button__label">@Localizer["Apply"]</span>
+                    </button>
+                    <button mtd-dialog-cancel class="mdc-button" type="button">
+                        <div class="mdc-button__ripple"></div>
+                        <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

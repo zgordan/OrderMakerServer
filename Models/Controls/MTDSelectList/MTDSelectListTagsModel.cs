@@ -12,6 +12,7 @@ namespace Mtd.OrderMaker.Server.Models.Controls.MTDSelectList
         public string IdHelper { get; set; }
         public string IdLabel { get; set; }
         public string IdSelectedText { get; set; }
+        public bool Disabled { get; set; }
 
         public MTDSelectListTagsModel(MTDSelectListTags tags)
         {
@@ -22,6 +23,7 @@ namespace Mtd.OrderMaker.Server.Models.Controls.MTDSelectList
             this.ValueId = tags.ValueId;    
             this.Items = tags.Items ?? new List<MTDSelectListItem>();
             this.MTDSelectListView = tags.MTDSelectListView;
+            this.Disabled = tags.Disabled;
 
             this.IdHelper = $"{Id}-helper";
             this.IdInput = $"{Id}-input";

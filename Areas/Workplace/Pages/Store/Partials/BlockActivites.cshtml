@@ -1,6 +1,4 @@
-﻿@model Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store.DetailsModel
-@namespace Mtd.OrderMaker.Server.Components.Store
-@using Mtd.OrderMaker.Server.EntityHandler.Approval
+﻿@model DetailsModel
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHtmlLocalizer<SharedResource> Localizer
 
@@ -29,9 +27,9 @@
             </button>
         </div>
     </div>
-    <div id="block-activites" class="mtd-desk-block-body">
+    <div id="block-activites" class="mtd-desk-block-body" style="padding-bottom: 12px;">
         <table id="block-activites-table" style="white-space: nowrap; border-collapse:collapse;">
-            <thead><tr><th></th><th style="width:100%"></th><th></th></tr></thead>
+            <thead><tr><th></th><th style="width:100%"></th><th></th><th></th></tr></thead>
             <tbody>
                 @{ int counter = 0;}
 
@@ -41,14 +39,14 @@
                     string none = Model.ActivityLines.Count - counter > 1 ? "none" : "";
 
 
- 
+
                     <tr style=" border-top: 1px solid #ccc; display: @none;">
                         <td align="center" style="min-width: 56px">
                             <img src="@actline.ImgSrc" style="max-width: 48px; max-height: 48px;" />
                         </td>
                         <td>
                             <div>
-                                <strong>@actline.Name</strong> 
+                                <strong>@actline.Name</strong>
                             </div>
                             <div>
                                 @actline.User
@@ -60,6 +58,21 @@
                         </td>
                         <td>
                             <div>@actline.TimeCr</div>
+                        </td>
+                        <td>
+
+                            @if (actline.UserId == Model.CurrentUser.Id)
+                            {
+                                <div class="mtd-button-hint" style="padding-right: 12px; color: cornflowerblue">
+                                    <button class="mdc-icon-button" onclick="openActivityDeleteDialog('@actline.Id')">
+                                        <i class="fas fa-calendar-times"></i>
+                                    </button>
+                                    <div class="mtd-button-hint_info">
+                                        <span>@Localizer["Delete"]</span>
+                                    </div>
+                                </div>
+                            }
+
                         </td>
                     </tr>
                 }
@@ -82,4 +95,37 @@
         }
 
     </div>
+</div>
+
+
+<form id="activity-form-delete" mtd-data-form method="post" autocomplete='off' action='/api/store/activity/delete'>
+    @Html.AntiForgeryToken()
+    <input id="activity-delete-id" name="activityId" type="hidden" />
+    <input id="activity-delete-clicker" mtd-data-clicker mtd-data-message="@Localizer["The activity was deleted"]" type="hidden" />
+</form>
+
+<div id="activity-dialog-delete" class="mdc-dialog"
+     role="alertdialog"
+     aria-modal="true"
+     aria-labelledby="my-dialog-title"
+     aria-describedby="my-dialog-content">
+    <div class="mdc-dialog__container">
+        <div class="mdc-dialog__surface">
+            <h2 class="mdc-dialog__title" id="delete-form-title">
+                @Localizer["Delete activity?"]
+            </h2>
+            <div class="mdc-dialog__content" id="delete-dialog-content">
+                @Localizer["The activity will be permanently deleted."]
+            </div>
+            <footer class="mdc-dialog__actions">
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                    <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                </button>
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+                    <span class="mdc-button__label" onclick="document.getElementById('activity-delete-clicker').click();">@Localizer["Delete"]</span>
+                </button>
+            </footer>
+        </div>
+    </div>
+    <div class="mdc-dialog__scrim"></div>
 </div>

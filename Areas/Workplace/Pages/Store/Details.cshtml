@@ -25,8 +25,9 @@
 
 @{
     ViewData["Title"] = Localizer["Form view"];
-    ViewData["SecondTitle"] = Model.MtdForm.Name;
+    ViewData["SecondTitle"] = Model.MtdForm.Name;    
 }
+
 @section Head{
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/mtd-ordermaker/store/css/mtd-store-view.css" asp-append-version="true" />
@@ -47,7 +48,6 @@
 @section Action  {
 
     @await Html.PartialAsync("./Partials/ActionMenu")
-
 }
 
 @if (Model.IsReviewer && Model.MtdApproval != null && (Model.ApprovalStatus == ApprovalStatus.Approved || Model.ApprovalStatus == ApprovalStatus.Rejected))
@@ -86,6 +86,8 @@
     @await Html.PartialAsync("~/Areas/Workplace/Pages/Store/Partials/DialogRequest.cshtml")
     @await Html.PartialAsync("./Partials/DialogRelatedDocs")
     @await Html.PartialAsync("./Partials/DialogAddActivity")
+    @await Html.PartialAsync("./Partials/DialogAddTask")
+    @await Html.PartialAsync("./Partials/DialogTaskClose")
 
 
     <div class="mtd-desk-blocks">
@@ -149,6 +151,8 @@
                     @await Html.PartialAsync("./Partials/BlockRelated")
                 }
 
+                @await Html.PartialAsync("./Partials/BlockTasks")
+
                 @if (Model.ViewActivites)
                 {
                     @await Html.PartialAsync("./Partials/BlockActivites")
@@ -157,6 +161,7 @@
             </div>
         }
     </div>
+
 </div>
 
 @if (Model.IsInstallerOwner)

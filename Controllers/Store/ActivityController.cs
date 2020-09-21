@@ -48,5 +48,27 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             return Ok();
 
         }
+
+
+        [HttpPost("activity/delete")]
+        [ValidateAntiForgeryToken]
+        [Produces("application/json")]
+        public async Task<IActionResult> OnPostActivityDeleteAsync()
+        {
+            var requestForm = await Request.ReadFormAsync();
+            string activityId = requestForm["activityId"];
+
+            WebAppUser user = await _userHandler.GetUserAsync(HttpContext.User);
+
+            MtdStoreActivity activity = await _context.MtdStoreActivites.FindAsync(activityId);
+            if (activity == null || activity.UserId != user.Id) { return NotFound(); }
+
+            _context.MtdStoreActivites.Remove(activity);
+            await _context.SaveChangesAsync();
+
+
+            return Ok();
+
+        }
     }
 }

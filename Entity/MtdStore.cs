@@ -32,6 +32,7 @@ namespace Mtd.OrderMaker.Server.Entity
             MtdStoreLink = new HashSet<MtdStoreLink>();
             MtdStoreStack = new HashSet<MtdStoreStack>();
             MtdStoreActitvites = new HashSet<MtdStoreActivity>();
+            MtdStoreTasks = new HashSet<MtdStoreTask>();
         }
 
         public string Id { get; set; }
@@ -51,5 +52,6 @@ namespace Mtd.OrderMaker.Server.Entity
         public virtual ICollection<MtdStoreLink> MtdStoreLink { get; set; }
         public virtual ICollection<MtdStoreStack> MtdStoreStack { get; set; }
         public virtual ICollection<MtdStoreActivity> MtdStoreActitvites { get; set; }
+        public virtual ICollection<MtdStoreTask> MtdStoreTasks { get; set; }
     }
 }

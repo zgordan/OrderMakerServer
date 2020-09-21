@@ -17,19 +17,16 @@
                 <input type="hidden" name="formId" value="@Model.MtdStore.MtdForm" />
                 <input type="hidden" name="storeId" value="@Model.MtdStore.Id" />
                 @*<div class="mtd-dialog-info">
-            @Localizer["A positive decision on the current document will complete the approval process or forward the document to the next user."]
-        </div>*@
+                    @Localizer["A positive decision on the current document will complete the approval process or forward the document to the next user."]
+                </div>*@
 
-                @{
-                    var local = Localizer["m/d/Y h:i A"];
-                    string dateValue = DateTime.Now.ToString($"{local.Value}");
-                }
 
                 @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
                     {
                         Id = "activity-date",
                         Name = "activityDate",
                         Label = "Event date",
+                        LabelLocalized = true,
                         Value = DateTime.Now.ToString("g"),
                         Required = true,
                         IconLeading = "far fa-calendar-alt",
@@ -43,7 +40,7 @@
                {
                     Id = "activity-select",
                     Name = "activitySelect",
-                    Label = "Action",
+                    Label = "Event name",
                     LabelLocalized = true,
                     Items = Model.Activites,
                     MTDSelectListView = MTDSelectListViews.Outlined

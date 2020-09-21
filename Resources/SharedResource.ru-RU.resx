@@ -798,4 +798,124 @@
   <data name="'m/d/Y h:i A'" xml:space="preserve">
     <value>'d.m.Y H:i'</value>
   </data>
+  <data name="Deadline for tasks" xml:space="preserve">
+    <value>Задачи ожидающие завершения</value>
+  </data>
+  <data name="Please follow the links and close the tasks." xml:space="preserve">
+    <value>Пожалуйста, пройдите по ссылкам и закройте задачи.</value>
+  </data>
+  <data name="Task management event" xml:space="preserve">
+    <value>Событие управления задачами</value>
+  </data>
+  <data name="Activites" xml:space="preserve">
+    <value>Активности</value>
+  </data>
+  <data name="Activity added." xml:space="preserve">
+    <value>Событие добавлено.</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Добавить</value>
+  </data>
+  <data name="Add activity dialog" xml:space="preserve">
+    <value>Добавление события</value>
+  </data>
+  <data name="Add task dialog" xml:space="preserve">
+    <value>Добавление задачи</value>
+  </data>
+  <data name="Close task" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="Deadline" xml:space="preserve">
+    <value>Срок</value>
+  </data>
+  <data name="Deadline:" xml:space="preserve">
+    <value>Срок:</value>
+  </data>
+  <data name="Delete activity?" xml:space="preserve">
+    <value>Удалить событие?</value>
+  </data>
+  <data name="Delete task" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="Delete task?" xml:space="preserve">
+    <value>Удалить задачу?</value>
+  </data>
+  <data name="Error saving object." xml:space="preserve">
+    <value>Ошибка записи объекта.</value>
+  </data>
+  <data name="Error sending message." xml:space="preserve">
+    <value>Ошибка отправки сообщения.</value>
+  </data>
+  <data name="Event date" xml:space="preserve">
+    <value>Дата и время собятия</value>
+  </data>
+  <data name="Event name" xml:space="preserve">
+    <value>Наименование события</value>
+  </data>
+  <data name="Executor" xml:space="preserve">
+    <value>Исполнитель</value>
+  </data>
+  <data name="has closed the task at" xml:space="preserve">
+    <value>закрыл задачу в</value>
+  </data>
+  <data name="has created task for you at" xml:space="preserve">
+    <value>создал задачу для Вас в</value>
+  </data>
+  <data name="Initiator" xml:space="preserve">
+    <value>Инициатор</value>
+  </data>
+  <data name="New Task" xml:space="preserve">
+    <value>Новая задача</value>
+  </data>
+  <data name="Private task" xml:space="preserve">
+    <value>Частная задача</value>
+  </data>
+  <data name="Responsible for execution" xml:space="preserve">
+    <value>Исполнитель</value>
+  </data>
+  <data name="Status:" xml:space="preserve">
+    <value>Статус:</value>
+  </data>
+  <data name="Task" xml:space="preserve">
+    <value>Задача</value>
+  </data>
+  <data name="Task added." xml:space="preserve">
+    <value>Задача создана</value>
+  </data>
+  <data name="Task close" xml:space="preserve">
+    <value>Закрытие задачи</value>
+  </data>
+  <data name="Task closed" xml:space="preserve">
+    <value>Задача закрыта</value>
+  </data>
+  <data name="Task complete" xml:space="preserve">
+    <value>Задача выполнена</value>
+  </data>
+  <data name="Task refused" xml:space="preserve">
+    <value>Задача отклонена</value>
+  </data>
+  <data name="Task:" xml:space="preserve">
+    <value>Задача:</value>
+  </data>
+  <data name="Tasks" xml:space="preserve">
+    <value>Задачи</value>
+  </data>
+  <data name="The activity was deleted" xml:space="preserve">
+    <value>Событие удалено</value>
+  </data>
+  <data name="The activity will be permanently deleted." xml:space="preserve">
+    <value>Событие будет удалено без возможности восстановления.</value>
+  </data>
+  <data name="The task was deleted" xml:space="preserve">
+    <value>Задача удалена</value>
+  </data>
+  <data name="The task will be permanently deleted." xml:space="preserve">
+    <value>Задача будет удалена без возможности восстановления.</value>
+  </data>
+  <data name="This action will close the task. Use the action buttons:" xml:space="preserve">
+    <value>Это действие закроет задачу. Используйте кнопки:</value>
+  </data>
+  <data name="YES - complete the task; NO - refuse the assignment." xml:space="preserve">
+    <value>ДА - задача выполнена; НЕТ - отказаться от выполнения</value>
+  </data>
 </root>

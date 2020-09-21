@@ -1,0 +1,186 @@
+﻿@model DetailsModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> Localizer
+
+
+<div class="mtd-desk-block-content">
+    <div class="mtd-desk-block-title">
+        <div class="mtd-desk-block-title-icon">
+
+            <button mtd-dialog-button="dialog-add-task" class="mdc-button mdc-button--outlined">
+                <div class="mdc-button__ripple"></div>
+                <span class="material-icons mdc-button__icon">add_task</span>
+                @*<i class="fas fa-plus mdc-button__icon" aria-hidden="true"></i>*@
+                <span class="mdc-button__label">@Localizer["Add"]</span>
+            </button>
+
+        </div>
+        <div class="mtd-desk-block-title-label">
+            @Localizer["Tasks"]
+        </div>
+        <div class="mtd-desk-block-title-button">
+            <button onclick="clickBlockToogle(this)"
+                    class="mdc-icon-button"
+                    aria-label="Add to favorites"
+                    aria-hidden="true"
+                    aria-pressed="false"
+                    data="block-tasks">
+                <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">expand_more</i>
+                <i class="material-icons mdc-icon-button__icon">expand_less</i>
+            </button>
+        </div>
+    </div>
+    <div id="block-tasks" class="mtd-desk-block-body" style="padding-bottom: 18px;">
+        <table id="block-tasks-table" style="white-space: nowrap; border-collapse:collapse">
+            <thead>
+                <tr>
+                    <th style="display: none"></th>
+                    <th></th>
+                    <th style="width: 100%"></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ int counter = 0;}
+                @foreach (var storeTask in Model.StoreTasks)
+                {
+                    counter++;
+                    string none = Model.StoreTasks.Count - counter > 1 ? "none" : "";
+
+                    <tr style=" border-top: 1px solid #ccc; display: @none">
+                        <td style="display: none">@storeTask.Id</td>
+                        <td style="border-top: 1px solid #ccc; text-align:center" valign="top">
+
+                            <div style="padding:2px;">
+                                @if (!storeTask.TaskComplete && !storeTask.TaskRejected)
+                                {
+                                    <i class="fas fa-hourglass-half fa-lg" style="color: gray"></i>
+                                }
+
+                                @if (storeTask.TaskComplete)
+                                {
+                                    <i class="fas fa-check-circle fa-lg" style="color: darkgreen"></i>
+                                }
+
+                                @if (storeTask.TaskRejected)
+                                {
+                                    <i class="fas fa-ban fa-lg" style="color: darkred"></i>
+                                }
+
+                            </div>
+
+                            @if (storeTask.PrivateTask)
+                            {
+                                <div style="padding: 2px; color: gray">
+                                    <span class="material-icons">privacy_tip</span>
+                                </div>
+                            }
+
+                        </td>
+                        <td style="border-top: 1px solid #ccc;" valign="top">
+                            <div>@storeTask.Name</div>
+                            <div style="font-size: 0.9em">Срок: @storeTask.Deadline</div>
+
+                            <div style="font-size: 0.9em">@Localizer["Initiator"]: @storeTask.Initiator </div>
+
+                            @if (storeTask.InitNote.Length > 0)
+                            {
+                                <div style="font-style:italic; font-size:small;">
+                                    <i class="material-icons" aria-hidden="true" style="color: slategray">comment</i>
+                                    @storeTask.InitNote
+                                </div>
+                            }
+
+                            <div style="font-size: 0.9em">@Localizer["Executor"]: @storeTask.Executor</div>
+
+
+                            @if (storeTask.ExecNote.Length > 0)
+                            {
+
+                                <div id="@storeTask.Id-exec-comment" style="font-style:italic; font-size:small;">
+                                    <i class="material-icons" aria-hidden="true" style="color: slategray">comment</i>
+                                    @storeTask.ExecNote
+                                </div>
+                            }
+                        </td>
+                        <td style="border-top: 1px solid #ccc; padding: 4px" valign="top">
+
+                            <div style="padding-right: 12px; color: cornflowerblue">
+
+                                @if (storeTask.ButtonClose)
+                                {
+                                    <div class="mtd-button-hint">
+                                        <button mtd-dialog-button="dialog-task-close" onclick="closeTask('@storeTask.Id')" class="mdc-icon-button">
+                                            <i class="fas fa-calendar-check"></i>
+                                        </button>
+                                        <div class="mtd-button-hint_info">
+                                            <span>@Localizer["Close task"]</span>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (storeTask.ButtonDelete)
+                                {
+                                    <div class="mtd-button-hint">
+                                        <button class="mdc-icon-button" onclick="openTaskDeleteDialog('@storeTask.Id')">
+                                            <i class="fas fa-calendar-times"></i>
+                                        </button>
+                                        <div class="mtd-button-hint_info">
+                                            <span>@Localizer["Delete task"]</span>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+        @if (Model.StoreTasks.Count > 2)
+        {
+            <div style="text-align:center; border-top: 1px dashed  gray; margin-top: 12px;">
+                <button style="background-color: white; margin-top: -24px;" onclick="clickBlockDetail(this)"
+                        class="mdc-icon-button"
+                        data="block-tasks-table"
+                        aria-checked="false">
+                    <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">expand_less</i>
+                    <i class="material-icons mdc-icon-button__icon">expand_more</i>
+                </button>
+            </div>
+        }
+    </div>
+</div>
+
+<form id="task-form-delete" mtd-data-form method="post" autocomplete='off' action='/api/store/task/delete'>
+    @Html.AntiForgeryToken()
+    <input id="task-delete-id" name="taskId" type="hidden" />
+    <input id="task-delete-clicker" mtd-data-clicker mtd-data-message="@Localizer["The task was deleted"]" type="hidden" />
+</form>
+
+<div id="task-dialog-delete" class="mdc-dialog"
+     role="alertdialog"
+     aria-modal="true"
+     aria-labelledby="my-dialog-title"
+     aria-describedby="my-dialog-content">
+    <div class="mdc-dialog__container">
+        <div class="mdc-dialog__surface">
+            <h2 class="mdc-dialog__title" id="delete-form-title">
+                @Localizer["Delete task?"]
+            </h2>
+            <div class="mdc-dialog__content" id="delete-dialog-content">
+                @Localizer["The task will be permanently deleted."]
+            </div>
+            <footer class="mdc-dialog__actions">
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                    <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                </button>
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+                    <span class="mdc-button__label" onclick="document.getElementById('task-delete-clicker').click();">@Localizer["Delete"]</span>
+                </button>
+            </footer>
+        </div>
+    </div>
+    <div class="mdc-dialog__scrim"></div>
+</div>

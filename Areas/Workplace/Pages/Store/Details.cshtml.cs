@@ -81,21 +81,19 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
         public List<MTDSelectListItem> Activites { get; set; }
         public List<ActivityLine> ActivityLines { get; set; }
 
+        public List<StoreTask> StoreTasks { get; set; }
+
+        public WebAppUser CurrentUser { get; set; }
+
         public async Task<IActionResult> OnGetAsync(string id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) { return NotFound(); }
 
             MtdStore = await _context.MtdStore.Include(x => x.MtdFormNavigation.MtdFormHeader).FirstOrDefaultAsync(m => m.Id == id);
 
-            if (MtdStore == null)
-            {
-                return NotFound();
-            }
+            if (MtdStore == null) { return NotFound(); }
 
-            var user = await _userHandler.GetUserAsync(HttpContext.User);
+            var user = await _userHandler.GetUserAsync(HttpContext.User);            
             bool isViewer = await _userHandler.IsViewer(user, MtdStore.MtdForm, MtdStore.Id);
 
             if (!isViewer)
@@ -103,6 +101,7 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                 return NotFound();
             }
 
+            CurrentUser = user;
             IsEditor = await _userHandler.IsEditor(user, MtdStore.MtdForm, MtdStore.Id);
             IsInstallerOwner = await _userHandler.IsInstallerOwner(user, MtdStore.MtdForm);
             IsEraser = await _userHandler.IsEraser(user, MtdStore.MtdForm, MtdStore.Id);
@@ -119,7 +118,6 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
 
             ChangesHistory = new ChangesHistory();
 
-
             if (edited != null)
             {
                 WebAppUser userEditor = await _userHandler.FindByIdAsync(edited.UserId);
@@ -134,58 +132,68 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                 ChangesHistory.CreateByTime = created.TimeCh.ToString();
             }
 
+
             ApprovalHandler approvalHandler = new ApprovalHandler(_context, MtdStore.Id);
+
+            await SetUsersList(user);
+
+            await SetUsersRequest(user, approvalHandler);
+
+            await SetApprovalInfo(id, user, approvalHandler);
+
+            await SetResolutions(approvalHandler);
+
+            await SetRelatedForms(user);
+
+            await SetActivites();
+
+            await SetTasks(user);
+
+            return Page();
+        }
+
+
+        private async Task SetTasks(WebAppUser currentUser)
+        {
+            StoreTasks = new List<StoreTask>();
+            List<MtdStoreTask> storeTasks = await _context.MtdStoreTasks.AsNoTracking().Where(x => x.MtdStoreId == MtdStore.Id).OrderBy(x => x.Deadline).ToListAsync();
+            if (storeTasks != null)
+            {
+                foreach (var st in storeTasks)
+                {
+                    if (st.PrivateTask == 1 && currentUser.Id != st.Initiator && currentUser.Id != st.Executor) { continue; }
+
+                    StoreTask storeTask = new StoreTask { 
+                        Id = st.Id,
+                        Name = st.Name,
+                        PrivateTask = st.PrivateTask == 1,
+                        Deadline = st.Deadline,
+                        InitTimeCr = st.InitTimeCr,
+                        InitNote = st.InitNote,
+                        ExecTimeCr = st.ExecTimeCr,
+                        ExecNote = st.ExecNote,
+                        TaskComplete = st.Complete == 1,
+                        TaskRejected = st.Complete == -1,
+                        ButtonClose = currentUser.Id == st.Executor && st.Complete == 0,                        
+                        ButtonDelete = currentUser.Id == st.Initiator,
+                    };
+
+                    WebAppUser userInitiator = await _userHandler.FindByIdAsync(st.Initiator);
+                    storeTask.Initiator  = userInitiator.GetFullName();
+
+                    WebAppUser userExecutor = await _userHandler.FindByIdAsync(st.Executor);
+                    storeTask.Executor = userExecutor.GetFullName();
+
+                    StoreTasks.Add(storeTask);
+                }
+            };
+        }
+
+
+        private async Task SetApprovalInfo(string id, WebAppUser user, ApprovalHandler approvalHandler)
+        {
             IsApprover = await approvalHandler.IsApproverAsync(user);
             IsFirstStage = await approvalHandler.IsFirstStageAsync();
-
-
-            UsersList = new List<MTDSelectListItem>();
-
-            if (IsInstallerOwner)
-            {
-                List<WebAppUser> webAppUsers = new List<WebAppUser>();
-                bool isViewAll = await _userHandler.CheckUserPolicyAsync(user, MtdStore.MtdForm, RightsType.ViewAll);
-
-                if (isViewAll)
-                {
-                    webAppUsers = await _userHandler.Users.ToListAsync();
-                }
-                else
-                {
-                    webAppUsers = await _userHandler.GetUsersInGroupsAsync(user);
-                }
-
-                webAppUsers.OrderBy(x => x.Title).ToList().ForEach((item) =>
-                {
-                    UsersList.Add(new MTDSelectListItem
-                    {
-                        Id = item.Id,
-                        Value = item.GetFullName()
-                    });
-                });
-            }
-
-            UsersRequest = new List<MTDSelectListItem>();
-            if (IsApprover && !IsFirstStage)
-            {
-
-                List<WebAppUser> usersRequest = await _userHandler.GetUsersForViewingForm(MtdStore.MtdForm, MtdStore.Id);
-
-                MtdApprovalStage stage = await approvalHandler.GetCurrentStageAsync();
-                List<string> userIds = await approvalHandler.GetUsersWaitSignAsync();
-                IList<MtdApprovalStage> mas = await approvalHandler.GetStagesAsync();
-                List<string> userInStagesIds = mas.Where(x => x.UserId != "owner").GroupBy(x => x.UserId).Select(x => x.Key).ToList();
-
-                usersRequest = usersRequest.Where(x => !userIds.Contains(x.Id)
-                    && !userInStagesIds.Contains(x.Id)
-                    && x.Id != user.Id
-                    && x.Id != stage.UserId).ToList();
-
-                usersRequest.OrderBy(x => x.Title).ToList().ForEach((item) =>
-                {
-                    UsersRequest.Add(new MTDSelectListItem { Id = item.Id, Value = item.Title });
-                });
-            }
 
             Stages = new List<MTDSelectListItem>();
             IList<MtdApprovalStage> stages = await approvalHandler.GetStagesDownAsync();
@@ -236,9 +244,10 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
 
                 ApprovalHistory.Add(temp);
             }
+        }
 
-            await FilListResolutions(approvalHandler);
-
+        private async Task SetRelatedForms(WebAppUser user)
+        {
             RelatedForms = new List<MTDSelectListItem>();
 
             List<MtdForm> relatedForms = await _context.MtdFormRelated.Include(x => x.MtdChildForm)
@@ -269,7 +278,10 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
             ChildIds = await _context.MtdStore.Where(x => x.Parent == MtdStore.Id).Select(x => x.Id).ToListAsync();
 
             if (ChildIds == null) { ChildIds = new List<string>(); }
+        }
 
+        private async Task SetActivites()
+        {
             Activites = new List<MTDSelectListItem>();
             ActivityLines = new List<ActivityLine>();
             IList<MtdFormActivity> activites = await _context.MtdFormActivites.Where(x => x.MtdFormId == MtdForm.Id).OrderBy(x => x.Sequence).ToListAsync();
@@ -286,7 +298,7 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                 List<string> actIds = storeActivities.Select(x => x.MtdFormActivityId).ToList();
                 IList<MtdFormActivity> formActivities = await _context.MtdFormActivites.Where(x => actIds.Contains(x.Id)).ToListAsync();
 
-                foreach(var activity in storeActivities)
+                foreach (var activity in storeActivities)
                 {
                     string imgSrc = string.Empty;
                     var formActivitity = formActivities.Where(x => x.Id == activity.MtdFormActivityId).FirstOrDefault();
@@ -298,17 +310,65 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
 
                     WebAppUser webAppUser = await _userHandler.FindByIdAsync(activity.UserId);
                     string userName = await _userHandler.GetUserNameAsync(webAppUser);
-                    ActivityLines.Add(new ActivityLine { Name = formActivitity.Name, Comment = activity.Comment, ImgSrc = imgSrc, TimeCr = activity.TimeCr, User = userName });
+                    ActivityLines.Add(new ActivityLine { Id = activity.Id, Name = formActivitity.Name, Comment = activity.Comment, ImgSrc = imgSrc, TimeCr = activity.TimeCr, User = userName, UserId = activity.UserId });
                 }
 
-                
+
             }
-
-
-            return Page();
         }
 
-        private async Task FilListResolutions(ApprovalHandler approvalHandler)
+        private async Task SetUsersRequest(WebAppUser user, ApprovalHandler approvalHandler)
+        {
+            UsersRequest = new List<MTDSelectListItem>();
+            if (IsApprover && !IsFirstStage)
+            {
+
+                List<WebAppUser> usersRequest = await _userHandler.GetUsersForViewingForm(MtdStore.MtdForm, MtdStore.Id);
+
+                MtdApprovalStage stage = await approvalHandler.GetCurrentStageAsync();
+                List<string> userIds = await approvalHandler.GetUsersWaitSignAsync();
+                IList<MtdApprovalStage> mas = await approvalHandler.GetStagesAsync();
+                List<string> userInStagesIds = mas.Where(x => x.UserId != "owner").GroupBy(x => x.UserId).Select(x => x.Key).ToList();
+
+                usersRequest = usersRequest.Where(x => !userIds.Contains(x.Id)
+                    && !userInStagesIds.Contains(x.Id)
+                    && x.Id != user.Id
+                    && x.Id != stage.UserId).ToList();
+
+                usersRequest.OrderBy(x => x.Title).ToList().ForEach((item) =>
+                {
+                    UsersRequest.Add(new MTDSelectListItem { Id = item.Id, Value = item.Title });
+                });
+            }
+        }
+
+        private async Task SetUsersList(WebAppUser user)
+        {
+
+            UsersList = new List<MTDSelectListItem>();
+            List<WebAppUser> webAppUsers = new List<WebAppUser>();
+            bool isViewAll = await _userHandler.CheckUserPolicyAsync(user, MtdStore.MtdForm, RightsType.ViewAll);
+
+            if (isViewAll)
+            {
+                webAppUsers = await _userHandler.Users.ToListAsync();
+            }
+            else
+            {
+                webAppUsers = await _userHandler.GetUsersInGroupsAsync(user);
+            }
+
+            webAppUsers.OrderBy(x => x.Title).ToList().ForEach((item) =>
+            {
+                UsersList.Add(new MTDSelectListItem
+                {
+                    Id = item.Id,
+                    Value = item.GetFullName()
+                });
+            });
+        }
+
+        private async Task SetResolutions(ApprovalHandler approvalHandler)
         {
 
             MtdApprovalStage currentStage = await approvalHandler.GetCurrentStageAsync();

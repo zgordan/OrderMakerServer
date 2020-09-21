@@ -13,9 +13,15 @@ document.querySelectorAll("[mtd-dialog-button]").forEach((item) => {
         document.body.style.overflowY = "scroll";
         document.body.style.height = "100vh";
         appContent.classList.remove("drawer-frame-app-content");
-        const tf = dialog.querySelector(".mdc-text-field--textarea");
-        if (tf) {
-            tf.focus();
+
+        const fc = dialog.querySelector(".mtd-focus-control");
+        if (fc) {
+            fc.focus();
+        } else {
+            const tf = dialog.querySelector(".mdc-text-field--textarea");
+            if (tf) {
+                tf.focus();
+            }
         }
 
     });
@@ -26,7 +32,7 @@ document.querySelectorAll("[mtd-dialog-button]").forEach((item) => {
 
             dialog.classList.add("mtd-dialog-hidden");
             modal.style.display = "";
-            document.body.style.overflow = "hidden";            
+            document.body.style.overflow = "hidden";
             document.body.style.overflowY = "";
             document.body.style.height = "";
             appContent.classList.add("drawer-frame-app-content");
