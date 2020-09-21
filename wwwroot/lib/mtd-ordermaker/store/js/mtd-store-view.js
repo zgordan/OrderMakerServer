@@ -36,7 +36,6 @@ const selectFormLink = new MTDSelectList("select-form");
 const activityDate = new MTDTextField("activity-date");
 const activityComment = new MTDTextField("activity-comment");
 const activitySelect = new MTDSelectList("activity-select");
-const activityDeleteDialog = new mdc.dialog.MDCDialog(document.getElementById('activity-dialog-delete'));
 
 const taskPrivate = document.getElementById("task-private");
 const taskDeadline = new MTDTextField("task-deadline");
@@ -45,15 +44,14 @@ const taskExecution = new MTDSelectList("task-executor");
 const taskInitNote = new MTDTextField("task-init-note");
 const taskCloseComment = new MTDTextField("task-close-comment");
 
-const taskDeleteDialog = new mdc.dialog.MDCDialog(document.getElementById('task-dialog-delete'));
-
-
 const openTaskDeleteDialog = (taskId) => {
+    const taskDeleteDialog = new mdc.dialog.MDCDialog(document.getElementById('task-dialog-delete'));
     document.getElementById('task-delete-id').value = taskId;
     taskDeleteDialog.open();
 }
 
 const openActivityDeleteDialog = (activityId) => {
+    const activityDeleteDialog = new mdc.dialog.MDCDialog(document.getElementById('activity-dialog-delete'));
     document.getElementById('activity-delete-id').value = activityId;
     activityDeleteDialog.open();
 }

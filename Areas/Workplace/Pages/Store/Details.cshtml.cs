@@ -71,6 +71,8 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
         public List<MTDSelectListItem> ListRejections { get; set; }
 
         public List<MTDSelectListItem> UsersList { get; set; }
+        public List<MTDSelectListItem> UsersTask { get; set; }
+
         public List<MTDSelectListItem> Stages { get; set; }
         public List<MTDSelectListItem> UsersRequest { get; set; }
         public bool RelatedDocs { get; set; }
@@ -93,7 +95,7 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
 
             if (MtdStore == null) { return NotFound(); }
 
-            var user = await _userHandler.GetUserAsync(HttpContext.User);            
+            var user = await _userHandler.GetUserAsync(HttpContext.User);
             bool isViewer = await _userHandler.IsViewer(user, MtdStore.MtdForm, MtdStore.Id);
 
             if (!isViewer)
@@ -135,6 +137,8 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
 
             ApprovalHandler approvalHandler = new ApprovalHandler(_context, MtdStore.Id);
 
+            await SetUsersTask();
+
             await SetUsersList(user);
 
             await SetUsersRequest(user, approvalHandler);
@@ -163,7 +167,8 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                 {
                     if (st.PrivateTask == 1 && currentUser.Id != st.Initiator && currentUser.Id != st.Executor) { continue; }
 
-                    StoreTask storeTask = new StoreTask { 
+                    StoreTask storeTask = new StoreTask
+                    {
                         Id = st.Id,
                         Name = st.Name,
                         PrivateTask = st.PrivateTask == 1,
@@ -174,12 +179,12 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                         ExecNote = st.ExecNote,
                         TaskComplete = st.Complete == 1,
                         TaskRejected = st.Complete == -1,
-                        ButtonClose = currentUser.Id == st.Executor && st.Complete == 0,                        
+                        ButtonClose = currentUser.Id == st.Executor && st.Complete == 0,
                         ButtonDelete = currentUser.Id == st.Initiator,
                     };
 
                     WebAppUser userInitiator = await _userHandler.FindByIdAsync(st.Initiator);
-                    storeTask.Initiator  = userInitiator.GetFullName();
+                    storeTask.Initiator = userInitiator.GetFullName();
 
                     WebAppUser userExecutor = await _userHandler.FindByIdAsync(st.Executor);
                     storeTask.Executor = userExecutor.GetFullName();
@@ -340,6 +345,23 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                     UsersRequest.Add(new MTDSelectListItem { Id = item.Id, Value = item.Title });
                 });
             }
+        }
+
+
+        private async Task SetUsersTask()
+        {
+            UsersTask = new List<MTDSelectListItem>();
+
+            List<WebAppUser> viewUsers = await _userHandler.GetUsersForViewingForm(MtdForm.Id, MtdStore.Id);
+
+            viewUsers.OrderBy(x => x.Title).ToList().ForEach((item) =>
+            {
+                UsersTask.Add(new MTDSelectListItem
+                {
+                    Id = item.Id,
+                    Value = item.GetFullName()
+                });
+            });
         }
 
         private async Task SetUsersList(WebAppUser user)
