@@ -298,7 +298,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
             MtdApprovalStage current = await GetCurrentStageAsync();
             IList<MtdApprovalStage> stages = await GetStagesAsync();
             MtdApprovalStage next = stages.Where(x => x.Stage > current.Stage).FirstOrDefault();
-            if (next.UserId == "owner")
+            if (next != null && next.UserId == "owner")
             {
                 next.UserId = await GetOwnerID();
             }

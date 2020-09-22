@@ -43,7 +43,7 @@ namespace Mtd.OrderMaker.Server.Services
                 executionCount++;
                 DateTime now = DateTime.Now;
                 DateTime start = new DateTime(now.Year, now.Month, now.Day, 8, 0, 0);
-                DateTime end = new DateTime(now.Year, now.Month, now.Day, 23, 0, 0);
+                DateTime end = new DateTime(now.Year, now.Month, now.Day, 18, 0, 0);
 
 
                 if (now > start && now < end && now.DayOfWeek != DayOfWeek.Saturday && now.DayOfWeek != DayOfWeek.Sunday)
