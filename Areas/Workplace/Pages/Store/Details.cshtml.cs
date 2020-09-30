@@ -314,7 +314,7 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                     }
 
                     WebAppUser webAppUser = await _userHandler.FindByIdAsync(activity.UserId);
-                    string userName = await _userHandler.GetUserNameAsync(webAppUser);
+                    string userName = webAppUser.GetFullName();
                     ActivityLines.Add(new ActivityLine { Id = activity.Id, Name = formActivitity.Name, Comment = activity.Comment, ImgSrc = imgSrc, TimeCr = activity.TimeCr, User = userName, UserId = activity.UserId });
                 }
 
