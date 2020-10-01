@@ -25,7 +25,7 @@ namespace Mtd.OrderMaker.Server.Controllers
         public async Task<IActionResult> OnGetLogoAsync()
         {
             byte[] fileData = await context.MtdConfigFiles.Where(x => x.Id == 1).Select(x => x.FileData).FirstOrDefaultAsync();
-            return new FileContentResult(fileData, "text/plain"); /// { FileDownloadName = "logo.png" };
+            return new FileContentResult(fileData, "image/png"); /// { FileDownloadName = "logo.png" };
         }
 
     }

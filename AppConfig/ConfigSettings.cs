@@ -26,5 +26,7 @@ namespace Mtd.OrderMaker.Server.AppConfig
         public string CultureInfo { get; set; }
         public string Migrate { get; set; }
         public string CPQManagerLink { get; set; }
+        public string SecretKey { get; set; }
+
     }
 }

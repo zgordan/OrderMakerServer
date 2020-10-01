@@ -109,8 +109,6 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Store
             IList<MtdStoreStack> mtdStoreStack = await handlerStack.GetStackAsync(storeIds, incomer.FieldIds);
            
 
-
-
             List<StoreListFields> storeFields = new List<StoreListFields>();
 
 
