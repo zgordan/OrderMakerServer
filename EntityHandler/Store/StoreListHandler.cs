@@ -30,9 +30,11 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Store
 
         public int PageNumber { get; private set; }
         public int PageCount { get; private set; }
+        public int PageSize { get; private set; }
         public List<StoreListFields> StoreFields { get; private set; }
         public string PageLine { get; private set; }
         public MtdForm MtdForm { get; private set; }
+        
         public List<string> Columns { get; private set; }
 
         public string ResultView { get; private set; }
@@ -49,6 +51,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Store
             this.resultValue = resultValue;
             this.Columns = new List<string>();
             this.StoreFields = new List<StoreListFields>();
+            this.PageSize = 5;
         }
 
         public void SetPageNumber(int page)
@@ -64,6 +67,11 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Store
         public void SetFilterNumber(int searchNumber)
         {
             this.searchNumber = searchNumber;
+        }
+
+        public void SetPageSize(int pagesize)
+        {
+            this.PageSize = pagesize;
         }
 
         public async Task FillDataAsync()
@@ -97,8 +105,8 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Store
                 SearchNumber = searchNumber.ToString(),
                 SearchText = searchText,
                 Page = this.PageNumber,
-                PageSize = 5,
-                FieldForColumn = await filterHandler.GetFieldsAsync(),
+                PageSize = this.PageSize,
+                FieldForColumn = await filterHandler.GetFieldsFilterAsync(),
                 WaitList = 0,
             };
 

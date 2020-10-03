@@ -114,7 +114,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
                 SearchText = "",
                 Page = 1,
                 PageSize = 10,
-                FieldForColumn = await GetFieldsAsync(),
+                FieldForColumn = await GetFieldsFilterAsync(),
                 WaitList = 0,
             };
 
@@ -157,7 +157,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
             return typeQuery;
         }
 
-        public async Task<IList<MtdFormPartField>> GetFieldsAsync()
+        public async Task<IList<MtdFormPartField>> GetFieldsFilterAsync()
         {
 
             IList<MtdFormPartField> result;
@@ -189,11 +189,30 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
                 IList<string> fieldIds = await GetAllowFieldsAsync();
                 result = result.Where(x => fieldIds.Contains(x.Id)).ToList();
             }
-            
+
 
             return result;
         }
 
+        public async Task<IList<MtdFormPartField>> GetFieldsAllAsync()
+        {
+
+            IList<MtdFormPartField> result = await _context.MtdFormPartField
+                .Include(m => m.MtdFormPartNavigation)
+                .Where(x => x.MtdFormPartNavigation.MtdForm == FormId)
+                .OrderBy(s => s.MtdFormPartNavigation.Sequence).ThenBy(s => s.Sequence)
+                .ToListAsync();
+
+
+            if (result != null)
+            {
+                IList<string> fieldIds = await GetAllowFieldsAsync();
+                result = result.Where(x => fieldIds.Contains(x.Id)).ToList();
+            }
+
+
+            return result;
+        }
 
         public async Task<IList<MtdFilterField>> GetAdvancedAsync()
         {
@@ -250,11 +269,12 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
                 await _context.MtdFilterScriptApply.AddAsync(filterApplied);
                 await _context.SaveChangesAsync();
 
-            } catch
+            }
+            catch
             {
                 return false;
             }
-            
+
             return true;
         }
 
