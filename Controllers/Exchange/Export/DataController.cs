@@ -85,7 +85,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Exchange.Export
             } else
             {
                 isOk = DateTime.TryParseExact(dateStart, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTime);
-                if (!isOk) { return BadRequest("Invakid date format."); }
+                if (!isOk) { return BadRequest("Invalid date format."); }
 
                 storeIds = await context.MtdLogDocument.Where(x => x.TimeCh > dateTime).GroupBy(x => x.MtdStore).Select(x => x.Key).ToListAsync();
                 
@@ -99,6 +99,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Exchange.Export
             foreach (string storeId in storeIds)
             {
                 MtdStore mtdStore = outFlow.MtdStores.Where(x => x.Id == storeId).FirstOrDefault();
+                if (mtdStore == null) { continue;  }
 
                 string number = mtdStore.Sequence.ToString("D9");
                 string date = mtdStore.Timecr.ToShortDateString();
@@ -128,20 +129,20 @@ namespace Mtd.OrderMaker.Server.Controllers.Exchange.Export
         }
 
 
-        private bool CheckToken(string pk, string token)
-        {
-            string tokenStr = $"{options.Value.SecretKey}{pk}";
+        //private bool CheckToken(string pk, string token)
+        //{
+        //    string tokenStr = $"{options.Value.SecretKey}{pk}";
 
-            byte[] data = Encoding.UTF8.GetBytes(tokenStr);
-            byte[] result;
-            SHA512 shaM = new SHA512Managed();
-            result = shaM.ComputeHash(data);
+        //    byte[] data = Encoding.UTF8.GetBytes(tokenStr);
+        //    byte[] result;
+        //    SHA512 shaM = new SHA512Managed();
+        //    result = shaM.ComputeHash(data);
 
-            var hashedInputStringBuilder = new System.Text.StringBuilder(128);
-            foreach (var b in result) { hashedInputStringBuilder.Append(b.ToString("X2")); }
-            string tokenSHA = hashedInputStringBuilder.ToString();
+        //    var hashedInputStringBuilder = new System.Text.StringBuilder(128);
+        //    foreach (var b in result) { hashedInputStringBuilder.Append(b.ToString("X2")); }
+        //    string tokenSHA = hashedInputStringBuilder.ToString();
 
-            return tokenSHA.ToUpper() != token.ToUpper();
-        }
+        //    return tokenSHA.ToUpper() != token.ToUpper();
+        //}
     }
 }
