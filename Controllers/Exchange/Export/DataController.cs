@@ -73,24 +73,23 @@ namespace Mtd.OrderMaker.Server.Controllers.Exchange.Export
                 WaitList = 0,
             };
 
-            OutFlow outFlow = await filterHandler.GetStackFlowAsync(incomer, typeQuery);
-            StackHandler handlerStack = new StackHandler(context);
-
-            List<string> storeIds = new List<string>();
-
-            if (dateStart == null)
+            IList<string> querystoreIds = null;
+            if (dateStart != null)
             {
-                storeIds = outFlow.MtdStores.Select(x => x.Id).ToList();
-
-            } else
-            {
-                isOk = DateTime.TryParseExact(dateStart, "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTime);
+                isOk = DateTime.TryParseExact(dateStart, "yyyyMMddHHmm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTime);
                 if (!isOk) { return BadRequest("Invalid date format."); }
 
-                storeIds = await context.MtdLogDocument.Where(x => x.TimeCh > dateTime).GroupBy(x => x.MtdStore).Select(x => x.Key).ToListAsync();
+                IList<string> ids = await context.MtdLogDocument.Where(x => x.TimeCh > dateTime).GroupBy(x => x.MtdStore).Select(x => x.Key).ToListAsync();
+                querystoreIds = await context.MtdStore.Where(x => ids.Contains(x.Id) && x.MtdForm == formId).Select(x=>x.Id).ToListAsync();
                 
+                if (querystoreIds.Count == 0) { querystoreIds = null; }
+
             }
 
+            OutFlow outFlow = await filterHandler.GetStackFlowAsync(incomer, typeQuery, querystoreIds);
+            StackHandler handlerStack = new StackHandler(context);
+
+            List<string> storeIds = outFlow.MtdStores.Select(x => x.Id).ToList();
 
             IList<MtdStoreStack> mtdStoreStack = await handlerStack.GetStackAsync(storeIds, incomer.FieldIds);
 

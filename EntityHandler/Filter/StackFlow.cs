@@ -32,7 +32,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
 {
     public partial class FilterHandler
     {
-        public async Task<OutFlow> GetStackFlowAsync(Incomer incomer, TypeQuery typeQuery)
+        public async Task<OutFlow> GetStackFlowAsync(Incomer incomer, TypeQuery typeQuery, IList<string> storeIds = null)
         {
 
             OutFlow outFlow = new OutFlow();
@@ -50,6 +50,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
                 return outFlow;
             }
 
+
             IList<MtdFilterScript> scripts = await _userHandler.GetFilterScriptsAsync(_user, incomer.FormId, 1);
             if (scripts != null && scripts.Count > 0 && incomer.WaitList != 1)
             {
@@ -60,11 +61,16 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
                 }
             }
 
+            if (storeIds != null)
+            {
+                queryMtdStore = queryMtdStore.Where(x => storeIds.Contains(x.Id));
+            }
+
             bool ownOnly = await _userHandler.CheckUserPolicyAsync(_user, incomer.FormId, RightsType.ViewOwn);
             if (ownOnly)
             {
-                IList<string> storeIds = await _context.MtdStoreOwner.Where(x => x.UserId == _user.Id).Select(x => x.Id).ToListAsync();
-                queryMtdStore = queryMtdStore.Where(x => storeIds.Contains(x.Id));
+                IList<string> ownStoreIds = await _context.MtdStoreOwner.Where(x => x.UserId == _user.Id).Select(x => x.Id).ToListAsync();
+                queryMtdStore = queryMtdStore.Where(x => ownStoreIds.Contains(x.Id));
             }
 
             bool groupView = await _userHandler.CheckUserPolicyAsync(_user, FormId, RightsType.ViewGroup);
@@ -73,8 +79,8 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
                 IList<WebAppUser> appUsers = await _userHandler.GetUsersInGroupsOutDenyAsync(_user, FormId);
                 List<string> userIds = appUsers.Select(x => x.Id).ToList();
 
-                IList<string> storeIds = await _context.MtdStoreOwner.Where(x => userIds.Contains(x.UserId)).Select(x => x.Id).ToListAsync();
-                queryMtdStore = queryMtdStore.Where(x => storeIds.Contains(x.Id));
+                IList<string> groupStoreIds = await _context.MtdStoreOwner.Where(x => userIds.Contains(x.UserId)).Select(x => x.Id).ToListAsync();
+                queryMtdStore = queryMtdStore.Where(x => groupStoreIds.Contains(x.Id));
             }
 
             switch (typeQuery)
