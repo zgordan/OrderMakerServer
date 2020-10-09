@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using Mtd.OrderMaker.Server.AppConfig;
+using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using System;
 using System.Collections.Generic;
@@ -25,12 +26,14 @@ namespace Mtd.OrderMaker.Server.Services
         private readonly EmailSettings _emailSettings;
         private readonly IWebHostEnvironment _hostingEnvironment;       
         private readonly ConfigHandler configHandler;
+        private readonly UserHandler userHandler;
 
-        public EmailSenderBlank(IOptions<EmailSettings> emailSettings, IWebHostEnvironment hostingEnvironment, ConfigHandler configHandler)
+        public EmailSenderBlank(IOptions<EmailSettings> emailSettings, IWebHostEnvironment hostingEnvironment, ConfigHandler configHandler, UserHandler userHandler)
         {
             _emailSettings = emailSettings.Value;
             _hostingEnvironment = hostingEnvironment;
             this.configHandler = configHandler;
+            this.userHandler = userHandler;
         }
 
         public Task SendEmailAsync(string email, string subject, string message)
@@ -79,6 +82,9 @@ namespace Mtd.OrderMaker.Server.Services
 
         private async Task Execute(string email, string subject, string message)
         {
+            WebAppUser user = await userHandler.FindByEmailAsync(email);
+            if (user == null || !user.EmailConfirmed) { return; }
+            
             try
             {
                 MailAddress toAddress = new MailAddress(email);

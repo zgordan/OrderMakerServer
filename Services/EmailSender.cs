@@ -28,6 +28,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Localization;
+using Mtd.OrderMaker.Server.Areas.Identity.Data;
 
 namespace Mtd.OrderMaker.Server.Services
 {
@@ -36,12 +37,13 @@ namespace Mtd.OrderMaker.Server.Services
     {
         private readonly EmailSettings _emailSettings;
         private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly UserHandler userHandler;
 
-
-        public EmailSender(IOptions<EmailSettings> emailSettings, IWebHostEnvironment hostingEnvironment)
+        public EmailSender(IOptions<EmailSettings> emailSettings, IWebHostEnvironment hostingEnvironment, UserHandler userHandler)
         {
             _emailSettings = emailSettings.Value;
             _hostingEnvironment = hostingEnvironment;
+            this.userHandler = userHandler;
         }
       
         public Task SendEmailAsync(string email, string subject, string message)
@@ -87,6 +89,9 @@ namespace Mtd.OrderMaker.Server.Services
 
         private async Task Execute(string email, string subject, string message)
         {
+            WebAppUser user = await userHandler.FindByEmailAsync(email);
+            if (user == null || !user.EmailConfirmed) { return; }
+
             try
             {
                 MailAddress toAddress = new MailAddress(email);
