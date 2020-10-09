@@ -4,19 +4,19 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHtmlLocalizer<SharedResource> Localizer
 
-@{ 
+@{
     string path = ViewContext.HttpContext.Request.Path;
     bool isPrint = path == "/workplace/store/detailsprint";
 }
 
-<table style="white-space: nowrap; border-collapse:collapse">
 
+<table style="white-space: nowrap; border-collapse:collapse">
     @if (Model.IsApprover)
     {
         <tr>
             <td>@Localizer["Approval status"]</td>
             <td style="width:100%;"></td>
-            <td>
+            <td style="text-align:right">
                 <div class="mtd-store-view-status">
                     <div>
                         @if (Model.MtdApproval.ImgRequired == null)
@@ -33,7 +33,7 @@
                             @await Component.InvokeAsync("MTDImgViewer", modelRequired);
                         }
                     </div>
-                    <div style="color: red">
+                    <div style="color: red;">
                         @if (Model.MtdApproval.ImgRequiredText == null)
                         {@Localizer["Approval is required"]}
                     else
@@ -42,6 +42,7 @@
                 </div>
             </td>
         </tr>
+
     }
     else
     {
@@ -247,8 +248,12 @@
                 }
         }
     }
-
 </table>
+
+@if (Model.IsApprover && Model.IsFirstStage && Model.ApprovalStatus == ApprovalStatus.Start)
+{
+    <div style="color: red; text-align: center">@Localizer["Click the 'Approve Document' button to begin the approval process."]</div>
+}
 
 <table id="block-approval-table" style="white-space: nowrap; border-collapse:collapse">
     <thead><tr><th></th><th style="width:100%"></th><th></th></tr></thead>
@@ -260,7 +265,7 @@
             counter++;
 
             string none = Model.ApprovalHistory.Count - counter > 1 ? "none" : "";
-            if (isPrint) { none = "" ; }
+            if (isPrint) { none = ""; }
 
             if (!item.IsSign)
             {

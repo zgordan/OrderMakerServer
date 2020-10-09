@@ -921,4 +921,7 @@
   <data name="In this option, comment is required" xml:space="preserve">
     <value>Для этого события  комментарий обязателен</value>
   </data>
+  <data name="Click the 'Approve Document' button to begin the approval process." xml:space="preserve">
+    <value>Нажмите кнопку «Согласовать», чтобы начать процесс утверждения документа.</value>
+  </data>
 </root>
