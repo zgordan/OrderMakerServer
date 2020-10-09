@@ -186,7 +186,7 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account.Manage
             
             try
             {
-                await _emailSender.SendEmailBlankAsync(blankEmail);
+                await _emailSender.SendEmailBlankAsync(blankEmail, false);
 
             } catch
             {

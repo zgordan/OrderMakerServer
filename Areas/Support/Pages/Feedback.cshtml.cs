@@ -55,7 +55,7 @@ namespace Mtd.OrderMaker.Server.Areas.Support.Pages
                        }
             };
 
-           bool isOk = await emailSender.SendEmailBlankAsync(blankEmail);
+           bool isOk = await emailSender.SendEmailBlankAsync(blankEmail, false);
            if (!isOk) { return BadRequest(localizer["Error sending email."]); }
 
             return new OkResult();

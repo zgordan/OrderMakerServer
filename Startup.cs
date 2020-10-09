@@ -124,18 +124,21 @@ namespace Mtd.OrderMaker.Server
 
             services.AddSingleton<PolicyCache>();
             services.AddScoped<UserHandler>();
-            services.AddTransient<ConfigHandler>();
-            services.AddTransient<IEmailSender, EmailSender>();
-            services.AddTransient<IEmailSenderBlank, EmailSenderBlank>();
+            services.AddTransient<ConfigHandler>();    
+            services.AddTransient<IEmailSenderBlank, EmailSender>();
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.Configure<ConfigSettings>(Configuration.GetSection("ConfigSettings"));
             services.Configure<LimitSettings>(Configuration.GetSection("LimitSettings"));
 
-            services.AddHostedService<HostedService>();
-            services.AddScoped<IScopedService, ReminderApproval>();
-            services.AddScoped<IScopedService, ReminderTask>();
-
             services.AddMvc(options => options.EnableEndpointRouting = false);
+
+
+            if (!CurrentEnvironment.IsDevelopment())
+            {
+                services.AddHostedService<HostedService>();
+                services.AddScoped<IScopedService, ReminderApproval>();
+                services.AddScoped<IScopedService, ReminderTask>();
+            }
 
 #if DEBUG
             IMvcBuilder builder = services.AddRazorPages();

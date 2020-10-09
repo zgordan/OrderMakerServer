@@ -71,7 +71,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             };
 
                         
-            bool isOk = await _emailSender.SendEmailBlankAsync(blankEmail);
+            bool isOk = await _emailSender.SendEmailBlankAsync(blankEmail, false);
             if (!isOk) { return BadRequest(_localizer["Error sending email."]); }
 
             user.EmailConfirmed = false;

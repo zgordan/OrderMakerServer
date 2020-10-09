@@ -34,6 +34,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.AppConfig;
+using Mtd.OrderMaker.Server.Services;
 
 namespace Mtd.OrderMaker.Server.Pages
 {
@@ -41,7 +42,7 @@ namespace Mtd.OrderMaker.Server.Pages
     public class ErrorModel : PageModel
     {
         
-        private readonly IEmailSender _emailSender;
+        private readonly IEmailSenderBlank _emailSender;
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly ConfigSettings _emailSupport;
 
@@ -49,8 +50,8 @@ namespace Mtd.OrderMaker.Server.Pages
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
-        public ErrorModel(      
-            IEmailSender emailSender, 
+        public ErrorModel(
+            IEmailSenderBlank emailSender, 
             IWebHostEnvironment hostingEnvironment, 
             IOptions<ConfigSettings> emailSupport)
         {
@@ -85,7 +86,7 @@ namespace Mtd.OrderMaker.Server.Pages
                 htmlText = htmlText.Replace("{UserName}", User.Identity.Name);
                 htmlText = htmlText.Replace("{StackTrace}", exceptionFeature.Error.StackTrace);
 
-                await _emailSender.SendEmailAsync(_emailSupport.EmailSupport, "Server Error", htmlText);                
+                await _emailSender.SendEmailAsync(_emailSupport.EmailSupport, "Server Error", htmlText, false);                
             }
 
         }

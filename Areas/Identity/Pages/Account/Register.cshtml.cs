@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
+using Mtd.OrderMaker.Server.Services;
 
 namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account
 {
@@ -17,19 +18,17 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account
     [Authorize(Roles = "sdfsdF")]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<WebAppUser> _signInManager;
         private readonly UserManager<WebAppUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
+        private readonly IEmailSenderBlank _emailSender;
 
         public RegisterModel(
             UserManager<WebAppUser> userManager,
             SignInManager<WebAppUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSenderBlank emailSender)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
         }
@@ -87,7 +86,7 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.", false);
 
                     //await _signInManager.SignInAsync(user, isPersistent: false);
                     //return LocalRedirect(returnUrl);

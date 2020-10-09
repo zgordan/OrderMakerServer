@@ -1,25 +1,8 @@
-﻿/*
-    OrderMaker - http://ordermaker.org
-    Copyright(c) 2019 Oleg Bruev. All rights reserved.
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.If not, see https://www.gnu.org/licenses/.
-*/
-
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using Mtd.OrderMaker.Server.AppConfig;
+using Mtd.OrderMaker.Server.Areas.Identity.Data;
+using Mtd.OrderMaker.Server.Entity;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,34 +10,48 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Localization;
-using Mtd.OrderMaker.Server.Areas.Identity.Data;
 
 namespace Mtd.OrderMaker.Server.Services
 {
-    
-    public class EmailSender : IEmailSender
+    public interface IEmailSenderBlank
+    {
+        Task SendEmailAsync(string email, string subject, string message, bool mustconfirm = true);
+        Task<bool> SendEmailBlankAsync(BlankEmail blankEmail, bool mustconfirm = true);
+    }
+
+    public class BlankEmail
+    {
+        public string Email { get; set; }
+        public string Subject { get; set; }
+        public string Header { get; set; }
+        public List<string> Content { get; set; }
+    }
+
+    public class EmailSender : IEmailSenderBlank
     {
         private readonly EmailSettings _emailSettings;
-        private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;       
+        private readonly ConfigHandler configHandler;
         private readonly UserHandler userHandler;
 
-        public EmailSender(IOptions<EmailSettings> emailSettings, IWebHostEnvironment hostingEnvironment, UserHandler userHandler)
+        public EmailSender(IOptions<EmailSettings> emailSettings, IWebHostEnvironment hostingEnvironment, ConfigHandler configHandler, UserHandler userHandler)
         {
             _emailSettings = emailSettings.Value;
             _hostingEnvironment = hostingEnvironment;
+            this.configHandler = configHandler;
             this.userHandler = userHandler;
         }
-      
-        public Task SendEmailAsync(string email, string subject, string message)
-        {
 
-            Execute(email, subject, message).Wait();
-            return Task.FromResult(0);
-        }
-     
-        public async Task<bool> SendEmailBlankAsync(BlankEmail blankEmail)
+        public async Task SendEmailAsync(string email, string subject, string message, bool mustconfirm = true)
         {
+            await ExecuteAsync(email, subject, message, mustconfirm);            
+        }
+
+        public async Task<bool> SendEmailBlankAsync(BlankEmail blankEmail, bool mustconfirm = true)
+        {
+            string pathImgMenu = $"{_emailSettings.Host}/lib/mtd-ordermaker/images/logo-mtd.png";
+            var imgMenu = await configHandler.GetImageFromConfig(configHandler.CodeImgMenu);
+            if (imgMenu != string.Empty) { pathImgMenu = $"{_emailSettings.Host}/images/logo.png"; }
 
             try
             {
@@ -71,12 +68,13 @@ namespace Mtd.OrderMaker.Server.Services
                 var htmlArray = File.ReadAllText(file);
                 string htmlText = htmlArray.ToString();
 
+                htmlText = htmlText.Replace("{logo}", pathImgMenu);
                 htmlText = htmlText.Replace("{title}", _emailSettings.Title);
                 htmlText = htmlText.Replace("{header}", blankEmail.Header);
                 htmlText = htmlText.Replace("{content}", message);
                 htmlText = htmlText.Replace("{footer}", _emailSettings.Footer);
 
-                await SendEmailAsync(blankEmail.Email, blankEmail.Subject, htmlText);
+                await ExecuteAsync(blankEmail.Email, blankEmail.Subject, htmlText, mustconfirm);
             }
             catch
             {
@@ -87,11 +85,11 @@ namespace Mtd.OrderMaker.Server.Services
             return true;
         }
 
-        private async Task Execute(string email, string subject, string message)
+        private async Task ExecuteAsync(string email, string subject, string message , bool mustconfirm = true)
         {
-            WebAppUser user = await userHandler.FindByEmailAsync(email);
-            if (user == null || !user.EmailConfirmed) { return; }
-
+            WebAppUser user = await userHandler.FindByEmailAsync(email) ?? new WebAppUser();       
+            if (mustconfirm && user.EmailConfirmed == false) { return; }
+                       
             try
             {
                 MailAddress toAddress = new MailAddress(email);
@@ -115,9 +113,8 @@ namespace Mtd.OrderMaker.Server.Services
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error EMail sender service \n {ex.Message}");
+                throw new Exception($"Error Email sender service \n {ex.Message}");
             }
         }
     }
 }
-
