@@ -46,6 +46,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Mtd.OrderMaker.Server.Extensions;
 using Mtd.OrderMaker.Service;
+using System.Reflection;
 
 namespace Mtd.OrderMaker.Server
 {
@@ -105,7 +106,6 @@ namespace Mtd.OrderMaker.Server
                 options.AddPolicy("RoleGuest", policy => policy.RequireRole("Guest", "User", "Admin"));
             });
 
-            services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddMvc()
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization()
@@ -122,9 +122,11 @@ namespace Mtd.OrderMaker.Server
                         options.Conventions.AuthorizeAreaFolder("Config", "/", "RoleAdmin");
                     });
 
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+
             services.AddSingleton<PolicyCache>();
             services.AddScoped<UserHandler>();
-            services.AddTransient<ConfigHandler>();    
+            services.AddTransient<ConfigHandler>();
             services.AddTransient<IEmailSenderBlank, EmailSender>();
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.Configure<ConfigSettings>(Configuration.GetSection("ConfigSettings"));
@@ -132,12 +134,12 @@ namespace Mtd.OrderMaker.Server
 
             services.AddMvc(options => options.EnableEndpointRouting = false);
 
-
             if (!CurrentEnvironment.IsDevelopment())
             {
-                services.AddHostedService<HostedService>();
-                services.AddScoped<IScopedService, ReminderApproval>();
-                services.AddScoped<IScopedService, ReminderTask>();
+                services.AddHostedService<HostedAssigmentExecutor>();
+                services.AddHostedService<HostedApprovalExecutor>();
+                services.AddScoped<HostedApprovalService>();
+                services.AddScoped<HostedAssigmentService>();
             }
 
 #if DEBUG
@@ -147,6 +149,22 @@ namespace Mtd.OrderMaker.Server
                 builder.AddRazorRuntimeCompilation();
             }
 #endif
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[]
+                {
+                                new CultureInfo("en-US"),
+                                new CultureInfo("ru-RU"),
+                };
+
+                options.DefaultRequestCulture = new RequestCulture(culture: "en-US", uiCulture: "en-US");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+                options.RequestCultureProviders = new[] { new CookieRequestCultureProvider() };
+
+            });
+
         }
 
 
@@ -179,19 +197,12 @@ namespace Mtd.OrderMaker.Server
                 app.UseHsts();
             }
 
+
+            var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
             var cultureInfo = new CultureInfo(config.Value.CultureInfo);
-            var localizationOptions = new RequestLocalizationOptions()
-            {
-                SupportedCultures = new List<CultureInfo> { cultureInfo },
-                SupportedUICultures = new List<CultureInfo> { cultureInfo },
-                DefaultRequestCulture = new RequestCulture(cultureInfo),
+            locOptions.Value.DefaultRequestCulture = new RequestCulture(cultureInfo);
+            app.UseRequestLocalization(locOptions.Value);
 
-                FallBackToParentCultures = false,
-                FallBackToParentUICultures = false,
-                RequestCultureProviders = null
-            };
-
-            app.UseRequestLocalization(localizationOptions);
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

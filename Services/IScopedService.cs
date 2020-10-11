@@ -8,6 +8,6 @@ namespace Mtd.OrderMaker.Server.Services
 {
     internal interface IScopedService
     {
-        Task RunService(CancellationToken stoppingToken);
+        Task RunServiceAsync(CancellationToken stoppingToken);
     }
 }

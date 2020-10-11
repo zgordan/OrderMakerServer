@@ -15,9 +15,9 @@ using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Services
 {
-    internal class ReminderTask : IScopedService
+    internal class HostedAssigmentService : IScopedService
     {
-        private int executionCount = 0;
+   
         private readonly ILogger _logger;
         private readonly OrderMakerContext context;
         private readonly UserHandler userHandler;
@@ -25,7 +25,7 @@ namespace Mtd.OrderMaker.Server.Services
         private readonly EmailSettings emailSettings;
         private readonly IEmailSenderBlank emailSender;
 
-        public ReminderTask(ILogger<ReminderTask> logger, OrderMakerContext context, UserHandler userHandler,
+        public HostedAssigmentService(ILogger<HostedAssigmentService> logger, OrderMakerContext context, UserHandler userHandler,
                 IStringLocalizer<SharedResource> localizer, IOptions<EmailSettings> emailSettings, IEmailSenderBlank emailSender)
         {
             _logger = logger;
@@ -36,11 +36,11 @@ namespace Mtd.OrderMaker.Server.Services
             this.emailSender = emailSender;
         }
 
-        public async Task RunService(CancellationToken stoppingToken)
+        public async Task RunServiceAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                executionCount++;
+  
                 DateTime now = DateTime.Now;
                 DateTime start = new DateTime(now.Year, now.Month, now.Day, 8, 0, 0);
                 DateTime end = new DateTime(now.Year, now.Month, now.Day, 18, 0, 0);

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
@@ -11,6 +13,7 @@ using Mtd.OrderMaker.Server.EntityHandler.Approval;
 using Mtd.OrderMaker.Server.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading;
@@ -19,17 +22,17 @@ using System.Transactions;
 
 namespace Mtd.OrderMaker.Server.Services
 {
-    internal class ReminderApproval : IScopedService
+    internal class HostedApprovalService : IScopedService
     {
-        private int executionCount = 0;
+
         private readonly ILogger _logger;
         private readonly OrderMakerContext context;
-        private readonly UserHandler userHandler;
+        private readonly UserHandler userHandler; 
         private readonly IStringLocalizer<SharedResource> localizer;
         private readonly EmailSettings emailSettings;
         private readonly IEmailSenderBlank emailSender;
 
-        public ReminderApproval(ILogger<ReminderApproval> logger, OrderMakerContext context, UserHandler userHandler,
+        public HostedApprovalService(ILogger<HostedApprovalService> logger, OrderMakerContext context, UserHandler userHandler,
                 IStringLocalizer<SharedResource> localizer, IOptions<EmailSettings> emailSettings, IEmailSenderBlank emailSender)
         {
             _logger = logger;
@@ -40,17 +43,15 @@ namespace Mtd.OrderMaker.Server.Services
             this.emailSender = emailSender;
         }
 
-        public async Task RunService(CancellationToken stoppingToken)
+        public async Task RunServiceAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
-            {
-                executionCount++;
+            {    
                 DateTime now = DateTime.Now;
                 DateTime start = new DateTime(now.Year, now.Month, now.Day, 8, 0, 0);
                 DateTime end = new DateTime(now.Year, now.Month, now.Day, 18, 0, 0);
-                
 
-                if (now > start && now < end && now.DayOfWeek != DayOfWeek.Saturday && now.DayOfWeek != DayOfWeek.Sunday)
+                if (now > start && now < end && now.DayOfWeek != DayOfWeek.Saturday && now.DayOfWeek != DayOfWeek.Sunday)         
                 {
                     Dictionary<string, List<MtdStore>> keyValues = await ApprovalHandler.GetHoveringApprovalAsync(context, userHandler);
 
@@ -58,7 +59,7 @@ namespace Mtd.OrderMaker.Server.Services
                     {
                         WebAppUser user = await userHandler.FindByIdAsync(entry.Key);
                         string email = user.Email;
-                        List<string> links = new List<string>();
+                        List<string> links = new List<string>();                        
                         foreach (MtdStore store in entry.Value)
                         {
                             string host = emailSettings.Host;
@@ -83,7 +84,6 @@ namespace Mtd.OrderMaker.Server.Services
                             blankEmail.Content.Add(link);
                         });
 
-                        
 
                         bool isOk = await emailSender.SendEmailBlankAsync(blankEmail);
                         if (isOk)
@@ -110,8 +110,6 @@ namespace Mtd.OrderMaker.Server.Services
                         await Task.Delay(10000, stoppingToken);
                     }
                 }
-
-                
 
                 await Task.Delay(7200000, stoppingToken);
             }

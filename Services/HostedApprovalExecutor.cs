@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Mtd.OrderMaker.Server;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Services;
 using System;
@@ -13,11 +17,11 @@ using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Service
 {
-    public class HostedService : BackgroundService
+    public class HostedApprovalExecutor : BackgroundService
     {
-        private readonly ILogger<HostedService> _logger;
+        private readonly ILogger<HostedApprovalExecutor> _logger;
 
-        public HostedService(IServiceProvider services, ILogger<HostedService> logger)
+        public HostedApprovalExecutor(IServiceProvider services, ILogger<HostedApprovalExecutor> logger)
         {
             Services = services;
             _logger = logger;
@@ -27,30 +31,32 @@ namespace Mtd.OrderMaker.Service
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation( "Hosted Service running.");
-
+            _logger.LogInformation("The Hosted Approval Service has started.");
             await DoWork(stoppingToken);
         }
 
         private async Task DoWork(CancellationToken stoppingToken)
-        {
-            _logger.LogInformation("Hosted Service is working.");
-
+        {            
             using (var scope = Services.CreateScope())
             {
                 var scopedService =
                     scope.ServiceProvider
-                        .GetRequiredService<IScopedService>();
+                        .GetRequiredService<HostedApprovalService>();
                 
-                await scopedService.RunService(stoppingToken);
+                await scopedService.RunServiceAsync(stoppingToken);
             }
+
+            _logger.LogInformation("The Hosted Approval Service is working.");
         }
 
         public override async Task StopAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("Hosted Service is stopping.");
+            _logger.LogInformation("The Hosted Approval Service is stopping.");
 
             await Task.CompletedTask;
         }
+
+
+
     }
 }
