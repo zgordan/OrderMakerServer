@@ -90,6 +90,9 @@ namespace Mtd.OrderMaker.Server.Controllers.Exchange.Export
             StackHandler handlerStack = new StackHandler(context);
 
             List<string> storeIds = outFlow.MtdStores.Select(x => x.Id).ToList();
+            IList<MtdStoreOwner> owners = await context.MtdStoreOwner.Where(x => storeIds.Contains(x.Id)).ToListAsync();
+            IList<string> userIds = owners.Select(x => x.UserId).ToList();
+            IList<WebAppUser> appUsers = await userHandler.Users.Where(x => userIds.Contains(x.Id)).ToListAsync();
 
             IList<MtdStoreStack> mtdStoreStack = await handlerStack.GetStackAsync(storeIds, incomer.FieldIds);
 
@@ -99,9 +102,12 @@ namespace Mtd.OrderMaker.Server.Controllers.Exchange.Export
             {
                 MtdStore mtdStore = outFlow.MtdStores.Where(x => x.Id == storeId).FirstOrDefault();
                 if (mtdStore == null) { continue;  }
+                string userId = owners.Where(x => x.Id == storeId).Select(x => x.UserId).FirstOrDefault();
+                WebAppUser appUser = appUsers.Where(x => x.Id == userId).FirstOrDefault(); 
 
                 string number = mtdStore.Sequence.ToString("D9");
                 string date = mtdStore.Timecr.ToShortDateString();
+                
                 StoreListFields store = new StoreListFields()
                 {
                     StoreId = storeId,
@@ -111,6 +117,8 @@ namespace Mtd.OrderMaker.Server.Controllers.Exchange.Export
                          new StoreListField{ Id = "store-name", Name = localizer["Name"], Value = $"{localizer["No."]} {number} {localizer["at"]} {date}" },
                          new StoreListField{ Id = "store-number", Name = localizer["Number"], Value = number},
                          new StoreListField{ Id = "store-date", Name = localizer["Date"], Value = date},
+                         new StoreListField{ Id = "store-user", Name = localizer["Owner"], Value = appUser.Title},
+                         new StoreListField{ Id = "store-user-group", Name = localizer["Group"], Value = appUser.TitleGroup}
                     }
                 };
 
