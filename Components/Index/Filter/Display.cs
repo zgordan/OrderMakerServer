@@ -77,7 +77,7 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
                     .ToListAsync();
 
                 foreach (var field in mtdFilterFields)
-                {                    
+                {
                     DisplayData displayData = new DisplayData
                     {
                         Id = field.Id,
@@ -86,6 +86,7 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
                         Type = "-field"
                     };
 
+
                     if (field.MtdFormPartFieldNavigation.MtdSysType != 11)
                     {
                         displayData.Value = field.Value;
@@ -93,6 +94,13 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
                         {
                             displayData.Value = field.Value.Equals("1") ? localizer["ON"] : localizer["OFF"];
                         }
+
+                        if (field.MtdFormPartFieldNavigation.MtdSysType == 5)
+                        {
+                            displayData.Header = field.MtdFormPartFieldNavigation.Name;
+                            displayData.Value = field.Value.Replace("***","-");
+                        }
+
                     }
                     else
                     {
@@ -143,7 +151,7 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
                     displayDatas.Add(displayDate);
                 }
 
-                IList<MtdFilterScript> scripts = await _userHandler.GetFilterScriptsAsync(user, formId, 1);               
+                IList<MtdFilterScript> scripts = await _userHandler.GetFilterScriptsAsync(user, formId, 1);
                 if (scripts != null && scripts.Count > 0)
                 {
                     foreach (var fs in scripts)
@@ -164,7 +172,7 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
                 MtdFilterRelated mtdFilterRelated = await _context.MtdFilterRelated.FindAsync(filter.Id);
                 if (mtdFilterRelated != null)
                 {
-                    string formName = await _context.MtdForm.Where(x=>x.Id==mtdFilterRelated.FormId).Select(x=>x.Name).FirstOrDefaultAsync() ?? "Not Found";
+                    string formName = await _context.MtdForm.Where(x => x.Id == mtdFilterRelated.FormId).Select(x => x.Name).FirstOrDefaultAsync() ?? "Not Found";
                     DisplayData displayDate = new DisplayData()
                     {
                         Id = filter.Id,

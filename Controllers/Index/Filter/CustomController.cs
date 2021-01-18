@@ -79,12 +79,15 @@ namespace Mtd.OrderMaker.Server.Controllers.Index.Filter
             string fieldType = form["field-type"];
             string fieldAction = form["field-action"];
             string fieldValue = form["field-value"];
+            string fieldValueExt = form["field-value-ext"];
             string dateFormat = form["date-format"];
 
             MtdFilter filter = await userHandler.GetFilterAsync(User, formId);
 
             bool isOk = int.TryParse (fieldAction, out int term);
             if (!isOk) { return BadRequest(_localizer["Error: Bad request."]); }
+
+            if (fieldType == "5") { fieldValue = $"{fieldValue}***{fieldValueExt}"; }
 
             MtdFilterField field = new MtdFilterField { MtdFilter = filter.Id, MtdFormPartField = fieldId, MtdTerm = term, Value = fieldValue, ValueExtra = fieldType == "5" ? dateFormat : null };
             try

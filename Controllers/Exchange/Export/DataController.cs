@@ -43,7 +43,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Exchange.Export
 
         [HttpGet("export")]
         [Produces("application/json")]
-        public async Task<IActionResult> OnPostExportAsyns(string formId, string usr, string pwd, int page = 1, string dateStart = null)
+        public async Task<IActionResult> OnPostExportAsyns(string formId, string usr, string pwd, int page = 1, string dateStart = "201901010000")
         {
 
             /*check access*/
@@ -70,21 +70,16 @@ namespace Mtd.OrderMaker.Server.Controllers.Exchange.Export
                 Page = page,
                 PageSize = 250,
                 FieldForColumn = fields,
-                WaitList = 0,
+                WaitList = 0,                
             };
+  
+            isOk = DateTime.TryParseExact(dateStart, "yyyyMMddHHmm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTime);
+            if (!isOk) { return BadRequest("Invalid date format."); }
 
-            IList<string> querystoreIds = null;
-            if (dateStart != null)
-            {
-                isOk = DateTime.TryParseExact(dateStart, "yyyyMMddHHmm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTime);
-                if (!isOk) { return BadRequest("Invalid date format."); }
+            IList<string> ids = await context.MtdLogDocument.Where(x => x.TimeCh > dateTime).GroupBy(x => x.MtdStore).Select(x => x.Key).ToListAsync();
+            IList<string> querystoreIds = await context.MtdStore.Where(x => ids.Contains(x.Id) && x.MtdForm == formId).Select(x => x.Id).ToListAsync();
 
-                IList<string> ids = await context.MtdLogDocument.Where(x => x.TimeCh > dateTime).GroupBy(x => x.MtdStore).Select(x => x.Key).ToListAsync();
-                querystoreIds = await context.MtdStore.Where(x => ids.Contains(x.Id) && x.MtdForm == formId).Select(x=>x.Id).ToListAsync();
-                
-                if (querystoreIds.Count == 0) { querystoreIds = null; }
-
-            }
+            if (querystoreIds.Count == 0) { querystoreIds.Add(Guid.NewGuid().ToString()); }
 
             OutFlow outFlow = await filterHandler.GetStackFlowAsync(incomer, typeQuery, querystoreIds);
             StackHandler handlerStack = new StackHandler(context);
@@ -101,13 +96,13 @@ namespace Mtd.OrderMaker.Server.Controllers.Exchange.Export
             foreach (string storeId in storeIds)
             {
                 MtdStore mtdStore = outFlow.MtdStores.Where(x => x.Id == storeId).FirstOrDefault();
-                if (mtdStore == null) { continue;  }
+                if (mtdStore == null) { continue; }
                 string userId = owners.Where(x => x.Id == storeId).Select(x => x.UserId).FirstOrDefault();
-                WebAppUser appUser = appUsers.Where(x => x.Id == userId).FirstOrDefault(); 
+                WebAppUser appUser = appUsers.Where(x => x.Id == userId).FirstOrDefault();
 
                 string number = mtdStore.Sequence.ToString("D9");
                 string date = mtdStore.Timecr.ToShortDateString();
-                
+
                 StoreListFields store = new StoreListFields()
                 {
                     StoreId = storeId,

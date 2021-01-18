@@ -162,42 +162,43 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
             return storeIds;
         }
 
-        public async Task<IList<string>> FindStoreIdsForDate(IList<string> fieldIds, DateTime value, int term, IList<string> store = null)
+        public async Task<IList<string>> FindStoreIdsForDate(IList<string> fieldIds, DateTime dateStart, DateTime dateFinish, IList<string> store = null)
         {
             var query = _context.MtdStoreStack.Where(x => fieldIds.Contains(x.MtdFormPartField));
             if (store != null) query = query.Where(x => store.Contains(x.MtdStore));
             IList<long> stackIds = await query.Select(x => x.Id).ToListAsync();
-            IList<long> resultIds;
 
-            switch (term)
-            {
-                case 1:
-                    {
-                        resultIds = await _context.MtdStoreStackDate.Where(x => stackIds.Contains(x.Id) && x.Register.Date.Equals(value.Date)).Select(x => x.Id).ToListAsync();
-                        break;
-                    }
-                case 2:
-                    {
-                        resultIds = await _context.MtdStoreStackDate.Where(x => stackIds.Contains(x.Id) && x.Register.Date < value.Date).Select(x => x.Id).ToListAsync();
-                        break;
-                    }
-                case 3:
-                    {
-                        resultIds = await _context.MtdStoreStackDate.Where(x => stackIds.Contains(x.Id) && x.Register.Date > value.Date).Select(x => x.Id).ToListAsync();
-                        break;
-                    }
-                case 4:
-                    {
-                        resultIds = await _context.MtdStoreStackDate.Where(x => stackIds.Contains(x.Id) && x.Register.Date.ToString().Contains(value.Date.ToString())).Select(x => x.Id).ToListAsync();
-                        break;
-                    }
-                default:
-                    {
-                        resultIds = await _context.MtdStoreStackDate.Where(x => stackIds.Contains(x.Id) && x.Register.Date != value.Date).Select(x => x.Id).ToListAsync();
-                        break;
-                    }
+            IList<long> resultIds = await _context.MtdStoreStackDate.Where(x => stackIds.Contains(x.Id) && x.Register.Date>=dateStart && x.Register.Date<=dateFinish).Select(x => x.Id).ToListAsync(); ;
 
-            };
+            //switch (term)
+            //{
+            //    case 1:
+            //        {
+            //            resultIds = await _context.MtdStoreStackDate.Where(x => stackIds.Contains(x.Id) && x.Register.Date.Equals(dateStart.Date)).Select(x => x.Id).ToListAsync();
+            //            break;
+            //        }
+            //    case 2:
+            //        {
+            //            resultIds = await _context.MtdStoreStackDate.Where(x => stackIds.Contains(x.Id) && x.Register.Date < dateStart.Date).Select(x => x.Id).ToListAsync();
+            //            break;
+            //        }
+            //    case 3:
+            //        {
+            //            resultIds = await _context.MtdStoreStackDate.Where(x => stackIds.Contains(x.Id) && x.Register.Date > dateStart.Date).Select(x => x.Id).ToListAsync();
+            //            break;
+            //        }
+            //    case 4:
+            //        {
+            //            resultIds = await _context.MtdStoreStackDate.Where(x => stackIds.Contains(x.Id) && x.Register.Date.ToString().Contains(dateStart.Date.ToString())).Select(x => x.Id).ToListAsync();
+            //            break;
+            //        }
+            //    default:
+            //        {
+            //            resultIds = await _context.MtdStoreStackDate.Where(x => stackIds.Contains(x.Id) && x.Register.Date != dateStart.Date).Select(x => x.Id).ToListAsync();
+            //            break;
+            //        }
+
+            //};
 
             IList<string> storeIds = await _context.MtdStoreStack.Where(x => resultIds.Contains(x.Id)).Select(x => x.MtdStore).ToListAsync();
 

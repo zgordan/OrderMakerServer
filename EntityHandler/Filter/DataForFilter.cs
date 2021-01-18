@@ -129,10 +129,13 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
                         case 5:
                             {
                                 //bool ok = DateTime.TryParse(item.Value, out DateTime dateTime);
-                                bool isOk = DateTime.TryParseExact(item.Value, item.ValueExtra, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTime);
-                                if (isOk)
+                                string[] dates = item.Value.Split("***").ToArray();
+                                bool isOk = DateTime.TryParseExact(dates[0], item.ValueExtra, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateStart);
+                                bool isOk2 = DateTime.TryParseExact(dates[1], item.ValueExtra, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateFinish);
+
+                                if (isOk && isOk2)
                                 {
-                                    storeIds = await FindStoreIdsForDate(field, dateTime.Date, item.MtdTerm, storeIds);
+                                    storeIds = await FindStoreIdsForDate(field, dateStart.Date, dateFinish, storeIds);
                                 }
                                 break;
                             }

@@ -63,7 +63,6 @@ namespace Mtd.OrderMaker.Server.EntityHandler
             result.AddRange(stores.Select(x => x.Id));
             goto findChild;
 
-            return result;
         }
 
 

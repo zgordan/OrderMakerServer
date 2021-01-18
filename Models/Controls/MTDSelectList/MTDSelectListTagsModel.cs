@@ -12,7 +12,6 @@ namespace Mtd.OrderMaker.Server.Models.Controls.MTDSelectList
         public string IdHelper { get; set; }
         public string IdLabel { get; set; }
         public string IdSelectedText { get; set; }
-        public bool Disabled { get; set; }
 
         public MTDSelectListTagsModel(MTDSelectListTags tags)
         {

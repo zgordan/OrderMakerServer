@@ -36,6 +36,7 @@ class CustomForm {
         this.resultType = document.getElementById("index-filter-custom-result-type");
         this.resultAction = document.getElementById("index-filter-custom-result-action");
         this.resultValue = document.getElementById("index-filter-custom-result-value");
+        this.resultValueExt = document.getElementById("index-filter-custom-result-value-ext");
 
         this.selectAction = new MTDSelectList("index-filter-custom-action");
         this.selectValue = new MTDSelectList("index-filter-custom-list-value");
@@ -44,7 +45,8 @@ class CustomForm {
         this.textValue = new MTDTextField("index-filter-custom-text-value");
         this.intValue = new MTDTextField("index-filter-custom-int-value");
         this.boolValue = new MTDSelectList("index-filter-custom-bool-value");
-        this.dateValue = new MTDTextField("index-filter-custom-date-value");
+        this.dateStartValue = new MTDTextField("index-filter-custom-date-start-value");
+        this.dateFinishValue = new MTDTextField("index-filter-custom-date-finish-value");
     }
 }
 
@@ -187,7 +189,7 @@ const Custom = () => {
 
     const dtp = new LocaleDTP();
 
-    $(cf.dateValue.input).datetimepicker({
+    $(cf.dateStartValue.input).datetimepicker({
         timepicker: false,
         locale: dtp.locale,
         mask: dtp.mask,
@@ -195,10 +197,21 @@ const Custom = () => {
         defaultDate: new Date(),
         //value: new Date(),
         onSelectDate: function ($dtp, current, input) {
-            cf.resultValue.value = cf.dateValue.textField.value;
+            cf.resultValue.value = cf.dateStartValue.textField.value;
         },
     });
 
+    $(cf.dateFinishValue.input).datetimepicker({
+        timepicker: false,
+        locale: dtp.locale,
+        mask: dtp.mask,
+        format: dtp.format,
+        defaultDate: new Date(),
+        //value: new Date(),
+        onSelectDate: function ($dtp, current, input) {
+            cf.resultValueExt.value = cf.dateFinishValue.textField.value;
+        },
+    });
 
     const li = cf.selectFields.div.querySelector(`[data-value='${cf.selectFields.selector.value}']`);
     const fieldShow = GetCustomPartForType(li);
@@ -217,7 +230,8 @@ const Custom = () => {
         cf.textValue.textField.value = "";
         cf.intValue.textField.value = "";
         cf.boolValue.selector.value = "1";
-        cf.dateValue.textField.value = "";
+        cf.dateStartValue.textField.value = "";
+        cf.dateFinishValue.textField.value = "";
 
         cf.resultValue.value = "";
 
@@ -227,7 +241,7 @@ const Custom = () => {
         const separ = document.getElementById("custom-separ");
         separ.classList.remove("mtd-main-display-none");
 
-        if (dataType === "12" || dataType === '11') {
+        if (dataType === "12" || dataType === '11' || dataType === "5") {
             cf.selectAction.div.classList.add("mtd-main-display-none");
             separ.classList.add("mtd-main-display-none");
         }
