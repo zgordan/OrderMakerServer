@@ -127,6 +127,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
                                 break;
                             }
                         case 5:
+                        case 6:
                             {
                                 //bool ok = DateTime.TryParse(item.Value, out DateTime dateTime);
                                 string[] dates = item.Value.Split("***").ToArray();
@@ -135,16 +136,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
 
                                 if (isOk && isOk2)
                                 {
-                                    storeIds = await FindStoreIdsForDate(field, dateStart.Date, dateFinish, storeIds);
-                                }
-                                break;
-                            }
-                        case 6:
-                            {
-                                bool ok = DateTime.TryParse(item.Value, out DateTime dateTime);                                
-                                if (ok)
-                                {
-                                    storeIds = await FindStoreIdsForDateTime(field, dateTime, item.MtdTerm, storeIds);
+                                    storeIds = await FindStoreIdsForDate(field, dateStart.Date, dateFinish.Date, storeIds);
                                 }
                                 break;
                             }

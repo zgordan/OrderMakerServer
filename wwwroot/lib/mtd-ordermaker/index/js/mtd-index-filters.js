@@ -234,14 +234,15 @@ const Custom = () => {
         cf.dateFinishValue.textField.value = "";
 
         cf.resultValue.value = "";
+        cf.resultValueExt.value = "";
 
         if (dataType === '11') { RequestFieldList(cf.selectFields.selector.value, cf.selectValue); }
 
         cf.selectAction.div.classList.remove("mtd-main-display-none");
         const separ = document.getElementById("custom-separ");
         separ.classList.remove("mtd-main-display-none");
-
-        if (dataType === "12" || dataType === '11' || dataType === "5") {
+        
+        if (dataType === "12" || dataType === '11' || dataType === "5" || dataType === "6") {
             cf.selectAction.div.classList.add("mtd-main-display-none");
             separ.classList.add("mtd-main-display-none");
         }

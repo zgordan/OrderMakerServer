@@ -87,9 +87,9 @@ namespace Mtd.OrderMaker.Server.Controllers.Index.Filter
             bool isOk = int.TryParse (fieldAction, out int term);
             if (!isOk) { return BadRequest(_localizer["Error: Bad request."]); }
 
-            if (fieldType == "5") { fieldValue = $"{fieldValue}***{fieldValueExt}"; }
+            if (fieldType == "5" || fieldType == "6") { fieldValue = $"{fieldValue}***{fieldValueExt}"; } else { dateFormat = null; }
 
-            MtdFilterField field = new MtdFilterField { MtdFilter = filter.Id, MtdFormPartField = fieldId, MtdTerm = term, Value = fieldValue, ValueExtra = fieldType == "5" ? dateFormat : null };
+            MtdFilterField field = new MtdFilterField { MtdFilter = filter.Id, MtdFormPartField = fieldId, MtdTerm = term, Value = fieldValue, ValueExtra = dateFormat };
             try
             {
                 await context.MtdFilterField.AddAsync(field);

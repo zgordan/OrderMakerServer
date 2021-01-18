@@ -95,7 +95,7 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
                             displayData.Value = field.Value.Equals("1") ? localizer["ON"] : localizer["OFF"];
                         }
 
-                        if (field.MtdFormPartFieldNavigation.MtdSysType == 5)
+                        if (field.MtdFormPartFieldNavigation.MtdSysType == 5 || field.MtdFormPartFieldNavigation.MtdSysType == 6)
                         {
                             displayData.Header = field.MtdFormPartFieldNavigation.Name;
                             displayData.Value = field.Value.Replace("***","-");
