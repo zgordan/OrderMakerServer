@@ -38,7 +38,7 @@ namespace Mtd.OrderMaker.Server.Areas.Support.Pages
         
         public async Task<IActionResult> OnPostAsync()
         {
-            string message = Request.Form["text-message"];
+            string message = Request.Form["message-text"];
             WebAppUser user = await userManager.GetUserAsync(Request.HttpContext.User);
             BlankEmail blankEmail = new BlankEmail
             {

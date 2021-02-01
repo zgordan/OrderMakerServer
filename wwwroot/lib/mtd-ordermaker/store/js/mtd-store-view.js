@@ -100,14 +100,18 @@ if (printButton) {
         printButton.setAttribute("href", url);
     });
 
-    document.getElementById("print-approval").addEventListener("change", (e) => {
-        let url = printButton.getAttribute("href");
-        let re;
-        if (e.target.checked) {
-            re = "printApproval=false"; url = url.replace(re, "printApproval=true");
-        } else { re = "printApproval=true"; url = url.replace(re, "printApproval=false"); }
+    const printApproval = document.getElementById("print-approval");
+    if (printApproval) {
 
-        printButton.setAttribute("href", url);
-    });
+        printApproval.addEventListener("change", (e) => {
+            let url = printButton.getAttribute("href");
+            let re;
+            if (e.target.checked) {
+                re = "printApproval=false"; url = url.replace(re, "printApproval=true");
+            } else { re = "printApproval=true"; url = url.replace(re, "printApproval=false"); }
+
+            printButton.setAttribute("href", url);
+        });
+    }
 }
 

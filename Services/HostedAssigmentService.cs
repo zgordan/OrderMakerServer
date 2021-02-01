@@ -50,7 +50,7 @@ namespace Mtd.OrderMaker.Server.Services
                 {
 
                     List<MtdStoreTask> storeTasks = await context.MtdStoreTasks
-                        .Where(x => x.Deadline < now && x.LastEventTime < now).OrderBy(x => x.Deadline).ToListAsync() ?? new List<MtdStoreTask>();
+                        .Where(x => x.Deadline < now && x.LastEventTime < now && x.Complete == 0).OrderBy(x => x.Deadline).ToListAsync() ?? new List<MtdStoreTask>();
                     List<string> userIds = storeTasks.GroupBy(x=>x.Executor).Select(x => x.Key).ToList() ?? new List<string>();
 
 
