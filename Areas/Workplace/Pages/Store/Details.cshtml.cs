@@ -137,13 +137,13 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
 
             ApprovalHandler approvalHandler = new ApprovalHandler(_context, MtdStore.Id);
 
+            await SetApprovalInfo(id, user, approvalHandler);
+
             await SetUsersTask();
 
             await SetUsersList(user);
 
-            await SetUsersRequest(user, approvalHandler);
-
-            await SetApprovalInfo(id, user, approvalHandler);
+            await SetUsersRequest(user, approvalHandler);            
 
             await SetResolutions(approvalHandler);
 
