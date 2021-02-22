@@ -397,7 +397,7 @@
     <value>Перезапустить согласование</value>
   </data>
   <data name="Set owner" xml:space="preserve">
-    <value>Назначить ответственного</value>
+    <value>Назначить владельца</value>
   </data>
   <data name="There are no documents requiring approval." xml:space="preserve">
     <value>Нет документов, требующих согласования.</value>
@@ -430,7 +430,7 @@
     <value>Изменено</value>
   </data>
   <data name="Owner" xml:space="preserve">
-    <value>Ответственный</value>
+    <value>Владелец</value>
   </data>
   <data name="Approve Document" xml:space="preserve">
     <value>Согласовать</value>

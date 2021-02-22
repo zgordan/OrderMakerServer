@@ -115,6 +115,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
 
                 string relatedCreate = form[$"{mtdForm.Id}-related-create"];
                 string relatedEdit = form[$"{mtdForm.Id}-related-edit"];
+                string responsibility = form[$"{mtdForm.Id}-responsibility"];
 
                 MtdPolicyForms pf = mtdPolicyForms.Where(x => x.MtdForm == mtdForm.Id).FirstOrDefault();
                 bool newPf = false;
@@ -132,6 +133,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 pf.ExportToExcel = limit.ExportExcel ? GetSbyte(exportToExcel) : (sbyte)0;
                 pf.RelatedCreate = GetSbyte(relatedCreate);
                 pf.RelatedEdit = GetSbyte(relatedEdit);
+                pf.Responsibility = GetSbyte(responsibility);
 
                 pf.ViewAll = GetSbyte(formView);
                 pf.ViewGroup = GetSbyte(formViewGroup);
@@ -226,6 +228,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 pf.ExportToExcel = limit.ExportExcel ? (sbyte)  1 : (sbyte) 0;
                 pf.RelatedCreate = 1;
                 pf.RelatedEdit = 1;
+                pf.Responsibility = 1;
 
                 pf.ViewAll = 1;
                 pf.ViewGroup = 0;
@@ -314,6 +317,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 pf.ExportToExcel = 0;
                 pf.RelatedCreate = 0;
                 pf.RelatedEdit = 0;
+                pf.Responsibility = 0;
 
                 pf.ViewAll = 0;
                 pf.ViewGroup = 0;

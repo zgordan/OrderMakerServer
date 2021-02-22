@@ -186,15 +186,11 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                     await _context.SaveChangesAsync();
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 if (!MtdStoreExists(Id))
                 {
                     return NotFound();
-                }
-                else
-                {
-                    throw ex;
                 }
             }
 

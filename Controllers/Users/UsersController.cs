@@ -69,6 +69,18 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             this.identity = identity;
         }
 
+        [HttpGet("admin/user/{userId}")]
+        public async Task<IActionResult> OnPostGetUserAsync(string userId)
+        {
+            WebAppUser user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return BadRequest(_localizer["ERROR! User not found."]);
+            }
+
+            return new JsonResult(new { user.Id, titleName = user.Title, titleGroup = user.TitleGroup, fullName = user.GetFullName() });
+        }
 
         [HttpPost("admin/delete")]
         [ValidateAntiForgeryToken]
@@ -134,6 +146,8 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             string cpqEditGroup = form["cpq-edit-group"];
             string cpqPrintGrossPrice = form["cpq-print-gross-price"];
 
+            string groupContainer = form["groupContainer"];
+
             WebAppRole roleUser = await _roleManager.FindByIdAsync(roleId);
             WebAppRole roleCpq = await _roleManager.FindByIdAsync(roleCpqId);
 
@@ -182,17 +196,24 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             Claim claim = new Claim("policy", policyId);
             await _userManager.AddClaimAsync(user, claim);
 
-            IList<MtdGroup> groups = await _context.MtdGroup.ToListAsync();
-            foreach (var group in groups)
+            //IList<MtdGroup> groups = await _context.MtdGroup.ToListAsync();
+            //foreach (var group in groups)
+            //{
+            //    string value = form[$"{group.Id}-group"];
+            //    if (value == "true")
+            //    {
+            //        Claim claimGroup = new Claim("group", group.Id);
+            //        await _userManager.AddClaimAsync(user, claimGroup);
+            //    }
+            //}
+
+            List<string> groupIds = groupContainer.Split("&").Where(x => x != "").ToList();
+            foreach (var groupId in groupIds)
             {
-                string value = form[$"{group.Id}-group"];
-                if (value == "true")
-                {
-                    Claim claimGroup = new Claim("group", group.Id);
-                    await _userManager.AddClaimAsync(user, claimGroup);
-                }
+                Claim claimGroup = new Claim("group", groupId);
+                await _userManager.AddClaimAsync(user, claimGroup);
             }
-           
+
             string cpqPolicy = "view-own";
             if (cpqViewAll == "true") { cpqPolicy = "view-all"; }
             if (cpqViewGroup == "true") { cpqPolicy = "view-group"; }

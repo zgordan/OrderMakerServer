@@ -39,6 +39,14 @@ using Mtd.OrderMaker.Server.Extensions;
 
 namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
 {
+
+    public class GroupModel
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string UserName { get; set; }
+    }
+
     public partial class EditModel : PageModel
     {
 
@@ -67,6 +75,12 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
         public InputModel Input { get; set; }
         public List<string> GroupIds { get; set; }
         public bool CpqModule { get; set; }
+
+        public List<GroupModel> SelectedGroups { get; set; }
+        public string SelectedGroupIds { get; set; }
+        public string SelectedChildIds { get; set; }
+
+        public List<MTDSelectListItem> GroupList { get; set; }
 
         public class InputModel
         {
@@ -168,6 +182,31 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
             IList<Claim> claims = await _userManager.GetClaimsAsync(user);
             GroupIds = new List<string>();
             GroupIds = claims.Where(x => x.Type == "group").Select(x => x.Value).ToList();
+
+            IList<MtdGroup> groups = await _context.MtdGroup.OrderBy(x => x.Name).ToListAsync();
+            GroupList = new List<MTDSelectListItem>()
+            {
+                new MTDSelectListItem{ Id="firstitem", Value="No group selected", Selectded=true}
+            };
+
+            foreach (var group in groups)
+            {                
+                GroupList.Add(new MTDSelectListItem { Id = group.Id, Value = group.Name });
+            }
+
+            IList<MtdGroup> selectedGroups = groups.Where(x => GroupIds.Contains(x.Id)).ToList();
+
+            SelectedGroups = new List<GroupModel>();
+            foreach (var group in selectedGroups)
+            {
+                GroupModel groupModel = new GroupModel { Id = group.Id, Name = group.Name, UserName = "No owner selected" };
+
+                SelectedGroupIds += $"&{group.Id}";
+                SelectedGroups.Add(groupModel);
+            }
+
+
+
             Input.CpqPolicyView = "view-own";
             Input.CpqPolicyEdit = "edit-own";
             string cpqPolicy =  claims.Where(x => x.Type == "cpq-policy").Select(x => x.Value).FirstOrDefault();

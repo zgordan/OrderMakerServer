@@ -3,13 +3,15 @@
 @inject IHtmlLocalizer<SharedResource> Localizer
 
 
+@{
+    string displayCPQ = !Model.CpqModule ? "display:none" : string.Empty;
+}
 
-
-<div style="padding: 8px;">
+<div style="padding: 8px; @displayCPQ">
     <div style="padding: 8px; text-align:center; background-color: whitesmoke; color: dimgray">
         CPQ ACCESS SETTINGS
     </div>
-    <div class="mtd-users-wrap noselect" @if (!Model.CpqModule) { <text> style="display:none" </text> }>
+    <div class="mtd-users-wrap noselect">
         <div style="border: 1px solid lightgray; padding: 8px; position:relative; width: 100%; display: flex; align-items:center">
             <div style="flex-grow: 1">
                 @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags

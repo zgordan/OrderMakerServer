@@ -38,6 +38,7 @@ namespace Mtd.OrderMaker.Server.Entity
             MtdParentForms = new HashSet<MtdFormRelated>();
             MtdChildForms = new HashSet<MtdFormRelated>();
             MtdFormActivites = new HashSet<MtdFormActivity>();
+            MtdEventSubscribes = new HashSet<MtdEventSubscribe>();
         }
 
         public string Id { get; set; }
@@ -65,6 +66,7 @@ namespace Mtd.OrderMaker.Server.Entity
         public virtual ICollection<MtdFormRelated> MtdParentForms { get; set; }
         public virtual ICollection<MtdFormRelated> MtdChildForms { get; set; }
         public virtual ICollection<MtdFormActivity> MtdFormActivites { get; set; }
+        public virtual ICollection<MtdEventSubscribe> MtdEventSubscribes { get; set; }
     }
 }
 

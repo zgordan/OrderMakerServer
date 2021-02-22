@@ -134,7 +134,6 @@ namespace Mtd.OrderMaker.Server.Components.Store.Stack
                 case 5:
                     {
                         viewName = "Date";
-                        if (mtdStoreStack.MtdStoreStackDate.Register != null) { break; }
 
                         isOk = DateTime.TryParse(field.DefaultData, out DateTime dateTime);
                         if (isOk)
@@ -146,7 +145,6 @@ namespace Mtd.OrderMaker.Server.Components.Store.Stack
                 case 6:
                     {
                         viewName = "DateTime";
-                        if (mtdStoreStack.MtdStoreStackDate.Register != null) { break; }
 
                         isOk = DateTime.TryParse(field.DefaultData, out DateTime dateTime);
                         if (isOk)

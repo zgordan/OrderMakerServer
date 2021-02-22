@@ -30,14 +30,14 @@ namespace Mtd.OrderMaker.Server.Entity
                 entity.ToTable("mtd_cpq_log_action");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.HasIndex(e => e.UserId)
-                    .HasName("idx_userid");
+                    .HasDatabaseName("idx_userid");
 
                 entity.HasIndex(e => e.DocumentId)
-                    .HasName("idx_documentid");
+                    .HasDatabaseName("idx_documentid");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -75,11 +75,11 @@ namespace Mtd.OrderMaker.Server.Entity
                 entity.ToTable("mtd_cpq_titles_owner");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.HasIndex(e => e.UserId)
-                    .HasName("idx_userid");
+                    .HasDatabaseName("idx_userid");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
@@ -102,11 +102,11 @@ namespace Mtd.OrderMaker.Server.Entity
                 entity.ToTable("mtd_cpq_proposal_owner");
 
                 entity.HasIndex(e => e.Id)
-                    .HasName("id_UNIQUE")
+                    .HasDatabaseName("id_UNIQUE")
                     .IsUnique();
 
                 entity.HasIndex(e => e.UserId)
-                    .HasName("idx_userid");
+                    .HasDatabaseName("idx_userid");
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")

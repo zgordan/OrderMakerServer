@@ -17,6 +17,43 @@
     along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
+
+const OnDeleteGroup = (groupId) => {
+
+    const groupContainer = document.getElementById('group-container');
+    const groupBlock = document.getElementById(`${groupId}-group-block`);
+    groupContainer.value = groupContainer.value.replace(`&${groupId}`, "");
+    groupBlock.remove();
+
+    if (groupContainer.value.length == 0) {
+        document.getElementById('group-not-selected').style.display = "";
+    }
+}
+
+
+const OnAddGroup = () => {
+
+    const groupContainer = document.getElementById('group-container');
+    const groupId = groupList.selector.value;
+    fetch(`/api/users/admin/groups/group/${groupId}`)
+        .then((resp) => resp.json())
+        .then(function (data) {
+            if (data.id == "null" || groupContainer.value.includes(data.id)) { return; }
+
+            tmpl.content.querySelector("[data-content=root]").id = `${data.id}-group-block`;
+            tmpl.content.querySelector("[data-content=groupName]").innerText = data.groupName;
+            tmpl.content.querySelector("button").setAttribute('onclick', `OnDeleteGroup('${data.id}')`);
+
+            var clone = tmpl.content.cloneNode(true);
+            document.getElementById("group-selected-list").append(clone);
+            document.getElementById('group-not-selected').style.display = "none";
+
+
+            groupContainer.value += `&${data.id}`;
+
+        });
+}
+
 //Start
 
     const dialog = new mdc.dialog.MDCDialog(document.getElementById('dialog-users-delete'));
@@ -48,11 +85,9 @@
         cpqViewOwn.checked = true;
     });
 
-
     const cpqEditAll = document.getElementById("cpq-edit-all");
     const cpqEditGroup = document.getElementById("cpq-edit-group");
     const cpqEditOwn = document.getElementById("cpq-edit-own");
-
 
     cpqEditAll.addEventListener("change", () => {
         cpqEditGroup.checked = false;
@@ -82,3 +117,5 @@ new MTDSelectList("select-policy");
 new MTDSelectList("select-role");
 new MTDSelectList("select-role-cpq");
 new MTDSelectList("user-recipient-id");
+
+const groupList = new MTDSelectList("group-list");

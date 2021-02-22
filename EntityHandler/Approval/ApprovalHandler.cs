@@ -532,9 +532,9 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
                 {
                     _context.MtdStoreApproval.Update(storeApproval);
                 }
-                catch (Exception e)
+                catch
                 {
-                    throw e;
+                    //Set logger 
                 }
             }
 

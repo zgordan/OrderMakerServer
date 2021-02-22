@@ -140,7 +140,7 @@
                                 @Localizer["Document-based"]
                             </th>
                             <th>
-                                @Localizer["Set Owner"]
+                                @Localizer["Assignment"]
                             </th>
                             <th>
                                 @Localizer["Reviewer"]
@@ -182,6 +182,7 @@
                                 ExportToExcel = Model.MtdPolicy.MtdPolicyForms.Where(x => x.MtdForm == form.Id && x.ExportToExcel == 1).Any(),
                                 RelatedCreate = Model.MtdPolicy.MtdPolicyForms.Where(x => x.MtdForm == form.Id && x.RelatedCreate == 1).Any(),
                                 RelatedEdit = Model.MtdPolicy.MtdPolicyForms.Where(x => x.MtdForm == form.Id && x.RelatedEdit == 1).Any(),
+                                Responsibility = Model.MtdPolicy.MtdPolicyForms.Where(x => x.MtdForm == form.Id && x.Responsibility == 1).Any(),
                             };
 
                             <tr>
@@ -230,20 +231,41 @@
                                     @await Html.PartialAsync("./_tdRelated", rightsModel)
                                 </td>
                                 <td>
-                                    <div class="mdc-form-field">
-                                        <div class="mdc-checkbox">
-                                            <input type="checkbox"
-                                                   class="mdc-checkbox__native-control"
-                                                   id="@form.Id-set-own" name="@form.Id-set-own" @if (rightsModel.SetOwner) { <text> checked</text>} />
-                                            <div class="mdc-checkbox__background">
-                                                <svg class="mdc-checkbox__checkmark"
-                                                     viewBox="0 0 24 24">
-                                                    <path class="mdc-checkbox__checkmark-path"
-                                                          fill="none"
-                                                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                                </svg>
-                                                <div class="mdc-checkbox__mixedmark"></div>
+                                    <div class="mtd-users-rights-td">
+                                        <div class="mdc-form-field">
+                                            <div class="mdc-checkbox">
+                                                <input type="checkbox"
+                                                       class="mdc-checkbox__native-control"
+                                                       id="@form.Id-set-own" name="@form.Id-set-own" @if (rightsModel.SetOwner) { <text> checked</text>} />
+                                                <div class="mdc-checkbox__background">
+                                                    <svg class="mdc-checkbox__checkmark"
+                                                         viewBox="0 0 24 24">
+                                                        <path class="mdc-checkbox__checkmark-path"
+                                                              fill="none"
+                                                              d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                                    </svg>
+                                                    <div class="mdc-checkbox__mixedmark"></div>
+                                                </div>
                                             </div>
+                                            <label for="@form.Id-set-own">@Localizer["Owner person"]</label>
+                                        </div>
+
+                                        <div class="mdc-form-field">
+                                            <div class="mdc-checkbox">
+                                                <input type="checkbox"
+                                                       class="mdc-checkbox__native-control"
+                                                       id="@form.Id-responsibility" name="@form.Id-responsibility" @if (rightsModel.Responsibility) { <text> checked</text>} />
+                                                <div class="mdc-checkbox__background">
+                                                    <svg class="mdc-checkbox__checkmark"
+                                                         viewBox="0 0 24 24">
+                                                        <path class="mdc-checkbox__checkmark-path"
+                                                              fill="none"
+                                                              d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                                    </svg>
+                                                    <div class="mdc-checkbox__mixedmark"></div>
+                                                </div>
+                                            </div>
+                                            <label for="@form.Id-responsibility">@Localizer["Responsibility"]</label>
                                         </div>
                                     </div>
                                 </td>

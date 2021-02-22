@@ -24,13 +24,10 @@
 @{
     var local = Localizer["MM/dd/yyyy"];
     string dateValue = "";
-    if (Model.MtdStoreStackDate.Register != null)
+    dateValue = Model.MtdStoreStackDate.Register.ToString($"{local.Value}");
+    if (dateValue.Equals("01.01.0001"))
     {
-        dateValue = Model.MtdStoreStackDate.Register.ToString($"{local.Value}");
-        if (dateValue.Equals("01.01.0001"))
-        {
-            dateValue = "";
-        }
+        dateValue = "";
     }
 }
 

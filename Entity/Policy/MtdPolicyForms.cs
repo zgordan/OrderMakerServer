@@ -45,6 +45,7 @@ namespace Mtd.OrderMaker.Server.Entity
         public sbyte ExportToExcel { get; set; }
         public sbyte RelatedCreate { get; set; }
         public sbyte RelatedEdit { get; set; }
+        public sbyte Responsibility { get; set; }
 
         public virtual MtdForm MtdFormNavigation { get; set; }
         public virtual MtdPolicy MtdPolicyNavigation { get; set; }
