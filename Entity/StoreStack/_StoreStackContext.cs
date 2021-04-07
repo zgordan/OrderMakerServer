@@ -131,7 +131,7 @@ namespace Mtd.OrderMaker.Server.Entity
 
                 entity.Property(e => e.FileSize)
                     .HasColumnName("file_size")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("bigint(20)");
 
                 entity.Property(e => e.FileType)
                     .IsRequired()
@@ -141,7 +141,7 @@ namespace Mtd.OrderMaker.Server.Entity
                 entity.Property(e => e.Register)
                     .IsRequired()
                     .HasColumnName("register")
-                    .HasColumnType("mediumblob");
+                    .HasColumnType("longblob");
 
                 entity.HasOne(d => d.IdNavigation)
                     .WithOne(p => p.MtdStoreStackFile)

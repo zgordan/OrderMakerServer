@@ -61,6 +61,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
         [HttpPost("save")]
         [ValidateAntiForgeryToken]
         [Produces("application/json")]
+        [DisableRequestSizeLimit]
         public async Task<IActionResult> OnPostSaveAsync()
         {
             string Id = Request.Form["idStore"];
@@ -85,8 +86,8 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                 return Ok(403);
             }
 
-            bool setData = await _userHandler.CheckUserPolicyAsync(webAppUser, mtdStore.MtdForm, RightsType.SetDate);
-            if (setData)
+            bool setDate = await _userHandler.CheckUserPolicyAsync(webAppUser, mtdStore.MtdForm, RightsType.SetDate);
+            if (setDate)
             {
                 bool isOk = DateTime.TryParse(dateCreate, out DateTime dateTime);
                 if (isOk)
@@ -136,7 +137,6 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             }
 
             List<MtdStoreStack> stackNew = outData.MtdStoreStacks;
-
 
             IList<MtdStoreStack> stackOld = await _context.MtdStoreStack
                 .Include(m => m.MtdStoreStackText)
@@ -286,7 +286,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             }
 
             List<MtdStoreStack> stackNew = outParam.MtdStoreStacks;
-            await _context.MtdStoreStack.AddRangeAsync(stackNew);
+            await _context.MtdStoreStack.AddRangeAsync(stackNew);         
 
             await _context.SaveChangesAsync();
             _context.Database.CommitTransaction();

@@ -83,7 +83,8 @@ namespace Mtd.OrderMaker.Server
                 .PersistKeysToFileSystem(new DirectoryInfo(Configuration.GetConnectionString("KeysFolder")));
 
             services.AddDbContext<IdentityDbContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("IdentityConnection"), new MySqlServerVersion(new Version(8,0,15))));
+                options.UseMySql(Configuration.GetConnectionString("IdentityConnection"), new MySqlServerVersion(new Version(8, 0, 15))));
+
 
             services.AddDefaultIdentity<WebAppUser>(config =>
             {
@@ -94,8 +95,9 @@ namespace Mtd.OrderMaker.Server
              .AddEntityFrameworkStores<IdentityDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddDbContext<OrderMakerContext>(options => 
-                options.UseMySql(Configuration.GetConnectionString("DataConnection"), new MySqlServerVersion(new Version(8, 0, 15))));
+            services.AddDbContext<OrderMakerContext>(options =>
+                options.UseMySql(Configuration.GetConnectionString("DataConnection"), new MySqlServerVersion(new Version(8, 0, 15)))); 
+
 
             services.AddMemoryCache();
 
