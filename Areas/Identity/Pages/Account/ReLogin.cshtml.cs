@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -27,9 +28,19 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account
             if (user == null) { return RedirectToPage("Identity/Account/Login"); }
 
             await userManager.RemoveClaimAsync(user, new Claim("revoke", "false"));
+            var referer = HttpContext.Request.Headers["Referer"].ToString();
+            var host = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}";
             await HttpContext.RefreshLoginAsync();
-            
+
+            bool isLocalUrl = referer.Length > host.Length && referer.Substring(0, host.Length).Equals(host);
+
+            if (isLocalUrl)
+            {
+                return Redirect(referer);
+            }
+
             return RedirectToPage("/Index");
+
         }
     }
 }
