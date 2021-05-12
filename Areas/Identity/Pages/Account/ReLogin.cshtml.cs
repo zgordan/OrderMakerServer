@@ -25,14 +25,14 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnGetAsync()
         {
             WebAppUser user = await userManager.GetUserAsync(HttpContext.User);
-            if (user == null) { return RedirectToPage("Identity/Account/Login"); }
+            if (user == null) { return RedirectToPage("/Identity/Account/Login"); }
 
             await userManager.RemoveClaimAsync(user, new Claim("revoke", "false"));
             var referer = HttpContext.Request.Headers["Referer"].ToString();
-            var host = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.Value}";
+            var host = HttpContext.Request.Host.Value;
             await HttpContext.RefreshLoginAsync();
-
-            bool isLocalUrl = referer.Length > host.Length && referer.Substring(0, host.Length).Equals(host);
+       
+            bool isLocalUrl = referer.Contains(host);
 
             if (isLocalUrl)
             {
