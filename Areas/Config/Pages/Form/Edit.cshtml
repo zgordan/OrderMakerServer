@@ -264,7 +264,7 @@
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/config/form/delete'>
     @Html.AntiForgeryToken()
     <input id="config-delete-id" name="form-id" type="hidden" value="@Model.MtdForm.Id" />
-    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/config/form" mtd-data-message="@Localizer["The form"] '@Model.MtdForm.Name' @Localizer["was deleted"]" type="hidden" />
+    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/config/form" mtd-data-message="@Localizer["The form"] '@Model.MtdForm.Name' @Localizer["was deleted."]" type="hidden" />
 </form>
 
 <div id="dialog-form-delete" class="mdc-dialog"

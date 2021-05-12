@@ -21,10 +21,12 @@
 @model StagesModel
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHtmlLocalizer<SharedResource> Localizer
+@using  Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> SLocalizer
 
 @{
     ViewData["Title"] = Localizer["Stages list"];
-    ViewData["SecondTitle"] = Localizer["Approval chain management"];
+    ViewData["SecondTitle"] = $"{SLocalizer["Approval chain management"]}: {Model.MtdApproval.Name}";
 }
 
 @section Breadcrumb {
@@ -45,20 +47,11 @@
         </div>
     </div>
 
-    <div style="padding: 24px">
-        <div>
-            <span style="font-size:large; font-weight:600">@Model.MtdApproval.Name</span>
-        </div>
-        <div>
-            <span>@Model.MtdApproval.Description</span>
-        </div>
-    </div>
-
     <form mtd-data-form="sequence" method="post" action="/api/config/approval/stage/sequence">
         @Html.AntiForgeryToken()
         <input mtd-data-sequence name="drgData" type="hidden" />
         <input name="IdApproval" type="hidden" value="@Model.MtdApproval.Id" />
-        <input mtd-data-clicker type="hidden" />        
+        <input mtd-data-clicker type="hidden" />
     </form>
 
     <ul mtd-data-draggable class="mdc-list mdc-list--two-line">

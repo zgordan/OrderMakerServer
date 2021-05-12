@@ -25,8 +25,7 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Policy
         public bool SetDate { get; set; }
         public bool ExportToExcel { get; set; }
         public bool RelatedCreate { get; set; }
-        public bool RelatedEdit { get; set; }
-        public bool Responsibility { get; set; }
+        public bool RelatedEdit { get; set; }        
 
     }
 }

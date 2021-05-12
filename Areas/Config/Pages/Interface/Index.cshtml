@@ -51,7 +51,7 @@
 
 <div class="mtd-desk">
     <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data">
-        <input type="hidden" id="clicker-save" mtd-data-clicker mtd-data-message="@Localizer["Changes saved."]"/>
+        <input type="hidden" id="clicker-save" mtd-data-clicker mtd-data-message="@Localizer["Changes saved."]" />
         <div class="mtd-desk-fields">
             <div class="mtd-desk-field">
                 <label>@Localizer["Image for main menu"]</label>
@@ -102,6 +102,7 @@
                 {
                     <div style="height:40px;"></div>
                 }
+
             </div>
 
             <div class="mtd-desk-field">
@@ -154,6 +155,7 @@
                     <div style="height:40px;"></div>
                 }
             </div>
+
         </div>
         <div class="mtd-desk-fields">
             <div class="mtd-desk-field  mtd-desk-field--border">
@@ -178,6 +180,5 @@
 @section Scripts {
     <script src="~/lib/mtd-ordermaker/config/js/mtd-config-form.js" asp-append-version="true"></script>
     <script src="~/lib/mtd-ordermaker/filechoose/js/mtd-file-choose.js" asp-append-version="true"></script>
-
 }
 

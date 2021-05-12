@@ -78,13 +78,13 @@
         </div>
         <div style="text-align: left">
             <div>
-                <span>@Localizer["Field type:"]</span>
+                <span>@Localizer["Field type"]:</span>
                 <span><strong>@Model.FieldTypeName</strong></span>
             </div>
             @if (Model.NameFormSelector != null)
             {
                 <div>
-                    <span>@Localizer["List from:"]</span>
+                    <span>@Localizer["List from"]:</span>
                     <span><strong>@Model.NameFormSelector</strong></span>
                 </div>
             }
@@ -131,18 +131,6 @@
             <div class="mtd-desk-block">
 
                 <div class="mtd-desk-field mtd-desk-field--border">
-                    <div style="display: flex;">
-                        <div style="padding: 4px;">
-                            @await Component.InvokeAsync("MTDCheckbox", new { id = Model.MtdFormPartField.Id, Label = "Required", result = Model.MtdFormPartField.Required == 1 ? true : false })
-                        </div>
-
-                        <div style="padding: 4px;">
-                            @await Component.InvokeAsync("MTDCheckbox", new { id = $"{Model.MtdFormPartField.Id}-readOnly", Label = "ReadOnly", result = Model.MtdFormPartField.ReadOnly == 1 ? true : false })
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mtd-desk-field mtd-desk-field--border">
                     @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
                        {
                            Id = "select-part",
@@ -152,28 +140,44 @@
                            LabelLocalized = true,
                        })
                 </div>
-                <div class="mtd-desk-field mtd-desk-field--border">
-                    @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
-                       {
-                           Id = "select-trigger",
-                           Name = "fieldTrigger",
-                           Items = Model.TriggerItems,
-                           Label = "Trigger",
-                           LabelLocalized = true,
-                       })
-                </div>
-                <div class="mtd-desk-field mtd-desk-field--border">
-                    @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
-                   {
-                       Id = "field-default",
-                       Name = "fieldDefault",
-                       Label = "Default data",
-                       LabelLocalized = true,
-                       Value = Model.MtdFormPartField.DefaultData,
-                       MTDTexFieldView = MTDTextFieldViews.Default,
 
-                   })
-                </div>
+                @if (Model.MtdFormPartField.MtdSysType <= 6)
+                {
+                    <div class="mtd-desk-field mtd-desk-field--border">
+                        <div style="display: flex;">
+                            <div style="padding: 4px;">
+                                @await Component.InvokeAsync("MTDCheckbox", new { id = Model.MtdFormPartField.Id, Label = "Required", result = Model.MtdFormPartField.Required == 1 ? true : false })
+                            </div>
+
+                            <div style="padding: 4px;">
+                                @await Component.InvokeAsync("MTDCheckbox", new { id = $"{Model.MtdFormPartField.Id}-readOnly", Label = "ReadOnly", result = Model.MtdFormPartField.ReadOnly == 1 ? true : false })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mtd-desk-field mtd-desk-field--border">
+                        @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
+                           {
+                               Id = "select-trigger",
+                               Name = "fieldTrigger",
+                               Items = Model.TriggerItems,
+                               Label = "Trigger",
+                               LabelLocalized = true,
+                           })
+                    </div>
+                    <div class="mtd-desk-field mtd-desk-field--border">
+                        @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
+                       {
+                           Id = "field-default",
+                           Name = "fieldDefault",
+                           Label = "Default data",
+                           LabelLocalized = true,
+                           Value = Model.MtdFormPartField.DefaultData,
+                           MTDTexFieldView = MTDTextFieldViews.Default,
+
+                       })
+                    </div>
+                }
             </div>
         </div>
 

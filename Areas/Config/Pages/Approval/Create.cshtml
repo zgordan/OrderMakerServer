@@ -22,7 +22,7 @@
 @inject IHtmlLocalizer<SharedResource> Localizer
 
 @{
-    ViewData["Title"] = Localizer["New approval"];
+    ViewData["Title"] = Localizer["New approval flow"];
     ViewData["SecondTitle"] = Localizer["Creating new approval chain"];
 }
 
@@ -46,7 +46,7 @@
         <input type="hidden" asp-for="MtdApproval.Id" />
         <input type="hidden" id="clicker-create"
                mtd-data-clicker mtd-data-location="/config/approval/edit?id=@Model.MtdApproval.Id"
-               mtd-data-message="@Localizer["New approval chain was created."]" />
+               mtd-data-message="@Localizer["New approval flow created."]" />
 
         <div class="mtd-desk-field">
             @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags

@@ -4,7 +4,7 @@
 
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' asp-page-handler="Delete">   
     <input type="hidden" asp-for="MtdApprovalRejection.Id" />
-    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/config/approval/rejections?stage=@Model.MtdApprovalStage.Id" mtd-data-message="@Localizer["The stage "] '@Model.MtdApprovalStage.Name' @Localizer["was deleted"]" type="hidden" />
+    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/config/approval/rejections?stage=@Model.MtdApprovalStage.Id" mtd-data-message="@Localizer["The rejection deleted."]" type="hidden" />
 </form>
 
 <div id="dialog-delete" class="mdc-dialog"

@@ -161,7 +161,7 @@
 <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/users/admin/confirm/email">
     @Html.AntiForgeryToken()
     <input name="UserName" value="@Model.UserName" type="hidden" />
-    <input id="users-confirm-email" mtd-data-clicker mtd-data-message="@Localizer["Message sent"]." type="hidden" />
+    <input id="users-confirm-email" mtd-data-clicker mtd-data-message="@Localizer["Message sent."]" type="hidden" />
 </form>
 
 @if (Model.Input.IsConfirm)
@@ -170,13 +170,13 @@
     <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/users/admin/confirm/password">
         @Html.AntiForgeryToken()
         <input name="UserName" value="@Model.UserName" type="hidden" />
-        <input id="users-confirm-password" mtd-data-clicker mtd-data-message="@Localizer["Message sent"]." type="hidden" />
+        <input id="users-confirm-password" mtd-data-clicker mtd-data-message="@Localizer["Message sent."]" type="hidden" />
     </form>
 
     <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/users/admin/create/password">
         @Html.AntiForgeryToken()
         <input name="UserName" value="@Model.UserName" type="hidden" />
-        <input id="users-create-password" mtd-data-clicker mtd-data-message="@Localizer["A new password has been sent to the user."]." type="hidden" />
+        <input id="users-create-password" mtd-data-clicker mtd-data-message="@Localizer["A new password has been sent to the user."]" type="hidden" />
     </form>
 
 }
@@ -184,7 +184,7 @@
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/users/admin/delete'>
     @Html.AntiForgeryToken()
     <input id="user-delete-id" name="user-delete-id" type="hidden" value="@ViewBag.userId" />
-    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/identity/users/accounts" mtd-data-message="@Localizer["User daleted"]." type="hidden" />
+    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/identity/users/accounts" mtd-data-message="@Localizer["User daleted."]" type="hidden" />
 </form>
 
 <div id="dialog-users-delete" class="mdc-dialog"
@@ -213,32 +213,6 @@
     <div class="mdc-dialog__scrim"></div>
 </div>
 
-<div id="dialog-users-delete" class="mdc-dialog"
-     role="alertdialog"
-     aria-modal="true"
-     aria-labelledby="my-dialog-title"
-     aria-describedby="my-dialog-content">
-    <div class="mdc-dialog__container">
-        <div class="mdc-dialog__surface">
-            <h2 class="mdc-dialog__title" id="delete-dialog-title">
-                @Localizer["Delete user"]?
-            </h2>
-            <div class="mdc-dialog__content" id="delete-dialog-content">
-                @Localizer["The user will be permanently deleted"].
-            </div>
-            <footer class="mdc-dialog__actions">
-                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
-                    <span class="mdc-button__label">@Localizer["Cancel"]</span>
-                </button>
-                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes"
-                        onclick="document.getElementById('deleteClicker').click();">
-                    <span class="mdc-button__label">@Localizer["Delete"]</span>
-                </button>
-            </footer>
-        </div>
-    </div>
-    <div class="mdc-dialog__scrim"></div>
-</div>
 
 
 

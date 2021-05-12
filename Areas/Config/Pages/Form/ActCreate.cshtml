@@ -43,7 +43,7 @@
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="MtdForm.Id" name="formId" />
         <input type="hidden" asp-for="MtdFormActivity.Id" name="activityId" />
-        <input id="clicker-create" type="hidden" mtd-data-clicker mtd-data-location="/config/form/actedit?id=@Model.MtdFormActivity.Id" mtd-data-message="@Localizer["New form activity created"]." />
+        <input id="clicker-create" type="hidden" mtd-data-clicker mtd-data-location="/config/form/actedit?id=@Model.MtdFormActivity.Id" mtd-data-message="@Localizer["New form activity created."]" />
 
         <div class="mtd-desk-field">
             @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags

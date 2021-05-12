@@ -3,9 +3,8 @@
 @inject IHtmlLocalizer<SharedResource> Localizer
 
 <form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/config/approval/stage/delete'>
-    @Html.AntiForgeryToken()
     <input id="id-stage-delete" name="id-stage-delete" type="hidden" value="@Model.MtdApprovalStage.Id" />
-    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/config/approval/stages?idApproval=@Model.MtdApproval.Id" mtd-data-message="@Localizer["The stage "] '@Model.MtdApprovalStage.Name' @Localizer["was deleted"]" type="hidden" />
+    <input id="deleteClicker" mtd-data-clicker mtd-data-location="/config/approval/stages?idApproval=@Model.MtdApproval.Id" mtd-data-message="@Localizer["The stage deleted."]" type="hidden" />
 </form>
 
 <div id="dialog-delete" class="mdc-dialog"

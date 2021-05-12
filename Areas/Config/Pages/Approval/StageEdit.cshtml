@@ -24,7 +24,7 @@
 
 @{
     ViewData["Title"] = Localizer["Edit approval stage"];
-    ViewData["SecondTitle"] = Localizer["Edit stage in the chain"];
+    ViewData["SecondTitle"] = Localizer["Editing a Stage in a Chain"];
     ViewData["UserItems"] = Model.UserItems;
 }
 
@@ -74,7 +74,7 @@
     <input type="hidden" asp-for="MtdApprovalStage.Id" name="stageId" />
     <input type="hidden" id="clicker-save"
            mtd-data-clicker mtd-data-location="/config/approval/stages?idApproval=@Model.MtdApproval.Id"
-           mtd-data-message="@Localizer["Stage was changes."]" />
+           mtd-data-message="@Localizer["Changes saved."]" />
 
     @await Html.PartialAsync("~/Areas/Config/Pages/Approval/Partials/StageEditFields.cshtml", Model.MtdApprovalStage)
 

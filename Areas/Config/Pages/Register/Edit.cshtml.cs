@@ -63,7 +63,7 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Register
         {
 
             var requestForm = await Request.ReadFormAsync();
-            FormHandler formHandler = new FormHandler(context);
+            var formHandler = new FormHandler(context);
             List<string> fieldIds = await formHandler.GetFieldIdsAsync();
 
             IList<MtdRegisterField> fieldlRemove = await context.MtdRegisterField.Where(x => x.MtdRegisterId == MtdRegister.Id).ToListAsync();
@@ -98,6 +98,16 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Register
             await context.SaveChangesAsync();
 
             return RedirectToPage("./Edit", new { id = MtdRegister.Id });
+        }
+
+        public async Task<IActionResult> OnPostDeleteAsync()
+        {
+            var requestForm = await Request.ReadFormAsync();
+            var registerId = requestForm["registerId"];
+            var register = new MtdRegister { Id = registerId };
+            context.MtdRegister.Remove(register);
+            await context.SaveChangesAsync();
+            return new OkResult();
         }
 
     }

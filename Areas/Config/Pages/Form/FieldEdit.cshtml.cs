@@ -23,7 +23,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
@@ -85,7 +84,7 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
             TriggerItems = new List<MTDSelectListItem>();
             triggers.ToList().ForEach((item) => {
                 bool selected = MtdFormPartField.MtdSysTrigger == item.Id;
-                TriggerItems.Add(new MTDSelectListItem { Id = item.Id, Value=item.Name, Selectded=selected });
+                TriggerItems.Add(new MTDSelectListItem { Id = item.Id, Value=item.Name, Selectded=selected, Localized = true });
             });
 
            ///ViewData["Triggers"] = new SelectList(triggers, "Id", "Name", MtdFormPartField.MtdSysTrigger);

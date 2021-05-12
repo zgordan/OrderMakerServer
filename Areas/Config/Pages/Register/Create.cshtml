@@ -25,7 +25,7 @@
     </div>
     <form mtd-data-form method="post" autocomplete="off" action="" novalidate>
         <input type="hidden" asp-for="MtdRegister.Id" />
-        <input type="hidden" id="clicker-create" mtd-data-clicker mtd-data-location="/config/register/edit?id=@Model.MtdRegister.Id" mtd-data-message="@Localizer["New register created"]." />
+        <input type="hidden" id="clicker-create" mtd-data-clicker mtd-data-location="/config/register/edit?id=@Model.MtdRegister.Id" mtd-data-message="@Localizer["New register created."]" />
         <div class="mtd-desk-field">
             @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
                {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,15 @@ namespace Mtd.OrderMaker.Server.Components
     [ViewComponent(Name = "MTDCheckbox")]
     public class MTDCheckbox : ViewComponent
     {
+        private readonly IStringLocalizer<SharedResource> localizer;
+        public MTDCheckbox(IStringLocalizer<SharedResource> localizer)
+        {
+            this.localizer = localizer;
+        }
+
         public async Task<IViewComponentResult> InvokeAsync(string id, string label, bool result)
         {
-            MTDCheckboxModel boxModel = await Task.Run(() => new MTDCheckboxModel { Id = id, Label = label, Result = result });
+            MTDCheckboxModel boxModel = await Task.Run(() => new MTDCheckboxModel { Id = id, Label = localizer[label], Result = result });
             return View(boxModel);
         }
 

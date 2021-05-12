@@ -29,7 +29,7 @@
 
 @section Breadcrumb {
     <li><a href="/identity/users">@Localizer["Users"]</a></li>
-    <li><a href="/identity/users/group">@Localizer["Croups"]</a></li>
+    <li><a href="/identity/users/group">@Localizer["Groups"]</a></li>
     <li>@ViewBag.Title</li>
 }
 
@@ -45,7 +45,7 @@
         </div>
     </div>
 
-    <form mtd-data-form method="post" autocomplete="off" action="/api/groups/add" novalidate>
+    <form mtd-data-form method="post" autocomplete="off" action="/api/users/admin/groups/add" novalidate>
         @Html.AntiForgeryToken()
         <input type="hidden" id="clicker-save" mtd-data-clicker mtd-data-message="@Localizer["New group was created."]" mtd-data-location="/identity/users/group" />
 

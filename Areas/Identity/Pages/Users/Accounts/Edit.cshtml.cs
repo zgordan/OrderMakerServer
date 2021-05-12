@@ -186,7 +186,7 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
             IList<MtdGroup> groups = await _context.MtdGroup.OrderBy(x => x.Name).ToListAsync();
             GroupList = new List<MTDSelectListItem>()
             {
-                new MTDSelectListItem{ Id="firstitem", Value="No group selected", Selectded=true}
+                new MTDSelectListItem{ Id="firstitem", Value="No group selected", Selectded=true, Localized=true}
             };
 
             foreach (var group in groups)

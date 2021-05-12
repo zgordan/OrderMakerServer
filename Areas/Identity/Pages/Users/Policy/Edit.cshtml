@@ -134,28 +134,11 @@
                                 @Localizer["Delete"]
                             </th>
                             <th>
-                                @Localizer["Own docs"]
+                                @Localizer["Documents"]
                             </th>
                             <th>
-                                @Localizer["Document-based"]
+                                @Localizer["Additionally"]
                             </th>
-                            <th>
-                                @Localizer["Assignment"]
-                            </th>
-                            <th>
-                                @Localizer["Reviewer"]
-                            </th>
-                            <th>
-                                @Localizer["Set Date"]
-                            </th>
-
-                            @if (Model.ExportToExcel)
-                            {
-                                <th>
-                                    @Localizer["Export"]
-                                </th>
-                            }
-
                         </tr>
                     </thead>
                     <tbody>
@@ -182,7 +165,6 @@
                                 ExportToExcel = Model.MtdPolicy.MtdPolicyForms.Where(x => x.MtdForm == form.Id && x.ExportToExcel == 1).Any(),
                                 RelatedCreate = Model.MtdPolicy.MtdPolicyForms.Where(x => x.MtdForm == form.Id && x.RelatedCreate == 1).Any(),
                                 RelatedEdit = Model.MtdPolicy.MtdPolicyForms.Where(x => x.MtdForm == form.Id && x.RelatedEdit == 1).Any(),
-                                Responsibility = Model.MtdPolicy.MtdPolicyForms.Where(x => x.MtdForm == form.Id && x.Responsibility == 1).Any(),
                             };
 
                             <tr>
@@ -209,26 +191,81 @@
                                     @await Html.PartialAsync("./_tdDelete", rightsModel)
                                 </td>
                                 <td>
-                                    <div class="mdc-form-field">
-                                        <div class="mdc-checkbox">
-                                            <input type="checkbox"
-                                                   class="mdc-checkbox__native-control"
-                                                   id="@form.Id-deny-group" name="@form.Id-deny-group" @if (rightsModel.OwnDenyGroup) { <text> checked</text>} />
-                                            <div class="mdc-checkbox__background">
-                                                <svg class="mdc-checkbox__checkmark"
-                                                     viewBox="0 0 24 24">
-                                                    <path class="mdc-checkbox__checkmark-path"
-                                                          fill="none"
-                                                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                                </svg>
-                                                <div class="mdc-checkbox__mixedmark"></div>
+                                    <div class="mtd-users-rights-td">
+                                        <div class="mdc-form-field">
+                                            <div class="mdc-checkbox">
+                                                <input type="checkbox"
+                                                       class="mdc-checkbox__native-control"
+                                                       id="@form.Id-deny-group" name="@form.Id-deny-group" @if (rightsModel.OwnDenyGroup) { <text> checked</text>} />
+                                                <div class="mdc-checkbox__background">
+                                                    <svg class="mdc-checkbox__checkmark"
+                                                         viewBox="0 0 24 24">
+                                                        <path class="mdc-checkbox__checkmark-path"
+                                                              fill="none"
+                                                              d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                                    </svg>
+                                                    <div class="mdc-checkbox__mixedmark"></div>
+                                                </div>
                                             </div>
+                                            <label for="@form.Id-deny-group">@Localizer["Deny group"]</label>
                                         </div>
-                                        <label for="@form.Id-deny-group">@Localizer["Deny group"]</label>
+
+                                        <div class="mdc-form-field">
+                                            <div class="mdc-checkbox">
+                                                <input type="checkbox"
+                                                       class="mdc-checkbox__native-control"
+                                                       id="@form.Id-set-date" name="@form.Id-set-date" @if (rightsModel.SetDate) { <text> checked</text>} />
+                                                <div class="mdc-checkbox__background">
+                                                    <svg class="mdc-checkbox__checkmark"
+                                                         viewBox="0 0 24 24">
+                                                        <path class="mdc-checkbox__checkmark-path"
+                                                              fill="none"
+                                                              d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                                    </svg>
+                                                    <div class="mdc-checkbox__mixedmark"></div>
+                                                </div>
+                                            </div>
+                                            <label for="@form.Id-set-date">@Localizer["Set Date"]</label>
+                                        </div>
+
+                                        <div class="mdc-form-field">
+                                            <div class="mdc-checkbox">
+                                                <input type="checkbox"
+                                                       class="mdc-checkbox__native-control"
+                                                       id="@form.Id-related-create" name="@form.Id-related-create" @if (rightsModel.RelatedCreate) { <text> checked</text>} />
+                                                <div class="mdc-checkbox__background">
+                                                    <svg class="mdc-checkbox__checkmark"
+                                                         viewBox="0 0 24 24">
+                                                        <path class="mdc-checkbox__checkmark-path"
+                                                              fill="none"
+                                                              d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                                    </svg>
+                                                    <div class="mdc-checkbox__mixedmark"></div>
+                                                </div>
+                                            </div>
+                                            <label for="@form.Id-related-create">@Localizer["Create related"]</label>
+                                        </div>
+
+                                        <div class="mdc-form-field">
+                                            <div class="mdc-checkbox">
+                                                <input type="checkbox"
+                                                       class="mdc-checkbox__native-control"
+                                                       id="@form.Id-related-edit" name="@form.Id-related-edit" @if (rightsModel.RelatedEdit) { <text> checked</text>} />
+                                                <div class="mdc-checkbox__background">
+                                                    <svg class="mdc-checkbox__checkmark"
+                                                         viewBox="0 0 24 24">
+                                                        <path class="mdc-checkbox__checkmark-path"
+                                                              fill="none"
+                                                              d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                                    </svg>
+                                                    <div class="mdc-checkbox__mixedmark"></div>
+                                                </div>
+                                            </div>
+                                            <label for="@form.Id-related-edit">@Localizer["Edit related"]</label>
+                                        </div>
+
                                     </div>
-                                </td>
-                                <td>
-                                    @await Html.PartialAsync("./_tdRelated", rightsModel)
+
                                 </td>
                                 <td>
                                     <div class="mtd-users-rights-td">
@@ -249,84 +286,48 @@
                                             </div>
                                             <label for="@form.Id-set-own">@Localizer["Owner person"]</label>
                                         </div>
+                                        <div class="mdc-form-field">
+                                            <div class="mdc-checkbox">
+                                                <input type="checkbox"
+                                                       class="mdc-checkbox__native-control"
+                                                       id="@form.Id-reviewer" name="@form.Id-reviewer" @if (rightsModel.Reviewer) { <text> checked</text>} />
+                                                <div class="mdc-checkbox__background">
+                                                    <svg class="mdc-checkbox__checkmark"
+                                                         viewBox="0 0 24 24">
+                                                        <path class="mdc-checkbox__checkmark-path"
+                                                              fill="none"
+                                                              d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                                    </svg>
+                                                    <div class="mdc-checkbox__mixedmark"></div>
+                                                </div>
+                                            </div>
+                                            <label for="@form.Id-reviewer">@Localizer["Document reviever"]</label>
+                                        </div>
+                                        @if (Model.ExportToExcel)
+                                        {
+                                            <div class="mdc-form-field">
+                                                <div class="mdc-checkbox">
+                                                    <input type="checkbox"
+                                                           class="mdc-checkbox__native-control"
+                                                           id="@form.Id-export-excel" name="@form.Id-export-excel" @if (rightsModel.ExportToExcel) { <text> checked</text>} />
+                                                    <div class="mdc-checkbox__background">
+                                                        <svg class="mdc-checkbox__checkmark"
+                                                             viewBox="0 0 24 24">
+                                                            <path class="mdc-checkbox__checkmark-path"
+                                                                  fill="none"
+                                                                  d="M1.73,12.91 8.1,19.28 22.79,4.59" />
+                                                        </svg>
+                                                        <div class="mdc-checkbox__mixedmark"></div>
+                                                    </div>
+                                                </div>
+                                                <label for="@form.Id-export-excel">@Localizer["Export to Excel"]</label>
+                                            </div>
 
-                                        <div class="mdc-form-field">
-                                            <div class="mdc-checkbox">
-                                                <input type="checkbox"
-                                                       class="mdc-checkbox__native-control"
-                                                       id="@form.Id-responsibility" name="@form.Id-responsibility" @if (rightsModel.Responsibility) { <text> checked</text>} />
-                                                <div class="mdc-checkbox__background">
-                                                    <svg class="mdc-checkbox__checkmark"
-                                                         viewBox="0 0 24 24">
-                                                        <path class="mdc-checkbox__checkmark-path"
-                                                              fill="none"
-                                                              d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                                    </svg>
-                                                    <div class="mdc-checkbox__mixedmark"></div>
-                                                </div>
-                                            </div>
-                                            <label for="@form.Id-responsibility">@Localizer["Responsibility"]</label>
-                                        </div>
+                                        }
                                     </div>
                                 </td>
-                                <td>
-                                    <div class="mdc-form-field">
-                                        <div class="mdc-checkbox">
-                                            <input type="checkbox"
-                                                   class="mdc-checkbox__native-control"
-                                                   id="@form.Id-reviewer" name="@form.Id-reviewer" @if (rightsModel.Reviewer) { <text> checked</text>} />
-                                            <div class="mdc-checkbox__background">
-                                                <svg class="mdc-checkbox__checkmark"
-                                                     viewBox="0 0 24 24">
-                                                    <path class="mdc-checkbox__checkmark-path"
-                                                          fill="none"
-                                                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                                </svg>
-                                                <div class="mdc-checkbox__mixedmark"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="mdc-form-field">
-                                        <div class="mdc-checkbox">
-                                            <input type="checkbox"
-                                                   class="mdc-checkbox__native-control"
-                                                   id="@form.Id-set-date" name="@form.Id-set-date" @if (rightsModel.SetDate) { <text> checked</text>} />
-                                            <div class="mdc-checkbox__background">
-                                                <svg class="mdc-checkbox__checkmark"
-                                                     viewBox="0 0 24 24">
-                                                    <path class="mdc-checkbox__checkmark-path"
-                                                          fill="none"
-                                                          d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                                </svg>
-                                                <div class="mdc-checkbox__mixedmark"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                @if (Model.ExportToExcel)
-                                {
-                                    <td>
-                                        <div class="mdc-form-field">
-                                            <div class="mdc-checkbox">
-                                                <input type="checkbox"
-                                                       class="mdc-checkbox__native-control"
-                                                       id="@form.Id-export-excel" name="@form.Id-export-excel" @if (rightsModel.ExportToExcel) { <text> checked</text>} />
-                                                <div class="mdc-checkbox__background">
-                                                    <svg class="mdc-checkbox__checkmark"
-                                                         viewBox="0 0 24 24">
-                                                        <path class="mdc-checkbox__checkmark-path"
-                                                              fill="none"
-                                                              d="M1.73,12.91 8.1,19.28 22.79,4.59" />
-                                                    </svg>
-                                                    <div class="mdc-checkbox__mixedmark"></div>
-                                                </div>
-                                            </div>
-                                            <label for="@form.Id-export-excel">@Localizer["To Excel"]</label>
-                                        </div>
-                                    </td>
-                                }
+
+
 
                             </tr>
 
@@ -399,16 +400,7 @@
                                             <label for="@part.Id-part-edit"></label>
                                         </div>
                                     </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    @if (Model.ExportToExcel)
-                                    {
-                                        <td></td>
-                                    }
+                                    <td colspan="3"></td>
                                 </tr>
                             }
                         }
@@ -417,7 +409,6 @@
             </div>
         </div>
     </form>
-
 </div>
 
 
@@ -438,7 +429,7 @@
                 @Localizer["Delete policy"]?
             </h2>
             <div class="mdc-dialog__content" id="delete-dialog-content">
-                @Localizer["The policy will be permanently deleted"].
+                @Localizer["The policy will be permanently deleted."].
             </div>
             <footer class="mdc-dialog__actions">
                 <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">

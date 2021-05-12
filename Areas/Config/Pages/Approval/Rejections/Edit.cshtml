@@ -4,7 +4,7 @@
 @inject IHtmlLocalizer<SharedResource> Localizer
 
 @{
-    ViewData["Title"] = Model.MtdApprovalStage.Name;
+    ViewData["Title"] = Localizer["Rejection editor"];
     ViewData["SecondTitle"] = Localizer["Edit rejection"];
     string stage = Request.Query["stage"];
 }

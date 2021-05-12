@@ -36,5 +36,16 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
       
             return Page();
         }
+
+
+        public async Task<IActionResult> OnPostDeleteAsync()
+        {
+            var requestForm = await Request.ReadFormAsync();
+            var activityId = requestForm["activityId"];
+            var activity = new MtdFormActivity { Id = activityId };
+            _context.MtdFormActivites.Remove(activity);
+            await _context.SaveChangesAsync();
+            return new OkResult();
+        }
     }
 }

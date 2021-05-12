@@ -10,9 +10,19 @@
 
 @section Breadcrumb {
     <li mtd-data-href="/config"><a href="/config">@Localizer["Configurator"]</a></li>
-    <li mtd-data-href="/config/register"><a href="/config/register">@Localizer["Register"]</a></li>
+    <li mtd-data-href="/config/register"><a href="/config/register">@Localizer["Registers"]</a></li>
     <li>@ViewBag.Title</li>
 }
+
+@section Action {
+
+    <li mtd-data-delete class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__ripple"></span>
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">delete</span>
+        <span class="mdc-list-item__text">@Localizer["Delete register"]</span>
+    </li>
+}
+
 
 <div class="mtd-desk">
     <div class="mtd-desk-panel">
@@ -176,6 +186,41 @@
 
     </form>
 </div>
+
+
+<form mtd-data-form method="post" autocomplete='off' asp-page-handler="Delete">
+    @Html.AntiForgeryToken()
+    <input id="register-delete-id" name="registerId" type="hidden" value="@Model.MtdRegister.Id" />
+    <input id="deleteClicker" mtd-data-clicker type="hidden" mtd-data-location="/config/register" mtd-data-message="@Localizer["The register deleted."]" />
+</form>
+
+
+<div id="dialog-delete" class="mdc-dialog"
+     role="alertdialog"
+     aria-modal="true"
+     aria-labelledby="my-dialog-title"
+     aria-describedby="my-dialog-content">
+    <div class="mdc-dialog__container">
+        <div class="mdc-dialog__surface">
+            <h2 class="mdc-dialog__title" id="delete-part-title">
+                @Localizer["Delete register"]?
+            </h2>
+            <div class="mdc-dialog__content" id="delete-dialog-content">
+                @Localizer["The register and all data associated with it will be permanently deleted."]
+            </div>
+            <footer class="mdc-dialog__actions">
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                    <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                </button>
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+                    <span class="mdc-button__label" onclick="document.getElementById('deleteClicker').click();">@Localizer["Delete"]</span>
+                </button>
+            </footer>
+        </div>
+    </div>
+    <div class="mdc-dialog__scrim"></div>
+</div>
+
 
 @section Scripts {
     <script src="~/lib/mtd-ordermaker/config/js/mtd-config-register-edit.js" asp-append-version="true"></script>

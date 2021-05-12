@@ -25,6 +25,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
 
@@ -36,7 +37,7 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
 
         public PartEditModel(OrderMakerContext context)
         {
-            _context = context;
+            _context = context;            
         }
 
         public MtdForm MtdForm { get; set; }

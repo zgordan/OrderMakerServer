@@ -25,7 +25,7 @@
 
 @{
     ViewData["Title"] = Localizer["Approval editor"];
-    ViewData["SecondTitle"] = $"{SLocalizer["Form approval chain:"]} {Model.MtdApproval.MtdFormNavigation.Name}";
+    ViewData["SecondTitle"] = $"{SLocalizer["Approval flow for:"]} {Model.MtdApproval.MtdFormNavigation.Name}";
 }
 @section Head {
     <link rel="stylesheet" href="~/lib/mtd-ordermaker/config/css/mtd-config-form-edit.css" asp-append-version="true" />
@@ -51,7 +51,7 @@
     <li mtd-data-delete class="mdc-list-item" role="menuitem">
         <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">delete</span>
-        <span class="mdc-list-item__text">@Localizer["Delete approval"]</span>
+        <span class="mdc-list-item__text">@Localizer["Delete approval flow"]</span>
     </li>
 }
 

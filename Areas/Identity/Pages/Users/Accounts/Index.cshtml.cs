@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.Extensions.Localization;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
@@ -20,13 +21,16 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
         private readonly UserHandler _userHandler;
         private readonly RoleManager<WebAppRole> _roleManager;
         private readonly OrderMakerContext _context;
-        
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public IndexModel(UserHandler userHandler, RoleManager<WebAppRole> roleManager, OrderMakerContext context)
+
+        public IndexModel(UserHandler userHandler, RoleManager<WebAppRole> roleManager, OrderMakerContext context, IStringLocalizer<SharedResource> localizer)
         {
             _userHandler = userHandler;
             _roleManager = roleManager;
             _context = context;
+            _localizer = localizer;
+           
         }
 
         public IList<WebAppPerson> Accounts { get; set; }

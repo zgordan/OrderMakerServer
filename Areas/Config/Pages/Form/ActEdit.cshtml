@@ -16,6 +16,16 @@
     <li>@ViewBag.Title</li>
 }
 
+
+@section Action {
+
+    <li mtd-data-delete class="mdc-list-item" role="menuitem">
+        <span class="mdc-list-item__ripple"></span>
+        <span class="mdc-list-item__graphic material-icons" aria-hidden="true">delete</span>
+        <span class="mdc-list-item__text">@Localizer["Delete activity"]</span>
+    </li>
+}
+
 <div class="mtd-desk">
     <div class="mtd-desk-panel">
         <div style="padding-left: 16px">
@@ -39,7 +49,7 @@
     </div>
 </div>
 
-<form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/config/form/activity/edit" novalidate>
+<form mtd-data-form method="post" autocomplete="off"  asp-page-handler="Delete" novalidate>
     @Html.AntiForgeryToken()
     <input type="hidden" asp-for="MtdForm.Id" name="formId" />
     <input type="hidden" asp-for="MtdFormActivity.Id" name="activityId" />
@@ -86,9 +96,53 @@
 </form>
 
 
+<form mtd-data-form method="post" autocomplete='off' asp-page-handler="Delete">
+    @Html.AntiForgeryToken()
+    <input id="activity-delete-id" name="activityId" type="hidden" value="@Model.MtdFormActivity.Id" />
+    <input id="deleteClicker" mtd-data-clicker type="hidden" mtd-data-location="/config/register" mtd-data-message="@Localizer["The activity deleted."]" />
+</form>
+
+
+<div id="dialog-delete" class="mdc-dialog"
+     role="alertdialog"
+     aria-modal="true"
+     aria-labelledby="my-dialog-title"
+     aria-describedby="my-dialog-content">
+    <div class="mdc-dialog__container">
+        <div class="mdc-dialog__surface">
+            <h2 class="mdc-dialog__title" id="delete-part-title">
+                @Localizer["Delete activity"]?
+            </h2>
+            <div class="mdc-dialog__content" id="delete-dialog-content">
+                @Localizer["The activity and all data associated with it will be permanently deleted."]
+            </div>
+            <footer class="mdc-dialog__actions">
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">
+                    <span class="mdc-button__label">@Localizer["Cancel"]</span>
+                </button>
+                <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+                    <span class="mdc-button__label" onclick="document.getElementById('deleteClicker').click();">@Localizer["Delete"]</span>
+                </button>
+            </footer>
+        </div>
+    </div>
+    <div class="mdc-dialog__scrim"></div>
+</div>
+
+
 @section Scripts {
     <script>
+
         new MTDTextField("activity-name");
         new MTDTextField("activity-note");
+
+        const dialog = new mdc.dialog.MDCDialog(document.getElementById('dialog-delete'));
+        if (dialog) {
+            document.querySelector('[mtd-data-delete]').addEventListener('click', () => {
+                dialog.open();
+            });
+        }
+
     </script>
+
 }

@@ -66,7 +66,7 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Approval
             IList<WebAppUser> webAppUsers = await _userHandler.Users.OrderBy(x=>x.Title).ToListAsync();
             UserItems = new List<MTDSelectListItem>
             {
-                new MTDSelectListItem { Id = "owner", Value = "Owner", Selectded = MtdApprovalStage.UserId == "owner" }
+                new MTDSelectListItem { Id = "owner", Value = "Owner", Selectded = MtdApprovalStage.UserId == "owner", Localized=true }
             };
             webAppUsers.ToList().ForEach((item) =>
             {

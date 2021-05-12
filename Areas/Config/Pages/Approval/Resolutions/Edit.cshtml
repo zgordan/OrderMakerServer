@@ -4,8 +4,8 @@
 @inject IHtmlLocalizer<SharedResource> Localizer
 
 @{
-    ViewData["Title"] = Model.MtdApprovalStage.Name;
-    ViewData["SecondTitle"] = Localizer["Edit resolution"];
+    ViewData["Title"] = Localizer["Resolution editor"];
+    ViewData["SecondTitle"] = Localizer["Editing resolution settings"];
     string stage = Request.Query["stage"];
 }
 
@@ -15,7 +15,7 @@
     <li><a href="/config/approval/edit?id=@Model.MtdApprovalStage.MtdApproval">@Localizer["Approval editor"]</a></li>
     <li><a href="/config/approval/stages?idApproval=@Model.MtdApprovalStage.MtdApproval">@Localizer["Stages list"]</a></li>
     <li><a href="/config/approval/resolutions?stage=@Model.MtdApprovalStage.Id">@Localizer["Resolutions"]</a></li>
-    <li>@Localizer["Edit"]</li>
+    <li>@ViewBag.Title</li>
 }
 
 @section Action {

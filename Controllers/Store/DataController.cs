@@ -200,7 +200,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
 
         [HttpPost("create")]
         [ValidateAntiForgeryToken]
-        [Produces("application/json")]
+        [Produces("application/json")]        
         public async Task<IActionResult> OnPostCreateAsync()
         {
             var form = await Request.ReadFormAsync();

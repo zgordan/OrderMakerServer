@@ -4,8 +4,8 @@
 @inject IHtmlLocalizer<SharedResource> Localizer
 
 @{
-    ViewData["Title"] = Model.MtdApprovalStage.Name;
-    ViewData["SecondTitle"] = Localizer["Create new resolution"];
+    ViewData["Title"] = Localizer["New rejection"];
+    ViewData["SecondTitle"] = Localizer["Create new rejection"];
     string stage = Request.Query["stage"];
 }
 
@@ -16,7 +16,7 @@
     <li><a href="/config/approval/edit?id=@Model.MtdApprovalStage.MtdApproval">@Localizer["Approval editor"]</a></li>
     <li><a href="/config/approval/stages?idApproval=@Model.MtdApprovalStage.MtdApproval">@Localizer["Stages list"]</a></li>
     <li><a href="/config/approval/rejections?stage=@Model.MtdApprovalStage.Id">@Localizer["Rejections"]</a></li>
-    <li>@Localizer["Create"]</li>
+    <li>@ViewBag.Title</li>
 }
 
 <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="">

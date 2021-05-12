@@ -25,7 +25,7 @@
 
 @{
     ViewData["Title"] = Localizer["New field"];
-    ViewData["SecondTitle"] = Localizer["Creating form part"];
+    ViewData["SecondTitle"] = Localizer["Creating form field"];
 }
 
 @section Head {
@@ -98,24 +98,26 @@
         </div>
         <div class="mtd-desk-field">
             @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
-                {
-                    Id = "select-type",
-                    Name = "fieldType",
-                    Label = "Field type",
-                    LabelLocalized = true,
-                    Items = Model.TypeItems,
-                    ValueId = Model.TypeItems.Select(x => x.Id).FirstOrDefault()
-                })
+               {
+                   Id = "select-type",
+                   Name = "fieldType",
+                   Label = "Field type",
+                   LabelLocalized = true,
+                   Items = Model.TypeItems,
+                   ValueId = Model.TypeItems.Select(x => x.Id).FirstOrDefault(),
+                   MTDSelectListView = MTDSelectListViews.Outlined,
+               })
         </div>
         <div id="fieldWrapper" class="mtd-desk-field" style="display: none">
             @await Component.InvokeAsync(typeof(MTDSelectList), new MTDSelectListTags
                 {
                     Id = "select-form",
                     Name = "fieldForm",
-                    Label = "Field type",
+                    Label = "List form",
                     LabelLocalized = true,
                     Items = Model.FormItems,
-                    ValueId = Model.FormItems.Select(x => x.Id).FirstOrDefault()
+                    ValueId = Model.FormItems.Select(x => x.Id).FirstOrDefault(),
+                    MTDSelectListView = MTDSelectListViews.Outlined,
                 })
         </div>
     </form>

@@ -4,7 +4,7 @@
 @inject IHtmlLocalizer<SharedResource> Localizer
 
 @{
-    ViewData["Title"] = Model.MtdApprovalStage.Name;
+    ViewData["Title"] = Localizer["Rejections"];
     ViewData["SecondTitle"] = Localizer["Rejections list"];
     string stage = Request.Query["stage"];
 }
@@ -18,7 +18,7 @@
     <li><a href="/config/approval">@Localizer["Approvals"]</a></li>
     <li><a href="/config/approval/edit?id=@Model.MtdApprovalStage.MtdApproval">@Localizer["Approval editor"]</a></li>
     <li><a href="/config/approval/stages?idApproval=@Model.MtdApprovalStage.MtdApproval">@Localizer["Stages list"]</a></li>
-    <li>@Localizer["Rejections"]</li>
+    <li>@ViewBag.Title</li>
 }
 
 <div class="mtd-desk">
@@ -39,7 +39,7 @@
                {
                    Id = "search-text",
                    Name = "searchText",
-                   Placeholder = "Search by name",
+                   Placeholder = "Search for text",
                    PlaceholderLocalized = true,
                    IconLeading = "fas fa-search",
                    Value = Model.SearchText

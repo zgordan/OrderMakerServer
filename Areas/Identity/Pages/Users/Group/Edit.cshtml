@@ -29,7 +29,7 @@
 
 @section Breadcrumb {
     <li><a href="/identity/users">@Localizer["Users"]</a></li>
-    <li><a href="/identity/users/group">@Localizer["Croups"]</a></li>
+    <li><a href="/identity/users/group">@Localizer["Groups"]</a></li>
     <li>@ViewBag.Title</li>
 }
 
@@ -53,7 +53,7 @@
         </div>
     </div>
 
-    <form mtd-data-form method="post" autocomplete="off" action="/api/groups/edit" novalidate>
+    <form mtd-data-form method="post" autocomplete="off" action="/api/users/admin/groups/edit" novalidate>
         @Html.AntiForgeryToken()       
         <input type="hidden" value="@Model.MtdGroup.Id" name="group-id" />
         <input type="hidden" id="clicker-save" mtd-data-clicker  mtd-data-message="@Localizer["Changes saved."]" mtd-data-location="/identity/users/group"/>
@@ -66,7 +66,8 @@
                    Required = true,
                    Value = Model.MtdGroup.Name,
                    Label = "Name",
-                   LabelLocalized = true
+                   LabelLocalized = true,
+                   MTDTexFieldView = MTDTextFieldViews.Outlined
                })
         </div>
 
@@ -90,7 +91,7 @@
 </div>
 
 
-<form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/groups/delete'>
+<form mtd-data-form method="post" autocomplete='off' enctype='multipart/form-data' action='/api/users/admin/groups/delete'>
     @Html.AntiForgeryToken()
     <input id="config-delete-id" name="group-id" type="hidden" value="@Model.MtdGroup.Id" />
     <input id="deleteClicker" mtd-data-clicker mtd-data-location="/identity/users/group" mtd-data-message="@Localizer["The group"] '@Model.MtdGroup.Name' @Localizer["was deleted"]" type="hidden" />

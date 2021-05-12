@@ -47,6 +47,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Mtd.OrderMaker.Server.Extensions;
 using Mtd.OrderMaker.Service;
 using System.Reflection;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace Mtd.OrderMaker.Server
 {
@@ -352,8 +353,8 @@ namespace Mtd.OrderMaker.Server
             {
                 List<MtdSysStyle> mtdSysStyles = new List<MtdSysStyle>
                 {
-                    new MtdSysStyle{Id=4,Name="Line", Description="Line", Active=(sbyte)1},
-                    new MtdSysStyle{Id=5,Name="Column", Description="Column", Active=(sbyte)1}
+                    new MtdSysStyle{Id=4,Name="Lines", Description="Lines", Active=(sbyte)1},
+                    new MtdSysStyle{Id=5,Name="Columns", Description="Columns", Active=(sbyte)1}
                 };
 
                 context.MtdSysStyle.AddRange(mtdSysStyles);
