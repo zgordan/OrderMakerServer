@@ -323,7 +323,7 @@ namespace Mtd.OrderMaker.Server
                     //new MtdSysType{ Id = 10, Name="Time",Description="Time",Active=false},
                     new MtdSysType{ Id = 11, Name="List",Description="List",Active=active},
                     new MtdSysType{ Id = 12, Name="Checkbox",Description="Checkbox",Active=active},
-                    new MtdSysType{ Id = 13, Name="Link",Description="Link",Active=active},
+                   // new MtdSysType{ Id = 13, Name="Link",Description="Link",Active=active},
                 };
 
                 context.MtdSysType.AddRange(mtdSysTypes);
