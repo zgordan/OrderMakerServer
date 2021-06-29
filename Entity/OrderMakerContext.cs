@@ -64,7 +64,6 @@ namespace Mtd.OrderMaker.Server.Entity
 
             SystemModelCreating(modelBuilder);
 
-
             modelBuilder.Entity<MtdCategoryForm>(entity =>
             {
                 entity.ToTable("mtd_category_form");

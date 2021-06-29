@@ -106,16 +106,16 @@ const ListenerForDataHref = () => {
     items.forEach((item) => {
         item.addEventListener('click', () => {
             ActionShowModal(true);
-            
+
             const href = item.getAttribute('mtd-data-href');
             const target = item.getAttribute('mtd_data_href-target');
 
             if (target) {
-                setTimeout(() => { window.open(href, target); }, 500);  
+                setTimeout(() => { window.open(href, target); }, 500);
                 ActionShowModal();
             } else {
-                setTimeout(() => { window.location.href = href; }, 500); 
-                
+                setTimeout(() => { window.location.href = href; }, 500);
+
             }
         });
     });
@@ -170,7 +170,7 @@ const ListenerForPostData = () => {
             const message = clicker.getAttribute('mtd-data-message');
 
             clicker.addEventListener('click', () => {
-           
+
                 const validate = form.reportValidity();
                 if (!validate) {
                     return false;
@@ -185,7 +185,7 @@ const ListenerForPostData = () => {
                 const xmlHttp = new XMLHttpRequest();
                 xmlHttp.responseType = 'json';
                 xmlHttp.open("post", action, true);
-                xmlHttp.send(formData);               
+                xmlHttp.send(formData);
                 xmlHttp.onreadystatechange = function () {
 
                     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
@@ -199,7 +199,7 @@ const ListenerForPostData = () => {
                         }
                     }
 
-                    if (xmlHttp.status == 400) {                        
+                    if (xmlHttp.status == 400) {
                         setTimeout(() => { ActionShowModal(); MainShowSnackBar(xmlHttp.response.value, true); }, 1000);
                     }
 
@@ -319,37 +319,29 @@ toggleButtons.forEach((item) => {
 });
 
 
-
 const drawer = mdc.drawer.MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
-
 const topAppBar = mdc.topAppBar.MDCTopAppBar.attachTo(document.getElementById('app-bar'));
-//topAppBar.setScrollTarget(document.getElementById('drawer-main-content'));
+
 topAppBar.listen('MDCTopAppBar:nav', () => {
     drawer.open = !drawer.open;
 });
 
-let checked = 0;
 const url = window.location.href.toLowerCase();
+var mainMenuItems = document.querySelectorAll("a[name='mainMenuItem']");
+var notSelected = true;
+var cssActivated = "mdc-list-item--activated";
 
-if (url.includes("/identity/users")) {
-    checked++;
-    document.getElementById("menu-users").classList.add("mdc-list-item--activated");
-}
+mainMenuItems.forEach((item, index) => {
+    
+    if (url.includes(item.href.toLowerCase()) && index !== 0) {
 
-if (url.includes("/config")) {
-    checked++;
-    document.getElementById("menu-config").classList.add("mdc-list-item--activated");
-}
+        item.classList.add(cssActivated);
+        notSelected = false;
+    }
+    
+});
 
-if (url.includes("/identity/account/manage")) {
-    checked++;
-    document.getElementById("menu-account").classList.add("mdc-list-item--activated");
-}
-
-if (checked === 0) {
-    document.getElementById("menu-desk").classList.add("mdc-list-item--activated");
-}
-
+if (notSelected) { mainMenuItems[0].classList.add(cssActivated); }
 
 ListenerForDataHref();
 ListenerForPostData();

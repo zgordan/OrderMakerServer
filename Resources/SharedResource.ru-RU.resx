@@ -1551,4 +1551,25 @@
   <data name="New form activity created." xml:space="preserve">
     <value>Создана новая активность.</value>
   </data>
+  <data name="Consider Email Confirmed." xml:space="preserve">
+    <value>Считать подтвержденным.</value>
+  </data>
+  <data name="Creating new approval chain" xml:space="preserve">
+    <value>Создание новой цепочки согласования</value>
+  </data>
+  <data name="Form Approval Chain" xml:space="preserve">
+    <value>Согласование для документа</value>
+  </data>
+  <data name="Catalogs" xml:space="preserve">
+    <value>Справочники</value>
+  </data>
+  <data name="Title name" xml:space="preserve">
+    <value>Отображаемое имя</value>
+  </data>
+  <data name="Transfer of documents" xml:space="preserve">
+    <value>Передача документов</value>
+  </data>
+  <data name="Transfer of documents to the user." xml:space="preserve">
+    <value>Передча всех  документов другому пользователю.</value>
+  </data>
 </root>

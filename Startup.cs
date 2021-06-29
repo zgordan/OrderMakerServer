@@ -21,13 +21,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Entity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Mtd.OrderMaker.Server.AppConfig;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Mtd.OrderMaker.Server.Services;
 using System;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
@@ -39,15 +37,9 @@ using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
-using Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore;
-using Mtd.OrderMaker.Server;
 using Microsoft.Extensions.Hosting;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Mtd.OrderMaker.Server.Extensions;
 using Mtd.OrderMaker.Service;
-using System.Reflection;
-using Microsoft.AspNetCore.Http.Features;
+
 
 namespace Mtd.OrderMaker.Server
 {
@@ -134,6 +126,7 @@ namespace Mtd.OrderMaker.Server
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.Configure<ConfigSettings>(Configuration.GetSection("ConfigSettings"));
             services.Configure<LimitSettings>(Configuration.GetSection("LimitSettings"));
+            
 
             services.AddMvc(options => options.EnableEndpointRouting = false);
 

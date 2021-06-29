@@ -4,8 +4,8 @@
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>aspnet-Mtd.OrderMaker.Server-37BF32C5-192C-49FD-9796-64BBBCB87F61</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <AssemblyVersion>1.3.11.5</AssemblyVersion>
-    <FileVersion>1.3.11.5</FileVersion>
+    <AssemblyVersion>1.3.12.6</AssemblyVersion>
+    <FileVersion>1.3.12.1</FileVersion>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>http://ordermaker.org</PackageProjectUrl>
@@ -18,10 +18,10 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
 </Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <RepositoryUrl>https://github.com/olegbruev/OrderMakerServer</RepositoryUrl>
-    <PackageReleaseNotes>Release 1.3.11.beta.5</PackageReleaseNotes>
+    <PackageReleaseNotes>Release 1.3.12.beta.1</PackageReleaseNotes>
     <PackageIconUrl>http://ordermaker.org/favicon.ico</PackageIconUrl>
     <ApplicationIcon>form.ico</ApplicationIcon>
-    <Version>1.3.11</Version>
+    <Version>1.3.12</Version>
     <Platforms>AnyCPU;x64</Platforms>
     <TypeScriptToolsVersion>3.8</TypeScriptToolsVersion>
   </PropertyGroup>
@@ -1818,6 +1818,11 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
     <Folder Include="wwwroot\lib\mtd-ordermaker\config\css\" />
     <Folder Include="wwwroot\lib\mtd-ordermaker\ui\css\" />
     <Folder Include="wwwroot\lib\mtd-ordermaker\users\css\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 
 

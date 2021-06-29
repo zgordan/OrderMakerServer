@@ -1,8 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace Mtd.OrderMaker.Server.Entity
 {
@@ -152,11 +149,6 @@ namespace Mtd.OrderMaker.Server.Entity
 
                 entity.Property(e => e.RelatedEdit)
                     .HasColumnName("related_edit")
-                    .HasColumnType("tinyint(4)")
-                    .HasDefaultValueSql("'0'");
-
-                entity.Property(e => e.Responsibility)
-                    .HasColumnName("responsibility")
                     .HasColumnType("tinyint(4)")
                     .HasDefaultValueSql("'0'");
 
