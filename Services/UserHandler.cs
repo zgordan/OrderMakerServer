@@ -16,23 +16,19 @@
     along with this program.If not, see https://www.gnu.org/licenses/.
 */
 
-using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Security.Claims;
-using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 

@@ -71,7 +71,6 @@ namespace Mtd.OrderMaker.Server.Pages
 
                 RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
     
-                string webRootPath = _hostingEnvironment.WebRootPath;
                 string contentRootPath = _hostingEnvironment.ContentRootPath;
                 var file = Path.Combine(contentRootPath, "wwwroot", "lib", "mtd-ordermaker", "emailform", "error.html");
                 var htmlArray = System.IO.File.ReadAllText(file);

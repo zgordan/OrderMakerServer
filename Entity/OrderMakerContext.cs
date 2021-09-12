@@ -25,9 +25,7 @@ namespace Mtd.OrderMaker.Server.Entity
 {
     public partial class OrderMakerContext : DbContext
     {
-        public OrderMakerContext()
-        {
-        }
+        public OrderMakerContext() {}
 
         public OrderMakerContext(DbContextOptions<OrderMakerContext> options)
             : base(options)
