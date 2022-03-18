@@ -24,8 +24,8 @@ MTD OrderMaker includes the Configurator module, provides administrators to crea
 ## How to start
 
 1. Download and install .Net Core 5.0 for Windows OS [x86](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-5.0.406-windows-x86-installer) or [x64](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-5.0.406-windows-x64-installer) depending on the operating system, also download and install the Hosting Bundle [x86](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-aspnetcore-5.0.15-windows-x86-installer) or [x64](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-aspnetcore-5.0.15-windows-x64-installer) if you will be using IIS as your web server.
-2. Download and install MySql Community Server 8.0 ([recommendation 18.15](https://downloads.mysql.com/archives/get/p/23/file/mysql-8.0.15-winx64.zip)). The MySql user you will use to connect from the web application must have Database Creator permissions.  
-3. Download the OrderMaker latest release in the publish.zip file archive.
+2. Download and install MySql Community Server 8.0 ([recommendation 8.0.15](https://downloads.mysql.com/archives/get/p/23/file/mysql-8.0.15-winx64.zip)). The MySql user you will use to connect from the web application must have Database Creator permissions.  
+3. Download the OrderMaker [latest release](https://github.com/olegbruev/OrderMakerServer/releases) in the publish.zip file archive.
 4. Unzip it and create file appsettings.json in same folder.  Use the appsettings.Template.json file to understand what settings you need to specify.
 5. Run Mtd.OrderMaker.Server.exe file. When opening the application in a browser, log in with the username and password that you specify in the appsettings.json file.
 6. Open the Configurator and Form Template Builder. Create a form. Then use the Action button to create the Part form (section). Open the created section and then create some field using Action button.
