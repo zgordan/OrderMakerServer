@@ -9,117 +9,117 @@ using Mtd.OrderMaker.Server.Entity;
 namespace Mtd.OrderMaker.Server.Migrations
 {
     [DbContext(typeof(OrderMakerContext))]
-    [Migration("20200717152807_UpdateExportToExcel")]
-    partial class UpdateExportToExcel
+    [Migration("20220318083038_InitDatabase")]
+    partial class InitDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.5")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64)
+                .HasAnnotation("ProductVersion", "5.0.5");
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdApproval", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnName("description")
-                        .HasColumnType("varchar(512)");
+                        .HasColumnType("varchar(512)")
+                        .HasColumnName("description");
 
                     b.Property<byte[]>("ImgApproved")
-                        .HasColumnName("img_approved")
-                        .HasColumnType("mediumblob");
+                        .HasColumnType("mediumblob")
+                        .HasColumnName("img_approved");
 
                     b.Property<string>("ImgApprovedText")
-                        .HasColumnName("img_approved_text")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("img_approved_text");
 
                     b.Property<string>("ImgApprovedType")
-                        .HasColumnName("img_approved_type")
-                        .HasColumnType("varchar(48)");
+                        .HasColumnType("varchar(48)")
+                        .HasColumnName("img_approved_type");
 
                     b.Property<byte[]>("ImgIteraction")
-                        .HasColumnName("img_iteraction")
-                        .HasColumnType("mediumblob");
+                        .HasColumnType("mediumblob")
+                        .HasColumnName("img_iteraction");
 
                     b.Property<string>("ImgIteractionText")
-                        .HasColumnName("img_iteraction_text")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("img_iteraction_text");
 
                     b.Property<string>("ImgIteractionType")
-                        .HasColumnName("img_iteraction_type")
-                        .HasColumnType("varchar(48)");
+                        .HasColumnType("varchar(48)")
+                        .HasColumnName("img_iteraction_type");
 
                     b.Property<byte[]>("ImgRejected")
-                        .HasColumnName("img_rejected")
-                        .HasColumnType("mediumblob");
+                        .HasColumnType("mediumblob")
+                        .HasColumnName("img_rejected");
 
                     b.Property<string>("ImgRejectedText")
-                        .HasColumnName("img_rejected_text")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("img_rejected_text");
 
                     b.Property<string>("ImgRejectedType")
-                        .HasColumnName("img_rejected_type")
-                        .HasColumnType("varchar(48)");
+                        .HasColumnType("varchar(48)")
+                        .HasColumnName("img_rejected_type");
 
                     b.Property<byte[]>("ImgRequired")
-                        .HasColumnName("img_required")
-                        .HasColumnType("mediumblob");
+                        .HasColumnType("mediumblob")
+                        .HasColumnName("img_required");
 
                     b.Property<string>("ImgRequiredText")
-                        .HasColumnName("img_required_text")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("img_required_text");
 
                     b.Property<string>("ImgRequiredType")
-                        .HasColumnName("img_required_type")
-                        .HasColumnType("varchar(48)");
+                        .HasColumnType("varchar(48)")
+                        .HasColumnName("img_required_type");
 
                     b.Property<byte[]>("ImgStart")
-                        .HasColumnName("img_start")
-                        .HasColumnType("mediumblob");
+                        .HasColumnType("mediumblob")
+                        .HasColumnName("img_start");
 
                     b.Property<string>("ImgStartText")
-                        .HasColumnName("img_start_text")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("img_start_text");
 
                     b.Property<string>("ImgStartType")
-                        .HasColumnName("img_start_type")
-                        .HasColumnType("varchar(48)");
+                        .HasColumnType("varchar(48)")
+                        .HasColumnName("img_start_type");
 
                     b.Property<byte[]>("ImgWaiting")
-                        .HasColumnName("img_waiting")
-                        .HasColumnType("mediumblob");
+                        .HasColumnType("mediumblob")
+                        .HasColumnName("img_waiting");
 
                     b.Property<string>("ImgWaitingText")
-                        .HasColumnName("img_waiting_text")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("img_waiting_text");
 
                     b.Property<string>("ImgWaitingType")
-                        .HasColumnName("img_waiting_type")
-                        .HasColumnType("varchar(48)");
+                        .HasColumnType("varchar(48)")
+                        .HasColumnName("img_waiting_type");
 
                     b.Property<string>("MtdForm")
                         .IsRequired()
-                        .HasColumnName("mtd_form")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_form");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(120)");
+                        .HasColumnType("varchar(120)")
+                        .HasColumnName("name");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdForm")
-                        .HasName("fk_approvel_form_idx");
+                        .HasDatabaseName("fk_approvel_form_idx");
 
                     b.ToTable("mtd_approval");
                 });
@@ -127,55 +127,55 @@ namespace Mtd.OrderMaker.Server.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdApprovalRejection", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("Color")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("color")
                         .HasColumnType("varchar(45)")
+                        .HasColumnName("color")
                         .HasDefaultValueSql("'green'");
 
                     b.Property<byte[]>("ImgData")
-                        .HasColumnName("img_data")
-                        .HasColumnType("mediumblob");
+                        .HasColumnType("mediumblob")
+                        .HasColumnName("img_data");
 
                     b.Property<string>("ImgType")
-                        .HasColumnName("img_type")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("img_type");
 
                     b.Property<int>("MtdApprovalStageId")
-                        .HasColumnName("mtd_approval_stage_id")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("mtd_approval_stage_id");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("name");
 
                     b.Property<string>("Note")
                         .IsRequired()
-                        .HasColumnName("note")
-                        .HasColumnType("varchar(512)");
+                        .HasColumnType("varchar(512)")
+                        .HasColumnName("note");
 
                     b.Property<int>("Sequence")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("sequence")
                         .HasColumnType("int(11)")
+                        .HasColumnName("sequence")
                         .HasDefaultValueSql("'0'");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdApprovalStageId")
-                        .HasName("fk_rejection_stage_idx");
+                        .HasDatabaseName("fk_rejection_stage_idx");
 
                     b.HasIndex("Sequence")
-                        .HasName("ix_sequence");
+                        .HasDatabaseName("ix_sequence");
 
                     b.ToTable("mtd_approval_rejection");
                 });
@@ -183,55 +183,55 @@ namespace Mtd.OrderMaker.Server.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdApprovalResolution", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("Color")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("color")
                         .HasColumnType("varchar(45)")
+                        .HasColumnName("color")
                         .HasDefaultValueSql("'green'");
 
                     b.Property<byte[]>("ImgData")
-                        .HasColumnName("img_data")
-                        .HasColumnType("mediumblob");
+                        .HasColumnType("mediumblob")
+                        .HasColumnName("img_data");
 
                     b.Property<string>("ImgType")
-                        .HasColumnName("img_type")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("img_type");
 
                     b.Property<int>("MtdApprovalStageId")
-                        .HasColumnName("mtd_approval_stage_id")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("mtd_approval_stage_id");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("name");
 
                     b.Property<string>("Note")
                         .IsRequired()
-                        .HasColumnName("note")
-                        .HasColumnType("varchar(512)");
+                        .HasColumnType("varchar(512)")
+                        .HasColumnName("note");
 
                     b.Property<int>("Sequence")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("sequence")
                         .HasColumnType("int(11)")
+                        .HasColumnName("sequence")
                         .HasDefaultValueSql("'0'");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdApprovalStageId")
-                        .HasName("fk_resolution_stage_idx");
+                        .HasDatabaseName("fk_resolution_stage_idx");
 
                     b.HasIndex("Sequence")
-                        .HasName("ix_sequence");
+                        .HasDatabaseName("ix_sequence");
 
                     b.ToTable("mtd_approval_resolution");
                 });
@@ -240,49 +240,49 @@ namespace Mtd.OrderMaker.Server.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("id");
 
                     b.Property<string>("BlockParts")
                         .IsRequired()
-                        .HasColumnName("block_parts")
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("block_parts");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnName("description")
-                        .HasColumnType("varchar(512)");
+                        .HasColumnType("varchar(512)")
+                        .HasColumnName("description");
 
                     b.Property<string>("MtdApproval")
                         .IsRequired()
-                        .HasColumnName("mtd_approval")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_approval");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(120)");
+                        .HasColumnType("varchar(120)")
+                        .HasColumnName("name");
 
                     b.Property<int>("Stage")
-                        .HasColumnName("stage")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("stage");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnName("user_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("user_id");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdApproval")
-                        .HasName("fk_stage_approval_idx");
+                        .HasDatabaseName("fk_stage_approval_idx");
 
                     b.HasIndex("UserId")
-                        .HasName("IX_USER");
+                        .HasDatabaseName("IX_USER");
 
                     b.ToTable("mtd_approval_stage");
                 });
@@ -290,32 +290,32 @@ namespace Mtd.OrderMaker.Server.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdCategoryForm", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnName("description")
-                        .HasColumnType("varchar(512)");
+                        .HasColumnType("varchar(512)")
+                        .HasColumnName("description");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(120)");
+                        .HasColumnType("varchar(120)")
+                        .HasColumnName("name");
 
                     b.Property<string>("Parent")
                         .IsRequired()
-                        .HasColumnName("parent")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("parent");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("Parent")
-                        .HasName("fk_group_themself_idx");
+                        .HasDatabaseName("fk_group_themself_idx");
 
                     b.ToTable("mtd_category_form");
                 });
@@ -324,34 +324,34 @@ namespace Mtd.OrderMaker.Server.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("id");
 
                     b.Property<byte[]>("FileData")
                         .IsRequired()
-                        .HasColumnName("file_data")
-                        .HasColumnType("mediumblob");
+                        .HasColumnType("mediumblob")
+                        .HasColumnName("file_data");
 
                     b.Property<string>("FileSize")
                         .IsRequired()
-                        .HasColumnName("file_size")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("file_size");
 
                     b.Property<string>("FileType")
                         .IsRequired()
-                        .HasColumnName("file_type")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("file_type");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("name");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.ToTable("mtd_config_file");
                 });
@@ -360,94 +360,137 @@ namespace Mtd.OrderMaker.Server.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("id");
 
                     b.Property<string>("Name")
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("name");
 
                     b.Property<string>("Value")
-                        .HasColumnName("value")
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("value");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.ToTable("mtd_config_param");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdEventSubscribe", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
+
+                    b.Property<sbyte>("EventCreate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(4)")
+                        .HasColumnName("event_create")
+                        .HasDefaultValueSql("'0'");
+
+                    b.Property<sbyte>("EventEdit")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(4)")
+                        .HasColumnName("event_edit")
+                        .HasDefaultValueSql("'0'");
+
+                    b.Property<string>("MtdFormId")
+                        .IsRequired()
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_form_id");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique()
+                        .HasDatabaseName("id_unique");
+
+                    b.HasIndex("MtdFormId")
+                        .HasDatabaseName("fk_mtd_event_mtd_form_idx");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_user_id");
+
+                    b.ToTable("mtd_event_subscribe");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFilter", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("id");
 
                     b.Property<string>("IdUser")
                         .IsRequired()
-                        .HasColumnName("idUser")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("idUser");
 
                     b.Property<string>("MtdForm")
                         .IsRequired()
-                        .HasColumnName("mtd_form")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_form");
 
                     b.Property<int>("Page")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("page")
                         .HasColumnType("int(11)")
+                        .HasColumnName("page")
                         .HasDefaultValueSql("'1'");
 
                     b.Property<int>("PageSize")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("page_size")
                         .HasColumnType("int(11)")
+                        .HasColumnName("page_size")
                         .HasDefaultValueSql("'10'");
 
                     b.Property<string>("SearchNumber")
                         .IsRequired()
-                        .HasColumnName("searchNumber")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("searchNumber");
 
                     b.Property<string>("SearchText")
                         .IsRequired()
-                        .HasColumnName("searchText")
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("varchar(256)")
+                        .HasColumnName("searchText");
 
                     b.Property<sbyte>("ShowDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("show_date")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("show_date")
                         .HasDefaultValueSql("'1'");
 
                     b.Property<sbyte>("ShowNumber")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("show_number")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("show_number")
                         .HasDefaultValueSql("'1'");
 
                     b.Property<int>("WaitList")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("waitlist")
                         .HasColumnType("int(11)")
+                        .HasColumnName("waitlist")
                         .HasDefaultValueSql("'0'");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("IdUser")
-                        .HasName("IX_INDEX_USER");
+                        .HasDatabaseName("IX_INDEX_USER");
 
                     b.HasIndex("MtdForm")
-                        .HasName("mtd_filter_mtd_form_idx");
+                        .HasDatabaseName("mtd_filter_mtd_form_idx");
 
                     b.ToTable("mtd_filter");
                 });
@@ -456,35 +499,35 @@ namespace Mtd.OrderMaker.Server.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("id");
 
                     b.Property<int>("MtdFilter")
-                        .HasColumnName("mtd_filter")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("mtd_filter");
 
                     b.Property<string>("MtdFormPartField")
                         .IsRequired()
-                        .HasColumnName("mtd_form_part_field")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_form_part_field");
 
                     b.Property<int>("Sequence")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("sequence")
                         .HasColumnType("int(11)")
+                        .HasColumnName("sequence")
                         .HasDefaultValueSql("'0'");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdFilter")
-                        .HasName("mtd_filter_column_idx");
+                        .HasDatabaseName("mtd_filter_column_idx");
 
                     b.HasIndex("MtdFormPartField")
-                        .HasName("mtd_roster_field_idx");
+                        .HasDatabaseName("mtd_roster_field_idx");
 
                     b.ToTable("mtd_filter_column");
                 });
@@ -492,22 +535,22 @@ namespace Mtd.OrderMaker.Server.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFilterDate", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("DateEnd")
-                        .HasColumnName("date_end")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime")
+                        .HasColumnName("date_end");
 
                     b.Property<DateTime>("DateStart")
-                        .HasColumnName("date_start")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime")
+                        .HasColumnName("date_start");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.ToTable("mtd_filter_date");
                 });
@@ -516,45 +559,45 @@ namespace Mtd.OrderMaker.Server.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("bigint(20)");
+                        .HasColumnType("bigint(20)")
+                        .HasColumnName("id");
 
                     b.Property<int>("MtdFilter")
-                        .HasColumnName("mtd_filter")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("mtd_filter");
 
                     b.Property<string>("MtdFormPartField")
                         .IsRequired()
-                        .HasColumnName("mtd_form_part_field")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_form_part_field");
 
                     b.Property<int>("MtdTerm")
-                        .HasColumnName("mtd_term")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("mtd_term");
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasColumnName("value")
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("varchar(256)")
+                        .HasColumnName("value");
 
                     b.Property<string>("ValueExtra")
-                        .HasColumnName("value_extra")
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("varchar(256)")
+                        .HasColumnName("value_extra");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdFilter")
-                        .HasName("mtd_filter_idx");
+                        .HasDatabaseName("mtd_filter_idx");
 
                     b.HasIndex("MtdFormPartField")
-                        .HasName("mtd_filter_field_mtd_form_field_idx");
+                        .HasDatabaseName("mtd_filter_field_mtd_form_field_idx");
 
                     b.HasIndex("MtdTerm")
-                        .HasName("mtd_filter_field_term_idx");
+                        .HasDatabaseName("mtd_filter_field_term_idx");
 
                     b.ToTable("mtd_filter_field");
                 });
@@ -562,53 +605,77 @@ namespace Mtd.OrderMaker.Server.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFilterOwner", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("id");
 
                     b.Property<string>("OwnerId")
                         .IsRequired()
-                        .HasColumnName("owner_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("owner_id");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.ToTable("mtd_filter_owner");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFilterRelated", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int(11)")
+                        .HasColumnName("id");
+
+                    b.Property<int>("DocBasedNumber")
+                        .HasColumnType("int(11)")
+                        .HasColumnName("doc-based-number");
+
+                    b.Property<string>("FormId")
+                        .IsRequired()
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("form_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique()
+                        .HasDatabaseName("id_UNIQUE");
+
+                    b.ToTable("mtd_filter_related");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFilterScript", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("id");
 
                     b.Property<string>("MtdFormId")
                         .IsRequired()
-                        .HasColumnName("mtd_form_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_form_id");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("varchar(256)")
+                        .HasColumnName("name");
 
                     b.Property<string>("Script")
                         .IsRequired()
-                        .HasColumnName("script")
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("script");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdFormId")
-                        .HasName("fk_script_filter_idx");
+                        .HasDatabaseName("fk_script_filter_idx");
 
                     b.ToTable("mtd_filter_script");
                 });
@@ -616,28 +683,28 @@ namespace Mtd.OrderMaker.Server.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFilterScriptApply", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<int>("MtdFilterId")
-                        .HasColumnName("mtd_filter_id")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("mtd_filter_id");
 
                     b.Property<int>("MtdFilterScriptId")
-                        .HasColumnName("mtd_filter_script_id")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("mtd_filter_script_id");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdFilterId")
-                        .HasName("fk_script_filter_apply1_idx");
+                        .HasDatabaseName("fk_script_filter_apply1_idx");
 
                     b.HasIndex("MtdFilterScriptId")
-                        .HasName("fk_script_filter_apply2_idx");
+                        .HasDatabaseName("fk_script_filter_apply2_idx");
 
                     b.ToTable("mtd_filter_script_apply");
                 });
@@ -645,56 +712,56 @@ namespace Mtd.OrderMaker.Server.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdForm", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<sbyte>("Active")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("active")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("active")
                         .HasDefaultValueSql("'1'");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnName("description")
-                        .HasColumnType("varchar(512)");
+                        .HasColumnType("varchar(512)")
+                        .HasColumnName("description");
 
                     b.Property<string>("MtdCategory")
                         .IsRequired()
-                        .HasColumnName("mtd_category")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_category");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(120)");
+                        .HasColumnType("varchar(120)")
+                        .HasColumnName("name");
 
                     b.Property<string>("Parent")
                         .HasColumnType("varchar(36)");
 
                     b.Property<int>("Sequence")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("sequence")
                         .HasColumnType("int(11)")
+                        .HasColumnName("sequence")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("VisibleDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("visible_date")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("visible_date")
                         .HasDefaultValueSql("'1'");
 
                     b.Property<sbyte>("VisibleNumber")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("visible_number")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("visible_number")
                         .HasDefaultValueSql("'1'");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdCategory");
 
@@ -703,45 +770,90 @@ namespace Mtd.OrderMaker.Server.Migrations
                     b.ToTable("mtd_form");
                 });
 
-            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFormDesk", b =>
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFormActivity", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
-                    b.Property<string>("ColorBack")
+                    b.Property<string>("Description")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("color_back")
-                        .HasColumnType("varchar(45)")
-                        .HasDefaultValueSql("'gray'");
-
-                    b.Property<string>("ColorFont")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("color_font")
-                        .HasColumnType("varchar(45)")
-                        .HasDefaultValueSql("'white'");
+                        .HasColumnType("varchar(512)")
+                        .HasColumnName("description");
 
                     b.Property<byte[]>("Image")
-                        .IsRequired()
-                        .HasColumnName("image")
-                        .HasColumnType("mediumblob");
-
-                    b.Property<int>("ImageSize")
-                        .HasColumnName("image_size")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("mediumblob")
+                        .HasColumnName("image");
 
                     b.Property<string>("ImageType")
+                        .HasColumnType("varchar(256)")
+                        .HasColumnName("image_type");
+
+                    b.Property<string>("MtdFormId")
                         .IsRequired()
-                        .HasColumnName("image_type")
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_form_id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(120)")
+                        .HasColumnName("name");
+
+                    b.Property<int>("Sequence")
+                        .HasColumnType("int(11)")
+                        .HasColumnName("sequence");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
+
+                    b.HasIndex("MtdFormId")
+                        .HasDatabaseName("fk_mtd_form_activity_idx");
+
+                    b.ToTable("mtd_form_activity");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFormDesk", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
+
+                    b.Property<string>("ColorBack")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("color_back")
+                        .HasDefaultValueSql("'gray'");
+
+                    b.Property<string>("ColorFont")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("color_font")
+                        .HasDefaultValueSql("'white'");
+
+                    b.Property<byte[]>("Image")
+                        .IsRequired()
+                        .HasColumnType("mediumblob")
+                        .HasColumnName("image");
+
+                    b.Property<int>("ImageSize")
+                        .HasColumnType("int(11)")
+                        .HasColumnName("image_size");
+
+                    b.Property<string>("ImageType")
+                        .IsRequired()
+                        .HasColumnType("varchar(256)")
+                        .HasColumnName("image_type");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique()
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.ToTable("mtd_form_desk");
                 });
@@ -749,28 +861,28 @@ namespace Mtd.OrderMaker.Server.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFormHeader", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<byte[]>("Image")
                         .IsRequired()
-                        .HasColumnName("image")
-                        .HasColumnType("mediumblob");
+                        .HasColumnType("mediumblob")
+                        .HasColumnName("image");
 
                     b.Property<int>("ImageSize")
-                        .HasColumnName("image_size")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("image_size");
 
                     b.Property<string>("ImageType")
                         .IsRequired()
-                        .HasColumnName("image_type")
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("varchar(256)")
+                        .HasColumnName("image_type");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.ToTable("mtd_form_header");
                 });
@@ -778,22 +890,22 @@ namespace Mtd.OrderMaker.Server.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFormList", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("MtdForm")
                         .IsRequired()
-                        .HasColumnName("mtd_form")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_form");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdForm")
-                        .HasName("fk_list_form_idx");
+                        .HasDatabaseName("fk_list_form_idx");
 
                     b.ToTable("mtd_form_list");
                 });
@@ -801,63 +913,63 @@ namespace Mtd.OrderMaker.Server.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFormPart", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<sbyte>("Active")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("active")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("active")
                         .HasDefaultValueSql("'1'");
 
                     b.Property<sbyte>("Child")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("child")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("child")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnName("description")
-                        .HasColumnType("varchar(512)");
+                        .HasColumnType("varchar(512)")
+                        .HasColumnName("description");
 
                     b.Property<string>("MtdForm")
                         .IsRequired()
-                        .HasColumnName("mtd_form")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_form");
 
                     b.Property<int>("MtdSysStyle")
-                        .HasColumnName("mtd_sys_style")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("mtd_sys_style");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(120)");
+                        .HasColumnType("varchar(120)")
+                        .HasColumnName("name");
 
                     b.Property<int>("Sequence")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("sequence")
                         .HasColumnType("int(11)")
+                        .HasColumnName("sequence")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("Title")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("title")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("title")
                         .HasDefaultValueSql("'1'");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdForm")
-                        .HasName("fk_mtd_form_part_mtd_form1_idx");
+                        .HasDatabaseName("fk_mtd_form_part_mtd_form1_idx");
 
                     b.HasIndex("MtdSysStyle")
-                        .HasName("fk_mtd_form_part_mtd_sys_style1_idx");
+                        .HasDatabaseName("fk_mtd_form_part_mtd_sys_style1_idx");
 
                     b.ToTable("mtd_form_part");
                 });
@@ -865,79 +977,79 @@ namespace Mtd.OrderMaker.Server.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFormPartField", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<sbyte>("Active")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("active")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("active")
                         .HasDefaultValueSql("'1'");
 
                     b.Property<string>("DefaultData")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("default_data")
                         .HasColumnType("varchar(255)")
-                        .HasDefaultValue("");
+                        .HasDefaultValue("")
+                        .HasColumnName("default_data");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnName("description")
-                        .HasColumnType("varchar(512)");
+                        .HasColumnType("varchar(512)")
+                        .HasColumnName("description");
 
                     b.Property<string>("MtdFormPart")
                         .IsRequired()
-                        .HasColumnName("mtd_form_part")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_form_part");
 
                     b.Property<string>("MtdSysTrigger")
                         .IsRequired()
-                        .HasColumnName("mtd_sys_trigger")
                         .HasColumnType("varchar(36)")
-                        .HasDefaultValue("'9C85B07F-9236-4314-A29E-87B20093CF82'");
+                        .HasDefaultValue("'9C85B07F-9236-4314-A29E-87B20093CF82'")
+                        .HasColumnName("mtd_sys_trigger");
 
                     b.Property<int>("MtdSysType")
-                        .HasColumnName("mtd_sys_type")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("mtd_sys_type");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(120)");
+                        .HasColumnType("varchar(120)")
+                        .HasColumnName("name");
 
                     b.Property<sbyte>("ReadOnly")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("read_only")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("read_only")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("Required")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("required")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("required")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<int>("Sequence")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("sequence")
                         .HasColumnType("int(11)")
+                        .HasColumnName("sequence")
                         .HasDefaultValueSql("'0'");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdFormPart")
-                        .HasName("fk_mtd_form_part_field_mtd_form_part1_idx");
+                        .HasDatabaseName("fk_mtd_form_part_field_mtd_form_part1_idx");
 
                     b.HasIndex("MtdSysTrigger")
-                        .HasName("fk_mtd_form_part_field_mtd_sys_trigger_idx");
+                        .HasDatabaseName("fk_mtd_form_part_field_mtd_sys_trigger_idx");
 
                     b.HasIndex("MtdSysType")
-                        .HasName("fk_mtd_form_part_field_mtd_sys_type1_idx");
+                        .HasDatabaseName("fk_mtd_form_part_field_mtd_sys_type1_idx");
 
                     b.ToTable("mtd_form_part_field");
                 });
@@ -945,53 +1057,84 @@ namespace Mtd.OrderMaker.Server.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFormPartHeader", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<byte[]>("Image")
                         .IsRequired()
-                        .HasColumnName("image")
-                        .HasColumnType("mediumblob");
+                        .HasColumnType("mediumblob")
+                        .HasColumnName("image");
 
                     b.Property<int>("ImageSize")
-                        .HasColumnName("image_size")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("image_size");
 
                     b.Property<string>("ImageType")
                         .IsRequired()
-                        .HasColumnName("image_type")
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("varchar(256)")
+                        .HasColumnName("image_type");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.ToTable("mtd_form_part_header");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFormRelated", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
+
+                    b.Property<string>("ChildFormId")
+                        .IsRequired()
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("child_form_id");
+
+                    b.Property<string>("ParentFormId")
+                        .IsRequired()
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("parent_form_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChildFormId")
+                        .HasDatabaseName("fk_child_form_idx");
+
+                    b.HasIndex("Id")
+                        .IsUnique()
+                        .HasDatabaseName("id_UNIQUE");
+
+                    b.HasIndex("ParentFormId")
+                        .HasDatabaseName("fk_parent_form_idx");
+
+                    b.ToTable("mtd_form_related");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdGroup", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnName("description")
-                        .HasColumnType("varchar(512)");
+                        .HasColumnType("varchar(512)")
+                        .HasColumnName("description");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("name");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.ToTable("mtd_group");
                 });
@@ -1000,83 +1143,83 @@ namespace Mtd.OrderMaker.Server.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("id");
 
                     b.Property<string>("Color")
-                        .HasColumnName("color")
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("color");
 
                     b.Property<string>("Comment")
-                        .HasColumnName("app_comment")
-                        .HasColumnType("varchar(512)");
+                        .HasColumnType("varchar(512)")
+                        .HasColumnName("app_comment");
 
                     b.Property<byte[]>("ImgData")
-                        .HasColumnName("img_data")
-                        .HasColumnType("mediumblob");
+                        .HasColumnType("mediumblob")
+                        .HasColumnName("img_data");
 
                     b.Property<string>("ImgType")
-                        .HasColumnName("img_type")
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("img_type");
 
                     b.Property<sbyte>("IsSign")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("is_sign")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("is_sign")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<string>("MtdStore")
                         .IsRequired()
-                        .HasColumnName("mtd_store")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_store");
 
                     b.Property<string>("Note")
-                        .HasColumnName("note")
-                        .HasColumnType("varchar(512)");
+                        .HasColumnType("varchar(512)")
+                        .HasColumnName("note");
 
                     b.Property<int>("Result")
-                        .HasColumnName("result")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("result");
 
                     b.Property<int>("Stage")
-                        .HasColumnName("stage")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("stage");
 
                     b.Property<DateTime>("Timecr")
-                        .HasColumnName("timecr")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime")
+                        .HasColumnName("timecr");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnName("user_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("user_id");
 
                     b.Property<string>("UserName")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("user_name")
                         .HasColumnType("varchar(255)")
+                        .HasColumnName("user_name")
                         .HasDefaultValueSql("'No Name'");
 
                     b.Property<string>("UserRecipientId")
-                        .HasColumnName("user_recipient_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("user_recipient_id");
 
                     b.Property<string>("UserRecipientName")
-                        .HasColumnName("user_recipient_name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("user_recipient_name");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdStore")
-                        .HasName("fk_log_approval_store_idx");
+                        .HasDatabaseName("fk_log_approval_store_idx");
 
                     b.HasIndex("Stage")
-                        .HasName("fk_log_approval_stage_idx");
+                        .HasDatabaseName("fk_log_approval_stage_idx");
 
                     b.ToTable("mtd_log_approval");
                 });
@@ -1085,39 +1228,39 @@ namespace Mtd.OrderMaker.Server.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("id");
 
                     b.Property<string>("MtdStore")
                         .IsRequired()
-                        .HasColumnName("mtd_store")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_store");
 
                     b.Property<DateTime>("TimeCh")
-                        .HasColumnName("timech")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime")
+                        .HasColumnName("timech");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnName("user_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("user_id");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnName("user_name")
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("varchar(256)")
+                        .HasColumnName("user_name");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdStore")
-                        .HasName("fk_log_document_store_idx");
+                        .HasDatabaseName("fk_log_document_store_idx");
 
                     b.HasIndex("TimeCh")
-                        .HasName("ix_date");
+                        .HasDatabaseName("ix_date");
 
                     b.ToTable("mtd_log_document");
                 });
@@ -1125,24 +1268,24 @@ namespace Mtd.OrderMaker.Server.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdPolicy", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnName("description")
-                        .HasColumnType("varchar(512)");
+                        .HasColumnType("varchar(512)")
+                        .HasColumnName("description");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("name");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.ToTable("mtd_policy");
                 });
@@ -1151,124 +1294,136 @@ namespace Mtd.OrderMaker.Server.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("id");
 
                     b.Property<sbyte>("ChangeDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("change_date")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("change_date")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("ChangeOwner")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("change_owner")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("change_owner")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("Create")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("create")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("create")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("DeleteAll")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("delete_all")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("delete_all")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("DeleteGroup")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("delete_group")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("delete_group")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("DeleteOwn")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("delete_own")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("delete_own")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("EditAll")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("edit_all")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("edit_all")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("EditGroup")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("edit_group")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("edit_group")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("EditOwn")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("edit_own")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("edit_own")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("ExportToExcel")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("export_to_excel")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("export_to_excel")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<string>("MtdForm")
                         .IsRequired()
-                        .HasColumnName("mtd_form")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_form");
 
                     b.Property<string>("MtdPolicy")
                         .IsRequired()
-                        .HasColumnName("mtd_policy")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_policy");
 
                     b.Property<sbyte>("OwnDenyGroup")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("own_deny_group")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("own_deny_group")
+                        .HasDefaultValueSql("'0'");
+
+                    b.Property<sbyte>("RelatedCreate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(4)")
+                        .HasColumnName("related_create")
+                        .HasDefaultValueSql("'0'");
+
+                    b.Property<sbyte>("RelatedEdit")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint(4)")
+                        .HasColumnName("related_edit")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("Reviewer")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("reviewer")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("reviewer")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("ViewAll")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("view_all")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("view_all")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("ViewGroup")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("view_group")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("view_group")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("ViewOwn")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("view_own")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("view_own")
                         .HasDefaultValueSql("'0'");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdForm")
-                        .HasName("fk_policy_forms_form_idx");
+                        .HasDatabaseName("fk_policy_forms_form_idx");
 
                     b.HasIndex("MtdPolicy")
-                        .HasName("fk_policy_forms_policy_idx");
+                        .HasDatabaseName("fk_policy_forms_policy_idx");
 
                     b.HasIndex("MtdPolicy", "MtdForm")
                         .IsUnique()
-                        .HasName("UNIQUE_FORM");
+                        .HasDatabaseName("UNIQUE_FORM");
 
                     b.ToTable("mtd_policy_forms");
                 });
@@ -1277,48 +1432,48 @@ namespace Mtd.OrderMaker.Server.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("id");
 
                     b.Property<sbyte>("Create")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("create")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("create")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("Edit")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("edit")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("edit")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<string>("MtdFormPart")
                         .IsRequired()
-                        .HasColumnName("mtd_form_part")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_form_part");
 
                     b.Property<string>("MtdPolicy")
                         .IsRequired()
-                        .HasColumnName("mtd_policy")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_policy");
 
                     b.Property<sbyte>("View")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("view")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("view")
                         .HasDefaultValueSql("'0'");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdFormPart");
 
                     b.HasIndex("MtdPolicy", "MtdFormPart")
                         .IsUnique()
-                        .HasName("UNIQUE_PART");
+                        .HasDatabaseName("UNIQUE_PART");
 
                     b.ToTable("mtd_policy_parts");
                 });
@@ -1326,126 +1481,239 @@ namespace Mtd.OrderMaker.Server.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdPolicyScripts", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<int>("MtdFilterScriptId")
-                        .HasColumnName("mtd_filter_script_id")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("mtd_filter_script_id");
 
                     b.Property<string>("MtdPolicyId")
                         .IsRequired()
-                        .HasColumnName("mtd_policy_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_policy_id");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("Unique_id");
+                        .HasDatabaseName("Unique_id");
 
                     b.HasIndex("MtdPolicyId");
 
                     b.HasIndex("MtdFilterScriptId", "MtdPolicyId")
                         .IsUnique()
-                        .HasName("Unique_Policy_Script");
+                        .HasDatabaseName("Unique_Policy_Script");
 
                     b.ToTable("mtd_policy_scripts");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdRegister", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("varchar(512)")
+                        .HasColumnName("description");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("name");
+
+                    b.Property<sbyte>("ParentLimit")
+                        .HasColumnType("tinyint(4)")
+                        .HasColumnName("parent_limit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique()
+                        .HasDatabaseName("id_UNIQUE");
+
+                    b.ToTable("mtd_register");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdRegisterField", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
+
+                    b.Property<sbyte>("Expense")
+                        .HasColumnType("tinyint(4)")
+                        .HasColumnName("expense");
+
+                    b.Property<sbyte>("Income")
+                        .HasColumnType("tinyint(4)")
+                        .HasColumnName("income");
+
+                    b.Property<string>("MtdRegisterId")
+                        .IsRequired()
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_register_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique()
+                        .HasDatabaseName("id_UNIQUE");
+
+                    b.HasIndex("MtdRegisterId")
+                        .HasDatabaseName("fk_mtd_form_register_idx");
+
+                    b.ToTable("mtd_register_field");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStore", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<sbyte>("Active")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("active")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("active")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<string>("MtdForm")
                         .IsRequired()
-                        .HasColumnName("mtd_form")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_form");
 
                     b.Property<string>("Parent")
                         .HasColumnType("varchar(36)");
 
                     b.Property<int>("Sequence")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("sequence")
                         .HasColumnType("int(11)")
+                        .HasColumnName("sequence")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<DateTime>("Timecr")
-                        .HasColumnName("timecr")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime")
+                        .HasColumnName("timecr");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdForm")
-                        .HasName("fk_mtd_store_mtd_form1_idx");
+                        .HasDatabaseName("fk_mtd_store_mtd_form1_idx");
 
                     b.HasIndex("Parent");
 
                     b.HasIndex("Timecr")
-                        .HasName("IX_TIMECR");
+                        .HasDatabaseName("IX_TIMECR");
 
                     b.HasIndex("MtdForm", "Sequence")
                         .IsUnique()
-                        .HasName("Seq_Unique");
+                        .HasDatabaseName("Seq_Unique");
 
                     b.ToTable("mtd_store");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStoreActivity", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("varchar(512)")
+                        .HasColumnName("app_comment");
+
+                    b.Property<string>("MtdFormActivityId")
+                        .IsRequired()
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_form_activity_id");
+
+                    b.Property<string>("MtdStoreId")
+                        .IsRequired()
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_store_id");
+
+                    b.Property<DateTime>("TimeCr")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("timecr")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique()
+                        .HasDatabaseName("id_UNIQUE");
+
+                    b.HasIndex("MtdFormActivityId")
+                        .HasDatabaseName("fk_store_activity_idx");
+
+                    b.HasIndex("MtdStoreId")
+                        .HasDatabaseName("fk_store_activity_store_idx");
+
+                    b.ToTable("mtd_store_activity");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStoreApproval", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<sbyte>("Complete")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("complete")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("complete")
                         .HasDefaultValueSql("'0'");
 
+                    b.Property<DateTime>("LastEventTime")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime")
+                        .HasColumnName("last_event_time")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
                     b.Property<int>("MtdApproveStage")
-                        .HasColumnName("md_approve_stage")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("md_approve_stage");
 
                     b.Property<string>("PartsApproved")
                         .IsRequired()
-                        .HasColumnName("parts_approved")
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("parts_approved");
 
                     b.Property<int>("Result")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("result")
                         .HasColumnType("int(11)")
+                        .HasColumnName("result")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<string>("SignChain")
-                        .HasColumnName("sign_chain")
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("sign_chain");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Complete")
-                        .HasName("IX_APPROVED");
+                        .HasDatabaseName("IX_APPROVED");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdApproveStage")
-                        .HasName("fk_store_approve_stage_idx");
+                        .HasDatabaseName("fk_store_approve_stage_idx");
 
                     b.ToTable("mtd_store_approval");
                 });
@@ -1453,13 +1721,13 @@ namespace Mtd.OrderMaker.Server.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStoreLink", b =>
                 {
                     b.Property<long>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("bigint(20)");
+                        .HasColumnType("bigint(20)")
+                        .HasColumnName("id");
 
                     b.Property<string>("MtdStore")
                         .IsRequired()
-                        .HasColumnName("mtd_store")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_store");
 
                     b.Property<string>("Register")
                         .IsRequired()
@@ -1469,17 +1737,17 @@ namespace Mtd.OrderMaker.Server.Migrations
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdStore")
-                        .HasName("fk_mtd_store_link_mtd_store1_idx");
+                        .HasDatabaseName("fk_mtd_store_link_mtd_store1_idx");
 
                     b.HasIndex("Register")
-                        .HasName("ix_register");
+                        .HasDatabaseName("ix_register");
 
                     b.HasIndex("MtdStore", "Id")
                         .IsUnique()
-                        .HasName("ix_unique");
+                        .HasDatabaseName("ix_unique");
 
                     b.ToTable("mtd_store_link");
                 });
@@ -1487,27 +1755,27 @@ namespace Mtd.OrderMaker.Server.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStoreOwner", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnName("user_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("user_id");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnName("user_name")
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("varchar(256)")
+                        .HasColumnName("user_name");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("UserId")
-                        .HasName("IX_USER");
+                        .HasDatabaseName("IX_USER");
 
                     b.ToTable("mtd_store_owner");
                 });
@@ -1516,34 +1784,34 @@ namespace Mtd.OrderMaker.Server.Migrations
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("bigint(20)");
+                        .HasColumnType("bigint(20)")
+                        .HasColumnName("id");
 
                     b.Property<string>("MtdFormPartField")
                         .IsRequired()
-                        .HasColumnName("mtd_form_part_field")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_form_part_field");
 
                     b.Property<string>("MtdStore")
                         .IsRequired()
-                        .HasColumnName("mtd_store")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_store");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("MtdFormPartField")
-                        .HasName("fk_mtd_store_stack_mtd_form_part_field1_idx");
+                        .HasDatabaseName("fk_mtd_store_stack_mtd_form_part_field1_idx");
 
                     b.HasIndex("MtdStore")
-                        .HasName("fk_mtd_store_stack_mtd_store_idx");
+                        .HasDatabaseName("fk_mtd_store_stack_mtd_store_idx");
 
                     b.HasIndex("MtdStore", "MtdFormPartField")
                         .IsUnique()
-                        .HasName("IX_UNIQUE");
+                        .HasDatabaseName("IX_UNIQUE");
 
                     b.ToTable("mtd_store_stack");
                 });
@@ -1551,21 +1819,21 @@ namespace Mtd.OrderMaker.Server.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStoreStackDate", b =>
                 {
                     b.Property<long>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("bigint(20)");
+                        .HasColumnType("bigint(20)")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("Register")
-                        .HasColumnName("register")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime")
+                        .HasColumnName("register");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("Register")
-                        .HasName("IX_DATESTACK");
+                        .HasDatabaseName("IX_DATESTACK");
 
                     b.ToTable("mtd_store_stack_date");
                 });
@@ -1573,21 +1841,21 @@ namespace Mtd.OrderMaker.Server.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStoreStackDecimal", b =>
                 {
                     b.Property<long>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("bigint(20)");
+                        .HasColumnType("bigint(20)")
+                        .HasColumnName("id");
 
                     b.Property<decimal>("Register")
-                        .HasColumnName("register")
-                        .HasColumnType("decimal(20,2)");
+                        .HasColumnType("decimal(20,2)")
+                        .HasColumnName("register");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("Register")
-                        .HasName("IX_DECIMALREGISTER");
+                        .HasDatabaseName("IX_DECIMALREGISTER");
 
                     b.ToTable("mtd_store_stack_decimal");
                 });
@@ -1595,33 +1863,33 @@ namespace Mtd.OrderMaker.Server.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStoreStackFile", b =>
                 {
                     b.Property<long>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("bigint(20)");
+                        .HasColumnType("bigint(20)")
+                        .HasColumnName("id");
 
                     b.Property<string>("FileName")
                         .IsRequired()
-                        .HasColumnName("file_name")
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("varchar(256)")
+                        .HasColumnName("file_name");
 
-                    b.Property<int>("FileSize")
-                        .HasColumnName("file_size")
-                        .HasColumnType("int(11)");
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint(20)")
+                        .HasColumnName("file_size");
 
                     b.Property<string>("FileType")
                         .IsRequired()
-                        .HasColumnName("file_type")
-                        .HasColumnType("varchar(256)");
+                        .HasColumnType("varchar(256)")
+                        .HasColumnName("file_type");
 
                     b.Property<byte[]>("Register")
                         .IsRequired()
-                        .HasColumnName("register")
-                        .HasColumnType("mediumblob");
+                        .HasColumnType("longblob")
+                        .HasColumnName("register");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.ToTable("mtd_store_stack_file");
                 });
@@ -1629,21 +1897,21 @@ namespace Mtd.OrderMaker.Server.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStoreStackInt", b =>
                 {
                     b.Property<long>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("bigint(20)");
+                        .HasColumnType("bigint(20)")
+                        .HasColumnName("id");
 
                     b.Property<int>("Register")
-                        .HasColumnName("register")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("register");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("Register")
-                        .HasName("IX_INTSTACK");
+                        .HasDatabaseName("IX_INTSTACK");
 
                     b.ToTable("mtd_store_stack_int");
                 });
@@ -1651,54 +1919,126 @@ namespace Mtd.OrderMaker.Server.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStoreStackText", b =>
                 {
                     b.Property<long>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("bigint(20)");
+                        .HasColumnType("bigint(20)")
+                        .HasColumnName("id");
 
                     b.Property<string>("Register")
                         .IsRequired()
-                        .HasColumnName("register")
-                        .HasColumnType("varchar(768)");
+                        .HasColumnType("varchar(768)")
+                        .HasColumnName("register");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("category_id_UNIQUE");
+                        .HasDatabaseName("category_id_UNIQUE");
 
                     b.HasIndex("Register")
-                        .HasName("IX_REGISTER_TEXT");
+                        .HasDatabaseName("IX_REGISTER_TEXT");
 
                     b.ToTable("mtd_store_stack_text");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStoreTask", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
+
+                    b.Property<int>("Complete")
+                        .HasColumnType("int(11)")
+                        .HasColumnName("complete");
+
+                    b.Property<DateTime>("Deadline")
+                        .HasColumnType("datetime")
+                        .HasColumnName("deadline");
+
+                    b.Property<string>("ExecNote")
+                        .IsRequired()
+                        .HasColumnType("varchar(250)")
+                        .HasColumnName("exec_note");
+
+                    b.Property<DateTime>("ExecTimeCr")
+                        .HasColumnType("datetime")
+                        .HasColumnName("exec_timecr");
+
+                    b.Property<string>("Executor")
+                        .IsRequired()
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("executor");
+
+                    b.Property<string>("InitNote")
+                        .IsRequired()
+                        .HasColumnType("varchar(250)")
+                        .HasColumnName("init_note");
+
+                    b.Property<DateTime>("InitTimeCr")
+                        .HasColumnType("datetime")
+                        .HasColumnName("init_timecr");
+
+                    b.Property<string>("Initiator")
+                        .IsRequired()
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("iniciator");
+
+                    b.Property<DateTime>("LastEventTime")
+                        .HasColumnType("datetime")
+                        .HasColumnName("last_evant_time");
+
+                    b.Property<string>("MtdStoreId")
+                        .IsRequired()
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("mtd_store_id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(250)")
+                        .HasColumnName("name");
+
+                    b.Property<sbyte>("PrivateTask")
+                        .HasColumnType("tinyint(4)")
+                        .HasColumnName("private_task");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique()
+                        .HasDatabaseName("id_UNIQUE");
+
+                    b.HasIndex("MtdStoreId")
+                        .HasDatabaseName("fk_mtd_store_task_idx");
+
+                    b.ToTable("mtd_store_task");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdSysStyle", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("id");
 
                     b.Property<sbyte>("Active")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("active")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("active")
                         .HasDefaultValueSql("'1'");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnName("description")
-                        .HasColumnType("varchar(512)");
+                        .HasColumnType("varchar(512)")
+                        .HasColumnName("description");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(120)");
+                        .HasColumnType("varchar(120)")
+                        .HasColumnName("name");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.ToTable("mtd_sys_style");
                 });
@@ -1707,24 +2047,24 @@ namespace Mtd.OrderMaker.Server.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("id");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("name");
 
                     b.Property<string>("Sign")
                         .IsRequired()
-                        .HasColumnName("sign")
-                        .HasColumnType("varchar(45)");
+                        .HasColumnType("varchar(45)")
+                        .HasColumnName("sign");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.ToTable("mtd_sys_term");
                 });
@@ -1732,23 +2072,23 @@ namespace Mtd.OrderMaker.Server.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdSysTrigger", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(120)");
+                        .HasColumnType("varchar(120)")
+                        .HasColumnName("name");
 
                     b.Property<int>("Sequence")
-                        .HasColumnName("sequence")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("sequence");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.ToTable("mtd_sys_trigger");
                 });
@@ -1757,30 +2097,30 @@ namespace Mtd.OrderMaker.Server.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("int(11)");
+                        .HasColumnType("int(11)")
+                        .HasColumnName("id");
 
                     b.Property<sbyte>("Active")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("active")
                         .HasColumnType("tinyint(4)")
+                        .HasColumnName("active")
                         .HasDefaultValueSql("'1'");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnName("description")
-                        .HasColumnType("varchar(512)");
+                        .HasColumnType("varchar(512)")
+                        .HasColumnName("description");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("name")
-                        .HasColumnType("varchar(120)");
+                        .HasColumnType("varchar(120)")
+                        .HasColumnName("name");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.ToTable("mtd_sys_type");
                 });
@@ -1793,6 +2133,8 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_approvel_form")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdFormNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdApprovalRejection", b =>
@@ -1803,6 +2145,8 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_rejection_stage")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdApprovalStage");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdApprovalResolution", b =>
@@ -1813,6 +2157,8 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_resolution_stage")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdApprovalStage");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdApprovalStage", b =>
@@ -1823,6 +2169,20 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_stage_approval")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdApprovalNavigation");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdEventSubscribe", b =>
+                {
+                    b.HasOne("Mtd.OrderMaker.Server.Entity.MtdForm", "MtdForm")
+                        .WithMany("MtdEventSubscribes")
+                        .HasForeignKey("MtdFormId")
+                        .HasConstraintName("fk_mtd_event_mtd_form")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MtdForm");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFilter", b =>
@@ -1833,6 +2193,8 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("mtd_filter_mtd_form")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdFormNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFilterColumn", b =>
@@ -1850,6 +2212,10 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("mtd_roster_field")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdFilterNavigation");
+
+                    b.Navigation("MtdFormPartFieldNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFilterDate", b =>
@@ -1860,6 +2226,8 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_date_filter")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("IdNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFilterField", b =>
@@ -1884,6 +2252,12 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("mtd_filter_field_mtd_term")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdFilterNavigation");
+
+                    b.Navigation("MtdFormPartFieldNavigation");
+
+                    b.Navigation("MtdTermNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFilterOwner", b =>
@@ -1894,6 +2268,20 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_owner_filter")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("IdNavigation");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFilterRelated", b =>
+                {
+                    b.HasOne("Mtd.OrderMaker.Server.Entity.MtdFilter", "IdNavigation")
+                        .WithOne("MtdFilterRelated")
+                        .HasForeignKey("Mtd.OrderMaker.Server.Entity.MtdFilterRelated", "Id")
+                        .HasConstraintName("fk_related_filter")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("IdNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFilterScript", b =>
@@ -1904,6 +2292,8 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_script_filter")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdForm");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFilterScriptApply", b =>
@@ -1921,6 +2311,10 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_script_filter_apply2")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdFilter");
+
+                    b.Navigation("MtdFilterScript");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdForm", b =>
@@ -1937,6 +2331,22 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasForeignKey("Parent")
                         .HasConstraintName("fk_form_parent")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("MtdCategoryNavigation");
+
+                    b.Navigation("ParentNavigation");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFormActivity", b =>
+                {
+                    b.HasOne("Mtd.OrderMaker.Server.Entity.MtdForm", "MtdForm")
+                        .WithMany("MtdFormActivites")
+                        .HasForeignKey("MtdFormId")
+                        .HasConstraintName("fk_mtd_form_activity")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MtdForm");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFormDesk", b =>
@@ -1947,6 +2357,8 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_mtd_form_des_mtd_from")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("IdNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFormHeader", b =>
@@ -1957,6 +2369,8 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_image_form")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("IdNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFormList", b =>
@@ -1974,6 +2388,10 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_list_form")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("IdNavigation");
+
+                    b.Navigation("MtdFormNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFormPart", b =>
@@ -1991,6 +2409,10 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_mtd_form_part_mtd_sys_style1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdFormNavigation");
+
+                    b.Navigation("MtdSysStyleNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFormPartField", b =>
@@ -2015,6 +2437,12 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_mtd_form_part_field_mtd_sys_type1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdFormPartNavigation");
+
+                    b.Navigation("MtdSysTriggerNavigation");
+
+                    b.Navigation("MtdSysTypeNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFormPartHeader", b =>
@@ -2025,6 +2453,29 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_image_form_part")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("IdNavigation");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFormRelated", b =>
+                {
+                    b.HasOne("Mtd.OrderMaker.Server.Entity.MtdForm", "MtdChildForm")
+                        .WithMany("MtdChildForms")
+                        .HasForeignKey("ChildFormId")
+                        .HasConstraintName("fk_child_form")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mtd.OrderMaker.Server.Entity.MtdForm", "MtdParentForm")
+                        .WithMany("MtdParentForms")
+                        .HasForeignKey("ParentFormId")
+                        .HasConstraintName("fk_parent_form")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MtdChildForm");
+
+                    b.Navigation("MtdParentForm");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdLogApproval", b =>
@@ -2042,6 +2493,10 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_log_approval_stage")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdStoreNavigation");
+
+                    b.Navigation("StageNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdLogDocument", b =>
@@ -2052,6 +2507,8 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_log_document_store")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdStoreNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdPolicyForms", b =>
@@ -2069,6 +2526,10 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_policy_forms_policy")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdFormNavigation");
+
+                    b.Navigation("MtdPolicyNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdPolicyParts", b =>
@@ -2086,6 +2547,10 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_policy_part_policy")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdFormPartNavigation");
+
+                    b.Navigation("MtdPolicyNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdPolicyScripts", b =>
@@ -2103,6 +2568,31 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_policy_script")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdFilterScript");
+
+                    b.Navigation("MtdPolicy");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdRegisterField", b =>
+                {
+                    b.HasOne("Mtd.OrderMaker.Server.Entity.MtdFormPartField", "IdNavigation")
+                        .WithOne("MtdRegisterField")
+                        .HasForeignKey("Mtd.OrderMaker.Server.Entity.MtdRegisterField", "Id")
+                        .HasConstraintName("fk_mtd_form_register_field")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mtd.OrderMaker.Server.Entity.MtdRegister", "MtdRegister")
+                        .WithMany("MtdRegisterFields")
+                        .HasForeignKey("MtdRegisterId")
+                        .HasConstraintName("fk_mtd_form_register")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("IdNavigation");
+
+                    b.Navigation("MtdRegister");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStore", b =>
@@ -2119,6 +2609,31 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasForeignKey("Parent")
                         .HasConstraintName("fk_mtd_store_parent")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("MtdFormNavigation");
+
+                    b.Navigation("ParentNavigation");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStoreActivity", b =>
+                {
+                    b.HasOne("Mtd.OrderMaker.Server.Entity.MtdFormActivity", "MtdFormActitvity")
+                        .WithMany("MtdStoreActivites")
+                        .HasForeignKey("MtdFormActivityId")
+                        .HasConstraintName("fk_store_activity_idx")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Mtd.OrderMaker.Server.Entity.MtdStore", "MtdStore")
+                        .WithMany("MtdStoreActitvites")
+                        .HasForeignKey("MtdStoreId")
+                        .HasConstraintName("fk_store_activity_store")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MtdFormActitvity");
+
+                    b.Navigation("MtdStore");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStoreApproval", b =>
@@ -2136,6 +2651,10 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_store_approve_stage")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("IdNavigation");
+
+                    b.Navigation("MtdApproveStageNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStoreLink", b =>
@@ -2153,6 +2672,10 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_mtd_store_link_mtd_store1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("IdNavigation");
+
+                    b.Navigation("MtdStoreNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStoreOwner", b =>
@@ -2163,6 +2686,8 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_owner_store")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("IdNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStoreStack", b =>
@@ -2180,6 +2705,10 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_mtd_store_stack_mtd_store")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MtdFormPartFieldNavigation");
+
+                    b.Navigation("MtdStoreNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStoreStackDate", b =>
@@ -2190,6 +2719,8 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_date_stack")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("IdNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStoreStackDecimal", b =>
@@ -2200,6 +2731,8 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_decimal_stack")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("IdNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStoreStackFile", b =>
@@ -2210,6 +2743,8 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_file_stack")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("IdNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStoreStackInt", b =>
@@ -2220,6 +2755,8 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_int_stack")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("IdNavigation");
                 });
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStoreStackText", b =>
@@ -2230,6 +2767,191 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .HasConstraintName("fk_text_stack")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("IdNavigation");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStoreTask", b =>
+                {
+                    b.HasOne("Mtd.OrderMaker.Server.Entity.MtdStore", "MtdStore")
+                        .WithMany("MtdStoreTasks")
+                        .HasForeignKey("MtdStoreId")
+                        .HasConstraintName("fk_mtd_store_task")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MtdStore");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdApproval", b =>
+                {
+                    b.Navigation("MtdApprovalStage");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdApprovalStage", b =>
+                {
+                    b.Navigation("MtdApprovalRejection");
+
+                    b.Navigation("MtdApprovalResolution");
+
+                    b.Navigation("MtdLogApproval");
+
+                    b.Navigation("MtdStoreApproval");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdCategoryForm", b =>
+                {
+                    b.Navigation("MtdForm");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFilter", b =>
+                {
+                    b.Navigation("MtdFilterColumn");
+
+                    b.Navigation("MtdFilterDate");
+
+                    b.Navigation("MtdFilterField");
+
+                    b.Navigation("MtdFilterOwner");
+
+                    b.Navigation("MtdFilterRelated");
+
+                    b.Navigation("MtdFilterScriptApply");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFilterScript", b =>
+                {
+                    b.Navigation("MtdFilterScriptApply");
+
+                    b.Navigation("MtdPolicyScripts");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdForm", b =>
+                {
+                    b.Navigation("InverseParentNavigation");
+
+                    b.Navigation("MtdApproval");
+
+                    b.Navigation("MtdChildForms");
+
+                    b.Navigation("MtdEventSubscribes");
+
+                    b.Navigation("MtdFilter");
+
+                    b.Navigation("MtdFilterScript");
+
+                    b.Navigation("MtdFormActivites");
+
+                    b.Navigation("MtdFormDesk");
+
+                    b.Navigation("MtdFormHeader");
+
+                    b.Navigation("MtdFormList");
+
+                    b.Navigation("MtdFormPart");
+
+                    b.Navigation("MtdParentForms");
+
+                    b.Navigation("MtdPolicyForms");
+
+                    b.Navigation("MtdStore");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFormActivity", b =>
+                {
+                    b.Navigation("MtdStoreActivites");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFormPart", b =>
+                {
+                    b.Navigation("MtdFormPartField");
+
+                    b.Navigation("MtdFormPartHeader");
+
+                    b.Navigation("MtdPolicyParts");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdFormPartField", b =>
+                {
+                    b.Navigation("MtdFilterColumn");
+
+                    b.Navigation("MtdFilterField");
+
+                    b.Navigation("MtdFormList");
+
+                    b.Navigation("MtdRegisterField");
+
+                    b.Navigation("MtdStoreStack");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdPolicy", b =>
+                {
+                    b.Navigation("MtdPolicyForms");
+
+                    b.Navigation("MtdPolicyParts");
+
+                    b.Navigation("MtdPolicyScripts");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdRegister", b =>
+                {
+                    b.Navigation("MtdRegisterFields");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStore", b =>
+                {
+                    b.Navigation("InverseParentNavigation");
+
+                    b.Navigation("MtdLogApproval");
+
+                    b.Navigation("MtdLogDocument");
+
+                    b.Navigation("MtdStoreActitvites");
+
+                    b.Navigation("MtdStoreApproval");
+
+                    b.Navigation("MtdStoreLink");
+
+                    b.Navigation("MtdStoreOwner");
+
+                    b.Navigation("MtdStoreStack");
+
+                    b.Navigation("MtdStoreTasks");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdStoreStack", b =>
+                {
+                    b.Navigation("MtdStoreLink");
+
+                    b.Navigation("MtdStoreStackDate");
+
+                    b.Navigation("MtdStoreStackDecimal");
+
+                    b.Navigation("MtdStoreStackFile");
+
+                    b.Navigation("MtdStoreStackInt");
+
+                    b.Navigation("MtdStoreStackText");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdSysStyle", b =>
+                {
+                    b.Navigation("MtdFormPart");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdSysTerm", b =>
+                {
+                    b.Navigation("MtdFilterField");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdSysTrigger", b =>
+                {
+                    b.Navigation("MtdFormPartField");
+                });
+
+            modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdSysType", b =>
+                {
+                    b.Navigation("MtdFormPartField");
                 });
 #pragma warning restore 612, 618
         }

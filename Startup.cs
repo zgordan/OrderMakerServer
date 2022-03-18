@@ -1,20 +1,6 @@
 /*
     MTD OrderMaker - http://ordermaker.org
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
-
-    This file is part of MTD OrderMaker.
-    MTD OrderMaker is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see  https://www.gnu.org/licenses/.
 */
 
 using Microsoft.AspNetCore.Builder;
@@ -162,6 +148,8 @@ namespace Mtd.OrderMaker.Server
 
             });
 
+            services.AddHostedService<MigrationService>();
+
         }
 
 
@@ -169,19 +157,6 @@ namespace Mtd.OrderMaker.Server
         {
 
             var config = serviceProvider.GetRequiredService<IOptions<ConfigSettings>>();
-
-            if (config.Value.Migrate == "true")
-            {
-                using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
-                var context = serviceScope.ServiceProvider.GetService<OrderMakerContext>();
-                context.Database.Migrate();
-
-                var contextIdentity = serviceScope.ServiceProvider.GetService<IdentityDbContext>();
-                contextIdentity.Database.Migrate();
-
-                InitDataBase(serviceProvider);
-            }
-
 
             if (CurrentEnvironment.IsDevelopment())
             {
@@ -218,144 +193,142 @@ namespace Mtd.OrderMaker.Server
 
         }
 
-        private void InitDataBase(IServiceProvider serviceProvider)
-        {
+        //private void InitDataBase(IServiceProvider serviceProvider)
+        //{
 
-            var roleManager = serviceProvider.GetRequiredService<RoleManager<WebAppRole>>();
-            Task<bool> hasAdminRole = roleManager.RoleExistsAsync("Admin");
-            hasAdminRole.Wait();
+        //    var roleManager = serviceProvider.GetRequiredService<RoleManager<WebAppRole>>();
+        //    Task<bool> hasAdminRole = roleManager.RoleExistsAsync("Admin");
+        //    hasAdminRole.Wait();
 
-            if (!hasAdminRole.Result)
-            {
-                var roleAdmin = new WebAppRole
-                {
-                    Name = "Admin",
-                    NormalizedName = "ADMIN",
-                    Title = "Administrator",
-                    Seq = 30
-                };
+        //    if (!hasAdminRole.Result)
+        //    {
+        //        var roleAdmin = new WebAppRole
+        //        {
+        //            Name = "Admin",
+        //            NormalizedName = "ADMIN",
+        //            Title = "Administrator",
+        //            Seq = 30
+        //        };
 
-                var roleUser = new WebAppRole
-                {
-                    Name = "User",
-                    NormalizedName = "USER",
-                    Title = "User",
-                    Seq = 20
-                };
+        //        var roleUser = new WebAppRole
+        //        {
+        //            Name = "User",
+        //            NormalizedName = "USER",
+        //            Title = "User",
+        //            Seq = 20
+        //        };
 
-                var roleGuest = new WebAppRole
-                {
-                    Name = "Guest",
-                    NormalizedName = "GUEST",
-                    Title = "Guest",
-                    Seq = 10
-                };
+        //        var roleGuest = new WebAppRole
+        //        {
+        //            Name = "Guest",
+        //            NormalizedName = "GUEST",
+        //            Title = "Guest",
+        //            Seq = 10
+        //        };
 
-                roleManager.CreateAsync(roleAdmin).Wait();
-                roleManager.CreateAsync(roleUser).Wait();
-                roleManager.CreateAsync(roleGuest).Wait();
-            }
+        //        roleManager.CreateAsync(roleAdmin).Wait();
+        //        roleManager.CreateAsync(roleUser).Wait();
+        //        roleManager.CreateAsync(roleGuest).Wait();
+        //    }
 
-            var userManager = serviceProvider.GetRequiredService<UserManager<WebAppUser>>();
-            Task<bool> hasUser = userManager.Users.AnyAsync();
-            hasUser.Wait();
+        //    var userManager = serviceProvider.GetRequiredService<UserManager<WebAppUser>>();
+        //    Task<bool> hasUser = userManager.Users.AnyAsync();
+        //    hasUser.Wait();
 
-            if (!hasUser.Result)
-            {
+        //    if (!hasUser.Result)
+        //    {
 
-                var config = serviceProvider.GetRequiredService<IOptions<ConfigSettings>>();
+        //        var config = serviceProvider.GetRequiredService<IOptions<ConfigSettings>>();
 
-                WebAppUser webAppUser = new WebAppUser
-                {
-                    Email = config.Value.EmailSupport,
-                    EmailConfirmed = true,
-                    Title = "Administrator",
-                    UserName = config.Value.DefaultUSR,
+        //        WebAppUser webAppUser = new WebAppUser
+        //        {
+        //            Email = config.Value.EmailSupport,
+        //            EmailConfirmed = true,
+        //            Title = "Administrator",
+        //            UserName = config.Value.DefaultUSR,
 
-                };
+        //        };
 
-                userManager.CreateAsync(webAppUser, config.Value.DefaultPWD).Wait();
-                userManager.AddToRoleAsync(webAppUser, "Admin").Wait();
+        //        userManager.CreateAsync(webAppUser, config.Value.DefaultPWD).Wait();
+        //        userManager.AddToRoleAsync(webAppUser, "Admin").Wait();
 
-            }
+        //    }
 
-            var context = serviceProvider.GetRequiredService<OrderMakerContext>();
+        //    var context = serviceProvider.GetRequiredService<OrderMakerContext>();
 
-            Task<bool> formGroup = context.MtdCategoryForm.AnyAsync();
-            formGroup.Wait();
+        //    Task<bool> formGroup = context.MtdCategoryForm.AnyAsync();
+        //    formGroup.Wait();
 
-            if (!formGroup.Result)
-            {
-                MtdCategoryForm mtdGroupForm = new MtdCategoryForm
-                {
-                    Id = "17101180-9250-4498-BE4E-4A941AD6713C",
-                    Name = "Default",
-                    Description = "Default Group",
-                    Parent = "17101180-9250-4498-BE4E-4A941AD6713C"
-                };
+        //    if (!formGroup.Result)
+        //    {
+        //        MtdCategoryForm mtdGroupForm = new MtdCategoryForm
+        //        {
+        //            Id = "17101180-9250-4498-BE4E-4A941AD6713C",
+        //            Name = "Default",
+        //            Description = "Default Group",
+        //            Parent = "17101180-9250-4498-BE4E-4A941AD6713C"
+        //        };
 
-                context.MtdCategoryForm.Add(mtdGroupForm);
-                context.SaveChanges();
-            }
+        //        context.MtdCategoryForm.Add(mtdGroupForm);
+        //        context.SaveChanges();
+        //    }
 
-            Task<int> sysType = context.MtdSysType.CountAsync();
-            sysType.Wait();
+        //    Task<int> sysType = context.MtdSysType.CountAsync();
+        //    sysType.Wait();
 
-            if (sysType.Result < 10)
-            {
-                sbyte active = 1;
-                List<MtdSysType> mtdSysTypes = new List<MtdSysType> {
-                    new MtdSysType{ Id = 1, Name="Text", Description="Text", Active=active },
-                    new MtdSysType{ Id = 2, Name="Integer", Description="Integer", Active=active},
-                    new MtdSysType{ Id = 3, Name="Decimal",Description="Decimal", Active=active},
-                    new MtdSysType{ Id = 4, Name = "Memo",Description="Memo",Active=active},
-                    new MtdSysType{ Id = 5, Name="Date",Description="Date",Active=active},
-                    new MtdSysType{ Id = 6, Name="DateTime",Description="DateTime",Active=active},
-                    new MtdSysType{ Id = 7, Name="File",Description="File",Active=active},
-                    new MtdSysType{ Id = 8, Name="Image",Description="Image",Active=active},
-                    //new MtdSysType{ Id = 9, Name="Phone",Description="Phone",Active=false},
-                    //new MtdSysType{ Id = 10, Name="Time",Description="Time",Active=false},
-                    new MtdSysType{ Id = 11, Name="List",Description="List",Active=active},
-                    new MtdSysType{ Id = 12, Name="Checkbox",Description="Checkbox",Active=active},
-                   // new MtdSysType{ Id = 13, Name="Link",Description="Link",Active=active},
-                };
+        //    if (sysType.Result < 10)
+        //    {
+        //        sbyte active = 1;
+        //        List<MtdSysType> mtdSysTypes = new List<MtdSysType> {
+        //            new MtdSysType{ Id = 1, Name="Text", Description="Text", Active=active },
+        //            new MtdSysType{ Id = 2, Name="Integer", Description="Integer", Active=active},
+        //            new MtdSysType{ Id = 3, Name="Decimal",Description="Decimal", Active=active},
+        //            new MtdSysType{ Id = 4, Name = "Memo",Description="Memo",Active=active},
+        //            new MtdSysType{ Id = 5, Name="Date",Description="Date",Active=active},
+        //            new MtdSysType{ Id = 6, Name="DateTime",Description="DateTime",Active=active},
+        //            new MtdSysType{ Id = 7, Name="File",Description="File",Active=active},
+        //            new MtdSysType{ Id = 8, Name="Image",Description="Image",Active=active},
+        //            new MtdSysType{ Id = 11, Name="List",Description="List",Active=active},
+        //            new MtdSysType{ Id = 12, Name="Checkbox",Description="Checkbox",Active=active},
+        //            new MtdSysType{ Id = 13, Name="Link",Description="Link",Active=active},
+        //        };
 
-                context.MtdSysType.AddRange(mtdSysTypes);
-                context.SaveChanges();
-            }
+        //        context.MtdSysType.AddRange(mtdSysTypes);
+        //        context.SaveChanges();
+        //    }
 
-            Task<bool> sysTerm = context.MtdSysTerm.AnyAsync();
-            sysTerm.Wait();
-            if (!sysTerm.Result)
-            {
-                List<MtdSysTerm> mtdSysTerms = new List<MtdSysTerm>
-                {
-                    new MtdSysTerm {Id=1,Name="equal", Sign="=" },
-                    new MtdSysTerm {Id=2,Name="less", Sign=">" },
-                    new MtdSysTerm {Id=3,Name="more", Sign="<" },
-                    new MtdSysTerm {Id=4,Name="contains", Sign="~" },
-                    new MtdSysTerm {Id=5,Name="no equal", Sign="<>" },
-                };
+        //    Task<bool> sysTerm = context.MtdSysTerm.AnyAsync();
+        //    sysTerm.Wait();
+        //    if (!sysTerm.Result)
+        //    {
+        //        List<MtdSysTerm> mtdSysTerms = new List<MtdSysTerm>
+        //        {
+        //            new MtdSysTerm {Id=1,Name="equal", Sign="=" },
+        //            new MtdSysTerm {Id=2,Name="less", Sign="<" },
+        //            new MtdSysTerm {Id=3,Name="more", Sign=">" },
+        //            new MtdSysTerm {Id=4,Name="contains", Sign="~" },
+        //            new MtdSysTerm {Id=5,Name="no equal", Sign="<>" },
+        //        };
 
-                context.MtdSysTerm.AddRange(mtdSysTerms);
-                context.SaveChanges();
-            }
+        //        context.MtdSysTerm.AddRange(mtdSysTerms);
+        //        context.SaveChanges();
+        //    }
 
-            Task<bool> sysStyle = context.MtdSysStyle.AnyAsync();
-            sysStyle.Wait();
-            if (!sysStyle.Result)
-            {
-                List<MtdSysStyle> mtdSysStyles = new List<MtdSysStyle>
-                {
-                    new MtdSysStyle{Id=4,Name="Lines", Description="Lines", Active=(sbyte)1},
-                    new MtdSysStyle{Id=5,Name="Columns", Description="Columns", Active=(sbyte)1}
-                };
+        //    Task<bool> sysStyle = context.MtdSysStyle.AnyAsync();
+        //    sysStyle.Wait();
+        //    if (!sysStyle.Result)
+        //    {
+        //        List<MtdSysStyle> mtdSysStyles = new List<MtdSysStyle>
+        //        {
+        //            new MtdSysStyle{Id=4,Name="Lines", Description="Lines", Active=(sbyte)1},
+        //            new MtdSysStyle{Id=5,Name="Columns", Description="Columns", Active=(sbyte)1}
+        //        };
 
-                context.MtdSysStyle.AddRange(mtdSysStyles);
-                context.SaveChanges();
-            }
+        //        context.MtdSysStyle.AddRange(mtdSysStyles);
+        //        context.SaveChanges();
+        //    }
 
-        }
+        //}
 
 
     }

@@ -1,20 +1,6 @@
 ﻿@*
     MTD OrderMaker - http://ordermaker.org
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
-
-    This file is part of MTD OrderMaker.
-    MTD OrderMaker is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see  https://www.gnu.org/licenses/.
 *@
 
 @using Microsoft.AspNetCore.Identity
@@ -23,10 +9,8 @@
 @inject UserManager<WebAppUser> UserManager
 @inject Server.Services.ConfigHandler configHandler;
 
-
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHtmlLocalizer<SharedResource> Localizer
-
 
 <!DOCTYPE html>
 <html>
@@ -34,6 +18,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="format-detection" content="telephone=no">
+    <meta name="google" content="notranslate">
+    <meta name="robots" content="noindex">
 
     <title>@ViewData["Title"] | OrderMaker</title>
 
@@ -59,8 +45,8 @@
         <link rel="stylesheet" href="~/lib/mtd-ordermaker/mtd-checkbox/css/mtd-checkbox.min.css" asp-append-version="true" />
     </environment>
 
-
     @RenderSection("Head", required: false)
+
 </head>
 <body class="mdc-typography">
     @*<partial name="_CookieConsentPartial" />*@

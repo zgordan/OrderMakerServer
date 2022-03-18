@@ -1,23 +1,4 @@
-﻿/*
-    MTD OrderMaker - http://ordermaker.org
-    Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
-
-    This file is part of MTD OrderMaker.
-    MTD OrderMaker is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see  https://www.gnu.org/licenses/.
-*/
-
-class LocaleDTP {
+﻿class LocaleDTP {
     constructor() {
         this.lang = document.getElementById("index-dtp-locale-lang").value;
         this.mask = document.getElementById("index-dtp-locale-mask").value;
@@ -85,7 +66,6 @@ const MainShowSnackBar = (message, error = false) => {
     snackbar.open();
 }
 
-
 const newGuid = () => {
     return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
@@ -115,7 +95,6 @@ const ListenerForDataHref = () => {
                 ActionShowModal();
             } else {
                 setTimeout(() => { window.location.href = href; }, 500);
-
             }
         });
     });

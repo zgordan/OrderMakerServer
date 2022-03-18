@@ -15,7 +15,7 @@ namespace Mtd.OrderMaker.Server.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "5.0.4");
+                .HasAnnotation("ProductVersion", "5.0.5");
 
             modelBuilder.Entity("Mtd.OrderMaker.Server.Entity.MtdApproval", b =>
                 {
@@ -1381,12 +1381,6 @@ namespace Mtd.OrderMaker.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint(4)")
                         .HasColumnName("related_edit")
-                        .HasDefaultValueSql("'0'");
-
-                    b.Property<sbyte>("Responsibility")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint(4)")
-                        .HasColumnName("responsibility")
                         .HasDefaultValueSql("'0'");
 
                     b.Property<sbyte>("Reviewer")

@@ -13,7 +13,6 @@ namespace Mtd.OrderMaker.Server.Controllers
     [Authorize(Roles = "Admin,User")]
     public class CommonController : ControllerBase
     {
-
         public readonly UserHandler userHandler;
 
         public CommonController(UserHandler userHandler)
