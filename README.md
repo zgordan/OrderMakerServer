@@ -56,13 +56,15 @@ If this project was useful to you, then infom other people about it so that this
 
 
 ## Third-party integrations
-| Application           | Description                                            |
+
+List of vendors that are not in the [Dependency graph](List of vendors that are not in the dependency graph:)
+
+| Library               | Description                                            |
 | --------------------- | ------------------------------------------------------ |
-| [PomeloFoundation]    | Provider for MySQL compatible databases.               |
-| [NPOI]                | NPOI is the .NET version of POI Java project.          |
+| [xdan]                | DateTimePicker jQuery plugin select date and time.     |
+| [moment]              | A JavaScript date library for parsing, validating, manipulating, and formatting dates. |
 
 In the event that I accidentally failed to list a required notice, please bring it to my  attention on email job4bruev@gmail.com. 
 
-[PomeloFoundation]:https://github.com/PomeloFoundation/Pomelo.EntityFrameworkCore.MySql
-[NPOI]:https://github.com/dotnetcore/NPOI
-
+[xdan]:https://github.com/xdan/datetimepicker
+[moment]:https://github.com/moment/moment/
