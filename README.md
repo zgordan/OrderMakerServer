@@ -57,7 +57,7 @@ If this project was useful to you, then infom other people about it so that this
 
 ## Third-party integrations
 
-List of vendors that are not in the [Dependency graph](List of vendors that are not in the dependency graph:)
+List of vendors that are not in the [Dependency graph](https://github.com/olegbruev/OrderMakerServer/network/dependencies):
 
 | Library               | Description                                            |
 | --------------------- | ------------------------------------------------------ |
