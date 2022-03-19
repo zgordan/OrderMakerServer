@@ -29,7 +29,7 @@ MTD OrderMaker includes the Configurator module, provides administrators to crea
 4. Unzip it and create file appsettings.json in same folder.  Use the appsettings.Template.json file to understand what settings you need to specify.
 5. Run Mtd.OrderMaker.Server.exe file. When opening the application in a browser, log in with the username and password that you specify in the appsettings.json file.
 6. Open the Configurator and Form Template Builder. Create a form. Then use the Action button to create the Part form (section). Open the created section and then create some field using Action button.
-7. Open the Users menu and Policy Template Designer. Open the Users menu and the Policy Template Designer. Create a policy and name it Default. Use the "Action" button and click "Select All".  Click Save button.
+7. Open the Users menu and Policy Template Designer. Create a policy and name it Default. Use the "Action" button and click "Select All".  Click Save button.
 8. Open the "Users" menu and the "Accounts" module (list of users). Click your account name and select the Default value in the policy field. Click the Save button.
 
 After all this, you will open the Desktop menu item and see your first database.
