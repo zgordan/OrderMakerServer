@@ -14,8 +14,8 @@ namespace Mtd.OrderMaker.Server.Entity.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.2")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64)
+                .HasAnnotation("ProductVersion", "3.1.2");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
@@ -31,7 +31,7 @@ namespace Mtd.OrderMaker.Server.Entity.Migrations
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
 
@@ -54,7 +54,7 @@ namespace Mtd.OrderMaker.Server.Entity.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
 
@@ -66,19 +66,19 @@ namespace Mtd.OrderMaker.Server.Entity.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("varchar(128) CHARACTER SET utf8mb4")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("varchar(128) CHARACTER SET utf8mb4")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -90,10 +90,10 @@ namespace Mtd.OrderMaker.Server.Entity.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -105,15 +105,15 @@ namespace Mtd.OrderMaker.Server.Entity.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("varchar(128) CHARACTER SET utf8mb4")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(128) CHARACTER SET utf8mb4")
-                        .HasMaxLength(128);
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
 
                     b.Property<string>("Value")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -126,43 +126,43 @@ namespace Mtd.OrderMaker.Server.Entity.Migrations
             modelBuilder.Entity("Mtd.Cpq.Manager.Areas.Identity.Data.MtdCpqLogAction", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("ActionTime")
-                        .HasColumnName("action_time")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime")
+                        .HasColumnName("action_time");
 
                     b.Property<int>("ActionType")
-                        .HasColumnName("action_type")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("action_type");
 
                     b.Property<string>("DocumentId")
                         .IsRequired()
-                        .HasColumnName("document_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("document_id");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnName("user_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("user_id");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnName("user_name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("user_name");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DocumentId")
-                        .HasName("idx_documentid");
+                        .HasDatabaseName("idx_documentid");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("UserId")
-                        .HasName("idx_userid");
+                        .HasDatabaseName("idx_userid");
 
                     b.ToTable("mtd_cpq_log_action");
                 });
@@ -170,13 +170,13 @@ namespace Mtd.OrderMaker.Server.Entity.Migrations
             modelBuilder.Entity("Mtd.Cpq.Manager.Areas.Identity.Data.MtdCpqProposalOwner", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnName("user_name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("user_name");
 
                     b.Property<string>("UserName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -185,10 +185,10 @@ namespace Mtd.OrderMaker.Server.Entity.Migrations
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("UserId")
-                        .HasName("idx_userid");
+                        .HasDatabaseName("idx_userid");
 
                     b.ToTable("mtd_cpq_proposal_owner");
                 });
@@ -196,27 +196,27 @@ namespace Mtd.OrderMaker.Server.Entity.Migrations
             modelBuilder.Entity("Mtd.Cpq.Manager.Areas.Identity.Data.MtdCpqTitlesOwner", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnName("id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnName("user_id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("user_id");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnName("user_name")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("user_name");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique()
-                        .HasName("id_UNIQUE");
+                        .HasDatabaseName("id_UNIQUE");
 
                     b.HasIndex("UserId")
-                        .HasName("idx_userid");
+                        .HasDatabaseName("idx_userid");
 
                     b.ToTable("mtd_cpq_titles_owner");
                 });
@@ -224,19 +224,19 @@ namespace Mtd.OrderMaker.Server.Entity.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Areas.Identity.Data.WebAppRole", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("NormalizedName")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.Property<int>("Seq")
                         .HasColumnType("int");
@@ -248,7 +248,7 @@ namespace Mtd.OrderMaker.Server.Entity.Migrations
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex");
+                        .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
                 });
@@ -256,7 +256,7 @@ namespace Mtd.OrderMaker.Server.Entity.Migrations
             modelBuilder.Entity("Mtd.OrderMaker.Server.Areas.Identity.Data.WebAppUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -266,8 +266,8 @@ namespace Mtd.OrderMaker.Server.Entity.Migrations
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Email")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("tinyint(1)");
@@ -279,12 +279,12 @@ namespace Mtd.OrderMaker.Server.Entity.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -308,17 +308,17 @@ namespace Mtd.OrderMaker.Server.Entity.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("varchar(256) CHARACTER SET utf8mb4")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
+                        .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex");
+                        .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
                 });
