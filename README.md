@@ -45,16 +45,6 @@ After all this, you will open the Desktop menu item and see your first database.
 
 The MTD OrderMaker web application is free and open-source software and starting from version 2.0 is released under the MIT license. 
 
-## Project assistance
-
-Unfortunately, I don't have time to promote and advertise this project. But I know that MTD OrderMaker helps a lot of people.
-If this project was useful to you, then infom other people about it so that this project helps even more people.
-
-- Add a [GitHub Star](https://github.com/olegbruev/ordermakerserver) to the project.
-- Make a post about the project on social networks.
-- Write interesting articles about project on [Dev.to](https://dev.to/), [Medium](https://medium.com/) or personal blog.
-
-
 ## Third-party integrations
 
 List of vendors that are not in the [Dependency graph](https://github.com/olegbruev/OrderMakerServer/network/dependencies):
