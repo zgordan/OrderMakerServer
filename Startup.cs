@@ -72,7 +72,6 @@ namespace Mtd.OrderMaker.Server
              .AddEntityFrameworkStores<IdentityDbContext>()
                 .AddDefaultTokenProviders();
 
-
             services.AddDbContext<OrderMakerContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("DataConnection"), new MySqlServerVersion(new Version(8, 0)))); 
 
@@ -142,7 +141,6 @@ namespace Mtd.OrderMaker.Server
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
                 options.RequestCultureProviders = new[] { new CookieRequestCultureProvider() };
-
             });
 
             services.AddHostedService<MigrationService>();

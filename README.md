@@ -1,5 +1,5 @@
 ﻿<p align="center">
-    <img src="http://ordermaker.org/imgs/logo-ordermaker.png"
+    <img src="./.github/logo-ordermaker.png"
         height="100%">
 </p>
 
@@ -35,7 +35,7 @@ MTD OrderMaker includes the Configurator module, provides administrators to crea
 After all this, you will open the Desktop menu item and see your first database.
 
 <p align="center">
-      <img src="http://ordermaker.org/imgs/desktop2.png" width="650">
+      <img src="./.github/desktop2.png" width="650">
 </p>
 
 
