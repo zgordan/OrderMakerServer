@@ -1,5 +1,5 @@
 /*
-    MTD OrderMaker - http://ordermaker.org
+    MTD OrderMaker - http://mtdkey.com
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 */
 
