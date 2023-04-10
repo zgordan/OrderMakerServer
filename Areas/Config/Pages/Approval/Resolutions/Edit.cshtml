@@ -10,11 +10,11 @@
 }
 
 @section Breadcrumb {
-    <li><a href="/config">@Localizer["Configurator"]</a></li>
-    <li><a href="/config/approval">@Localizer["Approvals"]</a></li>
-    <li><a href="/config/approval/edit?id=@Model.MtdApprovalStage.MtdApproval">@Localizer["Approval editor"]</a></li>
-    <li><a href="/config/approval/stages?idApproval=@Model.MtdApprovalStage.MtdApproval">@Localizer["Stages list"]</a></li>
-    <li><a href="/config/approval/resolutions?stage=@Model.MtdApprovalStage.Id">@Localizer["Resolutions"]</a></li>
+    <li><a href="~/config">@Localizer["Configurator"]</a></li>
+    <li><a href="~/config/approval">@Localizer["Approvals"]</a></li>
+    <li><a href="~/config/approval/edit?id=@Model.MtdApprovalStage.MtdApproval">@Localizer["Approval editor"]</a></li>
+    <li><a href="~/config/approval/stages?idApproval=@Model.MtdApprovalStage.MtdApproval">@Localizer["Stages list"]</a></li>
+    <li><a href="~/config/approval/resolutions?stage=@Model.MtdApprovalStage.Id">@Localizer["Resolutions"]</a></li>
     <li>@ViewBag.Title</li>
 }
 

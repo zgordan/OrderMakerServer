@@ -18,7 +18,7 @@
 }
 
 @section Breadcrumb {
-    <li><a href="/config">@Localizer["Configurator"]</a></li>
+    <li><a href="~/config">@Localizer["Configurator"]</a></li>
     <li>@ViewBag.Title</li>
 }
 
@@ -26,7 +26,7 @@
 <div class="mtd-desk">
     <div class="mtd-desk-panel">
         <div style="padding-left: 16px">
-            <button mtd-data-href="/config/form/create" class="mdc-fab mdc-fab--extended" aria-label="Create">
+            <button mtd-data-url="/config/form/create" class="mdc-fab mdc-fab--extended" aria-label="Create">
                 <div class="mdc-fab__ripple"></div>
                 <span class="material-icons mdc-fab__icon">add</span>
                 <span class="mdc-fab__label">@Localizer["Create"]</span>
@@ -57,7 +57,7 @@
     <ul mtd-data-draggable class="mdc-list mdc-list--two-line">
         @foreach (var form in Model.MtdForm.OrderBy(x => x.Sequence))
         {
-        <li mtd-data-href="/config/form/edit?id=@form.Id" class="mtd-list-item mdc-list-item" draggable="true" data-value="@form.Id" aria-checked="false">
+        <li mtd-data-url="/config/form/edit?id=@form.Id" class="mtd-list-item mdc-list-item" draggable="true" data-value="@form.Id" aria-checked="false">
             <span class="mdc-list-item__ripple"></span>
             @if (form.MtdFormDesk != null)
             {
@@ -86,13 +86,13 @@
                         aria-pressed="false">
                     <i class="material-icons mdc-icon-button__icon">edit</i>
                 </button>
-                <button mtd-data-href="/config/form/parts?formId=@form.Id" class="mdc-icon-button" onclick="event.stopPropagation();"
+                <button mtd-data-url="/config/form/parts?formId=@form.Id" class="mdc-icon-button" onclick="event.stopPropagation();"
                         aria-label="edit"
                         aria-hidden="true"
                         aria-pressed="false">
                     <i class="material-icons mdc-icon-button__icon">line_weight</i>
                 </button>
-                <button mtd-data-href="/config/form/fields?formId=@form.Id" class="mdc-icon-button" onclick="event.stopPropagation();"
+                <button mtd-data-url="/config/form/fields?formId=@form.Id" class="mdc-icon-button" onclick="event.stopPropagation();"
                         aria-label="edit"
                         aria-hidden="true"
                         aria-pressed="false">

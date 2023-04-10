@@ -14,6 +14,7 @@ namespace Mtd.OrderMaker.Server.Controllers
     public class CommonController : ControllerBase
     {
         public readonly UserHandler userHandler;
+       
 
         public CommonController(UserHandler userHandler)
         {
@@ -30,5 +31,6 @@ namespace Mtd.OrderMaker.Server.Controllers
 
             return Ok(new JsonResult(data));
         }
+
     }
 }

@@ -27,7 +27,7 @@
                 <input type="checkbox" id="@{@ViewBag.FieldID}-delete" name="@{@ViewBag.FieldID}-delete" style="display: none;" />
             </div>
             <div id="@{@ViewBag.FieldID}-href" class="mtd-field-file-info">
-                <a href="/api/store/stack/@{@Model.Id}/file" download="@ViewBag.FileName">@ViewBag.FileName</a>
+                <a href="~/api/store/stack/@{@Model.Id}/file" download="@ViewBag.FileName">@ViewBag.FileName</a>
             </div>
             <div id="@{@ViewBag.FieldID}-select" class="mtd-field-file-info" hidden>
             </div>

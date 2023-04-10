@@ -8,7 +8,7 @@
 <div>
     @if (@Model.MtdStoreStack.MtdStoreStackFile != null)
     {
-        <a href="/api/store/stack/@Model.MtdStoreStack.Id/file" download>
+        <a href="~/api/store/stack/@Model.MtdStoreStack.Id/file" download>
             @Model.MtdStoreStack.MtdStoreStackFile.FileName
         </a>
     }

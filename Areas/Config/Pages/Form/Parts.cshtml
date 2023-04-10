@@ -19,20 +19,20 @@
 }
 
 @section Breadcrumb {
-    <li><a href="/config">@Localizer["Configurator"]</a></li>
-    <li><a href="/config/form">@Localizer["Forms"]</a></li>
-    <li><a href="/config/form/edit?id=@Model.MtdForm.Id">@Localizer["Form editor"]</a></li>
+    <li><a href="~/config">@Localizer["Configurator"]</a></li>
+    <li><a href="~/config/form">@Localizer["Forms"]</a></li>
+    <li><a href="~/config/form/edit?id=@Model.MtdForm.Id">@Localizer["Form editor"]</a></li>
     <li>@ViewBag.Title</li>
 }
 
 @section Action {
 
-    <li mtd-data-href="/config/form/fields?formId=@Model.MtdForm.Id" class="mdc-list-item" role="menuitem">
+    <li mtd-data-url="/config/form/fields?formId=@Model.MtdForm.Id" class="mdc-list-item" role="menuitem">
         <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">view_list</span>
         <span class="mdc-list-item__text">@Localizer["Edit fields"]</span>
     </li>
-    <li mtd-data-href="/config/form/activites?formid=@Model.MtdForm.Id" class="mdc-list-item" role="menuitem">
+    <li mtd-data-url="/config/form/activites?formid=@Model.MtdForm.Id" class="mdc-list-item" role="menuitem">
         <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic" aria-hidden="true">
             <i class="fas fa-business-time"></i>
@@ -44,7 +44,7 @@
 <div class="mtd-desk">
     <div class="mtd-desk-panel">
         <div style="padding-left: 16px">
-            <button mtd-data-href="/config/form/partcreate?formId=@Model.MtdForm.Id" class="mdc-fab mdc-fab--extended" aria-label="Create">
+            <button mtd-data-url="/config/form/partcreate?formId=@Model.MtdForm.Id" class="mdc-fab mdc-fab--extended" aria-label="Create">
                 <div class="mdc-fab__ripple"></div>
                 <span class="material-icons mdc-fab__icon">add</span>
                 <span class="mdc-fab__label">@Localizer["Create"]</span>
@@ -83,7 +83,7 @@
         <ul mtd-data-draggable class="mdc-list">
             @foreach (var part in Model.MtdForm.MtdFormPart.OrderBy(x => x.Sequence))
             {
-                <li mtd-data-href="/config/form/partedit?id=@part.Id" id="@part.Id-licol" class="mtd-list-item mdc-list-item" draggable="true" role="button" aria-checked="false"
+                <li mtd-data-url="/config/form/partedit?id=@part.Id" id="@part.Id-licol" class="mtd-list-item mdc-list-item" draggable="true" role="button" aria-checked="false"
                     data-value="@part.Id">
                     <span class="mdc-list-item__ripple"></span>
                     <label class="mdc-list-item__text" for="@part.Id-lc">@part.Name</label>
@@ -96,7 +96,7 @@
                                 aria-label="Add to favorites"
                                 aria-hidden="true"
                                 aria-pressed="false"
-                                mtd-data-href="/config/form/partedit?id=@part.Id">
+                                mtd-data-url="/config/form/partedit?id=@part.Id">
                             <i class="material-icons mdc-icon-button__icon">edit</i>
                         </button>
                     </div>

@@ -13,14 +13,14 @@
 }
 
 @section Breadcrumb {
-    <li><a href="/identity/users">@Localizer["Users"]</a></li>
+    <li><a href="~/identity/users">@Localizer["Users"]</a></li>
     <li>@ViewBag.Title</li>
 }
 
 <div class="mtd-desk">
     <div class="mtd-desk-panel">
         <div style="padding-left: 16px;">
-            <button mtd-data-href="/identity/users/policy/create" class="mdc-fab mdc-fab--extended" aria-label="Create">
+            <button mtd-data-url="/identity/users/policy/create" class="mdc-fab mdc-fab--extended" aria-label="Create">
                 <div class="mdc-fab__ripple"></div>
                 <span class="material-icons mdc-fab__icon">add</span>
                 <span class="mdc-fab__label">@Localizer["Create"]</span>
@@ -44,7 +44,7 @@
     <ul id="drgList" class="mdc-list mdc-list--two-line">
         @foreach (var policy in Model.MtdPolicies)
         {
-        <li mtd-data-href="/identity/users/policy/edit?id=@policy.Id" id="@policy-licol" class="mdc-list-item"
+        <li mtd-data-url="/identity/users/policy/edit?id=@policy.Id" id="@policy-licol" class="mdc-list-item"
             data-value="@policy.Id" draggable="true" role="button" aria-checked="false">
             <span class="mdc-list-item__ripple"></span>
             <div style="padding: 8px;">

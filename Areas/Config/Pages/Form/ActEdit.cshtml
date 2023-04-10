@@ -9,10 +9,10 @@
 }
 
 @section Breadcrumb {
-    <li mtd-data-href="/config"><a href="/config">@Localizer["Configurator"]</a></li>
-    <li mtd-data-href="/config/form"><a href="/config/form">@Localizer["Forms"]</a></li>
-    <li mtd-data-href="/config/form/edit?id=@Model.MtdForm.Id"><a href="/config/form/edit?id=@Model.MtdForm.Id">@Localizer["Form editor"]</a></li>
-    <li><a href="/config/form/activites?formId=@Model.MtdForm.Id">@Localizer["Activites"]</a></li>
+    <li mtd-data-url="/config"><a href="~/config">@Localizer["Configurator"]</a></li>
+    <li mtd-data-url="/config/form"><a href="~/config/form">@Localizer["Forms"]</a></li>
+    <li mtd-data-url="/config/form/edit?id=@Model.MtdForm.Id"><a href="~/config/form/edit?id=@Model.MtdForm.Id">@Localizer["Form editor"]</a></li>
+    <li><a href="~/config/form/activites?formId=@Model.MtdForm.Id">@Localizer["Activites"]</a></li>
     <li>@ViewBag.Title</li>
 }
 

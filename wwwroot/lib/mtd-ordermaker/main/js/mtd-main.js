@@ -82,12 +82,13 @@ const rippleFor = (className) => {
 }
 
 const ListenerForDataHref = () => {
-    const items = document.querySelectorAll('[mtd-data-href]');
+    const items = document.querySelectorAll('[mtd-data-url]');
     items.forEach((item) => {
         item.addEventListener('click', () => {
             ActionShowModal(true);
 
-            const href = item.getAttribute('mtd-data-href');
+            let href = item.getAttribute('mtd-data-url');
+            href = window.location.origin + appName.value + href;
             const target = item.getAttribute('mtd_data_href-target');
 
             if (target) {

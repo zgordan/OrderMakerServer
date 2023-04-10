@@ -23,12 +23,12 @@
         @if (Model.IsCreator)
         {
             <div id="indexCreator" class="mtd-index-header-creator">
-                <button id="index-create-button" mtd-data-href="/workplace/store/create?formId=@Model.FormId" class="mdc-fab mdc-fab--extended">
+                <button id="index-create-button" mtd-data-url="/workplace/store/create?formId=@Model.FormId" class="mdc-fab mdc-fab--extended">
                     <div class="mdc-fab__ripple"></div>
                     <span class="material-icons mdc-fab__icon">add</span>
                     <span class="mdc-fab__label">@Localizer["Create"]</span>
                 </button>
-                <button id="index-create-button-mini" mtd-data-href="/workplace/store/create?formId=@Model.FormId" class="mdc-fab">
+                <button id="index-create-button-mini" mtd-data-url="/workplace/store/create?formId=@Model.FormId" class="mdc-fab">
                     <div class="mdc-fab__ripple"></div>
                     <span class="material-icons mdc-fab__icon">add</span>
                 </button>
@@ -105,7 +105,7 @@
             <tbody>
                 @foreach (var store in Model.MtdStores)
                 {
-                    <tr mtd-data-href="/workplace/store/details?id=@store.Id">
+                    <tr mtd-data-url="/workplace/store/details?id=@store.Id">
 
                         <td @if (!Model.ShowNumber) { <text> hidden</text>}>
                             <div style="align-self: center">

@@ -16,20 +16,20 @@
 }
 
 @section Breadcrumb {
-    <li mtd-data-href="/config"><a href="/config">@Localizer["Configurator"]</a></li>
-    <li mtd-data-href="/config/form"><a href="/config/form">@Localizer["Forms"]</a></li>
-    <li mtd-data-href="/config/form/edit?id=@Model.MtdForm.Id"><a href="/config/form/edit?id=@Model.MtdForm.Id">@Localizer["Form editor"]</a></li>
+    <li mtd-data-url="/config"><a href="~/config">@Localizer["Configurator"]</a></li>
+    <li mtd-data-url="/config/form"><a href="~/config/form">@Localizer["Forms"]</a></li>
+    <li mtd-data-url="/config/form/edit?id=@Model.MtdForm.Id"><a href="~/config/form/edit?id=@Model.MtdForm.Id">@Localizer["Form editor"]</a></li>
     <li>@ViewBag.Title</li>
 }
 
 @section Action {
 
-    <li mtd-data-href="/config/form/parts?formid=@Model.MtdForm.Id" class="mdc-list-item" role="menuitem">
+    <li mtd-data-url="/config/form/parts?formid=@Model.MtdForm.Id" class="mdc-list-item" role="menuitem">
         <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">line_weight</span>
         <span class="mdc-list-item__text">@Localizer["Edit parts"]</span>
     </li>
-    <li mtd-data-href="/config/form/fields?formid=@Model.MtdForm.Id" class="mdc-list-item" role="menuitem">
+    <li mtd-data-url="/config/form/fields?formid=@Model.MtdForm.Id" class="mdc-list-item" role="menuitem">
         <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">view_list</span>
         <span class="mdc-list-item__text">@Localizer["Edit fields"]</span>
@@ -39,7 +39,7 @@
 <div class="mtd-desk">
     <div class="mtd-desk-panel">
         <div style="padding-left: 16px;">
-            <button mtd-data-href="/config/form/actcreate?formId=@Model.MtdForm.Id" class="mdc-fab mdc-fab--extended" aria-label="Create">
+            <button mtd-data-url="/config/form/actcreate?formId=@Model.MtdForm.Id" class="mdc-fab mdc-fab--extended" aria-label="Create">
                 <div class="mdc-fab__ripple"></div>
                 <span class="material-icons mdc-fab__icon">add</span>
                 <span class="mdc-fab__label">@Localizer["Create"]</span>
@@ -69,7 +69,7 @@
     <ul mtd-data-draggable class="mdc-list mdc-list--two-line">
         @foreach (var activity in Model.MtdFormActivities)
         {
-            <li mtd-data-href="/config/form/actedit?id=@activity.Id" id="@activity.Id-licol" class="mtd-list-item mdc-list-item" draggable="true" role="button" aria-checked="false"
+            <li mtd-data-url="/config/form/actedit?id=@activity.Id" id="@activity.Id-licol" class="mtd-list-item mdc-list-item" draggable="true" role="button" aria-checked="false"
                 data-value="@activity.Id">
                 <span class="mdc-list-item__ripple"></span>
 
@@ -97,7 +97,7 @@
                             aria-label="Add to favorites"
                             aria-hidden="true"
                             aria-pressed="false"
-                            mtd-data-href="/config/form/actedit?id=@activity.Id">
+                            mtd-data-url="/config/form/actedit?id=@activity.Id">
                         <i class="material-icons mdc-icon-button__icon">edit</i>
                     </button>
                 </div>

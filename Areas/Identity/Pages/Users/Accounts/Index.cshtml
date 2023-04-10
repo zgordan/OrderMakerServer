@@ -14,7 +14,7 @@
 }
 
 @section Breadcrumb {
-    <li><a style="cursor:pointer" mtd-data-href="/identity/users">@Localizer["Users"]</a></li>
+    <li><a style="cursor:pointer" mtd-data-url="/identity/users">@Localizer["Users"]</a></li>
     <li>@ViewBag.Title</li>
 }
 
@@ -26,7 +26,7 @@
 <div class="mtd-desk">
     <div class="mtd-desk-panel">
         <div style="padding-left: 16px">
-            <button mtd-data-href="/identity/users/accounts/create" class="mdc-fab mdc-fab--extended" aria-label="Create" type="button">
+            <button mtd-data-url="/identity/users/accounts/create" class="mdc-fab mdc-fab--extended" aria-label="Create" type="button">
                 <div class="mdc-fab__ripple"></div>
                 <span class="material-icons mdc-fab__icon">person_add</span>
                 <span class="mdc-fab__label">@Localizer["Create"]</span>
@@ -90,7 +90,7 @@
                 {
                     counter++;
 
-                    <tr mtd-data-href="/identity/users/accounts/edit?id=@person.User.Id">
+                    <tr mtd-data-url="/identity/users/accounts/edit?id=@person.User.Id">
                         <td>
                             @counter
                         </td>

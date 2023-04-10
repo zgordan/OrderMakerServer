@@ -18,14 +18,14 @@
 }
 
 @section Breadcrumb {
-    <li><a href="/config">@Localizer["Configurator"]</a></li>
+    <li><a href="~/config">@Localizer["Configurator"]</a></li>
     <li>@ViewBag.Title</li>
 }
 
 <div class="mtd-desk">
     <div class="mtd-desk-panel">
         <div style="padding-left:16px">
-            <button mtd-data-href="/config/approval/create" class="mdc-fab mdc-fab--extended" aria-label="Create">
+            <button mtd-data-url="/config/approval/create" class="mdc-fab mdc-fab--extended" aria-label="Create">
                 <div class="mdc-fab__ripple"></div>
                 <span class="material-icons mdc-fab__icon">add</span>
                 <span class="mdc-fab__label">@Localizer["Create"]</span>
@@ -46,7 +46,7 @@
     <ul id="configListForms" class="mdc-list mdc-list--two-line">
         @foreach (var approval in Model.MtdApprovals.OrderBy(x => x.Name))
         {
-        <li mtd-data-href="/config/approval/edit?id=@approval.Id" class="mdc-list-item" aria-checked="false">
+        <li mtd-data-url="/config/approval/edit?id=@approval.Id" class="mdc-list-item" aria-checked="false">
             <span class="mdc-list-item__ripple"></span>
             <span class="mdc-list-item__text">
                 <span class="mdc-list-item__primary-text">@approval.Name</span>
@@ -60,7 +60,7 @@
                         aria-pressed="false">
                     <i class="material-icons mdc-icon-button__icon">edit</i>
                 </button>
-                <button mtd-data-href="/config/approval/stages?idApproval=@approval.Id" class="mdc-icon-button" onclick="event.stopPropagation();"
+                <button mtd-data-url="/config/approval/stages?idApproval=@approval.Id" class="mdc-icon-button" onclick="event.stopPropagation();"
                         aria-label="edit"
                         aria-hidden="true"
                         aria-pressed="false">

@@ -14,17 +14,17 @@
 }
 
 @section Breadcrumb {
-    <li><a href="/config">@Localizer["Configurator"]</a></li>
-    <li><a href="/config/approval">@Localizer["Approvals"]</a></li>
-    <li><a href="/config/approval/edit?id=@Model.MtdApprovalStage.MtdApproval">@Localizer["Approval editor"]</a></li>
-    <li><a href="/config/approval/stages?idApproval=@Model.MtdApprovalStage.MtdApproval">@Localizer["Stages list"]</a></li>
+    <li><a href="~/config">@Localizer["Configurator"]</a></li>
+    <li><a href="~/config/approval">@Localizer["Approvals"]</a></li>
+    <li><a href="~/config/approval/edit?id=@Model.MtdApprovalStage.MtdApproval">@Localizer["Approval editor"]</a></li>
+    <li><a href="~/config/approval/stages?idApproval=@Model.MtdApprovalStage.MtdApproval">@Localizer["Stages list"]</a></li>
     <li>@ViewBag.Title</li>
 }
 
 <div class="mtd-desk">
     <div class="mtd-desk-panel">
         <div style="padding-left: 16px">
-            <button mtd-data-href="/config/approval/resolutions/create?stage=@Model.MtdApprovalStage.Id" class="mdc-fab mdc-fab--extended" aria-label="Create">
+            <button mtd-data-url="/config/approval/resolutions/create?stage=@Model.MtdApprovalStage.Id" class="mdc-fab mdc-fab--extended" aria-label="Create">
                 <div class="mdc-fab__ripple"></div>
                 <span class="material-icons mdc-fab__icon">add</span>
                 <span class="mdc-fab__label">@Localizer["Create"]</span>
@@ -54,7 +54,7 @@
     <ul mtd-data-draggable class="mdc-list mdc-list--two-line">
         @foreach (var resolution in Model.Resolutions)
         {
-        <li mtd-data-href="/config/approval/resolutions/edit?id=@resolution.Id" class="mtd-list-item mdc-list-item"
+        <li mtd-data-url="/config/approval/resolutions/edit?id=@resolution.Id" class="mtd-list-item mdc-list-item"
             aria-checked="false" data-value="@resolution.Id" id="@resolution.Id-licol" draggable="true">
             <span class="mdc-list-item__ripple"></span>
             <span class="mdc-list-item__graphic">

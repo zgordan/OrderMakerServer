@@ -16,21 +16,21 @@
 
 
 @section Breadcrumb {
-    <li><a href="/config">@Localizer["Configurator"]</a></li>
-    <li><a href="/config/approval">@Localizer["Approvals"]</a></li>
-    <li><a href="/config/approval/edit?id=@Model.MtdApproval.Id">@Localizer["Approval editor"]</a></li>
-    <li><a href="/config/approval/stages?idApproval=@Model.MtdApproval.Id">@Localizer["Stages list"]</a></li>
+    <li><a href="~/config">@Localizer["Configurator"]</a></li>
+    <li><a href="~/config/approval">@Localizer["Approvals"]</a></li>
+    <li><a href="~/config/approval/edit?id=@Model.MtdApproval.Id">@Localizer["Approval editor"]</a></li>
+    <li><a href="~/config/approval/stages?idApproval=@Model.MtdApproval.Id">@Localizer["Stages list"]</a></li>
     <li>@ViewBag.Title</li>
 }
 
 
 @section Action {
-    <li class="mdc-list-item" role="menuitem" mtd-data-href="/config/approval/resolutions/index?stage=@Model.MtdApprovalStage.Id">
+    <li class="mdc-list-item" role="menuitem" mtd-data-url="/config/approval/resolutions/index?stage=@Model.MtdApprovalStage.Id">
         <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">thumb_up</span>
         <span class="mdc-list-item__text">@Localizer["Resolution list"]</span>
     </li>
-    <li class="mdc-list-item" role="menuitem" mtd-data-href="/config/approval/rejections/index?stage=@Model.MtdApprovalStage.Id">
+    <li class="mdc-list-item" role="menuitem" mtd-data-url="/config/approval/rejections/index?stage=@Model.MtdApprovalStage.Id">
         <span class="mdc-list-item__ripple"></span>
         <span class="mdc-list-item__graphic material-icons" aria-hidden="true">thumb_down</span>
         <span class="mdc-list-item__text">@Localizer["Rejection list"]</span>
