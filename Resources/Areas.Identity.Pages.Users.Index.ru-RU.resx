@@ -153,7 +153,7 @@
   <data name="Users" xml:space="preserve">
     <value>Пользователи</value>
   </data>
-  <data name="Users management" xml:space="preserve">
+  <data name="User Management" xml:space="preserve">
     <value>Управление пользователями</value>
   </data>
 </root>

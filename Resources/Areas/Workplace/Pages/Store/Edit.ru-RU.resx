@@ -141,13 +141,13 @@
   <data name="Editor" xml:space="preserve">
     <value>Редактор</value>
   </data>
-  <data name="Form view" xml:space="preserve">
+  <data name="Document view" xml:space="preserve">
     <value>Просмотр</value>
   </data>
   <data name="Info about" xml:space="preserve">
     <value>Поле</value>
   </data>
-  <data name="List data" xml:space="preserve">
+  <data name="Data List" xml:space="preserve">
     <value>Список</value>
   </data>
   <data name="OK" xml:space="preserve">

@@ -10,7 +10,7 @@
 @inject IHtmlLocalizer<SharedResource> Localizer
 
 @{
-    ViewData["Title"] = Localizer["Creating document"];
+    ViewData["Title"] = Localizer["Document creation"];
     ViewData["SecondTitle"] = Model.MtdForm.Name;
     string parentStoreId = Request.Query["parentStoreId"];
     string listGuid = Guid.NewGuid().ToString();
@@ -23,7 +23,7 @@
 }
 @section Breadcrumb {
     <li mtd-data-url="/"><a href="~/">@Localizer["Desktop"]</a></li>
-    <li mtd-data-url="/workplace/store/index?indexForm=@Model.MtdForm.Id"><a href="~/workplace/store/index?indexForm=@Model.MtdForm.Id">@Localizer["List data"]</a></li>
+    <li mtd-data-url="/workplace/store/index?indexForm=@Model.MtdForm.Id"><a href="~/workplace/store/index?indexForm=@Model.MtdForm.Id">@Localizer["Data List"]</a></li>
     <li>@ViewBag.Title</li>
 }
 

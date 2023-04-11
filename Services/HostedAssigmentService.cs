@@ -61,7 +61,7 @@ namespace Mtd.OrderMaker.Server.Services
                         List<string> links = new List<string>();
                         List<MtdStoreTask> sts = storeTasks.Where(x => x.Executor == userId).OrderBy(x=>x.MtdStoreId).ToList();
 
-                        MtdStore doc = new MtdStore();
+                        MtdStore doc = new();
                         foreach (var st in sts)
                         {
                             MtdStore mtdStore = await context.MtdStore.Include(x => x.MtdFormNavigation).FirstOrDefaultAsync(x => x.Id == st.MtdStoreId);

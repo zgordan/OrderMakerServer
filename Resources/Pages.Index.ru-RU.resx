@@ -123,7 +123,7 @@
   <data name="Search for text" xml:space="preserve">
     <value>Поиск по тексту</value>
   </data>
-  <data name="Selecting database" xml:space="preserve">
+  <data name="Database selection" xml:space="preserve">
     <value>Выбор базы данных</value>
   </data>
 </root>

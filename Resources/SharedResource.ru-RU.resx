@@ -222,7 +222,7 @@
   <data name="Desktop" xml:space="preserve">
     <value>Рабочий стол</value>
   </data>
-  <data name="Selecting database" xml:space="preserve">
+  <data name="Database selection" xml:space="preserve">
     <value>Выбор базы данных</value>
   </data>
   <data name="Account" xml:space="preserve">
@@ -330,7 +330,7 @@
   <data name="List columns" xml:space="preserve">
     <value>Колонки списка</value>
   </data>
-  <data name="List data" xml:space="preserve">
+  <data name="Data List" xml:space="preserve">
     <value>Список</value>
   </data>
   <data name="more (&gt;)" xml:space="preserve">
@@ -378,7 +378,7 @@
   <data name="Edit" xml:space="preserve">
     <value>Редактировать</value>
   </data>
-  <data name="Form view" xml:space="preserve">
+  <data name="Document view" xml:space="preserve">
     <value>Просмотр</value>
   </data>
   <data name="List" xml:space="preserve">
@@ -600,7 +600,7 @@
   <data name="'m/d/Y'" xml:space="preserve">
     <value>'d.m.Y'</value>
   </data>
-  <data name="Creating document" xml:space="preserve">
+  <data name="Document creation" xml:space="preserve">
     <value>Создание документа</value>
   </data>
   <data name="View" xml:space="preserve">
@@ -615,7 +615,7 @@
   <data name="Change account password" xml:space="preserve">
     <value>Изменение пароля учетной записи</value>
   </data>
-  <data name="Change profile data" xml:space="preserve">
+  <data name="Profile change" xml:space="preserve">
     <value>Изменение данных профиля</value>
   </data>
   <data name="Clear all" xml:space="preserve">
@@ -726,7 +726,7 @@
   <data name="Document-based on" xml:space="preserve">
     <value>Документ основание</value>
   </data>
-  <data name="Select the form of the creating document, which will depend on the current document." xml:space="preserve">
+  <data name="Select the form of the Document creation, which will depend on the current document." xml:space="preserve">
     <value>Выберите форму создаваемого документа, которая будет зависеть от текущего документа.</value>
   </data>
   <data name="at" xml:space="preserve">
@@ -1020,7 +1020,7 @@
   <data name="User list" xml:space="preserve">
     <value>Список пользователей</value>
   </data>
-  <data name="Users management" xml:space="preserve">
+  <data name="User Management" xml:space="preserve">
     <value>Управление пользвателями</value>
   </data>
   <data name="Accounts" xml:space="preserve">

@@ -141,7 +141,7 @@
   <data name="Export to Excel" xml:space="preserve">
     <value>Экспорт в Excel</value>
   </data>
-  <data name="List data" xml:space="preserve">
+  <data name="Data List" xml:space="preserve">
     <value>Список</value>
   </data>
 </root>

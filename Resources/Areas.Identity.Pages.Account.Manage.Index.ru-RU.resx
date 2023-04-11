@@ -120,7 +120,7 @@
   <data name="Account" xml:space="preserve">
     <value>Учетная запись</value>
   </data>
-  <data name="Change profile data" xml:space="preserve">
+  <data name="Profile change" xml:space="preserve">
     <value>Изменение профиля пользователя</value>
   </data>
   <data name="Confirm Email" xml:space="preserve">
