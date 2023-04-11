@@ -9,12 +9,39 @@
             this.selector = new mdc.select.MDCSelect(document.getElementById(id));
             this.input = document.getElementById(`${id}-input`);
             this.input.value = this.selector.value;
+            this.lis = document.getElementById(`${id}-ul`).getElementsByTagName('li');
 
             this.selector.listen('MDCSelect:change', () => {
                 this.input.value = this.selector.value;
             });
 
             this.itemTemplate = document.getElementById("mtd-select-list-helper-item");
+        }
+
+        const inputSearch = document.getElementById(`${id}-search`);
+        if (inputSearch) {
+            inputSearch.addEventListener("keyup", (e) => {
+
+                if (e.target.value === "") {
+                    for (let li of this.lis) {
+                        li.style.display = "";
+                    }
+                }
+
+                if (e.target.value !== "") {
+                    for (let li of this.lis) {
+                        if (li.dataset.value != "search-li") {
+                            const text = li.querySelector(".mdc-list-item__text").innerText;
+                            if (text.toUpperCase().includes(e.target.value.toUpperCase())) {
+                                li.style.display = "";
+                            } else {
+                                li.style.display = "none";
+                            }                            
+                        }                        
+                    }
+                }               
+
+            });
         }
 
     }

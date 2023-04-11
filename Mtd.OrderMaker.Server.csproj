@@ -172,6 +172,10 @@ OrderMaker provides the ability quickly create a solution to consolidate informa
 
   <ItemGroup>
     <None Include="bundleconfig.json" />
+    <None Include="Views\Shared\Components\MTDSelectList\Default.cshtml" />
+    <None Include="Views\Shared\Components\MTDSelectList\Outlined.cshtml" />
+    <None Include="Views\Shared\Components\MTDSelectList\_items.cshtml" />
+    <None Include="Views\Shared\Components\MTDSelectList\_label.cshtml" />
     <None Include="wwwroot\lib\fontawesome\js\all.js" />
     <None Include="wwwroot\lib\fontawesome\js\all.min.js" />
     <None Include="wwwroot\lib\fontawesome\js\brands.js" />
