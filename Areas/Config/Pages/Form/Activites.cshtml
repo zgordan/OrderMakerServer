@@ -59,7 +59,7 @@
         </div>
     </div>
 
-    <form mtd-data-form="sequence" method="post" action="/api/config/form/activity/sequence">
+    <form mtd-data-form="sequence" method="post" action="~/api/config/form/activity/sequence">
         @Html.AntiForgeryToken()
         <input mtd-data-sequence name="fieldSeqData" type="hidden" />
         <input name="formId" type="hidden" value="@Model.MtdForm.Id" />

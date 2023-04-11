@@ -34,7 +34,7 @@
         </div>
     </div>
 
-    <form mtd-data-form="sequence" method="post" action="/api/config/approval/stage/sequence">
+    <form mtd-data-form="sequence" method="post" action="~/api/config/approval/stage/sequence">
         @Html.AntiForgeryToken()
         <input mtd-data-sequence name="drgData" type="hidden" />
         <input name="IdApproval" type="hidden" value="@Model.MtdApproval.Id" />

@@ -78,7 +78,7 @@
 
     </div>
 
-    <form mtd-data-form method="post" autocomplete="off" action="/api/config/form/field/edit" novalidate>
+    <form mtd-data-form method="post" autocomplete="off" action="~/api/config/form/field/edit" novalidate>
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="MtdForm.Id" name="formId" />
         <input type="hidden" asp-for="MtdFormPartField.Id" name="fieldId" />

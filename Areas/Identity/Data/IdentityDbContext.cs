@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Mtd.Cpq.Manager.Areas.Identity.Data;
@@ -8,12 +9,13 @@ using Mtd.OrderMaker.Server.Areas.Identity.Data;
 
 namespace Mtd.OrderMaker.Server.Entity
 {
-    public class IdentityDbContext : IdentityDbContext<WebAppUser, WebAppRole, string>
+    public class IdentityDbContext : IdentityDbContext<WebAppUser, WebAppRole, string>, IDataProtectionKeyContext
     {
         public IdentityDbContext(DbContextOptions<IdentityDbContext> options)
             : base(options)
         {
         }
+        public DbSet<DataProtectionKey> DataProtectionKeys { get; set; }
 
         public virtual DbSet<MtdCpqTitlesOwner> MtdCpqTitlesOwners { get; set; }
         public virtual DbSet<MtdCpqProposalOwner> MtdCpqProposalOwners { get; set; }

@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <form mtd-data-form method="post" autocomplete="off" action="/api/users/admin/groups/edit" novalidate>
+    <form mtd-data-form method="post" autocomplete="off" action="~/api/users/admin/groups/edit" novalidate>
         @Html.AntiForgeryToken()       
         <input type="hidden" value="@Model.MtdGroup.Id" name="group-id" />
         <input type="hidden" id="clicker-save" mtd-data-clicker  mtd-data-message="@Localizer["Changes saved."]" mtd-data-location="/identity/users/group"/>

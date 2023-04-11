@@ -31,7 +31,7 @@
         </div>
     </div>
 
-    <form mtd-data-form method="post" autocomplete="off" action="/api/users/admin/groups/add" novalidate>
+    <form mtd-data-form method="post" autocomplete="off" action="~/api/users/admin/groups/add" novalidate>
         @Html.AntiForgeryToken()
         <input type="hidden" id="clicker-save" mtd-data-clicker mtd-data-message="@Localizer["New group was created."]" mtd-data-location="/identity/users/group" />
 

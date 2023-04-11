@@ -54,7 +54,7 @@
 
     <partial name="./Partials/_PartEditHeader" />
 
-    <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="/api/config/form/part/edit">
+    <form mtd-data-form method="post" autocomplete="off" enctype="multipart/form-data" action="~/api/config/form/part/edit">
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="MtdForm.Id" name="formId" />
         <input type="hidden" asp-for="MtdFormPart.Id" name="partId" />

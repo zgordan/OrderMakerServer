@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="mtd-dialog-content">
-            <form id="indexFormColumn" method="post" action="/api/index/filter/columns/add" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
+            <form id="indexFormColumn" method="post" action="~/api/index/filter/columns/add" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
                 @Html.AntiForgeryToken()
                 <input type="text" name="form-id" value="@Model.FormId" hidden />
                 <input type="text" id="indexDataColumnList" name="indexDataColumnList" value="@Model.FormId" hidden />

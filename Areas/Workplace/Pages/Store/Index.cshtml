@@ -42,7 +42,7 @@
 }
 
 
-<form id="index-excel-form" method="post" enctype="multipart/form-data" action="/api/action/index/excel/export">
+<form id="index-excel-form" method="post" enctype="multipart/form-data" action="~/api/action/index/excel/export">
     @Html.AntiForgeryToken()
     <input name="form-id" value="@ViewBag.FormId" type="hidden" />
 </form>

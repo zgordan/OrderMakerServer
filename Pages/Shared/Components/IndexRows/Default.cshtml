@@ -45,7 +45,7 @@
     {
         <div class="mtd-index-header" style="display: flex; position:relative">
             <div class="mtd-index-header-search">
-                <form mtd-data-form method="post" action="/api/index/search/text" enctype="multipart/form-data" autocomplete='off'>
+                <form mtd-data-form method="post" action="~/api/index/search/text" enctype="multipart/form-data" autocomplete='off'>
                     @Html.AntiForgeryToken()
                     <input asp-for="@Model.FormId" name="indexForm" value="@Model.FormId" id="indexForm" hidden />
                     @await Html.PartialAsync("./_inputSearch.cshtml")
@@ -73,7 +73,7 @@
                     <th @if (!Model.ShowNumber) { <text> hidden</text>}>
                         @if (!Model.WaitList)
                         {
-                            <form mtd-data-form method="post" action="/api/index/search/number" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
+                            <form mtd-data-form method="post" action="~/api/index/search/number" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
                                 @Html.AntiForgeryToken()
                                 <input name="formId" asp-for="@Model.FormId" type="hidden" />
                                 @await Html.PartialAsync("./_numberSearch.cshtml")

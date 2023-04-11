@@ -37,7 +37,7 @@
         </div>
     </div>
 
-    <form mtd-data-form method="post" autocomplete="off" action="/api/config/form/field/create" novalidate>
+    <form mtd-data-form method="post" autocomplete="off" action="~/api/config/form/field/create" novalidate>
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="MtdForm.Id" name="formId" />
         <input type="hidden" asp-for="MtdFormPart.Id" name="partId" />

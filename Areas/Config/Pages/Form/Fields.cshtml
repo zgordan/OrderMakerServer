@@ -46,7 +46,7 @@
     <input id="configCurrentPart" type="hidden" asp-for="CurrentPartId" name="partId" />
 </form>
 
-<form mtd-data-form="sequence" method="post" action="/api/config/form/field/sequence">
+<form mtd-data-form="sequence" method="post" action="~/api/config/form/field/sequence">
     @Html.AntiForgeryToken()
     <input mtd-data-sequence name="fieldSeqData" type="hidden" />
     <input name="fieldPart" type="hidden" value="@Model.CurrentPartId" />

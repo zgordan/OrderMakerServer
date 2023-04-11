@@ -71,7 +71,7 @@
 
     <hr />
 
-    <form mtd-data-form="sequence" method="post" action="/api/config/form/part/sequence">
+    <form mtd-data-form="sequence" method="post" action="~/api/config/form/part/sequence">
         @Html.AntiForgeryToken()
         <input mtd-data-sequence name="fieldSeqData" type="hidden" />
         <input name="fieldPart" type="hidden" value="@Model.CurrentPartId" />

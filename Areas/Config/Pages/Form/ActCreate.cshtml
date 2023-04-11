@@ -39,7 +39,7 @@
             <span>@Model.MtdForm.Name</span>
         </div>
     </div>
-    <form mtd-data-form method="post" autocomplete="off" action="/api/config/form/activity/create" novalidate>
+    <form mtd-data-form method="post" autocomplete="off" action="~/api/config/form/activity/create" novalidate>
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="MtdForm.Id" name="formId" />
         <input type="hidden" asp-for="MtdFormActivity.Id" name="activityId" />

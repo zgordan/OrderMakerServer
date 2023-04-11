@@ -55,7 +55,7 @@
     </div>
 </div>
 
-<form mtd-data-form method="post" autocomplete="off" action="/api/config/approval/stage/edit" novalidate>
+<form mtd-data-form method="post" autocomplete="off" action="~/api/config/approval/stage/edit" novalidate>
     @Html.AntiForgeryToken()
     <input type="hidden" asp-for="MtdApprovalStage.Id" name="stageId" />
     <input type="hidden" id="clicker-save"

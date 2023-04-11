@@ -10,7 +10,7 @@
 
 <div class="mtd-index-footer">
 
-    <form mtd-data-form method="post" action="/api/index/pagemove" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
+    <form mtd-data-form method="post" action="~/api/index/pagemove" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
         @Html.AntiForgeryToken()
         <input name="formId" value="@Model.FormId" type="hidden" />
         <input mtd-data-result name="formValue" type="hidden" />

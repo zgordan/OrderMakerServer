@@ -13,7 +13,7 @@
     <input type="hidden" id="@Model.ListId-selected-id" name="selected-id" value="@Model.ResultValue" />
     <input type="hidden" id="@Model.ListId-selected-target" value="@Model.ResultTarget" />
 
-    <form id="@Model.ListId-form" method="post" action="/api/store/list" autocomplete="off" novalidate>
+    <form id="@Model.ListId-form" method="post" action="~/api/store/list" autocomplete="off" novalidate>
         @Html.AntiForgeryToken()
 
         <input type="number" class="mtd-main-display-none" id="@Model.ListId-page-number" name="search-page" value="@Model.PageNumber" />

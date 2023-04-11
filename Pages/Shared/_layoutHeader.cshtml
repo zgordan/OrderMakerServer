@@ -7,7 +7,7 @@
 @{
     ViewData["ColorBar"] = await configHandler.GetColorBar();
     ViewData["ColorIcon"] = await configHandler.GetColorIcon();
-    string CPQLink = configHandler.options.Value.CPQManagerLink;
+    string CPQLink = string.Empty;
 }
 
 <header class="mdc-top-app-bar  mdc-elevation--z4" id="app-bar" style="background-color: @ViewBag.ColorBar">

@@ -7,7 +7,7 @@
         @await Html.PartialAsync("./_tabExtensionList.cshtml")
     </div>
     <div class="index-filter-content-tab-second--hole"></div>
-    <form mtd-data-form  method="post" action="/api/filter/extension/add" enctype="multipart/form-data" autocomplete='off'>
+    <form mtd-data-form  method="post" action="~/api/filter/extension/add" enctype="multipart/form-data" autocomplete='off'>
         @Html.AntiForgeryToken()
         
         <input type="hidden" name="form-id" value="@Model.FormId"  />

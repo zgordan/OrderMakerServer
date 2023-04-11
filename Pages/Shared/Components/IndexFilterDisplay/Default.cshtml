@@ -12,7 +12,7 @@
 {
     <div style="display: flex; border-bottom: 1px solid #ccc; align-items: center; background-color: whitesmoke">
         <div style=" width: 100%; padding:  4px; align-items:center; overflow:hidden; overflow-x:auto;">
-            <form mtd-data-form method="post" action="/api/index/filter/remove" autocomplete="off">
+            <form mtd-data-form method="post" action="~/api/index/filter/remove" autocomplete="off">
                 @Html.AntiForgeryToken()
                 <input mtd-data-result type="hidden" name="idField" />
                 <div style="display: flex; align-items: center; ">
@@ -40,7 +40,7 @@
         </div>
 
         <div  style=" padding: 2px 18px 2px 4px; 18px; padding-left: 4px;">
-            <form mtd-data-form method="post" action="/api/index/filter/removeall" enctype="multipart/form-data">
+            <form mtd-data-form method="post" action="~/api/index/filter/removeall" enctype="multipart/form-data">
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="filter-id" value="@Model.IdFilter" />
                 <input type="hidden" name="form-id" value="@Model.FormId" />

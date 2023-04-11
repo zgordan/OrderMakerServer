@@ -32,7 +32,7 @@
         </div>
     </div>
 
-    <form mtd-data-form method="post" autocomplete="off" action="/api/config/approval/stage/create" novalidate>
+    <form mtd-data-form method="post" autocomplete="off" action="~/api/config/approval/stage/create" novalidate>
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="MtdApproval.Id" name="approvalId" />    
         <input type="hidden" id="clicker-create" mtd-data-clicker

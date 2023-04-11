@@ -57,7 +57,7 @@ namespace Mtd.OrderMaker.Server
 
             services.AddDataProtection()
                 .SetApplicationName($"{Configuration.GetConnectionString("ClientName")}")
-                .PersistKeysToFileSystem(new DirectoryInfo(Configuration.GetConnectionString("KeysFolder")));
+                .PersistKeysToDbContext<IdentityDbContext>();
 
             services.AddDbContext<IdentityDbContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("IdentityConnection"), new MySqlServerVersion(new Version(8, 0))));
@@ -168,7 +168,6 @@ namespace Mtd.OrderMaker.Server
             var cultureInfo = new CultureInfo(config.Value.CultureInfo);
             locOptions.Value.DefaultRequestCulture = new RequestCulture(cultureInfo);
             app.UseRequestLocalization(locOptions.Value);
-
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

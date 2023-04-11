@@ -205,7 +205,7 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
                 if (cpqPolicy.Contains("print-gross-price")) { Input.CpqPolicyPGP = "print-gross-price"; }
             }
 
-            CpqModule = options.Value.CPQManagerLink.Length > 0 ? true : false; 
+            CpqModule = false; 
             return Page();
         }
 

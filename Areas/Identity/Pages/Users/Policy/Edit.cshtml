@@ -42,13 +42,13 @@
     </li>
 }
 
-<form mtd-data-form method="post" enctype="multipart/form-data" action="/api/policy/all">
+<form mtd-data-form method="post" enctype="multipart/form-data" action="~/api/policy/all">
     @Html.AntiForgeryToken()
     <input name="policy-id" type="hidden" value="@Model.MtdPolicy.Id" />
     <input id="all" mtd-data-clicker type="hidden" />
 </form>
 
-<form mtd-data-form method="post" enctype="multipart/form-data" action="/api/policy/clear">
+<form mtd-data-form method="post" enctype="multipart/form-data" action="~/api/policy/clear">
     @Html.AntiForgeryToken()
     <input name="policy-id" type="hidden" value="@Model.MtdPolicy.Id" />
     <input id="clear" mtd-data-clicker type="hidden" />
@@ -65,22 +65,22 @@
         </div>
     </div>
 
-    <form mtd-data-form method="post" action="/api/policy/edit" enctype="multipart/form-data" autocomplete="off" novalidate>
+    <form mtd-data-form method="post" action="~/api/policy/edit" enctype="multipart/form-data" autocomplete="off" novalidate>
         <input type="hidden" name="policy-id" value="@Model.MtdPolicy.Id" />
         <input mtd-data-clicker type="hidden" id="clicker-save" value="@Model.MtdPolicy.Id" />
         @Html.AntiForgeryToken()
         <div class="mtd-users-rights-header">
             <div class="mtd-users-rights-header-first">
                 @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags
-               {
-                   Id = "policy-name",
-                   Name = "policy-name",
-                   Required = true,
-                   Value = Model.MtdPolicy.Name,
-                   Label = "Name",
-                   LabelLocalized = true,
-                   MTDTexFieldView = MTDTextFieldViews.Outlined
-               })
+                   {
+                       Id = "policy-name",
+                       Name = "policy-name",
+                       Required = true,
+                       Value = Model.MtdPolicy.Name,
+                       Label = "Name",
+                       LabelLocalized = true,
+                       MTDTexFieldView = MTDTextFieldViews.Outlined
+                   })
             </div>
             <div class="mtd-users-rights-header-second">
                 @await Component.InvokeAsync(typeof(MTDTextField), new MTDTextFieldTags

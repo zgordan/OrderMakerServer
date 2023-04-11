@@ -12,7 +12,5 @@ namespace Mtd.OrderMaker.Server.AppConfig
         public string DefaultUSR { get; set; }
         public string DefaultPWD { get; set; }
         public string CultureInfo { get; set; }
-        public string CPQManagerLink { get; set; }
-
     }
 }

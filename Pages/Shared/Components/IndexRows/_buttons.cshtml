@@ -26,7 +26,7 @@
 
     </div>
     <div>
-        <form mtd-data-form method="post" action="/api/index/waitlist/set" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
+        <form mtd-data-form method="post" action="~/api/index/waitlist/set" enctype="multipart/form-data" style="width: 100%" autocomplete='off'>
             @Html.AntiForgeryToken()
             <input mtd-data-clicker type="hidden" id="id-form-waitlist" name="id-form-waitlist" value="@Model.FormId" />
             @if (Model.Pending > 0)
