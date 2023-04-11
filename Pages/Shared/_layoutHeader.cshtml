@@ -19,11 +19,19 @@
             }
             <span class="mdc-top-app-bar__title" style="padding-left: 8px">
                 @{
-                    string pathAppBar = "/lib/mtd-ordermaker/images/logo-mtd-white.png";
+
                     var imgAppBar = await configHandler.GetImageFromConfig(configHandler.CodeImgAppBar);
-                    if (imgAppBar != string.Empty) { pathAppBar = imgAppBar; }
                 }
-                <img src="@pathAppBar" height="32" />
+
+                @if (imgAppBar != string.Empty)
+                {
+                    <img src="@imgAppBar" height="32" />
+                }
+                else
+                {
+                    <img src="~/lib/mtd-ordermaker/images/logo-mtd-white.png" height="32" />
+                }
+
             </span>
         </section>
         @if (SignInManager.IsSignedIn(User))

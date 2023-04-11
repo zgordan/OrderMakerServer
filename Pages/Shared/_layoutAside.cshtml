@@ -28,7 +28,6 @@
             string location = $"/Identity/Account/Relogin?returnUrl={Context.Request.Path}{Context.Request.QueryString}";
             Context.Response.Redirect(location);
         }
-
     }
 }
 
@@ -38,11 +37,17 @@
             <div style="display:flex; flex-direction: column; align-items: center">
                 <div>
                     @{
-                        string pathImgMenu = "/lib/mtd-ordermaker/images/logo-mtd.png";
                         var imgMenu = await configHandler.GetImageFromConfig(configHandler.CodeImgMenu);
-                        if (imgMenu != string.Empty) { pathImgMenu = imgMenu; }
                     }
-                    <img src="@pathImgMenu" width="235" />
+                    @if (imgMenu != string.Empty)
+                    {
+                        <img src="@imgMenu" width="235" />
+                    }
+                    else
+                    {
+                        <img src="~/lib/mtd-ordermaker/images/logo-mtd.png" width="235" />
+                    }
+
                 </div>
                 <div style="display: flex; flex-direction: column; margin-top: 16px; align-items: center">
                     <div style="background-color: lightgray;   width: 52px; height: 52px; border-radius: 50%; text-align: center">
@@ -66,6 +71,7 @@
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">dashboard</i>
                 <span class="mdc-list-item__text">@Localizer["Desktop"]</span>
             </a>
+
             <a class="mdc-list-item" href="~/Identity/Account/Manage" name="mainMenuItem">
                 <span class="mdc-list-item__ripple"></span>
                 <i class="material-icons mdc-list-item__graphic" aria-hidden="true">person_outline</i>
