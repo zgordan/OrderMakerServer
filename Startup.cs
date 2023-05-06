@@ -52,7 +52,7 @@ namespace Mtd.OrderMaker.Server
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.Domain = Configuration.GetConnectionString("Domain");
-                options.Cookie.Name = ".MTD.Service";
+                options.Cookie.Name = $".OrderMaker.{Configuration.GetConnectionString("ClientName")}";
             });
 
             services.AddDataProtection()
