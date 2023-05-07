@@ -68,7 +68,7 @@ namespace Mtd.OrderMaker.Server.Services
                 var htmlArray = File.ReadAllText(file);
                 string htmlText = htmlArray.ToString();
 
-                htmlText = htmlText.Replace("{logo}", pathImgMenu);
+                //htmlText = htmlText.Replace("{logo}", pathImgMenu);
                 htmlText = htmlText.Replace("{title}", _emailSettings.Title);
                 htmlText = htmlText.Replace("{header}", blankEmail.Header);
                 htmlText = htmlText.Replace("{content}", message);
