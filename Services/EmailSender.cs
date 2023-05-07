@@ -87,8 +87,9 @@ namespace Mtd.OrderMaker.Server.Services
 
         private async Task ExecuteAsync(string email, string subject, string message , bool mustconfirm = true)
         {
-            WebAppUser user = await userHandler.FindByEmailAsync(email) ?? new WebAppUser();       
-            if (mustconfirm && user.EmailConfirmed == false) { return; }
+            
+            WebAppUser user = await userHandler.FindByEmailAsync(email);       
+            if (user ==null || (mustconfirm && user.EmailConfirmed == false)) { return; }
                        
             try
             {
@@ -109,7 +110,7 @@ namespace Mtd.OrderMaker.Server.Services
                     Credentials = new NetworkCredential(_emailSettings.FromAddress, _emailSettings.Password),
                     EnableSsl = true
                 };
-                await smtp.SendMailAsync(mail);
+                smtp.Send(mail);
             }
             catch (Exception ex)
             {
