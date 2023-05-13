@@ -106,7 +106,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
             {
                 AllowClose = false
             };
-            workbook.Write(ms);
+            workbook.Write(ms,true);
             ms.Flush();
             ms.Seek(0, SeekOrigin.Begin);
             ms.AllowClose = true;
