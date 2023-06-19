@@ -21,17 +21,14 @@ MTD OrderMaker includes the Configurator module, provides administrators to crea
 - System administrators or IT specialists of small companies handle tasks related to order management.
 - Back-end programmers use the MTD OrderMaker as an intermediary to simplify the collection of data from users into their data processing systems.
 
+Demo Server: https://demo.mtdkey.com/
+
 ## How to start
 ℹ️ _This manual is intended for system administrators_
 
-1. Download and install .Net Core 7.0 for Windows OS depending on the operating system, also download and install the Hosting Bundle.
-2. Download and install MySql Community Server 8.0 ([recommendation 8.0.15](https://downloads.mysql.com/archives/get/p/23/file/mysql-8.0.15-winx64.zip)). The MySql user you will use to connect from the web application must have Database Creator permissions.  
-3. Download the OrderMaker [latest release](https://github.com/olegbruev/OrderMakerServer/releases) in the publish.zip file archive.
-4. Unzip it and create file appsettings.json in same folder.  Use the appsettings.Template.json file to understand what settings you need to specify.
-5. Run Mtd.OrderMaker.Server.exe file. Then open browser and type address https://localhost:5001. Log in with the username and password that you specify in the appsettings.json file.
-6. Open the Configurator and Form Template Builder. Create a form. Then use the Action button to create the Part form (section). Open the created section and then create some field using Action button.
-7. Open the Users menu and Policy Template Designer. Create a policy and name it Default. Use the "Action" button and click "Select All".  Click Save button.
-8. Open the "Users" menu and the "Accounts" module (list of users). Click your account name and select the Default value in the Policy field. Click the Save button.
+1. Open the Configurator and Form Template Builder. Create a form. Then use the Action button to create the Part form (section). Open the created section and then create some field using Action button.
+2. Open the Users menu and Policy Template Designer. Create a policy and name it Default. Use the "Action" button and click "Select All".  Click Save button.
+3. Open the "Users" menu and the "Accounts" module (list of users). Click your account name and select the Default value in the Policy field. Click the Save button.
 
 After all this, you will open the Desktop menu item and see your first database.
 
