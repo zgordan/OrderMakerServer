@@ -25,7 +25,7 @@ Demo Server: https://demo.mtdkey.com/
 
 ## How to start
 1. Create a database using Demo Server ☝️
-2. Open the Configurator and Form Template Builder. Create a form. Then use the Action button to create the Part form (section). Open the created section and then create some field using Action button.
+2. Open the Configurator and Form Template Builder. Create a form. Then use the Action button to create the Form Part (section of document). Open the created section and then create some field using Action button.
 3. Open the Users menu and Policy Template Designer. Create a policy and name it Default. Use the "Action" button and click "Select All".  Click Save button.
 4. Open the "Users" menu and the "Accounts" module (list of users). Click your account name and select the Default value in the Policy field. Click the Save button.
 
