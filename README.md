@@ -21,13 +21,13 @@ MTD OrderMaker includes the Configurator module, provides administrators to crea
 - System administrators or IT specialists of small companies handle tasks related to order management.
 - Back-end programmers use the MTD OrderMaker as an intermediary to simplify the collection of data from users into their data processing systems.
 
-Demo Server: https://demo.mtdkey.com/
 
-## How to start
-1. Create a database using Demo Server ☝️
-2. Open the Configurator and Form Template Builder. Create a form. Then use the Action button to create the Form Part (section of document). Open the created section and then create some field using Action button.
-3. Open the Users menu and Policy Template Designer. Create a policy and name it Default. Use the "Action" button and click "Select All".  Click Save button.
-4. Open the "Users" menu and the "Accounts" module (list of users). Click your account name and select the Default value in the Policy field. Click the Save button.
+## How to explore
+Demo Server: https://demo.mtdkey.com/
+1. Create a database using Demo Server 
+2. Open the Configurator and Form Template Builder. 
+3. Create a form, parts and fields.
+4. Save changes.
 
 After all this, you will open the Desktop menu item and see your first database.
 
@@ -35,8 +35,6 @@ After all this, you will open the Desktop menu item and see your first database.
       <img src="./.github/desktop2.png" width="650">
 </p>
 
-
-**Good luck building complex applications without programming!**:crossed_fingers:
 
 ## License
 
