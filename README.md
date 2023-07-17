@@ -15,15 +15,12 @@
 
 MTD OrderMaker includes the Configurator module, provides administrators to create forms around which interaction functions automatically created — List (search and filtering), Editor, View and Print, and the ability to export data to Excel. Also, the user management module providers you to set the level of access rights for each user for each form. 
 
-## Who is using 
-
-- Freelancers - automate the business processes of their customers.
-- System administrators or IT specialists of small companies handle tasks related to order management.
-- Back-end programmers use the MTD OrderMaker as an intermediary to simplify the collection of data from users into their data processing systems.
-
+Read More: https://ordermaker.mtdkey.com/
 
 ## How to explore
+
 Demo Server: https://demo.mtdkey.com/
+
 1. Create a database using Demo Server 
 2. Open the Configurator and Form Template Builder. 
 3. Create a form, parts and fields.
