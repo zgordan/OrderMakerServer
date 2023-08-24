@@ -1,18 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Mtd.OrderMaker.Server;
-using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,8 +21,8 @@ namespace Mtd.OrderMaker.Service
         public IServiceProvider Services { get; }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {            
-            _logger.LogInformation("The Hosted Assigment Service has started.");        
+        {
+            _logger.LogInformation("The Hosted Assigment Service has started.");
             await DoWork(stoppingToken);
         }
 

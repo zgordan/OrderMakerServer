@@ -4,10 +4,8 @@
 */
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Entity;
-using Mtd.OrderMaker.Server.EntityHandler.Approval;
 using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
 using Mtd.OrderMaker.Server.Models.Store;
 using System;
@@ -158,7 +156,7 @@ namespace Mtd.OrderMaker.Server.Components.Store.Stack
                         viewName = "Link";
                         if (mtdStoreStack.MtdStoreStackText.Register != null) { break; }
                         mtdStoreStack.MtdStoreStackText.Register = field.DefaultData;
-                        break;                        
+                        break;
                     }
                 default:
                     {

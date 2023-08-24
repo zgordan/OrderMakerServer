@@ -3,15 +3,15 @@
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 */
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Services;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Pages
 {
@@ -38,7 +38,7 @@ namespace Mtd.OrderMaker.Server.Pages
 
             foreach (var form in forms)
             {
-                bool isExists = await _context.MtdFilter.Where(x => x.MtdForm == form.Id && x.IdUser==user.Id).AnyAsync();
+                bool isExists = await _context.MtdFilter.Where(x => x.MtdForm == form.Id && x.IdUser == user.Id).AnyAsync();
                 if (!isExists)
                 {
                     MtdFilter mtdFilter = new MtdFilter

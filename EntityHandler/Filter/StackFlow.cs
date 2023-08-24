@@ -11,7 +11,6 @@ using Mtd.OrderMaker.Server.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.EntityHandler.Filter

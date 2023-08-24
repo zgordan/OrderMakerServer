@@ -1,6 +1,6 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 namespace Mtd.OrderMaker.Server.Migrations
 {
@@ -1791,7 +1791,7 @@ namespace Mtd.OrderMaker.Server.Migrations
                 name: "id_UNIQUE",
                 table: "mtd_sys_type",
                 column: "id",
-                unique: true);          
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

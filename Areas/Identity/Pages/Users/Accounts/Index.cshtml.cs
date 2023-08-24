@@ -1,18 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Internal;
-using Microsoft.Extensions.Localization;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
 using Mtd.OrderMaker.Server.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
 {
@@ -21,16 +18,14 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
         private readonly UserHandler _userHandler;
         private readonly RoleManager<WebAppRole> _roleManager;
         private readonly OrderMakerContext _context;
-        private readonly IStringLocalizer<SharedResource> _localizer;
 
 
-        public IndexModel(UserHandler userHandler, RoleManager<WebAppRole> roleManager, OrderMakerContext context, IStringLocalizer<SharedResource> localizer)
+        public IndexModel(UserHandler userHandler, RoleManager<WebAppRole> roleManager, OrderMakerContext context)
         {
             _userHandler = userHandler;
             _roleManager = roleManager;
             _context = context;
-            _localizer = localizer;
-           
+
         }
 
         public IList<WebAppPerson> Accounts { get; set; }
@@ -51,18 +46,18 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
                 SearchText = searchText;
             }
 
-            
+
 
             if (filterGroup != null && groupId != "all")
             {
-                
+
                 if (groupId != "not")
                 {
                     IList<WebAppUser> gusers = await _userHandler.GetUsersInGroupAsync(groupId);
                     if (gusers != null)
                     {
                         query = query.Where(x => gusers.Select(x => x.Id).Contains(x.Id));
-                    }                    
+                    }
                 }
 
                 if (groupId == "not")

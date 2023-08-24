@@ -2,9 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Extensions
@@ -25,7 +22,7 @@ namespace Mtd.OrderMaker.Server.Extensions
 
             if (signInManager.IsSignedIn(context.User))
             {
-                await signInManager.RefreshSignInAsync(user);                
+                await signInManager.RefreshSignInAsync(user);
             }
         }
     }

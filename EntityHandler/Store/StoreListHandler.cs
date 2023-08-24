@@ -1,13 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
-using Mtd.OrderMaker.Server.Components.Index;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.EntityHandler.Filter;
 using Mtd.OrderMaker.Server.EntityHandler.Stack;
 using Mtd.OrderMaker.Server.Models.Store;
 using Mtd.OrderMaker.Server.Services;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,7 +31,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Store
         public List<StoreListFields> StoreFields { get; private set; }
         public string PageLine { get; private set; }
         public MtdForm MtdForm { get; private set; }
-        
+
         public List<string> Columns { get; private set; }
 
         public string ResultView { get; private set; }
@@ -75,9 +73,9 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Store
 
         public async Task FillDataAsync()
         {
-            
+
             MtdForm = await context.MtdForm.Include(x => x.MtdFormHeader).Where(x => x.Id == formId).FirstOrDefaultAsync();
-             
+
             /*check user*/
             bool isViewer = await userHandler.IsViewer(user, formId);
             if (!isViewer) { return; }
@@ -86,7 +84,8 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Store
             if (resultValue != null && resultValue != string.Empty)
             {
                 MtdStore mtdStore = await context.MtdStore.Where(x => x.Id == resultValue).FirstOrDefaultAsync();
-                if (mtdStore != null) {
+                if (mtdStore != null)
+                {
                     ResultView = $"{localizer["No."]} {mtdStore.Sequence:D9} {localizer["at"]} {mtdStore.Timecr.ToShortDateString()}";
                 }
             }
@@ -114,7 +113,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Store
             StackHandler handlerStack = new StackHandler(context);
             List<string> storeIds = outFlow.MtdStores.Select(x => x.Id).ToList();
             IList<MtdStoreStack> mtdStoreStack = await handlerStack.GetStackAsync(storeIds, incomer.FieldIds);
-           
+
 
             List<StoreListFields> storeFields = new List<StoreListFields>();
 
@@ -137,7 +136,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Store
                     }
                 };
 
-                foreach(MtdFormPartField field in incomer.FieldForColumn)
+                foreach (MtdFormPartField field in incomer.FieldForColumn)
                 {
                     MtdStoreStack stack = mtdStoreStack.Where(x => x.MtdStore == storeId && x.MtdFormPartField == field.Id).FirstOrDefault();
                     string value = handlerStack.GetValueAsString(stack, field);

@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Razor.Language.Intermediate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace Mtd.OrderMaker.Server.Models.Controls.MTDTextField
 {
@@ -16,8 +12,9 @@ namespace Mtd.OrderMaker.Server.Models.Controls.MTDTextField
         public string IdInput { get; set; }
         public bool Counter { get; set; }
 
-        public MTDTextFieldTagsModel(MTDTextFieldTags tags) {
-            this.Id = tags.Id ?? Guid.NewGuid().ToString(); 
+        public MTDTextFieldTagsModel(MTDTextFieldTags tags)
+        {
+            this.Id = tags.Id ?? Guid.NewGuid().ToString();
             this.MaxLength = tags.MaxLength;
             this.Disabled = tags.Disabled;
             this.HelperText = tags.HelperText;
@@ -25,7 +22,7 @@ namespace Mtd.OrderMaker.Server.Models.Controls.MTDTextField
             this.HelperError = tags.HelperError;
             this.HelperErrorLocalizer = tags.HelperErrorLocalizer;
             this.IconLeading = tags.IconLeading;
-            this.IconLeadingScript = tags.IconLeadingScript;     
+            this.IconLeadingScript = tags.IconLeadingScript;
             this.IconTrailing = tags.IconTrailing;
             this.IconTrailingString = tags.IconTrailingString;
             this.IconTrailingColor = tags.IconTrailingColor;
@@ -43,10 +40,10 @@ namespace Mtd.OrderMaker.Server.Models.Controls.MTDTextField
             this.IdLabel = $"{Id}-label";
             this.IdHelper = $"{Id}-helper";
             this.IdHelperError = $"{Id}-helper-error";
-            this.IdInput = $"{Id}-input";            
+            this.IdInput = $"{Id}-input";
             this.RDAttribute = tags.Required ? "required" : string.Empty;
             if (tags.Disabled) { RDAttribute = "disabled"; }
-            
+
             this.Counter = tags.MaxLength > 0;
             this.MaxLength = tags.MaxLength == 0 ? 250 : tags.MaxLength;
 
@@ -57,9 +54,9 @@ namespace Mtd.OrderMaker.Server.Models.Controls.MTDTextField
             this.MtdInputClicker = tags.MtdInputClicker;
             this.Pattern = tags.Pattern;
             this.MtdDataMessage = tags.MtdDataMessage;
-                
-                       
+
+
         }
-                
+
     }
 }

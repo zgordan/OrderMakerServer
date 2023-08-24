@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +6,10 @@ using Microsoft.Extensions.Localization;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Services;
+using System;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Controllers.Index.Filter
 {
@@ -86,14 +85,14 @@ namespace Mtd.OrderMaker.Server.Controllers.Index.Filter
             var form = await Request.ReadFormAsync();
             string formId = form["form-id"];
             string ownerId = form["owner-id"];
-            
+
             WebAppUser user = await userHandler.GetUserAsync(User);
             MtdFilter filter = await userHandler.GetFilterAsync(User, formId);
 
             MtdFilterOwner mtdFilterOwner = new MtdFilterOwner
             {
                 Id = filter.Id,
-                OwnerId = ownerId                 
+                OwnerId = ownerId
             };
 
             bool isExists = await context.MtdFilterOwner.Where(x => x.Id == filter.Id).AnyAsync();
@@ -124,7 +123,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Index.Filter
 
             bool isOk = int.TryParse(relatedNumber, out int docNumber);
             if (!isOk) { return BadRequest(localizer["Invalid number format."]); }
-                        
+
             WebAppUser user = await userHandler.GetUserAsync(HttpContext.User);
             MtdFilter filter = await userHandler.GetFilterAsync(User, formId);
 
@@ -134,7 +133,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Index.Filter
             {
                 Id = filter.Id,
                 FormId = docBasedId,
-                DocBasedNumber = docNumber                
+                DocBasedNumber = docNumber
             };
 
             bool isExists = await context.MtdFilterRelated.Where(x => x.Id == filter.Id).AnyAsync();

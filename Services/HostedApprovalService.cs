@@ -22,7 +22,7 @@ namespace Mtd.OrderMaker.Server.Services
 
         private readonly ILogger _logger;
         private readonly OrderMakerContext context;
-        private readonly UserHandler userHandler; 
+        private readonly UserHandler userHandler;
         private readonly IStringLocalizer<SharedResource> localizer;
         private readonly EmailSettings emailSettings;
         private readonly IEmailSenderBlank emailSender;
@@ -41,12 +41,12 @@ namespace Mtd.OrderMaker.Server.Services
         public async Task RunServiceAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
-            {    
+            {
                 DateTime now = DateTime.Now;
                 DateTime start = new DateTime(now.Year, now.Month, now.Day, 8, 0, 0);
                 DateTime end = new DateTime(now.Year, now.Month, now.Day, 18, 0, 0);
 
-                if (now > start && now < end && now.DayOfWeek != DayOfWeek.Saturday && now.DayOfWeek != DayOfWeek.Sunday)         
+                if (now > start && now < end && now.DayOfWeek != DayOfWeek.Saturday && now.DayOfWeek != DayOfWeek.Sunday)
                 {
                     Dictionary<string, List<MtdStore>> keyValues = await ApprovalHandler.GetHoveringApprovalAsync(context, userHandler);
 
@@ -54,7 +54,7 @@ namespace Mtd.OrderMaker.Server.Services
                     {
                         WebAppUser user = await userHandler.FindByIdAsync(entry.Key);
                         string email = user.Email;
-                        List<string> links = new List<string>();                        
+                        List<string> links = new List<string>();
                         foreach (MtdStore store in entry.Value)
                         {
                             string host = emailSettings.Host;

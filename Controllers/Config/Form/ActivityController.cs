@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Components;
 using Mtd.OrderMaker.Server.Entity;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,8 +31,8 @@ namespace Mtd.OrderMaker.Server.Controllers.Config.Form
                 Description = activityNote,
                 Sequence = ++seq
             };
-                      
-           
+
+
 
             await _context.MtdFormActivites.AddAsync(activity);
             await _context.SaveChangesAsync();
@@ -70,7 +69,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Config.Form
             activity.ImageType = imgActivity.ImgType;
             _context.Entry(activity).Property(x => x.Image).IsModified = imgActivity.Modify;
             _context.Entry(activity).Property(x => x.ImageType).IsModified = imgActivity.Modify;
-          
+
             await _context.SaveChangesAsync();
 
             return Ok();
@@ -105,7 +104,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Config.Form
         public async Task<IActionResult> OnPostActivitySequenceAsync()
         {
             var requestForm = await Request.ReadFormAsync();
-            string strData = requestForm["fieldSeqData"];       
+            string strData = requestForm["fieldSeqData"];
             string formId = requestForm["formId"];
 
             string[] data = strData.Split("&");

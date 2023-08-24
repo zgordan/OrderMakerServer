@@ -1,10 +1,4 @@
-﻿using Mtd.OrderMaker.Server.EntityHandler.Approval;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Mtd.OrderMaker.Server.EntityHandler.Approval
+﻿namespace Mtd.OrderMaker.Server.EntityHandler.Approval
 {
     public enum ApprovalStatus
     {

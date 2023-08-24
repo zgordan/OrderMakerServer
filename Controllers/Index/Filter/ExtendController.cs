@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.EntityHandler.Filter;
 using Mtd.OrderMaker.Server.Services;
+using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Controllers.Index.Filter
 {
@@ -38,10 +34,10 @@ namespace Mtd.OrderMaker.Server.Controllers.Index.Filter
             string scriptId = form["script-id"];
             bool isOk = int.TryParse(scriptId, out int id);
             if (!isOk) { return BadRequest(_localizer["Error: Bad request."]); }
-            
+
             bool available = await userHandler.IsFilterAccessingAsync(User, id);
             if (!available) { return BadRequest(_localizer["Error: Bad request."]); }
-            
+
             WebAppUser webAppUser = await userHandler.GetUserAsync(HttpContext.User);
             FilterHandler filterHandler = new FilterHandler(context, formId, webAppUser, userHandler);
             isOk = await filterHandler.FilterScriptApplyAsync(id);

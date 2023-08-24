@@ -10,22 +10,22 @@ using System.Linq;
 
 namespace Mtd.OrderMaker.Server.Components.Store.Part
 {
-    [ViewComponent (Name = "StorePartViewer")]
+    [ViewComponent(Name = "StorePartViewer")]
     public class Viewer : ViewComponent
     {
         public IViewComponentResult Invoke(MtdFormPart part, Warehouse model)
         {
             Warehouse warehouse = new Warehouse()
-            {               
+            {
                 Store = model.Store,
-                Parts = model.Parts.Where(x=>x.Id == part.Id).ToList(),
+                Parts = model.Parts.Where(x => x.Id == part.Id).ToList(),
                 Stack = model.Stack,
                 Fields = model.Fields.Where(x => x.MtdFormPart == part.Id).OrderBy(x => x.Sequence).ToList()
             };
 
             string viewName = part.MtdSysStyle == 5 ? "Columns" : "Rows";
-                                   
-            return View(viewName,warehouse);
+
+            return View(viewName, warehouse);
         }
     }
 }

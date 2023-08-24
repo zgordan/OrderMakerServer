@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Components;
 using Mtd.OrderMaker.Server.Entity;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Approval.Rejections
 {
@@ -34,13 +31,13 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Approval.Rejections
 
             MtdApprovalRejection = await _context.MtdApprovalRejection
                 .Include(m => m.MtdApprovalStage).FirstOrDefaultAsync(m => m.Id == id);
-       
+
             if (MtdApprovalRejection == null)
             {
                 return NotFound();
             }
 
-            MtdApprovalStage = MtdApprovalRejection.MtdApprovalStage;            
+            MtdApprovalStage = MtdApprovalRejection.MtdApprovalStage;
             return Page();
         }
 

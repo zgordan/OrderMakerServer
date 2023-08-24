@@ -38,7 +38,7 @@ namespace Mtd.OrderMaker.Server.Components.Store
                 string formId = _context.MtdStore.Where(x => x.Id == resultValue).Select(x => x.MtdForm).FirstOrDefault();
                 if (formId != null) { selecteFormId = formId; }
             }
-            
+
             StoreListHandler storeList = new StoreListHandler(_context, selecteFormId, resultValue, user, _userHandler, localizer);
 
             foreach (var form in relatedForms)

@@ -3,9 +3,7 @@
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 */
 
-using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.EntityFrameworkCore;
-using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using System;
 using System.Collections.Generic;
@@ -59,14 +57,15 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
             {
                 List<string> words = incomer.SearchText.Split("+").Where(x => x != "").ToList();
                 for (int i = 0; i < words.Count(); i++)
-                {                                     
-                   storeIds = i==0 ? await FindStoreIdsForText(fieldsIds, words[i], 4) : await FindStoreIdsForText(fieldsIds, words[i], 4, storeIds);                                       
+                {
+                    storeIds = i == 0 ? await FindStoreIdsForText(fieldsIds, words[i], 4) : await FindStoreIdsForText(fieldsIds, words[i], 4, storeIds);
                 }
             }
-            else {
+            else
+            {
                 storeIds = await FindStoreIdsForText(fieldsIds, incomer.SearchText, 4);
             }
-                   
+
 
             return new OutFlow
             {

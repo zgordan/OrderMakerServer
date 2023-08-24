@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using Mtd.OrderMaker.Server.Entity;
+using System;
+using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Register
 {
@@ -40,7 +38,7 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Register
 
             await context.MtdRegister.AddAsync(MtdRegister);
             await context.SaveChangesAsync();
-            
+
             return RedirectToPage("./Edit", new { id = MtdRegister.Id });
         }
 

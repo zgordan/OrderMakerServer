@@ -3,25 +3,19 @@
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 */
 
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
-using System.Security.Cryptography;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.AppConfig;
-using Microsoft.Extensions.Localization;
+using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Services;
-using System.Collections.Generic;
+using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
 {
@@ -87,10 +81,10 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
 
         public void OnGet()
         {
-            Input = new InputModel { Id = Guid.NewGuid().ToString() };            
+            Input = new InputModel { Id = Guid.NewGuid().ToString() };
         }
 
-        
+
         public async Task<IActionResult> OnPostAsync()
         {
 
@@ -100,10 +94,16 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
             if (userQty >= userLimit) { return BadRequest(_localizer["Limit users!"]); }
 
             string pass = _userManager.GeneratePassword();
-            
-            var user = new WebAppUser { Id = Input.Id, Title = Input.Title, UserName = Input.UserName, Email = Input.Email, 
-                EmailConfirmed = Input.SendEmail, 
-                PhoneNumber = Input.PhoneNumber };
+
+            var user = new WebAppUser
+            {
+                Id = Input.Id,
+                Title = Input.Title,
+                UserName = Input.UserName,
+                Email = Input.Email,
+                EmailConfirmed = Input.SendEmail,
+                PhoneNumber = Input.PhoneNumber
+            };
 
             IdentityResult result;
             result = await _userManager.CreateAsync(user, pass);
@@ -112,13 +112,14 @@ namespace Mtd.OrderMaker.Server.Areas.Identity.Pages.Users.Accounts
             await _userManager.AddToRoleAsync(user, "Guest");
 
 
-            if (!result.Succeeded) {
+            if (!result.Succeeded)
+            {
 
                 IdentityError text = result.Errors.FirstOrDefault() ?? new IdentityError();
                 return BadRequest(_localizer[text.Description]);
             }
 
-            return RedirectToPage("./Edit", new { id = Input.Id});
+            return RedirectToPage("./Edit", new { id = Input.Id });
 
         }
     }

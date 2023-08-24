@@ -57,7 +57,7 @@ namespace Mtd.OrderMaker.Server.Components
             bool delCommand = MTDImgSelector.CheckDelete(codeForm, request);
             string imgType = GetImageType(codeForm, request);
             MTDImgSModify imgSModify = new MTDImgSModify { Image = null, Modify = false, ImgType = imgType };
-            
+
 
             if (delCommand)
             {
@@ -80,9 +80,9 @@ namespace Mtd.OrderMaker.Server.Components
             return imgSModify;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string id, bool required = false, byte[] imgArray = null, string imgType="image/png")
+        public async Task<IViewComponentResult> InvokeAsync(string id, bool required = false, byte[] imgArray = null, string imgType = "image/png")
         {
-            MTDImgSelectorModel ism = await Task.Run(()=> new MTDImgSelectorModel { Id = id, ImgArray = imgArray, Required = required, ImgType = imgType });
+            MTDImgSelectorModel ism = await Task.Run(() => new MTDImgSelectorModel { Id = id, ImgArray = imgArray, Required = required, ImgType = imgType });
             return View(ism);
         }
     }
@@ -97,7 +97,7 @@ namespace Mtd.OrderMaker.Server.Components
     public class MTDImgSelectorModel
     {
         public string Id { get; set; }
-        public string ImgType { get; set; }        
+        public string ImgType { get; set; }
         public byte[] ImgArray { get; set; }
         public bool Required { get; set; }
     }

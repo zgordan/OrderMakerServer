@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Mtd.OrderMaker.Server.Models.Index
+﻿namespace Mtd.OrderMaker.Server.Models.Index
 {
     public class ColumnItem
     {

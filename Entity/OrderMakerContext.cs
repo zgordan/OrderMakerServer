@@ -3,15 +3,13 @@
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 */
 
-using System;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Mtd.OrderMaker.Server.Entity
 {
     public partial class OrderMakerContext : DbContext
     {
-        public OrderMakerContext() {}
+        public OrderMakerContext() { }
 
         public OrderMakerContext(DbContextOptions<OrderMakerContext> options)
             : base(options)
@@ -23,11 +21,11 @@ namespace Mtd.OrderMaker.Server.Entity
 
         public virtual DbSet<MtdEventSubscribe> MtdEventSubscribes { get; set; }
         public virtual DbSet<MtdGroup> MtdGroup { get; set; }
-        
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-                        
+
             ApprovalModelCreating(modelBuilder);
 
             FormModelCreating(modelBuilder);
@@ -78,7 +76,7 @@ namespace Mtd.OrderMaker.Server.Entity
                     .HasColumnName("parent")
                     .HasColumnType("varchar(36)");
             });
-                               
+
             modelBuilder.Entity<MtdGroup>(entity =>
             {
                 entity.ToTable("mtd_group");
@@ -102,7 +100,8 @@ namespace Mtd.OrderMaker.Server.Entity
                     .HasColumnType("varchar(255)");
             });
 
-            modelBuilder.Entity<MtdEventSubscribe>(entity => {
+            modelBuilder.Entity<MtdEventSubscribe>(entity =>
+            {
 
                 entity.ToTable("mtd_event_subscribe");
 

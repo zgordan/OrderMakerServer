@@ -3,15 +3,12 @@
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 */
 
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Models.Index;
 using Mtd.OrderMaker.Server.Services;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -42,13 +39,13 @@ namespace Mtd.OrderMaker.Server.Components.Index
                 showNumber = mtdFilter.ShowNumber == 1;
                 showDate = mtdFilter.ShowDate == 1;
             }
-            
+
             IList<MtdFilterColumn> columns = await _context.MtdFilterColumn
                 .Where(x => x.MtdFilter == mtdFilter.Id)
                 .OrderBy(x => x.Sequence)
                 .ToListAsync() ?? new List<MtdFilterColumn>();
 
-            
+
             IList<MtdFormPartField> fields = await _context.MtdFormPartField
                 .Where(x => partIds.Contains(x.MtdFormPart))
                 .OrderBy(o => o.Sequence)
@@ -58,7 +55,7 @@ namespace Mtd.OrderMaker.Server.Components.Index
             List<ColumnItem> columnItems = new List<ColumnItem>();
             int i = columns.Count();
             foreach (var p in parts)
-            {                
+            {
                 fields.Where(x => x.MtdFormPart == p.Id).ToList().ForEach((fs) =>
                 {
                     i++;
@@ -70,7 +67,7 @@ namespace Mtd.OrderMaker.Server.Components.Index
                         FieldId = fs.Id,
                         FieldName = fs.Name,
                         IsChecked = column != null,
-                        Sequence = column != null ? column.Sequence : i,                        
+                        Sequence = column != null ? column.Sequence : i,
                     });
                 });
             }
@@ -78,7 +75,7 @@ namespace Mtd.OrderMaker.Server.Components.Index
             ColumnsModelView fieldsModelView = new ColumnsModelView
             {
                 FormId = formId,
-                ColumnItems = columnItems.OrderBy(x=>x.Sequence).ToList(),
+                ColumnItems = columnItems.OrderBy(x => x.Sequence).ToList(),
                 ShowNumber = showNumber,
                 ShowDate = showDate
             };

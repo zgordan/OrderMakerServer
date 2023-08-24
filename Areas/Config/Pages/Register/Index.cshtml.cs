@@ -1,11 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Entity;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Register
 {
@@ -33,7 +32,7 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Register
                 SearchText = searchText;
             }
 
-            MtdRegisters = await query.OrderBy(x=>x.Name).ToListAsync();
+            MtdRegisters = await query.OrderBy(x => x.Name).ToListAsync();
             return Page();
         }
     }

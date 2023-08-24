@@ -3,23 +3,8 @@
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Composition;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Operations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
@@ -30,9 +15,14 @@ using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.EntityHandler.Filter;
 using Mtd.OrderMaker.Server.EntityHandler.Stack;
 using Mtd.OrderMaker.Server.Services;
-using NPOI.SS.Formula.Functions;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Web.Controllers.Index
 {
@@ -48,7 +38,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
         private readonly IStringLocalizer<SharedResource> _localizer;
         private readonly LimitSettings limit;
 
-        public ActionController(OrderMakerContext context, UserHandler userHandler, 
+        public ActionController(OrderMakerContext context, UserHandler userHandler,
             IStringLocalizer<SharedResource> localizer, IOptions<LimitSettings> limit)
         {
             _context = context;
@@ -65,7 +55,7 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
         {
             if (!limit.ExportExcel) { return NotFound(); }
 
-            var form = await Request.ReadFormAsync();            
+            var form = await Request.ReadFormAsync();
             string formId = form["form-id"];
 
             var user = await _userHandler.GetUserAsync(User);
@@ -75,17 +65,18 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
             //MtdFilter mtdFilter = await handlerFilter.GetFilterAsync();
             //if (mtdFilter == null) return NotFound();
             Incomer incomer = await handlerFilter.GetIncomerDataAsync();
-          
+
             TypeQuery typeQuery = await handlerFilter.GetTypeQueryAsync(user);
             incomer.PageSize = limit.ExportSize;
 
             OutFlow outFlow = await handlerFilter.GetStackFlowAsync(incomer, typeQuery);
 
-            if (outFlow.Count > limit.ExportSize) {
+            if (outFlow.Count > limit.ExportSize)
+            {
 
                 string message = _localizer["Limit **** lines! Use a filter to shrink the list."];
                 message = message.Replace("****", limit.ExportSize.ToString());
-                return BadRequest(new JsonResult(message)); 
+                return BadRequest(new JsonResult(message));
             }
 
             IList<MtdStore> mtdStore = outFlow.MtdStores;
@@ -101,12 +92,12 @@ namespace Mtd.OrderMaker.Web.Controllers.Index
             IList<MtdFormPartField> columns = incomer.FieldForColumn.Where(x => fieldIds.Contains(x.Id)).ToList();
 
             IWorkbook workbook = CreateWorkbook(mtdStore, columns, mtdStoreStack);
-       
+
             var ms = new NpoiMemoryStream
             {
                 AllowClose = false
             };
-            workbook.Write(ms,true);
+            workbook.Write(ms, true);
             ms.Flush();
             ms.Seek(0, SeekOrigin.Begin);
             ms.AllowClose = true;

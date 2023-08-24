@@ -1,17 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Mtd.OrderMaker.Server;
-using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Services;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,13 +27,13 @@ namespace Mtd.OrderMaker.Service
         }
 
         private async Task DoWork(CancellationToken stoppingToken)
-        {            
+        {
             using (var scope = Services.CreateScope())
             {
                 var scopedService =
                     scope.ServiceProvider
                         .GetRequiredService<HostedApprovalService>();
-                
+
                 await scopedService.RunServiceAsync(stoppingToken);
             }
 

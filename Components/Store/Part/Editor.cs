@@ -11,13 +11,13 @@ using System.Linq;
 
 namespace Mtd.OrderMaker.Server.Components.Store.Part
 {
-    [ViewComponent (Name = "StorePartEditor")]
+    [ViewComponent(Name = "StorePartEditor")]
     public class Editor : ViewComponent
     {
         public IViewComponentResult Invoke(MtdFormPart part, Warehouse model)
         {
             Warehouse warehouse = new Warehouse()
-            {               
+            {
                 Store = model.Store,
                 Parts = model.Parts.Where(x => x.Id == part.Id).ToList(),
                 Stack = model.Stack,
@@ -25,8 +25,8 @@ namespace Mtd.OrderMaker.Server.Components.Store.Part
             };
 
             //string viewName = part.MtdSysStyle == 5 ? "Columns" : "Rows";
-                                   
-            return View("Rows",warehouse);
+
+            return View("Rows", warehouse);
         }
     }
 }

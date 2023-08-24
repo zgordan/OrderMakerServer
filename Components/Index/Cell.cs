@@ -3,9 +3,7 @@
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 */
 
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Models.Index;
 using System.Collections.Generic;
@@ -17,20 +15,17 @@ namespace Mtd.OrderMaker.Server.Components.Index
     [ViewComponent(Name = "IndexCell")]
     public class Cell : ViewComponent
     {
-        private readonly OrderMakerContext _context;
 
-        public Cell(OrderMakerContext orderMakerContext)
-        {
-            _context = orderMakerContext;            
-        }
+
+        public Cell() { }
 
         public async Task<IViewComponentResult> InvokeAsync(IList<MtdStoreStack> stack, string idStore, string idField, int idType)
         {
 
             string viewName = await GetViewNameAsync(idType);
             MtdStoreStack storeStack = await GetStoreStackAsync(stack, idStore, idField);
-            
-            CellModelView cellModel = new CellModelView
+
+            CellModelView cellModel = new()
             {
                 MtdStoreStack = storeStack ?? new MtdStoreStack()
             };
@@ -39,11 +34,13 @@ namespace Mtd.OrderMaker.Server.Components.Index
         }
 
 
-        private async Task<MtdStoreStack> GetStoreStackAsync(IList<MtdStoreStack> stack, string idStore, string idField) {
-            return await Task.Run(()=> stack.Where(x => x.MtdStore == idStore && x.MtdFormPartField == idField).FirstOrDefault());
+        private static async Task<MtdStoreStack> GetStoreStackAsync(IList<MtdStoreStack> stack, string idStore, string idField)
+        {
+            return await Task.Run(() => stack.Where(x => x.MtdStore == idStore && x.MtdFormPartField == idField).FirstOrDefault());
         }
 
-        private string GetViewName(int idType) {
+        private static string GetViewName(int idType)
+        {
 
             string viewName;
 
@@ -71,7 +68,8 @@ namespace Mtd.OrderMaker.Server.Components.Index
             return viewName;
         }
 
-        private async Task<string> GetViewNameAsync(int idType) {
+        private static async Task<string> GetViewNameAsync(int idType)
+        {
             return await Task.Run(() => GetViewName(idType));
         }
     }

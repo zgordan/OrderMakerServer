@@ -3,14 +3,13 @@
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Entity;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Approval
 {
@@ -18,7 +17,7 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Approval
     public class IndexModel : PageModel
     {
         private OrderMakerContext _context;
-        
+
         public IndexModel(OrderMakerContext context)
         {
             _context = context;
@@ -28,7 +27,7 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Approval
         public string SearchText { get; set; }
         public async Task<IActionResult> OnGetAsync(string searchText)
         {
-            var query = _context.MtdApproval.Include(x=>x.MtdFormNavigation).ThenInclude(x=>x.MtdFormDesk).AsQueryable();
+            var query = _context.MtdApproval.Include(x => x.MtdFormNavigation).ThenInclude(x => x.MtdFormDesk).AsQueryable();
 
             if (searchText != null)
             {

@@ -3,26 +3,21 @@
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 */
 
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+using Mtd.Cpq.Manager.Areas.Identity.Data;
+using Mtd.OrderMaker.Server.Areas.Identity.Data;
+using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.Extensions;
+using Mtd.OrderMaker.Server.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Options;
-using Mtd.Cpq.Manager.Areas.Identity.Data;
-using Mtd.OrderMaker.Server.Areas.Identity.Data;
-using Mtd.OrderMaker.Server.Entity;
-using Mtd.OrderMaker.Server.AppConfig;
-using Mtd.OrderMaker.Server.Extensions;
-using Mtd.OrderMaker.Server.Services;
 
 namespace Mtd.OrderMaker.Server.Controllers.Users
 {
@@ -32,23 +27,23 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
     public partial class UsersController : ControllerBase
     {
         private readonly UserHandler _userManager;
-        private readonly RoleManager<WebAppRole> _roleManager;     
+        private readonly RoleManager<WebAppRole> _roleManager;
         private readonly IEmailSenderBlank _emailSender;
         private readonly OrderMakerContext _context;
         private readonly IStringLocalizer<SharedResource> _localizer;
-        private readonly IdentityDbContext identity; 
+        private readonly IdentityDbContext identity;
 
 
         public UsersController(
             UserHandler userManager,
-            RoleManager<WebAppRole> roleManager,   
+            RoleManager<WebAppRole> roleManager,
             IEmailSenderBlank emailSender,
             OrderMakerContext context,
             IStringLocalizer<SharedResource> localizer, IdentityDbContext identity
             )
         {
             _userManager = userManager;
-            _roleManager = roleManager;   
+            _roleManager = roleManager;
             _emailSender = emailSender;
             _context = context;
             _localizer = localizer;
@@ -75,7 +70,8 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             string userId = Request.Form["user-delete-id"];
             WebAppUser user = await _userManager.FindByIdAsync(userId);
 
-            if (user == null) {                
+            if (user == null)
+            {
                 return BadRequest(_localizer["ERROR! User not found."]);
             }
 
@@ -85,7 +81,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             bool isCpqQuoteOwner = await identity.MtdCpqProposalOwners.Where(x => x.UserId == user.Id).AnyAsync();
 
             if (isApprover || isOwner || isCpqQuoteOwner || isCpqTitlesOwner)
-            {               
+            {
                 return BadRequest(_localizer["ERROR! There are documents owned by the user. Before deleting, transfer of documents to another user."]);
             }
 
@@ -117,7 +113,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             {
                 return BadRequest(_localizer["Error. User not found."]);
             }
-           
+
             string email = form["Input.Email"];
             string title = form["Input.Title"];
             string titleGroup = form["Input.TitleGroup"];
@@ -205,7 +201,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             if (cpqViewGroup == "true") { cpqPolicy = "view-group"; }
             string cpqPolicyEdit = "edit-own";
             if (cpqEditAll == "true") { cpqPolicyEdit = "edit-all"; }
-            if (cpqEditGroup == "true") { cpqPolicyEdit = "edit-group"; }            
+            if (cpqEditGroup == "true") { cpqPolicyEdit = "edit-group"; }
             cpqPolicy += cpqPolicyEdit;
             string cpqPolicyPGP = "";
             if (cpqPrintGrossPrice == "true") { cpqPolicyPGP = "print-gross-price"; }
@@ -228,21 +224,21 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
 
             WebAppUser userOwner = await _userManager.FindByIdAsync(UserOwner);
             WebAppUser userRecipient = await _userManager.FindByIdAsync(UserRecipient);
-            
+
             if (userOwner == null || userRecipient == null)
-            {            
+            {
                 return BadRequest(_localizer["ERROR! User not found."]);
             }
 
-            IList<MtdStoreOwner> storeOwners = await _context.MtdStoreOwner.Where(x => x.UserId == userOwner.Id).ToListAsync();                
-            foreach(MtdStoreOwner owner in storeOwners)
+            IList<MtdStoreOwner> storeOwners = await _context.MtdStoreOwner.Where(x => x.UserId == userOwner.Id).ToListAsync();
+            foreach (MtdStoreOwner owner in storeOwners)
             {
                 owner.UserId = userRecipient.Id;
                 owner.UserName = userRecipient.Title;
             }
 
             IList<MtdApprovalStage> stages = await _context.MtdApprovalStage.Where(x => x.UserId == userOwner.Id).ToListAsync();
-            foreach(MtdApprovalStage stage in stages)
+            foreach (MtdApprovalStage stage in stages)
             {
                 stage.UserId = userRecipient.Id;
             }

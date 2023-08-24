@@ -4,16 +4,14 @@
 */
 
 
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
-using Mtd.OrderMaker.Server.Entity;
-using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
 
 namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
 {
@@ -23,24 +21,25 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
 
         public PartEditModel(OrderMakerContext context)
         {
-            _context = context;            
+            _context = context;
         }
 
         public MtdForm MtdForm { get; set; }
-        public MtdFormPart MtdFormPart { get; set; }   
+        public MtdFormPart MtdFormPart { get; set; }
         public List<MTDSelectListItem> Styles { get; set; }
-        public async Task<IActionResult>  OnGetAsync(string id) {
+        public async Task<IActionResult> OnGetAsync(string id)
+        {
 
-            MtdFormPart = await _context.MtdFormPart.Include(m=>m.MtdFormPartHeader).FirstOrDefaultAsync(x=>x.Id == id);
+            MtdFormPart = await _context.MtdFormPart.Include(m => m.MtdFormPartHeader).FirstOrDefaultAsync(x => x.Id == id);
 
             if (MtdFormPart == null)
             {
                 return NotFound();
             }
-            
+
             MtdForm = await _context.MtdForm.Include(m => m.MtdFormHeader).Where(x => x.Id == MtdFormPart.MtdForm).FirstOrDefaultAsync();
-            IList<MtdSysStyle> styles =  await _context.MtdSysStyle.ToListAsync();
-            
+            IList<MtdSysStyle> styles = await _context.MtdSysStyle.ToListAsync();
+
             Styles = new List<MTDSelectListItem>();
             styles.ToList().ForEach((style) =>
             {

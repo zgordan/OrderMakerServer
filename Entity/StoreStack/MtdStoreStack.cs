@@ -10,7 +10,7 @@ namespace Mtd.OrderMaker.Server.Entity
     {
         public long Id { get; set; }
         public string MtdStore { get; set; }
-        public string MtdFormPartField { get; set; }        
+        public string MtdFormPartField { get; set; }
         public virtual MtdFormPartField MtdFormPartFieldNavigation { get; set; }
         public virtual MtdStore MtdStoreNavigation { get; set; }
         public virtual MtdStoreLink MtdStoreLink { get; set; }

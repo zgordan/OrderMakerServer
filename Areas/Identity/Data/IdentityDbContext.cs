@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Mtd.Cpq.Manager.Areas.Identity.Data;
@@ -59,7 +56,7 @@ namespace Mtd.OrderMaker.Server.Entity
                     .IsRequired()
                     .HasColumnName("action_time")
                     .HasColumnType("datetime");
-                
+
                 entity.Property(e => e.ActionType)
                     .IsRequired()
                     .HasColumnName("action_type")
@@ -86,7 +83,7 @@ namespace Mtd.OrderMaker.Server.Entity
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
                     .HasColumnType("varchar(36)");
-                
+
                 entity.Property(e => e.UserId)
                     .IsRequired()
                     .HasColumnName("user_id")
@@ -117,7 +114,7 @@ namespace Mtd.OrderMaker.Server.Entity
                     .IsRequired()
                     .HasColumnName("user_id")
                     .HasColumnType("varchar(36)");
-                
+
                 entity.Property(e => e.UserId)
                     .IsRequired()
                     .HasColumnName("user_name")

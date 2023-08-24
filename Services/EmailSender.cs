@@ -2,11 +2,9 @@
 using Microsoft.Extensions.Options;
 using Mtd.OrderMaker.Server.AppConfig;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
-using Mtd.OrderMaker.Server.Entity;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -30,7 +28,7 @@ namespace Mtd.OrderMaker.Server.Services
     public class EmailSender : IEmailSenderBlank
     {
         private readonly EmailSettings _emailSettings;
-        private readonly IWebHostEnvironment _hostingEnvironment;       
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly ConfigHandler configHandler;
         private readonly UserHandler userHandler;
 
@@ -44,7 +42,7 @@ namespace Mtd.OrderMaker.Server.Services
 
         public async Task SendEmailAsync(string email, string subject, string message, bool mustconfirm = true)
         {
-            await ExecuteAsync(email, subject, message, mustconfirm);            
+            await ExecuteAsync(email, subject, message, mustconfirm);
         }
 
         public async Task<bool> SendEmailBlankAsync(BlankEmail blankEmail, bool mustconfirm = true)
@@ -85,12 +83,12 @@ namespace Mtd.OrderMaker.Server.Services
             return true;
         }
 
-        private async Task ExecuteAsync(string email, string subject, string message , bool mustconfirm = true)
+        private async Task ExecuteAsync(string email, string subject, string message, bool mustconfirm = true)
         {
-            
-            WebAppUser user = await userHandler.FindByEmailAsync(email);       
-            if (user ==null || (mustconfirm && user.EmailConfirmed == false)) { return; }
-                       
+
+            WebAppUser user = await userHandler.FindByEmailAsync(email);
+            if (user == null || (mustconfirm && user.EmailConfirmed == false)) { return; }
+
             try
             {
                 MailAddress toAddress = new MailAddress(email);

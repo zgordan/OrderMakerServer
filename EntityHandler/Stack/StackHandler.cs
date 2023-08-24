@@ -17,10 +17,11 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Stack
 
         public StackHandler(OrderMakerContext orderMakerContext)
         {
-            _context = orderMakerContext;            
+            _context = orderMakerContext;
         }
 
-        public async Task<IList<MtdStoreStack>> GetStackAsync(IList<string> storeIds, IList<string> fieldIds) {
+        public async Task<IList<MtdStoreStack>> GetStackAsync(IList<string> storeIds, IList<string> fieldIds)
+        {
 
             IList<long> stackStoreIds = await _context.MtdStoreStack
                 .Where(x => storeIds.Contains(x.MtdStore) && fieldIds.Contains(x.MtdFormPartField))
@@ -79,16 +80,16 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Stack
                     {
                         if (stack != null && stack.MtdStoreStackDate != null)
                         {
-                     
+
                             value = stack.MtdStoreStackDate.Register.ToShortDateString();
                         }
 
                         break;
                     }
- 
+
                 case 11:
                     {
-                        
+
                         if (stack != null && stack.MtdStoreLink != null)
                         {
                             value = stack.MtdStoreLink.Register;
@@ -106,12 +107,12 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Stack
                         break;
                     }
                 default:
-                    {                    
+                    {
                         if (stack != null && stack.MtdStoreStackText != null)
                         {
                             value = stack.MtdStoreStackText.Register;
                         }
-                   
+
                         break;
                     }
             }

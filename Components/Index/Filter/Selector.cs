@@ -3,10 +3,8 @@
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 */
 
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyModel;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Extensions;
@@ -20,13 +18,13 @@ using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Components.Index.Filter
 {
-    public enum ServiceFilter { DateCreated, DocumentOwner, DocumentBased  }
+    public enum ServiceFilter { DateCreated, DocumentOwner, DocumentBased }
 
     [ViewComponent(Name = "IndexFilterSelector")]
     public class Selector : ViewComponent
     {
         private readonly OrderMakerContext _context;
-        private readonly UserHandler _userHandler;     
+        private readonly UserHandler _userHandler;
 
         public Selector(OrderMakerContext orderMakerContext, UserHandler userHandler)
         {
@@ -37,7 +35,7 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
         public async Task<IViewComponentResult> InvokeAsync(string formId)
         {
             WebAppUser user = await _userHandler.GetUserAsync(HttpContext.User);
-            
+
             MtdFilter filter = await _context.MtdFilter.FirstOrDefaultAsync(x => x.IdUser == user.Id && x.MtdForm == formId);
 
             List<MTDSelectListItem> customItems = await GetCustomFieldsAsync(user, formId, filter);
@@ -51,10 +49,10 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
 
             List<MTDSelectListItem> userList = await GetUserItemsAsync(user, formId);
 
-            IList<MtdFilterScript> scripts = await _userHandler.GetFilterScriptsAsync(user,formId,0);            
+            IList<MtdFilterScript> scripts = await _userHandler.GetFilterScriptsAsync(user, formId, 0);
             List<MTDSelectListItem> scriptItems = new List<MTDSelectListItem>();
 
-            List<MTDSelectListItem> relatedDocs = await  GetRelatedDocsAsync(user,formId);
+            List<MTDSelectListItem> relatedDocs = await GetRelatedDocsAsync(user, formId);
 
             foreach (var script in scripts)
             {
@@ -78,12 +76,12 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
             return View("Default", selector);
         }
 
-        
+
         private async Task<List<MTDSelectListItem>> GetCustomFieldsAsync(WebAppUser user, string formId, MtdFilter mtdFilter)
         {
             List<MtdFormPart> parts = await _userHandler.GetAllowPartsForView(user, formId);
             List<string> partIds = parts.Select(x => x.Id).ToList();
-            
+
             var query = _context.MtdFormPartField.Include(m => m.MtdFormPartNavigation)
                 .Where(x => x.MtdFormPartNavigation.MtdForm == formId && x.Active == 1 && partIds.Contains(x.MtdFormPart))
                 .OrderBy(x => x.MtdFormPartNavigation.Sequence).ThenBy(x => x.Sequence);

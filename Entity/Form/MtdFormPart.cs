@@ -24,7 +24,7 @@ namespace Mtd.OrderMaker.Server.Entity
         public int MtdSysStyle { get; set; }
         public string MtdForm { get; set; }
         public sbyte Title { get; set; }
-        public sbyte Child { get; set; }        
+        public sbyte Child { get; set; }
 
         public virtual MtdForm MtdFormNavigation { get; set; }
         public virtual MtdSysStyle MtdSysStyleNavigation { get; set; }

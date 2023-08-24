@@ -5,15 +5,10 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
-using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Services;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
@@ -56,7 +51,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                        }
             };
 
-                        
+
             bool isOk = await _emailSender.SendEmailBlankAsync(blankEmail, false);
             if (!isOk) { return BadRequest(_localizer["Error sending email."]); }
 
@@ -124,7 +119,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
 
             await _userManager.RemovePasswordAsync(user);
             await _userManager.AddPasswordAsync(user, password);
-            await _userManager.SetLockoutEndDateAsync(user, new DateTimeOffset(DateTime.UtcNow));            
+            await _userManager.SetLockoutEndDateAsync(user, new DateTimeOffset(DateTime.UtcNow));
 
 
             var callbackUrl = Url.Page(

@@ -45,7 +45,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
 
         public static async Task<List<string>> GetWaitStoreIds(OrderMakerContext context, WebAppUser user, string formId)
         {
-            List<string> resultList = new List<string>();
+            List<string> resultList = new();
 
             List<string> approvalIds = await context.MtdApproval.Where(x => x.MtdForm == formId).Select(x => x.Id).ToListAsync();
             List<int> stagesUser = await context.MtdApprovalStage.Where(x => approvalIds.Contains(x.MtdApproval) && x.UserId == user.Id).Select(x => x.Id).ToListAsync();
@@ -72,13 +72,13 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
 
         public static async Task<List<ApprovalStore>> GetStoreStatusAsync(OrderMakerContext context, IList<string> storeIds, WebAppUser appUser)
         {
-            List<ApprovalStore> resultList = new List<ApprovalStore>();
+            List<ApprovalStore> resultList = new();
 
             foreach (string storeId in storeIds)
             {
-                ApprovalHandler approvalHandler = new ApprovalHandler(context, storeId);
+                ApprovalHandler approvalHandler = new(context, storeId);
 
-                ApprovalStore approvalStore = new ApprovalStore
+                ApprovalStore approvalStore = new()
                 {
                     StoreId = storeId
                 };
@@ -141,7 +141,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
         public async Task<bool> IsSignAsync()
         {
             List<string> list = await GetUsersWaitSignAsync();
-            return list.Count > 0 ? true : false;
+            return list.Count > 0;
         }
 
         public async Task<bool> IsApprovalFormAsync()
@@ -170,7 +170,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
         public async Task<List<string>> GetUsersWaitSignAsync()
         {
             MtdStore mtdStore = await GetStoreAsync();
-            List<string> result = new List<string>();
+            List<string> result = new();
             if (mtdStore.MtdStoreApproval != null && mtdStore.MtdStoreApproval.SignChain != null && mtdStore.MtdStoreApproval.SignChain.Length > 0)
             {
                 result = mtdStore.MtdStoreApproval.SignChain.Split('&').ToList();
@@ -269,12 +269,12 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
             IList<MtdApprovalStage> stages = await GetStagesAsync();
             var stage = stages.Where(x => x.Stage < prevStage.Stage).FirstOrDefault();
             if (stage != null) { prevStage = stage; }
-            
+
             if (prevStage.UserId == "owner")
             {
                 prevStage.UserId = await GetOwnerID();
             }
-            
+
             return prevStage;
         }
 
@@ -296,13 +296,13 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
             MtdApprovalStage mtdStage = await GetCurrentStageAsync();
             List<string> userIds = await GetUsersWaitSignAsync();
             if (userIds.Count > 0) { return userIds.TakeLast(1).FirstOrDefault(); }
-            
+
             if (mtdStage.UserId == "owner")
             {
                 mtdStage.UserId = await GetOwnerID();
             }
 
-            return mtdStage.UserId; 
+            return mtdStage.UserId;
         }
 
         public async Task<MtdForm> GetFormAsync()
@@ -315,7 +315,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
         {
             MtdStore mtdStore = await GetStoreAsync();
             MtdApprovalStage mtdApprovalStage = await GetFirstStageAsync();
-            MtdStoreApproval mtdStoreApproval = new MtdStoreApproval
+            MtdStoreApproval mtdStoreApproval = new()
             {
                 Id = mtdStore.MtdStoreApproval.Id,
                 Complete = 0,
@@ -325,7 +325,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
                 LastEventTime = DateTime.Now,
             };
 
-            MtdLogApproval mtdLogApproval = new MtdLogApproval()
+            MtdLogApproval mtdLogApproval = new()
             {
                 MtdStore = mtdStore.Id,
                 Result = -2,
@@ -362,7 +362,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
             sbyte complete = 0;
             if (nextStage == null) { complete = 1; nextStage = await GetLastStageAsync(); };
 
-            MtdStoreApproval storeApproval = new MtdStoreApproval
+            MtdStoreApproval storeApproval = new()
             {
                 Id = mtdStore.Id,
                 MtdApproveStage = nextStage.Id,
@@ -383,7 +383,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
             }
 
             string commentText = comment ?? string.Empty;
-            MtdLogApproval mtdLogApproval = new MtdLogApproval()
+            MtdLogApproval mtdLogApproval = new()
             {
                 MtdStore = mtdStore.Id,
                 Result = 1,
@@ -391,7 +391,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
                 Timecr = DateTime.Now,
                 UserId = webAppUser.Id,
                 UserName = webAppUser.GetFullName(),
-                Comment = commentText.Length > 250 ? commentText.Substring(0, 250) : commentText
+                Comment = commentText.Length > 250 ? commentText[..250] : commentText
             };
 
             if (resolution != null)
@@ -420,7 +420,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
             return true;
         }
 
-        public async Task<bool> ActionResponceSignAsync(WebAppUser webAppUser, string comment = null , int result = 0)
+        public async Task<bool> ActionResponceSignAsync(WebAppUser webAppUser, string comment = null, int result = 0)
         {
             /*
              * Back one step on sign chain   
@@ -433,16 +433,16 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
             MtdStoreApproval storeApproval = mtdStore.MtdStoreApproval;
             List<string> userIds = await GetUsersWaitSignAsync();
             string signChain = storeApproval.SignChain ?? string.Empty;
-            if (userIds.Count() > 1)
+            if (userIds.Count > 1)
             {
                 string lastId = userIds.TakeLast(1).FirstOrDefault();
-                signChain = signChain.Replace($"&{lastId}","");
+                signChain = signChain.Replace($"&{lastId}", "");
             }
-            else 
+            else
             {
                 signChain = string.Empty;
             }
-            
+
             storeApproval.SignChain = signChain;
             storeApproval.LastEventTime = DateTime.Now;
 
@@ -450,7 +450,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
             MtdApprovalStage currentStage = await GetCurrentStageAsync();
 
             string commentText = comment ?? string.Empty;
-            MtdLogApproval mtdLogApproval = new MtdLogApproval()
+            MtdLogApproval mtdLogApproval = new()
             {
                 MtdStore = mtdStore.Id,
                 Result = result,
@@ -458,7 +458,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
                 Timecr = DateTime.Now,
                 UserId = webAppUser.Id,
                 UserName = webAppUser.GetFullName(),
-                Comment = commentText.Length > 250 ? commentText.Substring(0, 250) : commentText,
+                Comment = commentText.Length > 250 ? commentText[..250] : commentText,
                 IsSign = 1,
             };
 
@@ -498,7 +498,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
             var allStages = await GetStagesAsync();
             var blockPartsStage = allStages.Where(x => x.Stage < prevStage.Stage).FirstOrDefault();
 
-            MtdStoreApproval storeApproval = new MtdStoreApproval
+            MtdStoreApproval storeApproval = new()
             {
                 Id = mtdStore.Id,
                 MtdApproveStage = prevStage.Id,
@@ -525,7 +525,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
             }
 
             string commentText = comment ?? string.Empty;
-            MtdLogApproval mtdLogApproval = new MtdLogApproval()
+            MtdLogApproval mtdLogApproval = new()
             {
                 MtdStore = mtdStore.Id,
                 Result = complete ? -1 : -2,
@@ -533,7 +533,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
                 Timecr = DateTime.Now,
                 UserId = webAppUser.Id,
                 UserName = webAppUser.GetFullName(),
-                Comment = commentText.Length > 250 ? commentText.Substring(0, 250) : commentText
+                Comment = commentText.Length > 250 ? commentText[..250] : commentText
             };
 
             if (rejection != null)
@@ -566,7 +566,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
         {
             MtdStore mtdStore = await GetStoreAsync();
             MtdApprovalStage approvalStage = await GetCurrentStageAsync();
-            MtdLogApproval mtdLog = new MtdLogApproval
+            MtdLogApproval mtdLog = new()
             {
                 MtdStore = idStore,
                 Stage = approvalStage.Id,
@@ -577,7 +577,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
                 Comment = comment,
                 UserRecipientId = userRecipient.Id,
                 UserRecipientName = userRecipient.Title,
-                IsSign = 1,                
+                IsSign = 1,
             };
 
             string singChain = string.Empty;
@@ -605,7 +605,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
             return true;
         }
 
-        public async Task<bool> ActionConsiderApproved (WebAppUser webAppUser, int result, string comment = null)
+        public async Task<bool> ActionConsiderApproved(WebAppUser webAppUser, int result, string comment = null)
         {
             MtdStore mtdStore = await GetStoreAsync();
             if (mtdStore.MtdStoreApproval != null && mtdStore.MtdStoreApproval.Complete == 1) { return false; }
@@ -615,7 +615,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
 
             sbyte complete = 1;
 
-            MtdStoreApproval storeApproval = new MtdStoreApproval
+            MtdStoreApproval storeApproval = new()
             {
                 Id = mtdStore.Id,
                 MtdApproveStage = lastStage.Id,
@@ -636,7 +636,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
             }
 
             string commentText = comment ?? string.Empty;
-            MtdLogApproval mtdLogApproval = new MtdLogApproval()
+            MtdLogApproval mtdLogApproval = new()
             {
                 MtdStore = mtdStore.Id,
                 Result = result,
@@ -644,7 +644,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
                 Timecr = DateTime.Now,
                 UserId = webAppUser.Id,
                 UserName = webAppUser.GetFullName(),
-                Comment = commentText.Length > 250 ? commentText.Substring(0, 250) : commentText,
+                Comment = commentText.Length > 250 ? commentText[..250] : commentText,
                 Note = lastStage.Name
             };
 
@@ -669,7 +669,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
         {
 
             MtdStore mtdStore = await GetStoreAsync();
-            List<string> ids = new List<string>();
+            List<string> ids = new();
             if (mtdStore.MtdStoreApproval != null)
             {
                 ids = mtdStore.MtdStoreApproval.PartsApproved.Split("&").ToList();
@@ -684,7 +684,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
 
         public async Task<List<string>> GetWilBeBlockedPartsIds()
         {
-            List<string> ids = new List<string>();
+            List<string> ids = new();
             MtdApprovalStage mtdApprovalStage = await GetCurrentStageAsync();
             if (mtdApprovalStage != null)
             {

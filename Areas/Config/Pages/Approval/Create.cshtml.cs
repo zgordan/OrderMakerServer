@@ -3,16 +3,16 @@
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Approval
 {
@@ -38,11 +38,12 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Approval
             };
 
             IList<string> formsIds = await _context.MtdApproval.Select(x => x.MtdForm).ToListAsync();
-            MtdForms = await _context.MtdForm.Where(x => !formsIds.Contains(x.Id)).OrderBy(x=>x.Sequence).ToListAsync();
+            MtdForms = await _context.MtdForm.Where(x => !formsIds.Contains(x.Id)).OrderBy(x => x.Sequence).ToListAsync();
             ViewData["Forms"] = new SelectList(MtdForms.OrderBy(x => x.Sequence), "Id", "Name");
 
             FormItems = new List<MTDSelectListItem>();
-            foreach(MtdForm item in MtdForms) {
+            foreach (MtdForm item in MtdForms)
+            {
                 FormItems.Add(new MTDSelectListItem { Id = item.Id, Value = item.Name });
             }
 

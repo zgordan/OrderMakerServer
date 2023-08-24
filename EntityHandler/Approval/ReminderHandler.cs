@@ -17,7 +17,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Approval
             Dictionary<string, List<MtdStore>> result = new Dictionary<string, List<MtdStore>>();
 
             List<string> storeIds = await context.MtdStoreApproval
-                .Where(x => x.Complete == 0 &&  x.LastEventTime.AddHours(10) < DateTime.Now).Select(x => x.Id).ToListAsync();
+                .Where(x => x.Complete == 0 && x.LastEventTime.AddHours(10) < DateTime.Now).Select(x => x.Id).ToListAsync();
 
             if (storeIds == null) { return result; }
 

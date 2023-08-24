@@ -14,19 +14,16 @@ namespace Mtd.OrderMaker.Server.Components.Store.Stack
     [ViewComponent(Name = "StoreStackViewer")]
     public class Viewer : ViewComponent
     {
-        private readonly OrderMakerContext _context;
 
-        public Viewer(OrderMakerContext orderMakerContext)
-        {
-            _context = orderMakerContext;
-        }
+
+        public Viewer() { }
 
         public async Task<IViewComponentResult> InvokeAsync(MtdFormPartField field, Warehouse warehouse)
         {
 
             MtdStoreStack mtdStoreStack = await GetMtdStoreStackAsync(field, warehouse);
-            if (mtdStoreStack == null) { mtdStoreStack = new MtdStoreStack(); }
-            string viewName = await GetViewNameAsync(field.MtdSysType, warehouse.Parts.FirstOrDefault().MtdSysStyle);
+            mtdStoreStack ??= new MtdStoreStack();
+            string viewName = await GetViewNameAsync(field.MtdSysType);
 
             ViewData["typeStyle"] = field.MtdFormPartNavigation.MtdSysStyle == 5 ? "Columns" : "Rows";
 
@@ -34,17 +31,17 @@ namespace Mtd.OrderMaker.Server.Components.Store.Stack
         }
 
 
-        private MtdStoreStack GetMtdStoreStack(MtdFormPartField field, Warehouse wh)
+        private static MtdStoreStack GetMtdStoreStack(MtdFormPartField field, Warehouse wh)
         {
             return wh.Stack.Where(x => x.MtdFormPartField == field.Id).FirstOrDefault();
         }
 
-        private async Task<MtdStoreStack> GetMtdStoreStackAsync(MtdFormPartField field, Warehouse wh)
+        private static async Task<MtdStoreStack> GetMtdStoreStackAsync(MtdFormPartField field, Warehouse wh)
         {
             return await Task.Run(() => GetMtdStoreStack(field, wh));
         }
 
-        private string GetViewName(int type, int style)
+        private static string GetViewName(int type)
         {
             string viewName;
             switch (type)
@@ -65,9 +62,9 @@ namespace Mtd.OrderMaker.Server.Components.Store.Stack
             return viewName;
         }
 
-        private async Task<string> GetViewNameAsync(int type, int style)
+        private static async Task<string> GetViewNameAsync(int type)
         {
-            return await Task.Run(() => GetViewName(type, style));
+            return await Task.Run(() => GetViewName(type));
         }
 
     }

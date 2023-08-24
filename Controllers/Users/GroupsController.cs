@@ -5,13 +5,9 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
-using Mtd.OrderMaker.Server.Extensions;
 using Mtd.OrderMaker.Server.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Controllers.Users
@@ -38,7 +34,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
         {
             var requestForm = await Request.ReadFormAsync();
             string name = requestForm["group-name"];
-            string note = requestForm["group-note"];         
+            string note = requestForm["group-note"];
 
             MtdGroup mtdGroup = new MtdGroup { Id = Guid.NewGuid().ToString(), Name = name, Description = note };
 
@@ -55,13 +51,13 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             var requestForm = await Request.ReadFormAsync();
             string id = requestForm["group-id"];
             string name = requestForm["group-name"];
-            string note = requestForm["group-note"];          
+            string note = requestForm["group-note"];
 
             MtdGroup mtdGroup = await _context.MtdGroup.FindAsync(id);
             if (mtdGroup == null) { return NotFound(); }
 
             mtdGroup.Name = name;
-            mtdGroup.Description = note;   
+            mtdGroup.Description = note;
 
             _context.MtdGroup.Update(mtdGroup);
             await _context.SaveChangesAsync();
@@ -89,7 +85,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
         {
 
             MtdGroup mtdGroup = await _context.MtdGroup.FindAsync(groupId);
-  
+
             if (mtdGroup != null)
             {
                 return new JsonResult(new { mtdGroup.Id, groupName = mtdGroup.Name, groupOwner = "No owner selected" });

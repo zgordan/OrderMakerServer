@@ -4,7 +4,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 
 namespace Mtd.OrderMaker.Server.Entity
 {

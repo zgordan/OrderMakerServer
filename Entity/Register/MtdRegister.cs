@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Mtd.OrderMaker.Server.Entity
 {
@@ -9,7 +6,7 @@ namespace Mtd.OrderMaker.Server.Entity
     {
         public MtdRegister()
         {
-            MtdRegisterFields = new HashSet<MtdRegisterField>();         
+            MtdRegisterFields = new HashSet<MtdRegisterField>();
         }
 
         public string Id { get; set; }

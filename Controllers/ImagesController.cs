@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Entity;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,7 +15,7 @@ namespace Mtd.OrderMaker.Server.Controllers
         public readonly OrderMakerContext context;
 
         public ImagesController(OrderMakerContext context)
-        {    
+        {
             this.context = context;
         }
 

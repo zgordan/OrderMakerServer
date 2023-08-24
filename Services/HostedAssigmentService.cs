@@ -17,7 +17,7 @@ namespace Mtd.OrderMaker.Server.Services
 {
     internal class HostedAssigmentService : IScopedService
     {
-   
+
         private readonly ILogger _logger;
         private readonly OrderMakerContext context;
         private readonly UserHandler userHandler;
@@ -40,7 +40,7 @@ namespace Mtd.OrderMaker.Server.Services
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-  
+
                 DateTime now = DateTime.Now;
                 DateTime start = new DateTime(now.Year, now.Month, now.Day, 8, 0, 0);
                 DateTime end = new DateTime(now.Year, now.Month, now.Day, 18, 0, 0);
@@ -51,7 +51,7 @@ namespace Mtd.OrderMaker.Server.Services
 
                     List<MtdStoreTask> storeTasks = await context.MtdStoreTasks
                         .Where(x => x.Deadline < now && x.LastEventTime < now && x.Complete == 0).OrderBy(x => x.Deadline).ToListAsync() ?? new List<MtdStoreTask>();
-                    List<string> userIds = storeTasks.GroupBy(x=>x.Executor).Select(x => x.Key).ToList() ?? new List<string>();
+                    List<string> userIds = storeTasks.GroupBy(x => x.Executor).Select(x => x.Key).ToList() ?? new List<string>();
 
 
                     foreach (var userId in userIds)
@@ -59,7 +59,7 @@ namespace Mtd.OrderMaker.Server.Services
                         WebAppUser user = await userHandler.FindByIdAsync(userId);
                         string email = user.Email;
                         List<string> links = new List<string>();
-                        List<MtdStoreTask> sts = storeTasks.Where(x => x.Executor == userId).OrderBy(x=>x.MtdStoreId).ToList();
+                        List<MtdStoreTask> sts = storeTasks.Where(x => x.Executor == userId).OrderBy(x => x.MtdStoreId).ToList();
 
                         MtdStore doc = new();
                         foreach (var st in sts)
@@ -113,7 +113,7 @@ namespace Mtd.OrderMaker.Server.Services
 
                 await Task.Delay(5400000, stoppingToken);
             }
-            
+
         }
     }
 }

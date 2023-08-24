@@ -3,7 +3,6 @@
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 */
 
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
@@ -84,7 +83,7 @@ namespace Mtd.OrderMaker.Server.Components.Index.Filter
                         if (field.MtdFormPartFieldNavigation.MtdSysType == 5 || field.MtdFormPartFieldNavigation.MtdSysType == 6)
                         {
                             displayData.Header = field.MtdFormPartFieldNavigation.Name;
-                            displayData.Value = field.Value.Replace("***","-");
+                            displayData.Value = field.Value.Replace("***", "-");
                         }
 
                     }

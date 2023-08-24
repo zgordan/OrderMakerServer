@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Mtd.OrderMaker.Server.Models.Controls.MTDTextField;
 using Microsoft.Extensions.Localization;
+using Mtd.OrderMaker.Server.Models.Controls.MTDTextField;
+using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Components.Controls
 {
@@ -21,10 +18,10 @@ namespace Mtd.OrderMaker.Server.Components.Controls
         public async Task<IViewComponentResult> InvokeAsync(MTDTextFieldTags tags)
         {
             MTDTextFieldTagsModel model = new MTDTextFieldTagsModel(tags);
-            
+
             LocalizerModel(model);
 
-            string viewName = model.MTDTexFieldView.ToString();                      
+            string viewName = model.MTDTexFieldView.ToString();
             return await Task.Run(() => View(viewName, model));
         }
 

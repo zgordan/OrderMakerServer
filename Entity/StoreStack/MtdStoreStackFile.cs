@@ -3,9 +3,6 @@
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 */
 
-
-using System.Configuration;
-
 namespace Mtd.OrderMaker.Server.Entity
 {
     public partial class MtdStoreStackFile

@@ -3,17 +3,14 @@
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 */
 
-using System;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.EntityHandler.Approval;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Primitives;
-using Mtd.OrderMaker.Server.Entity;
-using Mtd.OrderMaker.Server.EntityHandler.Approval;
 
 namespace Mtd.OrderMaker.Server.Controllers.Config.Approval
 {
@@ -55,18 +52,18 @@ namespace Mtd.OrderMaker.Server.Controllers.Config.Approval
             string fieldName = Request.Form["fieldName"];
             string fieldNote = Request.Form["fieldNote"];
             string fieldUser = "owner";
-                 
+
             string blockParts = string.Empty;
-            MtdApproval mtdApproval = await _context.MtdApproval.FindAsync(approvalId ?? "");          
+            MtdApproval mtdApproval = await _context.MtdApproval.FindAsync(approvalId ?? "");
 
             if (mtdApproval == null)
             {
                 return BadRequest(new JsonResult("Error. Approval not found."));
             }
 
-  
+
             MtdApprovalStage stage = new MtdApprovalStage
-            {                
+            {
                 MtdApproval = approvalId,
                 BlockParts = blockParts,
                 Description = fieldNote,

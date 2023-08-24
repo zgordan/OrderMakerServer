@@ -1,15 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Editing;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Options;
-using Mtd.OrderMaker.Server.AppConfig;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.EntityHandler.Filter;
 using Mtd.OrderMaker.Server.EntityHandler.Stack;
-using Mtd.OrderMaker.Server.EntityHandler.Store;
 using Mtd.OrderMaker.Server.Models.Store;
 using Mtd.OrderMaker.Server.Services;
 using System;
@@ -25,14 +20,13 @@ namespace Mtd.OrderMaker.Server.Controllers.Exchange.Export
     public class DataController : ControllerBase
     {
         private readonly OrderMakerContext context;
-        private readonly IOptions<ConfigSettings> options;
         private readonly UserHandler userHandler;
         private readonly IStringLocalizer<SharedResource> localizer;
 
-        public DataController(OrderMakerContext context, IOptions<ConfigSettings> options, UserHandler userHandler, IStringLocalizer<SharedResource> localizer)
+        public DataController(OrderMakerContext context,
+            UserHandler userHandler, IStringLocalizer<SharedResource> localizer)
         {
             this.context = context;
-            this.options = options;
             this.userHandler = userHandler;
             this.localizer = localizer;
         }
@@ -53,13 +47,13 @@ namespace Mtd.OrderMaker.Server.Controllers.Exchange.Export
             isOk = await userHandler.IsViewer(user, formId);
             if (!isOk) { return BadRequest("Access denied."); }
 
-            FilterHandler filterHandler = new FilterHandler(context, formId, user, userHandler);
+            FilterHandler filterHandler = new(context, formId, user, userHandler);
             TypeQuery typeQuery = TypeQuery.empty;
 
             IList<MtdFormPartField> fields = await filterHandler.GetFieldsFilterAsync();
             fields = fields.Where(x => x.MtdSysType != 7 && x.MtdSysType != 9).ToList();
 
-            Incomer incomer = new Incomer
+            Incomer incomer = new()
             {
                 FormId = formId,
                 SearchNumber = string.Empty,
@@ -67,9 +61,9 @@ namespace Mtd.OrderMaker.Server.Controllers.Exchange.Export
                 Page = page,
                 PageSize = 250,
                 FieldForColumn = fields,
-                WaitList = 0,                
+                WaitList = 0,
             };
-  
+
             isOk = DateTime.TryParseExact(dateStart, "yyyyMMddHHmm", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dateTime);
             if (!isOk) { return BadRequest("Invalid date format."); }
 
@@ -79,7 +73,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Exchange.Export
             if (querystoreIds.Count == 0) { querystoreIds.Add(Guid.NewGuid().ToString()); }
 
             OutFlow outFlow = await filterHandler.GetStackFlowAsync(incomer, typeQuery, querystoreIds);
-            StackHandler handlerStack = new StackHandler(context);
+            StackHandler handlerStack = new(context);
 
             List<string> storeIds = outFlow.MtdStores.Select(x => x.Id).ToList();
             IList<MtdStoreOwner> owners = await context.MtdStoreOwner.Where(x => storeIds.Contains(x.Id)).ToListAsync();
@@ -88,7 +82,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Exchange.Export
 
             IList<MtdStoreStack> mtdStoreStack = await handlerStack.GetStackAsync(storeIds, incomer.FieldIds);
 
-            List<StoreListFields> storeFields = new List<StoreListFields>();
+            List<StoreListFields> storeFields = new();
 
             foreach (string storeId in storeIds)
             {
@@ -100,7 +94,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Exchange.Export
                 string number = mtdStore.Sequence.ToString("D9");
                 string date = mtdStore.Timecr.ToShortDateString();
 
-                StoreListFields store = new StoreListFields()
+                StoreListFields store = new()
                 {
                     StoreId = storeId,
                     Fields = new List<StoreListField>() {

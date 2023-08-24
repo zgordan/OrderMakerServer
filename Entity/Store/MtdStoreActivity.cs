@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Entity
 {
@@ -14,6 +11,6 @@ namespace Mtd.OrderMaker.Server.Entity
         public DateTime TimeCr { get; set; }
         public string UserId { get; set; }
         public virtual MtdStore MtdStore { get; set; }
-        public virtual MtdFormActivity  MtdFormActitvity {get; set;}
+        public virtual MtdFormActivity MtdFormActitvity { get; set; }
     }
 }

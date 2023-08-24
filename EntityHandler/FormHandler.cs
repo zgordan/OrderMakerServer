@@ -1,7 +1,5 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Entity;
-using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -89,7 +87,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler
                 if (currentStoreId != null)
                 {
                     storeIds.Remove(currentStoreId);
-                }                
+                }
             }
 
             decimal sumIncomes = 0;

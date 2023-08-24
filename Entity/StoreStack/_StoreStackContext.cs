@@ -1,8 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Entity
 {
@@ -16,7 +12,8 @@ namespace Mtd.OrderMaker.Server.Entity
         public virtual DbSet<MtdStoreStackText> MtdStoreStackText { get; set; }
 
 
-        public void StoreStackModelCreating(ModelBuilder modelBuilder) {
+        public void StoreStackModelCreating(ModelBuilder modelBuilder)
+        {
 
 
             modelBuilder.Entity<MtdStoreStack>(entity =>

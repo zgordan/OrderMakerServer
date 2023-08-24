@@ -30,7 +30,7 @@ namespace Mtd.OrderMaker.Server.Entity
 
         public virtual MtdForm MtdFormNavigation { get; set; }
         public virtual MtdStore ParentNavigation { get; set; }
-        public virtual MtdStoreApproval MtdStoreApproval { get; set; }      
+        public virtual MtdStoreApproval MtdStoreApproval { get; set; }
         public virtual MtdStoreOwner MtdStoreOwner { get; set; }
         public virtual ICollection<MtdStore> InverseParentNavigation { get; set; }
         public virtual ICollection<MtdLogDocument> MtdLogDocument { get; set; }

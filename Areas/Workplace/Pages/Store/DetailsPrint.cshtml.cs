@@ -4,13 +4,12 @@
 */
 
 
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Services;
+using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
 {
@@ -42,7 +41,7 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
             }
 
             var user = await _userHandler.GetUserAsync(HttpContext.User);
-            bool isViewer = await _userHandler.IsViewer(user, MtdStore.MtdForm, MtdStore.Id);            
+            bool isViewer = await _userHandler.IsViewer(user, MtdStore.MtdForm, MtdStore.Id);
 
             if (!isViewer)
             {

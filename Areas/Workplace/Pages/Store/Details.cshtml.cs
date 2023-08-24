@@ -3,13 +3,8 @@
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store.Models;
@@ -20,6 +15,10 @@ using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
 using Mtd.OrderMaker.Server.Models.LogDocument;
 using Mtd.OrderMaker.Server.Models.Store;
 using Mtd.OrderMaker.Server.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
 {
@@ -129,7 +128,7 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
 
             await SetUsersList(user);
 
-            await SetUsersRequest(user, approvalHandler);            
+            await SetUsersRequest(user, approvalHandler);
 
             await SetResolutions(approvalHandler);
 

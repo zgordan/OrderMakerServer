@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Mtd.OrderMaker.Server.Models.Controls.MTDTextField
+﻿namespace Mtd.OrderMaker.Server.Models.Controls.MTDTextField
 {
     public class MTDTextFieldTags
-    {        
+    {
         public string Id { get; set; }
         public string Name { get; set; }
         public string Label { get; set; }

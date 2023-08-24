@@ -1,9 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
-using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.AppConfig;
+using Mtd.OrderMaker.Server.Entity;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Services
@@ -11,7 +9,7 @@ namespace Mtd.OrderMaker.Server.Services
     public class ConfigHandler
     {
         public int CodeImgMenu => 1;
-        public int CodeImgAppBar => 2;      
+        public int CodeImgAppBar => 2;
         public string AppName => options.Value.AppName;
 
         private readonly OrderMakerContext _context;

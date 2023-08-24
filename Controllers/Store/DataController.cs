@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Primitives;
 using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.EntityHandler;
@@ -18,7 +17,6 @@ using Mtd.OrderMaker.Server.Extensions;
 using Mtd.OrderMaker.Server.Services;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -187,7 +185,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
 
         [HttpPost("create")]
         [ValidateAntiForgeryToken]
-        [Produces("application/json")]        
+        [Produces("application/json")]
         public async Task<IActionResult> OnPostCreateAsync()
         {
             var form = await Request.ReadFormAsync();
@@ -273,7 +271,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             }
 
             List<MtdStoreStack> stackNew = outParam.MtdStoreStacks;
-            await _context.MtdStoreStack.AddRangeAsync(stackNew);         
+            await _context.MtdStoreStack.AddRangeAsync(stackNew);
 
             await _context.SaveChangesAsync();
             _context.Database.CommitTransaction();
@@ -519,21 +517,21 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
             /*Check registers*/
             List<string> fieldIds = outParam.MtdStoreStacks.Select(x => x.MtdFormPartField).ToList();
             IList<string> registerIds = await _context.MtdRegister.Where(x => x.ParentLimit == 1).Select(x => x.Id).ToListAsync();
-            
+
             if (registerIds != null && store.Parent != null)
             {
 
-                List<MtdRegisterField> registerFields = await _context.MtdRegisterField.Include(c=>c.MtdRegister)
+                List<MtdRegisterField> registerFields = await _context.MtdRegisterField.Include(c => c.MtdRegister)
                     .Where(x => fieldIds.Contains(x.Id) && registerIds.Contains(x.MtdRegisterId) && x.Expense == 1 && x.Income == 0)
                     .ToListAsync();
 
                 if (registerFields != null)
                 {
                     FormHandler registerHandler = new FormHandler(_context);
-                    foreach(MtdRegister register in registerFields.Select(x => x.MtdRegister))
+                    foreach (MtdRegister register in registerFields.Select(x => x.MtdRegister))
                     {
                         MtdStore parentStore = await registerHandler.GetParentStoreAsync(store.Id);
-                        decimal balance =  await registerHandler.GetRegisterBalanceAsync(register, store.Id, parentStore.Id);
+                        decimal balance = await registerHandler.GetRegisterBalanceAsync(register, store.Id, parentStore.Id);
                         List<string> fieldIdsForRegister = registerFields.Where(x => x.MtdRegisterId == register.Id).Select(x => x.Id).ToList();
                         decimal sumInt = outParam.MtdStoreStacks.Where(x => fieldIdsForRegister.Contains(x.MtdFormPartField) && x.MtdStoreStackInt != null).Sum(x => x.MtdStoreStackInt.Register);
                         decimal sumDecimal = outParam.MtdStoreStacks.Where(x => fieldIdsForRegister.Contains(x.MtdFormPartField) && x.MtdStoreStackDecimal != null).Sum(x => x.MtdStoreStackDecimal.Register);
@@ -546,7 +544,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Store
                         }
 
                     }
-                }                                                
+                }
             }
 
             return outParam;

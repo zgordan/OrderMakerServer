@@ -4,25 +4,24 @@
 */
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
-using Mtd.OrderMaker.Server.Entity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Mtd.OrderMaker.Server.AppConfig;
-using Mtd.OrderMaker.Server.Services;
-using System;
-using Mtd.OrderMaker.Server.Areas.Identity.Data;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.DataProtection;
-using System.IO;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Mvc.Razor;
-using System.Globalization;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Mtd.OrderMaker.Server.AppConfig;
+using Mtd.OrderMaker.Server.Areas.Identity.Data;
+using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.Services;
 using Mtd.OrderMaker.Service;
+using System;
+using System.Globalization;
 
 
 namespace Mtd.OrderMaker.Server
@@ -73,7 +72,7 @@ namespace Mtd.OrderMaker.Server
                 .AddDefaultTokenProviders();
 
             services.AddDbContext<OrderMakerContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("DataConnection"), new MySqlServerVersion(new Version(8, 0)))); 
+                options.UseMySql(Configuration.GetConnectionString("DataConnection"), new MySqlServerVersion(new Version(8, 0))));
 
             services.AddMemoryCache();
 
@@ -81,7 +80,7 @@ namespace Mtd.OrderMaker.Server
             {
                 options.AddPolicy("RoleAdmin", policy => policy.RequireRole("Admin"));
                 options.AddPolicy("RoleUser", policy => policy.RequireRole("User", "Admin"));
-                options.AddPolicy("RoleGuest", policy => policy.RequireRole("Guest", "User", "Admin"));                
+                options.AddPolicy("RoleGuest", policy => policy.RequireRole("Guest", "User", "Admin"));
             });
 
             services.AddMvc()
@@ -109,7 +108,7 @@ namespace Mtd.OrderMaker.Server
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.Configure<ConfigSettings>(Configuration.GetSection("ConfigSettings"));
             services.Configure<LimitSettings>(Configuration.GetSection("LimitSettings"));
-            
+
 
             services.AddMvc(options => options.EnableEndpointRouting = false);
 
@@ -155,7 +154,7 @@ namespace Mtd.OrderMaker.Server
 
             if (CurrentEnvironment.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();            
+                app.UseDeveloperExceptionPage();
             }
             else
             {

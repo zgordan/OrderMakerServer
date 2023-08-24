@@ -3,11 +3,6 @@
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace Mtd.OrderMaker.Server.Models.LogDocument
 {
     public class ChangesHistory

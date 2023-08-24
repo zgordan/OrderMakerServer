@@ -3,8 +3,6 @@
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 */
 
-using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
-using System;
 using System.Collections.Generic;
 
 namespace Mtd.OrderMaker.Server.Entity

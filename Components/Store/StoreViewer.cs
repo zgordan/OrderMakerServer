@@ -1,14 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
-using NPOI.SS.Formula;
+using Mtd.OrderMaker.Server.Services;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Mtd.OrderMaker.Server.Services;
-using Mtd.OrderMaker.Server.Areas.Identity.Data;
 
 namespace Mtd.OrderMaker.Server.Components.Store
 {
@@ -36,11 +34,11 @@ namespace Mtd.OrderMaker.Server.Components.Store
             this.userHandler = userHandler;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string storeId, string viewerId)            
+        public async Task<IViewComponentResult> InvokeAsync(string storeId, string viewerId)
         {
             if (storeId == null)
             {
-                               
+
                 StoreViewerModel nullModel = new StoreViewerModel
                 {
                     SoreId = string.Empty,
@@ -56,8 +54,8 @@ namespace Mtd.OrderMaker.Server.Components.Store
             MtdStore mtdStore = await context.MtdStore.FindAsync(storeId);
             MtdForm mtdForm = await context.MtdForm.Include(x => x.MtdFormHeader).Where(x => x.Id == mtdStore.MtdForm).FirstOrDefaultAsync();
             WebAppUser user = await userHandler.GetUserAsync(HttpContext.User);
-            bool isViewer = await userHandler.IsViewer(user,mtdForm.Id, storeId);
-           
+            bool isViewer = await userHandler.IsViewer(user, mtdForm.Id, storeId);
+
             string imgSrc = string.Empty;
             if (mtdForm.MtdFormHeader != null)
             {

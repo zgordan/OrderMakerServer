@@ -31,7 +31,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
                         resultIds = await _context.MtdStoreStackText
                             .Where(x => stackIds.Contains(x.Id) && x.Register.ToUpper().Equals(value.ToUpper()))
                             .Select(x => x.Id).Union(vs).Distinct().ToListAsync();
-                        
+
                         break;
                     }
                 case 5:
@@ -43,19 +43,19 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
                         resultIds = await _context.MtdStoreStackText
                             .Where(x => stackIds.Contains(x.Id) && x.Register.ToUpper() != value.ToUpper())
                             .Select(x => x.Id).Union(vs).Distinct().ToListAsync();
-                        
+
                         break;
                     }
                 default:
                     {
                         IQueryable<long> vs = _context.MtdStoreLink
                             .Where(x => stackIds.Contains(x.Id) && x.Register.ToUpper().Contains(value.ToUpper()))
-                            .Select(x => x.Id);                 
+                            .Select(x => x.Id);
 
-                        resultIds  = await _context.MtdStoreStackText
+                        resultIds = await _context.MtdStoreStackText
                             .Where(x => stackIds.Contains(x.Id) && x.Register.ToUpper().Contains(value.ToUpper()))
                             .Select(x => x.Id).Union(vs).Distinct().ToListAsync();
-                        
+
                         break;
                     }
 
@@ -154,7 +154,7 @@ namespace Mtd.OrderMaker.Server.EntityHandler.Filter
             if (store != null) query = query.Where(x => store.Contains(x.MtdStore));
             IList<long> stackIds = await query.Select(x => x.Id).ToListAsync();
 
-            IList<long> resultIds = await _context.MtdStoreStackDate.Where(x => stackIds.Contains(x.Id) && x.Register.Date>=dateStart && x.Register.Date<=dateFinish).Select(x => x.Id).ToListAsync(); ;
+            IList<long> resultIds = await _context.MtdStoreStackDate.Where(x => stackIds.Contains(x.Id) && x.Register.Date >= dateStart && x.Register.Date <= dateFinish).Select(x => x.Id).ToListAsync(); ;
 
             //switch (term)
             //{

@@ -1,13 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.EntityHandler;
-using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 
 namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Register
@@ -46,14 +44,14 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Register
             }
 
             ParentLimit = MtdRegister.ParentLimit == 1;
-            FormHandler formHandler = new FormHandler(context);
+            FormHandler formHandler = new(context);
             Forms = await formHandler.GetFormFieldsAsync();
             RegisterFields = await context.MtdRegisterField.Where(x => x.MtdRegisterId == MtdRegister.Id).ToListAsync();
-            RejectFieldIds = await context.MtdRegisterField.Where(x => x.MtdRegisterId != MtdRegister.Id).Select(x=>x.Id).ToListAsync();
-            if (RegisterFields == null) { RegisterFields = new List<MtdRegisterField>(); }
-            if (RejectFieldIds == null) { RejectFieldIds = new List<string>(); }
+            RejectFieldIds = await context.MtdRegisterField.Where(x => x.MtdRegisterId != MtdRegister.Id).Select(x => x.Id).ToListAsync();
+            RegisterFields ??= new List<MtdRegisterField>();
+            RejectFieldIds ??= new List<string>();
 
-            Balance =  await  formHandler.GetRegisterBalanceAsync(MtdRegister);
+            Balance = await formHandler.GetRegisterBalanceAsync(MtdRegister);
 
             return Page();
         }
@@ -70,7 +68,7 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Register
             context.MtdRegisterField.RemoveRange(fieldlRemove);
             await context.SaveChangesAsync();
 
-            List<MtdRegisterField> newFields = new List<MtdRegisterField>();
+            List<MtdRegisterField> newFields = new();
 
             foreach (var fieldId in fieldIds)
             {
@@ -80,7 +78,7 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Register
 
                 if (linked == "true")
                 {
-                    MtdRegisterField mtdRegisterField = new MtdRegisterField
+                    MtdRegisterField mtdRegisterField = new()
                     {
                         Id = fieldId,
                         MtdRegisterId = MtdRegister.Id,

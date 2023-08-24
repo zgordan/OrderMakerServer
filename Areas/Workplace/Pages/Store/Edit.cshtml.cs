@@ -3,9 +3,6 @@
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 */
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -14,6 +11,9 @@ using Mtd.OrderMaker.Server.Areas.Identity.Data;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.EntityHandler.Approval;
 using Mtd.OrderMaker.Server.Services;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
 {
@@ -46,10 +46,11 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                 return NotFound();
             }
 
-            var user = await _userHandler.GetUserAsync(HttpContext.User);            
-            bool isEditor = await _userHandler.IsEditor(user,MtdStore.MtdForm,MtdStore.Id);
-            
-            if (!isEditor) {
+            var user = await _userHandler.GetUserAsync(HttpContext.User);
+            bool isEditor = await _userHandler.IsEditor(user, MtdStore.MtdForm, MtdStore.Id);
+
+            if (!isEditor)
+            {
                 return Forbid();
             }
 
@@ -69,14 +70,14 @@ namespace Mtd.OrderMaker.Server.Areas.Workplace.Pages.Store
                  .Where(x => x.ChildFormId == MtdForm.Id).Select(x => x.MtdParentForm)
                  .OrderBy(x => x.Sequence)
                  .ToListAsync();
-            
+
             bool isRelatedEditor = await _userHandler.CheckUserPolicyAsync(user, MtdForm.Id, RightsType.RelatedEdit);
 
             if (parentForms != null && isRelatedEditor)
             {
-                foreach(MtdForm form in parentForms)
+                foreach (MtdForm form in parentForms)
                 {
-                    bool isViewer = await _userHandler.IsViewer(user, form.Id);                    
+                    bool isViewer = await _userHandler.IsViewer(user, form.Id);
 
                     if (isViewer && isRelatedEditor)
                     {

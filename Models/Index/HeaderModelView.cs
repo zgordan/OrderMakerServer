@@ -13,6 +13,6 @@ namespace Mtd.OrderMaker.Server.Models.Index
         public string SearchText { get; set; }
         public bool WaitList { get; set; }
         public int Pending { get; set; }
-        public bool IsApprovalForm {get;set;}
+        public bool IsApprovalForm { get; set; }
     }
 }

@@ -130,7 +130,7 @@ namespace Mtd.OrderMaker.Server.Components.Store
 
                     if (counter == fields.Count)
                     {
-                        nullParts.Add(part);                        
+                        nullParts.Add(part);
                     }
 
 
@@ -146,14 +146,14 @@ namespace Mtd.OrderMaker.Server.Components.Store
                     }
                 }
             }
-            
+
             Warehouse result = new Warehouse()
             {
                 Store = mtdStore,
                 Parts = mtdFormParts,
                 Fields = mtdFormPartFields,
                 Stack = stack,
-                SetDate = await _userHandler.CheckUserPolicyAsync(webAppUser, store.MtdForm,RightsType.SetDate)                
+                SetDate = await _userHandler.CheckUserPolicyAsync(webAppUser, store.MtdForm, RightsType.SetDate)
             };
 
             return result;

@@ -53,7 +53,7 @@ namespace Mtd.OrderMaker.Server
                 {
 
                     await idContext.Database.MigrateAsync(cancellationToken);
-                                        
+
                     using var userManager = scope.ServiceProvider.GetRequiredService<UserManager<WebAppUser>>();
                     bool usersExists = await userManager.Users.AnyAsync(cancellationToken: cancellationToken);
                     if (usersExists == false)

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Mtd.OrderMaker.Server.Components;
 using Mtd.OrderMaker.Server.Entity;
+using System;
+using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Approval.Resolutions
 {
@@ -18,7 +15,7 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Approval.Resolutions
         {
             _context = context;
         }
-        
+
         [BindProperty]
         public MtdApprovalResolution MtdApprovalResolution { get; set; }
 
@@ -39,14 +36,14 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Approval.Resolutions
         public async Task OnPostAsync()
         {
             MtdApprovalResolution.MtdApprovalStageId = MtdApprovalStage.Id;
-          
+
             MTDImgSModify img = await MTDImgSelector.ImageModifyAsync("img", Request);
             MtdApprovalResolution.ImgData = img.Image;
             MtdApprovalResolution.ImgType = img.ImgType;
 
             _context.MtdApprovalResolution.Add(MtdApprovalResolution);
             await _context.SaveChangesAsync();
-            
+
         }
     }
 }

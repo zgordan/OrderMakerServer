@@ -4,7 +4,6 @@
 */
 
 
-using Mtd.OrderMaker.Server.Entity;
 using System.Collections.Generic;
 
 namespace Mtd.OrderMaker.Server.Entity
@@ -48,7 +47,7 @@ namespace Mtd.OrderMaker.Server.Entity
         public virtual ICollection<MtdFormPart> MtdFormPart { get; set; }
         public virtual ICollection<MtdPolicyForms> MtdPolicyForms { get; set; }
         public virtual ICollection<MtdStore> MtdStore { get; set; }
-        public virtual ICollection<MtdFilterScript> MtdFilterScript { get; set; }        
+        public virtual ICollection<MtdFilterScript> MtdFilterScript { get; set; }
         public virtual ICollection<MtdFormRelated> MtdParentForms { get; set; }
         public virtual ICollection<MtdFormRelated> MtdChildForms { get; set; }
         public virtual ICollection<MtdFormActivity> MtdFormActivites { get; set; }

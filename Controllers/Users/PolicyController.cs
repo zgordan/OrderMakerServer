@@ -11,8 +11,6 @@ using Microsoft.Extensions.Options;
 using Mtd.OrderMaker.Server.AppConfig;
 using Mtd.OrderMaker.Server.Entity;
 using Mtd.OrderMaker.Server.Services;
-using NPOI.OpenXmlFormats.Dml;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -72,7 +70,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
             if (mtdPolicy == null) { return NotFound(); }
 
             IList<MtdForm> mtdForms = await _context.MtdForm.Include(x => x.MtdFormPart).ToListAsync();
-            IList<MtdGroup> groups = await _context.MtdGroup.ToListAsync();          
+            IList<MtdGroup> groups = await _context.MtdGroup.ToListAsync();
 
             IList<MtdPolicyForms> mtdPolicyForms = await _context.MtdPolicyForms.Where(x => x.MtdPolicy == mtdPolicy.Id).ToListAsync();
             if (mtdPolicyForms == null) { mtdPolicyForms = new List<MtdPolicyForms>(); }
@@ -130,7 +128,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
 
                 pf.DeleteAll = GetSbyte(formDelete);
                 pf.DeleteGroup = GetSbyte(formDeleteGroup);
-                pf.DeleteOwn = GetSbyte(formDeleteOwn);              
+                pf.DeleteOwn = GetSbyte(formDeleteOwn);
 
                 if (newPf)
                 {
@@ -191,7 +189,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
 
             IList<MtdForm> forms = await _context.MtdForm.Include(x => x.MtdFormPart).ToListAsync();
             IList<MtdGroup> groups = await _context.MtdGroup.ToListAsync();
-           
+
             IList<MtdPolicyForms> mtdPolicyForms = await _context.MtdPolicyForms.Where(x => x.MtdPolicy == mtdPolicy.Id).ToListAsync();
             if (mtdPolicyForms == null) { mtdPolicyForms = new List<MtdPolicyForms>(); }
 
@@ -210,7 +208,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
                 pf.Reviewer = 1;
                 pf.ChangeDate = 1;
                 pf.OwnDenyGroup = 1;
-                pf.ExportToExcel = limit.ExportExcel ? (sbyte)  1 : (sbyte) 0;
+                pf.ExportToExcel = limit.ExportExcel ? (sbyte)1 : (sbyte)0;
                 pf.RelatedCreate = 1;
                 pf.RelatedEdit = 1;
 
@@ -279,7 +277,7 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
 
             IList<MtdForm> forms = await _context.MtdForm.Include(x => x.MtdFormPart).ToListAsync();
             IList<MtdGroup> groups = await _context.MtdGroup.ToListAsync();
-            
+
             IList<MtdPolicyForms> mtdPolicyForms = await _context.MtdPolicyForms.Where(x => x.MtdPolicy == mtdPolicy.Id).ToListAsync();
             if (mtdPolicyForms == null) { mtdPolicyForms = new List<MtdPolicyForms>(); }
 
@@ -359,11 +357,12 @@ namespace Mtd.OrderMaker.Server.Controllers.Users
 
         [HttpPost("delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> OnPostPolicyDelete() {
+        public async Task<IActionResult> OnPostPolicyDelete()
+        {
 
             string policyId = Request.Form["policy-delete-id"];
             MtdPolicy mtdPolicy = new MtdPolicy { Id = policyId };
-            _context.MtdPolicy.Remove(mtdPolicy);            
+            _context.MtdPolicy.Remove(mtdPolicy);
             await _context.SaveChangesAsync();
 
             await _userHandler.CacheRefresh();

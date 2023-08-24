@@ -4,16 +4,15 @@
 */
 
 
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using Mtd.OrderMaker.Server.Entity;
+using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Mtd.OrderMaker.Server.Entity;
-using Mtd.OrderMaker.Server.Models.Controls.MTDSelectList;
 
 namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
 {
@@ -28,9 +27,9 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
 
 
         public MtdForm MtdForm { get; set; }
-        
+
         public MtdFormPart MtdFormPart { get; set; }
-        
+
         public MtdFormPartField MtdFormPartField { get; set; }
 
         public List<MTDSelectListItem> TypeItems { get; set; }
@@ -46,25 +45,25 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
                 return NotFound();
             }
 
-            MtdForm = await _context.MtdForm.Include(m => m.MtdFormHeader).FirstOrDefaultAsync(x=>x.Id == MtdFormPart.MtdForm);
+            MtdForm = await _context.MtdForm.Include(m => m.MtdFormHeader).FirstOrDefaultAsync(x => x.Id == MtdFormPart.MtdForm);
 
-            string fieldId =  Guid.NewGuid().ToString();
+            string fieldId = Guid.NewGuid().ToString();
 
             MtdFormPartField = new MtdFormPartField
             {
-                Id = fieldId,  
-                MtdFormList = new MtdFormList { Id = fieldId}
+                Id = fieldId,
+                MtdFormList = new MtdFormList { Id = fieldId }
             };
 
             TypeItems = new List<MTDSelectListItem>();
-            var listType = await _context.MtdSysType.Where(x => x.Active==1).OrderBy(x => x.Id).ToListAsync();
+            var listType = await _context.MtdSysType.Where(x => x.Active == 1).OrderBy(x => x.Id).ToListAsync();
             listType.ForEach((item) =>
             {
-                TypeItems.Add(new MTDSelectListItem { Id=item.Id.ToString(), Value=item.Name });
+                TypeItems.Add(new MTDSelectListItem { Id = item.Id.ToString(), Value = item.Name });
             });
 
             FormItems = new List<MTDSelectListItem>();
-            var formItems = await _context.MtdForm.OrderBy(x=>x.Name).ToListAsync();
+            var formItems = await _context.MtdForm.OrderBy(x => x.Name).ToListAsync();
             formItems.ForEach((item) =>
             {
                 FormItems.Add(new MTDSelectListItem { Id = item.Id, Value = item.Name });

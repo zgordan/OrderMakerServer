@@ -23,7 +23,7 @@ namespace Mtd.OrderMaker.Server.Services
 {
     public enum RightsType
     {
-        ViewAll, Create, Edit, Delete, ViewOwn, EditOwn, DeleteOwn, ViewGroup, EditGroup, DeleteGroup, SetOwn, Reviewer, SetDate, OwnDenyGroup, 
+        ViewAll, Create, Edit, Delete, ViewOwn, EditOwn, DeleteOwn, ViewGroup, EditGroup, DeleteGroup, SetOwn, Reviewer, SetDate, OwnDenyGroup,
         ExportToExcel, RelatedCreate, RelatedEdit
     };
 
@@ -212,7 +212,7 @@ namespace Mtd.OrderMaker.Server.Services
             if (policyId == null) { return false; }
             MtdPolicyForms policyForms = mtdPolicy.SelectMany(x => x.MtdPolicyForms).Where(x => x.MtdForm == formId && x.MtdPolicy == policyId).FirstOrDefault();
             if (policyForms == null) { return false; }
-            if (policyForms.ViewAll == 1 || policyForms.ViewGroup == 1 || policyForms.ViewOwn==1) { return true; }
+            if (policyForms.ViewAll == 1 || policyForms.ViewGroup == 1 || policyForms.ViewOwn == 1) { return true; }
 
             return false;
 

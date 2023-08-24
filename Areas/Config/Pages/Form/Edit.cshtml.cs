@@ -3,15 +3,15 @@
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Mtd.OrderMaker.Server.Entity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
 {
@@ -91,12 +91,12 @@ namespace Mtd.OrderMaker.Server.Areas.Config.Pages.Form
             IList<MtdForm> mtdForms = await _context.MtdForm.AsNoTracking().OrderBy(x => x.Sequence).ToListAsync();
             List<MtdFormRelated> relateds = new List<MtdFormRelated>();
             IList<MtdFormRelated> listForDelete = await _context.MtdFormRelated.AsNoTracking().Where(x => x.ParentFormId == oldForm.Id).ToListAsync();
-            if (listForDelete.Count>0)
+            if (listForDelete.Count > 0)
             {
                 _context.MtdFormRelated.RemoveRange(listForDelete);
                 await _context.SaveChangesAsync();
             }
-            
+
 
             foreach (var mtdForm in mtdForms)
             {

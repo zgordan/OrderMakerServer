@@ -3,7 +3,6 @@
     Copyright (c) 2019 Oleg Bruev <job4bruev@gmail.com>. All rights reserved.
 */
 
-using System;
 using System.Collections.Generic;
 
 namespace Mtd.OrderMaker.Server.Entity
@@ -12,7 +11,7 @@ namespace Mtd.OrderMaker.Server.Entity
     {
         public MtdApproval()
         {
-            MtdApprovalStage = new HashSet<MtdApprovalStage>();            
+            MtdApprovalStage = new HashSet<MtdApprovalStage>();
         }
 
         public string Id { get; set; }
@@ -25,8 +24,8 @@ namespace Mtd.OrderMaker.Server.Entity
         public byte[] ImgIteraction { get; set; }
         public string ImgIteractionType { get; set; }
         public string ImgIteractionText { get; set; }
-        public byte[] ImgWaiting{ get; set; }
-        public string ImgWaitingType { get; set; }        
+        public byte[] ImgWaiting { get; set; }
+        public string ImgWaitingType { get; set; }
         public string ImgWaitingText { get; set; }
         public byte[] ImgApproved { get; set; }
         public string ImgApprovedType { get; set; }
@@ -39,6 +38,6 @@ namespace Mtd.OrderMaker.Server.Entity
         public string ImgRequiredText { get; set; }
 
         public virtual MtdForm MtdFormNavigation { get; set; }
-        public virtual ICollection<MtdApprovalStage> MtdApprovalStage { get; set; }        
+        public virtual ICollection<MtdApprovalStage> MtdApprovalStage { get; set; }
     }
 }

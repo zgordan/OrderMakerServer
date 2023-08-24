@@ -8,7 +8,7 @@ namespace Mtd.OrderMaker.Server.Extensions
         {
             string name = user.Title ?? "no name";
             string group = user.TitleGroup ?? "";
-            if (user.TitleGroup != null && user.TitleGroup.Length>1) { group = $"({group})"; }
+            if (user.TitleGroup != null && user.TitleGroup.Length > 1) { group = $"({group})"; }
 
             return $"{name} {group}";
         }
